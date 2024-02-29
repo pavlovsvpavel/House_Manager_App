@@ -1,0 +1,41 @@
+.header-elements {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em 0;
+    flex-basis: 100%;
+}
+
+.site-title a {
+    display: block;
+    width: 110px;
+    height: 110px;
+    overflow: hidden;
+    text-indent: -200vw;
+    background-image: url("../images/site_logo.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.navigation ul {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    list-style: none outside;
+}
+
+.navigation ul li {
+    padding: 0.5em;
+    border-radius: 0.5em;
+}
+
+.navigation ul a {
+    color: inherit;
+    text-decoration: none;
+    text-transform: uppercase; 
+}
+
+.navigation ul li:hover {
+    background-color: aqua; 
+}

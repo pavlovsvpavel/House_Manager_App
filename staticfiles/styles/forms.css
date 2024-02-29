@@ -1,0 +1,41 @@
+.errorlist {
+    list-style: none outside;
+    color:red;
+}
+
+.errorlist li {
+    font-style: italic;
+}
+
+.create-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-basis: 50%;
+    background-color: azure;
+    border-radius: 1em;
+    padding: 2em;
+}
+
+.create-form input {
+    padding: 0.5em;
+    border-radius: 0.5em;
+    border: 1px solid green;
+}
+
+.create-form label {
+    font-size: 1.2em;
+    padding-top: 1em;
+}
+
+.create-form .btn {
+    margin-top: 4em;
+    border-radius: 1.5em;
+    border-color: transparent;
+    background-color: blueviolet;
+    color: #fff;
+}
+
+.create-form .btn:hover {
+    background-color: brown;
+}

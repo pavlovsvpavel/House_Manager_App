@@ -1,0 +1,25 @@
+.house-cards {
+    display: flex;
+    gap: 2em;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    flex-basis: 100%;
+}
+
+.house-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #03a5fc;
+    border-radius: 1em;
+    padding: 2em ;
+}
+
+.house-card p {
+    font-size: 1.5em;
+}
+
+.house-card:hover {
+    cursor: pointer;
+    background-color: aquamarine;
+    box-shadow: 0 0 5px 3px rgb(0, 0, 0, 0.5);
+}

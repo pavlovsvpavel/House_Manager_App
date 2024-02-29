@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+        <!-- Create house -->
+        <section class="site-section create-house">
+            <div class="container">
+                
+                <form class="create-form" action="{% url "create-house" %}" method="post">
+                    <h3 class="create-form-heading">Create House</h3>
+                    {{ form }}
+                    {% csrf_token %}
+{#                    <label for="town">Town:</label>#}
+{#                    <input type="text" name="town">#}
+{#                    <label for="address">Address:</label>#}
+{#                    <input type="text" name="address">#}
+{#                    <label for="building-number">Building number:</label>#}
+{#                    <input type="text" name="building-number">#}
+{#                    <label for="entrance">Entrance:</label>#}
+{#                    <input type="text" name="entrance">#}
+
+                    <input class="btn" type="submit" value="Create House">
+                </form>
+            </div>
+        </section>
+        <!-- End create house -->
+{% endblock %}
