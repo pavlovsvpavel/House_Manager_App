@@ -15,7 +15,7 @@ class Client(TimeStampModel):
         max_length=30,
         validators=[
             validate_char_field,
-        ]
+        ],
     )
 
     floor = models.PositiveIntegerField()

@@ -2,7 +2,6 @@ from django.urls import reverse_lazy
 from django.views import generic as views
 
 from house_manager.accounts.mixins import GetProfileMixin
-from house_manager.clients.models import Client
 from house_manager.houses.models import House
 
 
@@ -19,13 +18,15 @@ class HouseCreateView(GetProfileMixin, views.CreateView):
         return super().form_valid(form)
 
 
-class HouseDetailsView(GetProfileMixin, views.DetailView):
+class HouseListClientsDetailsView(views.DetailView):
     queryset = House.objects.all()
-    template_name = "houses/details_house.html"
+    template_name = "houses/list_clients_house.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context["clients"] = Client.objects.all()
+        house = self.get_object()
+        context["clients"] = house.clients.all()
 
         return context
+
+

@@ -8,7 +8,6 @@ class IndexView(views.TemplateView):
 
 
 class DashboardView(views.TemplateView):
-    queryset = House.objects.all()
     template_name = "common/dashboard.html"
 
     def get_context_data(self, **kwargs):

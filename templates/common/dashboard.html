@@ -2,8 +2,8 @@
 
 {% block main_content %}
     <script>
-        function redirectToObjectDetail(houseId) {
-            window.location.href = "{% url "details_house" pk=0 %}".replace("0", houseId);
+        function redirectToHouseClients(houseId) {
+            window.location.href = "{% url "list_clients_house" pk=0 %}".replace("0", houseId);
         }
     </script>
 
@@ -12,7 +12,7 @@
         <div class="container">
             <div class="house-cards">
                 {% for house in houses %}
-                    <div class="house-card" onclick="redirectToObjectDetail({{ house.pk }})">
+                    <div class="house-card" onclick="redirectToHouseClients({{ house.pk }})">
                         <p>{{ house.town }}</p>
                         <p>{{ house.address }}</p>
                         <p>{{ house.building_number }}</p>

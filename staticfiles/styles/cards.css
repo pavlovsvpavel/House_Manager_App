@@ -9,7 +9,7 @@
 .house-card {
     display: flex;
     flex-direction: column;
-    background-color: #03a5fc;
+    background-color: darkgrey;
     border-radius: 1em;
     padding: 2em ;
 }
@@ -23,3 +23,100 @@
     background-color: aquamarine;
     box-shadow: 0 0 5px 3px rgb(0, 0, 0, 0.5);
 }
+
+.list-clients .clients-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    justify-content: center;
+    flex: 0 1 80%;
+}
+
+.list-clients .clients-cards .create-client {
+    text-decoration: none;
+    color: inherit;
+    background-color: aqua;
+    padding: 0.3em 1em;
+    border-radius: 0.5em;
+    align-self: flex-start;
+}
+
+.list-clients .client-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color: darkgrey;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    align-items: center;
+}
+
+.list-clients .client-card:hover {
+    cursor: pointer;
+    background-color: aquamarine;
+    box-shadow: 0 0 5px 3px rgb(0, 0, 0, 0.5);
+}
+
+.list-clients .card-column {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 10%;
+    align-items: center;
+}
+
+.list-clients .card-column .column-name {
+    font-weight: bold;
+}
+
+.client-details .client-card {
+    display: flex;
+    flex-direction: column;
+    background-color: darkgrey;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    flex: 0 1 50%;
+    gap: 1em;
+    /*align-items: center;*/
+}
+
+.client-details .client-card .card-column {
+    display: flex;
+    justify-content: space-between;
+}
+
+.client-details .client-card .card-column {
+    border-bottom: 1px solid #000;
+}
+
+.client-details .client-card .client-card-btns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.client-details .client-card a {
+    text-decoration: none;
+    color: inherit;
+    background-color: aqua;
+    border-radius: 0.5em;
+    padding: 0.3em;
+    flex: 0 1 20%;
+    text-align: center;
+}
+
+.client-delete .delete-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+}
+
+.client-delete .delete-card .btn {
+    background-color: red;
+    padding: 0.3em 3em;
+    border-radius: 0.5em;
+    border: none;
+    cursor: pointer;
+
+}
+
+

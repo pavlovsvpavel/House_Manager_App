@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+
+    <section class="site-section client-details">
+        <div class="container">
+            <div class="client-card">
+                <div class="client-card" onclick="redirectToClientDetails({{ client.pk }})">
+                    <div class="card-column">
+                        <p class="column-name">Family Name</p>
+                        <p class="column-data">{{ client.family_name }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Floor</p>
+                        <p class="column-data">{{ client.floor }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Apartment</p>
+                        <p class="column-data">{{ client.apartment }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">People</p>
+                        <p class="column-data">{{ client.number_of_people }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Using lift</p>
+                        <p class="column-data">{{ client.is_using_lift }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Occupied</p>
+                        <p class="column-data">{{ client.is_occupied }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Fixed fee</p>
+                        <p class="column-data">{{ client.fixed_fee }}</p>
+                    </div>
+                    <div class="client-card-btns">
+                        <a href="{% url "edit_client" pk=object.pk %}">Edit</a>
+                        <a href="{% url "delete_client" pk=object.pk %}">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
