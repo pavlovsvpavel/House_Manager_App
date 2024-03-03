@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    
+    <section class="site-section create-house-bills">
+            <div class="container">
+                <form class="create-form" action="{% url "create_house_bills" %}" method="post">
+                    <h3 class="create-form-heading">Create Bill</h3>
+                    {{ form }}
+                    {% csrf_token %}
+                    <input class="btn" type="submit" value="Create Bill">
+                </form>
+            </div>
+        </section>
+
+{% endblock %}

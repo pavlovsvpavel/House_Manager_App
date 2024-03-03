@@ -10,37 +10,39 @@
     <link href="{% static "images/favicon.ico" %}" rel="icon" type="image/x-icon">
 </head>
 <body>
-    <div class="site">
-        <header class="site-section site-header">
-            
-            <div class="container">
-                <div class="header-elements">
-                    <div class="site-title">
-                        <a href="{% url "index" %}">House Manager</a>
-                    </div>
-                    <nav class="navigation">
-                        <ul>
-                            <li><a href="{% url "dashboard" %}">Dashboard</a></li>
-                            <li><a href="{% url "create_house" %}">Create House</a></li>
-                            <li><a href="#">Profile</a></li>
-                            <li><a href="#">Register</a></li>
-                            <li><a href="#">Login</a></li>
-                            <li><a href="#">Logout</a></li>
-                        </ul>
-                    </nav>
+<div class="site">
+    <header class="site-section site-header">
+
+        <div class="container">
+            <div class="header-elements">
+                <div class="site-title">
+                    <a href="{% url "index" %}">House Manager</a>
                 </div>
+                <nav class="navigation">
+                    <ul>
+                        <li><a href="{% url "dashboard" %}">Dashboard</a></li>
+                        <li><a href="{% url "create_house" %}">Create House</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Register</a></li>
+                        <li><a href="#">Login</a></li>
+                        <li><a href="#">Logout</a></li>
+                    </ul>
+                </nav>
             </div>
-        </header>
-        
+        </div>
+    </header>
+    <main class="site-section site-main">
         {% block main_content %}
-        
+
         {% endblock %}
 
-        <footer class="site-section site-footer">
-            <div class="container">
-                <p>&copy; 2024 Pavel Pavlov. All Rights Reserved.</p>
-            </div>
-        </footer>
-    </div>
+    </main>
+
+    <footer class="site-section site-footer">
+        <div class="container">
+            <p>&copy; 2024 Pavel Pavlov. All Rights Reserved.</p>
+        </div>
+    </footer>
+</div>
 </body>
 </html>

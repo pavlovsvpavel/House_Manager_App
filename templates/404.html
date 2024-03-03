@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+    <div class="container">
+        <div class="wrapper">
+            <h1> 404 Error</h1>
+            <p> We can't find the page you're looking for.</p>
+            <a href="{% url "index" %}">Back to home page</a>
+        </div>
+    </div>
+
+{% endblock %}

@@ -4,6 +4,10 @@ from house_manager.houses.models import House
 
 
 class HouseMonthlyBill(MonthlyBill):
+    class Meta:
+        unique_together = ["year", "month"]
+        ordering = ["year", "month"]
+
     house = models.ForeignKey(
         to=House,
         on_delete=models.CASCADE,

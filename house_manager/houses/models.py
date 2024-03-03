@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q, Sum
 
 from house_manager.accounts.models import UserProfile
 from house_manager.common.mixins import TimeStampModel
@@ -35,7 +36,30 @@ class House(TimeStampModel):
 
     objects = SingleHouseManager()
 
+    def total_people(self, house_id):
+        query = Q(id=house_id)
+
+        people = (
+            self.objects
+            .prefetch_related('clients')
+            .filter(query)
+            .aggregate(total_people=Sum('clients__number_of_people'))
+        )
+
+        return people['total_people']
+
+    def total_people_using_lift(self, house_id):
+        query = Q(id=house_id) & Q(clients__is_using_lift=True)
+
+        people = (
+            self.objects
+            .prefetch_related('clients')
+            .filter(query)
+            .aggregate(total_people=Sum('clients__number_of_people'))
+        )
+
+        return people['total_people']
+
     def __str__(self):
         return (f"{self.town}, {self.address}, "
                 f"{self.building_number}, {self.entrance}")
-

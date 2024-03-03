@@ -1,0 +1,14 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper a {
+  border-radius: 50px;
+  padding: 8px 24px;
+  cursor: pointer;
+  background: #62AD9B;
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 8px 0 #ccc;
+}

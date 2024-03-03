@@ -13,6 +13,7 @@
                 
                 <div class="clients-cards">
                     <a class="create-client" href="{% url "create_client" %}">Create Client</a>
+                    <a class="create-house-bill" href="{% url "create_house_bills" %}">Create Bill</a>
                     {% for client in clients %}
                         <div class="client-card" onclick="redirectToClientDetails({{ client.pk }})">
                             <div class="card-column">

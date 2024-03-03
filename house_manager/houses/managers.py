@@ -5,12 +5,12 @@ from django.db.models import Q, Sum
 class SingleHouseManager(models.Manager):
 
     def total_people(self, house_id):
-        q = Q(id=house_id)
+        query = Q(id=house_id)
 
         people = (
-            self.objects
+            self.get_queryset()
             .prefetch_related('clients')
-            .filter(q)
+            .filter(query)
             .aggregate(total_people=Sum('clients__number_of_people'))
         )
 
@@ -20,7 +20,7 @@ class SingleHouseManager(models.Manager):
         query = Q(id=house_id) & Q(clients__is_using_lift=True)
 
         people = (
-            self.objects
+            self.get_queryset()
             .prefetch_related('clients')
             .filter(query)
             .aggregate(total_people=Sum('clients__number_of_people'))

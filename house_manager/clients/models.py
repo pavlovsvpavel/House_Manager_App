@@ -1,6 +1,5 @@
 from django.db import models
 
-# from house_manager.clients.managers import ClientManager
 from house_manager.common.mixins import TimeStampModel
 from house_manager.common.validators import validate_char_field
 from house_manager.houses.models import House
