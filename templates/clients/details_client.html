@@ -25,15 +25,15 @@
                     </div>
                     <div class="card-column">
                         <p class="column-name">Using lift</p>
-                        <p class="column-data">{{ client.is_using_lift }}</p>
+                        <p class="column-data">{{ client.is_using_lift|yesno:"Yes,No" }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">Occupied</p>
-                        <p class="column-data">{{ client.is_occupied }}</p>
+                        <p class="column-data">{{ client.is_occupied|yesno:"Yes,No" }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">Fixed fee</p>
-                        <p class="column-data">{{ client.fixed_fee }}</p>
+                        <p class="column-data">{{ client.fixed_fee|yesno:"Yes,No" }}</p>
                     </div>
                     <div class="client-card-btns">
                         <a href="{% url "edit_client" pk=object.pk %}">Edit</a>

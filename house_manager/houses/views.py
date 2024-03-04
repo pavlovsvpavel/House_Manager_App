@@ -30,3 +30,9 @@ class HouseListClientsDetailsView(views.DetailView):
         return context
 
 
+class HouseEditView(GetProfileMixin, views.UpdateView):
+    queryset = House.objects.all()
+    template_name = "houses/edit_house.html"
+    fields = "__all__"
+
+

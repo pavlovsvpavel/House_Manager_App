@@ -1,0 +1,9 @@
+:root {
+    --card-bgnd: #F2C18D;
+    --card-text-color: #071952;
+    --card-bgnd-hover: #F6995C;
+    --form-bgnd: #D2E0FB;
+    --form-input-border: #8EACCD;
+    --form-btn-color: #7091F5;
+    --form-btn-color-hover: #0079FF;
+}

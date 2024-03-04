@@ -3,6 +3,23 @@
         font-size: 12px;
     }
 
+    .dashboard .house-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .dashboard .house-card {
+        width: 80%;
+    }
+
+    .dashboard .house-card-details {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: center;
+
+
+    }
+
     .list-clients .client-card {
         flex-direction: column;
         align-items: stretch;
@@ -18,7 +35,7 @@
 
     .create-form {
         flex: 0 1 80% ;
-        align-items: center;
+        /*align-items: center;*/
     }
 
     .client-details .client-card {

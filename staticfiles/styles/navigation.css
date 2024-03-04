@@ -25,17 +25,17 @@
     list-style: none outside;
 }
 
-.navigation ul li {
-    padding: 0.5em;
-    border-radius: 0.5em;
-}
-
 .navigation ul a {
     color: inherit;
     text-decoration: none;
-    text-transform: uppercase; 
+    text-transform: uppercase;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    transition: 0.1s ease-in-out;
 }
 
-.navigation ul li:hover {
-    background-color: aqua; 
+.navigation ul a:hover {
+    background-color: var(--form-btn-color-hover);
+    color: #fff;
+    transition: 0.1s ease-in-out;
 }

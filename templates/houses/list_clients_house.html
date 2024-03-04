@@ -14,6 +14,7 @@
                 <div class="clients-cards">
                     <a class="create-client" href="{% url "create_client" %}">Create Client</a>
                     <a class="create-house-bill" href="{% url "create_house_bills" %}">Create Bill</a>
+                    <a class="list-house-bills" href="{% url "list_house_bills" pk=object.pk%}">House Bills</a>
                     {% for client in clients %}
                         <div class="client-card" onclick="redirectToClientDetails({{ client.pk }})">
                             <div class="card-column">
@@ -32,18 +33,18 @@
                                 <p class="column-name">People</p>
                                 <p class="column-data">{{ client.number_of_people }}</p>
                             </div>
-                            <div class="card-column">
-                                <p class="column-name">Using lift</p>
-                                <p class="column-data">{{ client.is_using_lift }}</p>
-                            </div>
-                            <div class="card-column">
-                                <p class="column-name">Occupied</p>
-                                <p class="column-data">{{ client.is_occupied }}</p>
-                            </div>
-                            <div class="card-column">
-                                <p class="column-name">Fixed fee</p>
-                                <p class="column-data">{{ client.fixed_fee }}</p>
-                            </div>
+{#                            <div class="card-column">#}
+{#                                <p class="column-name">Using lift</p>#}
+{#                                <p class="column-data">{{ client.is_using_lift|yesno:"Yes,No" }}</p>#}
+{#                            </div>#}
+{#                            <div class="card-column">#}
+{#                                <p class="column-name">Occupied</p>#}
+{#                                <p class="column-data">{{ client.is_occupied|yesno:"Yes,No" }}</p>#}
+{#                            </div>#}
+{#                            <div class="card-column">#}
+{#                                <p class="column-name">Fixed fee</p>#}
+{#                                <p class="column-data">{{ client.fixed_fee|yesno:"Yes,No" }}</p>#}
+{#                            </div>#}
                         </div>
                     {% endfor %}
                 </div>

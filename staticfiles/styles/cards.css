@@ -9,19 +9,42 @@
 .house-card {
     display: flex;
     flex-direction: column;
-    background-color: darkgrey;
+    background-color: var(--card-bgnd);
     border-radius: 1em;
-    padding: 2em ;
+    padding: 1em;
+    gap: 1em;
+    align-items: center;
+    transition: 0.3s ease-in-out;
+    width: 200px;
 }
 
-.house-card p {
-    font-size: 1.5em;
+.house-card svg {
+    fill: var(--card-text-color);
+    stroke: black;
+    stroke-width: 1px;
+    stroke-dasharray: 2,2;
+    stroke-linejoin: round;
+    width: 100px;
+    height: auto;
+}
+
+.house-card-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+    color: var(--card-text-color);
+}
+
+.house-card-details span {
+    display: block;
+    font-weight: bold;
 }
 
 .house-card:hover {
     cursor: pointer;
-    background-color: aquamarine;
-    box-shadow: 0 0 5px 3px rgb(0, 0, 0, 0.5);
+    background-color: var(--card-bgnd-hover);
+    box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);
+    transition: 0.3s ease-in-out;
 }
 
 .list-clients .clients-cards {
@@ -35,7 +58,7 @@
 .list-clients .clients-cards .create-client {
     text-decoration: none;
     color: inherit;
-    background-color: aqua;
+    background-color: var(--card-bgnd);
     padding: 0.3em 1em;
     border-radius: 0.5em;
     align-self: flex-start;
@@ -45,22 +68,24 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    background-color: darkgrey;
+    background-color: var(--card-bgnd);
     border-radius: 0.5em;
     padding: 0.5em;
     align-items: center;
+    transition: 0.3s ease-in-out;
 }
 
 .list-clients .client-card:hover {
     cursor: pointer;
-    background-color: aquamarine;
-    box-shadow: 0 0 5px 3px rgb(0, 0, 0, 0.5);
+    background-color: var(--card-bgnd-hover);
+    box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);
+    transition: 0.3s ease-in-out;
 }
 
 .list-clients .card-column {
     display: flex;
     flex-direction: column;
-    flex: 0 1 10%;
+    /*flex: 0 1 10%;*/
     align-items: center;
 }
 
@@ -71,7 +96,7 @@
 .client-details .client-card {
     display: flex;
     flex-direction: column;
-    background-color: darkgrey;
+    background-color: var(--card-bgnd);
     border-radius: 0.5em;
     padding: 0.5em;
     flex: 0 1 50%;
@@ -82,10 +107,11 @@
 .client-details .client-card .card-column {
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid #000;
 }
 
-.client-details .client-card .card-column {
-    border-bottom: 1px solid #000;
+.client-details .client-card .card-column p:last-of-type{
+    font-weight: bold;
 }
 
 .client-details .client-card .client-card-btns {
@@ -95,8 +121,8 @@
 
 .client-details .client-card a {
     text-decoration: none;
-    color: inherit;
-    background-color: aqua;
+    color: #fff;
+    background-color: #071952;
     border-radius: 0.5em;
     padding: 0.3em;
     flex: 0 1 20%;

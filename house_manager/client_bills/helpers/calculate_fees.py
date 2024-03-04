@@ -4,7 +4,7 @@ from house_manager.house_bills.models import HouseMonthlyBill
 from house_manager.houses.models import House
 
 
-def perform_calculations(house_id, year, month):
+def calculate_fees(house_id, year, month):
     house_bills = (HouseMonthlyBill
                    .objects
                    .get(house_id=house_id, year=year, month=month))

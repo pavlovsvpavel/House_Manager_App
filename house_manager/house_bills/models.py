@@ -15,4 +15,4 @@ class HouseMonthlyBill(MonthlyBill):
     )
 
     def __str__(self):
-        return f"Added house bill for '{self.house}' for {self.month} {self.year}"
+        return f"Bill for '{self.house}' for {self.month} {self.year}"

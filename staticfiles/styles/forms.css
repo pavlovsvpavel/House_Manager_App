@@ -12,7 +12,7 @@
     flex-direction: column;
     justify-content: center;
     flex-basis: 50%;
-    background-color: azure;
+    background-color: var(--form-bgnd);
     border-radius: 1em;
     padding: 2em;
 }
@@ -20,7 +20,7 @@
 .create-form input {
     padding: 0.5em;
     border-radius: 0.5em;
-    border: 1px solid green;
+    border: 1px solid var(--form-input-border);
 }
 
 .create-form label {
@@ -32,10 +32,13 @@
     margin-top: 4em;
     border-radius: 1.5em;
     border-color: transparent;
-    background-color: blueviolet;
+    background-color: var(--form-btn-color);
     color: #fff;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
 }
 
 .create-form .btn:hover {
-    background-color: brown;
+    background-color: var(--form-btn-color-hover);
+    transition: 0.3s ease-in-out;
 }
