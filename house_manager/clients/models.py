@@ -1,8 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from house_manager.common.mixins import TimeStampModel
 from house_manager.common.validators import validate_char_field
 from house_manager.houses.models import House
+
+UserModel = get_user_model()
 
 
 class Client(TimeStampModel):
@@ -39,6 +42,11 @@ class Client(TimeStampModel):
         to=House,
         on_delete=models.CASCADE,
         related_name='clients'
+    )
+
+    user = models.ForeignKey(
+        to=UserModel,
+        on_delete=models.RESTRICT,
     )
 
     def __str__(self):

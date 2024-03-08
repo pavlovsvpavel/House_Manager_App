@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <script>
+        function redirectToHouseClients(houseId) {
+            window.location.href = "{% url "list_clients_house" pk=0 %}".replace("0", houseId);
+        }
+    </script>
+
+    <section class="site-section details-house">
+        <div class="container">
+            <a class="create-client" href="{% url "create_client" pk=object.pk %}">Create Client</a>
+            <a class="create-house-bill" href="{% url "create_house_bills" pk=object.pk %}">Create Bill</a>
+            <a class="list-house-bills" href="{% url "list_house_bills" pk=object.pk %}">House Bills</a>
+            <div class="details-house-list-clients"
+                 onclick="redirectToHouseClients({{ object.pk }})">
+                List of clients
+            </div>
+            <div class="house-card">
+                <div class="card-column">
+                    <p class="column-name">Town</p>
+                    <p class="column-data">{{ object.town }}</p>
+                </div>
+                <div class="card-column">
+                    <p class="column-name">Address</p>
+                    <p class="column-data">{{ object.address }}</p>
+                </div>
+                <div class="card-column">
+                    <p class="column-name">Building number</p>
+                    <p class="column-data">{{ object.building_number }}</p>
+                </div>
+                <div class="card-column">
+                    <p class="column-name">Entrance</p>
+                    <p class="column-data">{{ object.entrance }}</p>
+                </div>
+                <div class="client-card-btns">
+                    <a href="{% url "edit_house" pk=object.pk %}">Edit</a>
+                    <a href="{% url "delete_client" pk=object.pk %}">Delete</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

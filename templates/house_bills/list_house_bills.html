@@ -4,16 +4,20 @@
 
     <section class="site-section list-house-bills">
         <div class="container">
-            {% for bill in house_bills %}
-                <div class="card-column">
-                    <p class="column-name">Year</p>
-                    <p class="column-data">{{ bill.year }}</p>
-                </div>
-                <div class="card-column">
-                    <p class="column-name">Month</p>
-                    <p class="column-data">{{ bill.month }}</p>
-                </div>
-            {% endfor %}
+            {% if house_bills %}
+                {% for bill in house_bills %}
+                    <div class="card-column">
+                        <p class="column-name">Year</p>
+                        <p class="column-data">{{ bill.year }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Month</p>
+                        <p class="column-data">{{ bill.month }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h1>No bills</h1>
+            {% endif %}
         </div>
     </section>
 

@@ -1,8 +1,34 @@
 from django.contrib import admin
+from django.contrib.auth import admin as auth_admin, get_user_model
 
-from house_manager.accounts.models import UserProfile
+from house_manager.accounts.forms import HouseManagerUserCreationForm, HouseManagerUserChangeForm
+
+UserModel = get_user_model()
 
 
-@admin.register(UserProfile)
-class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ("username", "first_name", "last_name", "password")
+@admin.register(UserModel)
+class AppUserAdmin(auth_admin.UserAdmin):
+    model = UserModel
+    add_form = HouseManagerUserCreationForm
+    form = HouseManagerUserChangeForm
+
+    list_display = ('pk', 'email', 'is_staff', 'is_superuser')
+    search_fields = ('email',)
+    ordering = ('pk',)
+
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ()}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login',)}),
+    )
+
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("email", "password1", "password2"),
+            },
+        ),
+    )

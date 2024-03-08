@@ -1,22 +1,38 @@
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic as views
 
 from house_manager.clients.models import Client
+from house_manager.houses.models import House
+
+UserModel = get_user_model()
 
 
 class ClientCreateView(views.CreateView):
     queryset = Client.objects.all()
     template_name = 'clients/create_client.html'
-    # fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied", "fixed_fee")
-    fields = "__all__"
+    fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied", "fixed_fee")
 
     def get_success_url(self):
-        return reverse_lazy('list_clients_house', kwargs={'pk': self.object.house.pk})
+        return reverse_lazy('details_house', kwargs={'pk': self.object.house.pk})
 
-    # def form_valid(self, form):
-    #     form.instance.house_id = self.object.house.pk
-    #
-    #     return super().form_valid(form)
+    def get_object(self, queryset=None):
+        return get_object_or_404(House, pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        house = self.get_object()
+        context['house'] = house
+        return context
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+
+        form.instance.house = self.get_object()
+        form.instance.user = self.request.user
+
+        return form
 
 
 class ClientDetailsView(views.DetailView):

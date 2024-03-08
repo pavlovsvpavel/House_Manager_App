@@ -129,20 +129,41 @@
     text-align: center;
 }
 
-.client-delete .delete-card {
+.delete-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2em;
 }
 
-.client-delete .delete-card .btn {
+.delete-card .btn {
     background-color: red;
     padding: 0.3em 3em;
     border-radius: 0.5em;
     border: none;
     cursor: pointer;
-
 }
 
+.profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-card img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-card svg {
+    fill: var(--card-text-color);
+    stroke: black;
+    stroke-width: 1px;
+    stroke-dasharray: 2,2;
+    stroke-linejoin: round;
+    width: 100px;
+    height: auto;
+}
 

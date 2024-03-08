@@ -4,7 +4,10 @@
 {% block main_content %}
     <script>
         function redirectToHouseClients(houseId) {
-            window.location.href = "{% url "list_clients_house" pk=0 %}".replace("0", houseId);
+            {#window.location.href = "{% url "list_clients_house" pk=0 %}".replace("0", houseId);#}
+            window.location.href = "{% url "details_house" pk=0 %}".replace("0", houseId);
+
+            {#window.location.href = "{% url 'details_house' %}?house_id=" + houseId;#}
         }
     </script>
 

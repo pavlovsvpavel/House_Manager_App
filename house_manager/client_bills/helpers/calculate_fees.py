@@ -35,11 +35,14 @@ def calculate_fees(house_id, year, month):
 
             calculated_values[field.name] = (field_value / total_people) * client.number_of_people
 
-        client_monthly_bill, created = (ClientMonthlyBill.
-                                        objects.
-                                        get_or_create(house_id=house_id,
-                                                      client_id=client.pk,
-                                                      defaults=calculated_values))
+        client_monthly_bill, created = (
+            ClientMonthlyBill
+            .objects
+            .get_or_create(house_id=house_id,
+                           client_id=client.pk,
+                           defaults=calculated_values)
+        )
+
         if not created:
             for field_name, value in calculated_values.items():
                 setattr(client_monthly_bill, field_name, value)

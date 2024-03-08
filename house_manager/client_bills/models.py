@@ -1,8 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from house_manager.clients.models import Client
 from house_manager.common.mixins import MonthlyBill
 from house_manager.houses.models import House
+
+UserModel = get_user_model()
 
 
 class ClientMonthlyBill(MonthlyBill):
@@ -16,4 +19,9 @@ class ClientMonthlyBill(MonthlyBill):
         to=House,
         on_delete=models.CASCADE,
         related_name='client_house_monthly_bills'
+    )
+
+    user = models.ForeignKey(
+        to=UserModel,
+        on_delete=models.RESTRICT,
     )
