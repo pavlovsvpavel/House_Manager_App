@@ -1,11 +1,6 @@
 @media (width <= 600px) {
     html {
-        font-size: 12px;
-    }
-
-    .header-elements {
-        flex-direction: column;
-        gap: 1em;
+        font-size: 16px;
     }
 
     .header-elements .site-title a {
@@ -15,6 +10,44 @@
 
     .navigation ul {
         flex-direction: column;
+        align-items: stretch;
+        padding-left: 1em;
+        gap: 2em;
+    }
+
+    .links-container {
+        flex-direction: column;
+        align-items: flex-start;
+        position: fixed;
+        top: 0;
+        right: -200%;
+        z-index: 10;
+        width: 50vw;
+        background-color: #eee;
+        box-shadow: -5px 0 5px rgba(0, 0, 0, 0.25);
+        transition: 0.8s ease-out;
+    }
+
+    .open-sidebar-button {
+        display: block;
+    }
+
+    .close-sidebar-button {
+        padding: 2em 1em;
+        display: block;
+    }
+
+    #sidebar-active:checked ~ .links-container {
+        right: 0;
+    }
+
+    #sidebar-active:checked ~ #overlay {
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9;
     }
 
     .dashboard .house-cards {
@@ -30,8 +63,6 @@
         flex-direction: row;
         justify-content: space-between;
         text-align: center;
-
-
     }
 
     .list-clients .client-card {

@@ -1,13 +1,13 @@
 from django.db import IntegrityError
-from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic as views
 
 from house_manager.house_bills.models import HouseMonthlyBill
+from house_manager.houses.mixins import GetCurrentHouseInstanceMixin
 from house_manager.houses.models import House
 
 
-class HouseMonthlyBillCreateView(views.CreateView):
+class HouseMonthlyBillCreateView(GetCurrentHouseInstanceMixin, views.CreateView):
     queryset = HouseMonthlyBill.objects.all()
     template_name = "house_bills/create_house_bills.html"
 
@@ -19,22 +19,22 @@ class HouseMonthlyBillCreateView(views.CreateView):
     def get_success_url(self):
         return reverse_lazy('details_house', kwargs={'pk': self.object.house.pk})
 
-    def get_object(self, queryset=None):
-        return get_object_or_404(House, pk=self.kwargs['pk'])
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        house = self.get_object()
-        context['house'] = house
-
-        return context
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class=form_class)
-        form.instance.house = self.get_object()
-        form.instance.user = self.request.user
-
-        return form
+    # def get_object(self, queryset=None):
+    #     return get_object_or_404(House, pk=self.kwargs['pk'])
+    #
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     house = self.get_object()
+    #     context['house'] = house
+    #
+    #     return context
+    #
+    # def get_form(self, form_class=None):
+    #     form = super().get_form(form_class=form_class)
+    #     form.instance.house = self.get_object()
+    #     form.instance.user = self.request.user
+    #
+    #     return form
 
     def form_valid(self, form):
         try:

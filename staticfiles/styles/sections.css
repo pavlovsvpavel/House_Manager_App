@@ -1,3 +1,18 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 50%;
+    gap: 2em;
+}
+
+.wrapper .back-button {
+    align-self: flex-end;
+}
+
+.list-clients-house .wrapper {
+    flex: 0 1 80%;
+}
+
 .details-house-elements {
     display: flex;
     flex: 0 1 100%;
@@ -33,10 +48,11 @@
     padding-top: 0.5em;
 }
 
-.details-house-elements .house-card .client-card-btns a {
+.details-house-elements .house-card .client-card-btns a,
+.wrapper .back-button a {
     text-decoration: none;
     color: #fff;
-    padding: 0.3em;
+    padding: 0.5em;
     flex: 0 1 100px;
     text-align: center;
     border-radius: 1.5em;
@@ -46,8 +62,13 @@
     transition: 0.3s ease-in-out;
 }
 
-.details-house-elements .house-card .client-card-btns a:hover {
+.details-house-elements .house-card .client-card-btns a:hover,
+.wrapper .back-button a:hover {
     background-color: var(--form-btn-color-hover);
     transition: 0.3s ease-in-out;
+}
+
+.wrapper .back-button i {
+    padding-right: 0.5em;
 }
 

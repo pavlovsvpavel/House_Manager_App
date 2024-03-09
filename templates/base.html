@@ -18,17 +18,26 @@
                     <a href="{% url "index" %}">House Manager</a>
                 </div>
                 <nav class="navigation">
-                    <ul>
-                        {% if request.user.is_authenticated %}
-                            <li><a href="{% url "dashboard" %}">Dashboard</a></li>
-                            <li><a href="{% url "create_house" %}">Create House</a></li>
-                            <li><a href="{% url "details_profile" pk=request.user.pk %}">Profile</a></li>
-                            <li><a href="{% url "logout_user" %}">Logout</a></li>
-                        {% else %}
-                            <li><a href="{% url "register_user" %}">Register</a></li>
-                            <li><a href="{% url "login_user" %}">Login</a></li>
-                        {% endif %}
-                    </ul>
+                    <input type="checkbox" id="sidebar-active">
+                    <label for="sidebar-active" class="open-sidebar-button">
+                        <img src="{% static "images/menu.svg" %}" alt="menu-icon">
+                    </label>
+                    <label id="overlay" for="sidebar-active"></label>
+                    <div class="links-container">
+                        <label for="sidebar-active" class="close-sidebar-button">
+                            <img src="{% static "images/close.svg" %}" alt="close-icon">
+                        </label>
+                        <ul>
+                            {% if request.user.is_authenticated %}
+                                <li><a href="{% url "dashboard" %}">Dashboard</a></li>
+                                <li><a href="{% url "create_house" %}">Create House</a></li>
+                                <li><a href="{% url "details_profile" pk=request.user.pk %}">Profile</a></li>
+                                <li><a href="{% url "logout_user" %}">Logout</a></li>
+                            {% else %}
+                                <li><a href="{% url "register_user" %}">Register</a></li>
+                                <li><a href="{% url "login_user" %}">Login</a></li>
+                            {% endif %}
+                        </ul>
                 </nav>
             </div>
         </div>

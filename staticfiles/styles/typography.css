@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
-
+@import url("https://use.fontawesome.com/releases/v6.5.1/css/all.css");
 
 html {
-	font: 16px/1.5 "Ubuntu", sans-serif;
+	font: 18px/1.5 "Ubuntu", sans-serif;
+	color: var(--card-text-color);
+	scroll-behavior: smooth;
 }
 
 body, input, textarea, button, select, option, table, td, th {
@@ -12,10 +14,6 @@ body, input, textarea, button, select, option, table, td, th {
 label, input, select, textarea {
 	display: block;
 	width: 100%;
-}
-
-input[class="btn"] {
-	/*display: inline-block;*/
 }
 
 h1 { font-size: 2.8em; }

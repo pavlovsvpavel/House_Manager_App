@@ -1,3 +1,6 @@
+import json
+
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic as views
@@ -53,3 +56,17 @@ class HouseDeleteView(views.DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('dashboard')
+
+
+class StoreSelectedHouseView(views.View):
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            house_id = data['house_id']
+            request.session['selected_house_id'] = house_id
+            return JsonResponse({'success': True})
+        except KeyError:
+            return JsonResponse({'success': False, 'error': 'Invalid data'}, status=400)
+
+
+
