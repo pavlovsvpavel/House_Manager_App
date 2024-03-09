@@ -1,0 +1,53 @@
+.details-house-elements {
+    display: flex;
+    flex: 0 1 100%;
+    justify-content: center;
+
+}
+
+.details-house-elements .house-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--card-bgnd);
+    border-radius: 0.5em;
+    flex: 1 1 30%;
+    gap: 1em;
+    padding: 1em;
+}
+
+.details-house-elements .house-card .card-column {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #000;
+    align-items: center;
+}
+
+.details-house-elements .house-card .card-column p:last-of-type {
+    font-weight: bold;
+    text-align: right;
+}
+
+.details-house-elements .house-card .client-card-btns {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.5em;
+}
+
+.details-house-elements .house-card .client-card-btns a {
+    text-decoration: none;
+    color: #fff;
+    padding: 0.3em;
+    flex: 0 1 100px;
+    text-align: center;
+    border-radius: 1.5em;
+    border-color: transparent;
+    background-color: var(--form-btn-color);
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.details-house-elements .house-card .client-card-btns a:hover {
+    background-color: var(--form-btn-color-hover);
+    transition: 0.3s ease-in-out;
+}
+

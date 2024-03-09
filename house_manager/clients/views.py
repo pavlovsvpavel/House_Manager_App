@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic as views
@@ -15,7 +16,7 @@ class ClientCreateView(views.CreateView):
     fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied", "fixed_fee")
 
     def get_success_url(self):
-        return reverse_lazy('details_house', kwargs={'pk': self.object.house.pk})
+        return reverse_lazy('list_clients_house', kwargs={'pk': self.object.house.pk})
 
     def get_object(self, queryset=None):
         return get_object_or_404(House, pk=self.kwargs['pk'])
@@ -28,11 +29,19 @@ class ClientCreateView(views.CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
-
         form.instance.house = self.get_object()
         form.instance.user = self.request.user
 
         return form
+
+    def form_valid(self, form):
+        try:
+            return super().form_valid(form)
+        except IntegrityError as e:
+            error_message = "Client with this apartment is already exist"
+            form.add_error(None, error_message)
+
+            return self.form_invalid(form)
 
 
 class ClientDetailsView(views.DetailView):
@@ -50,7 +59,7 @@ class ClientEditView(views.UpdateView):
 
 
 class ClientDeleteView(views.DeleteView):
-    queryset = Client.objects.prefetch_related("house")
+    queryset = Client.objects.prefetch_related("house").all()
     template_name = "clients/delete_client.html"
 
     def get_success_url(self):

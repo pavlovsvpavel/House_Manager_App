@@ -17,3 +17,5 @@ class DashboardView(views.TemplateView):
 
         return context
 
+
+

@@ -15,6 +15,7 @@
     background-color: var(--form-bgnd);
     border-radius: 1em;
     padding: 2em;
+    /*align-items: center;*/
 }
 
 .create-form input {
@@ -36,6 +37,8 @@
     color: #fff;
     cursor: pointer;
     transition: 0.3s ease-in-out;
+    align-self: center;
+    max-width: 200px;
 }
 
 .create-form .btn:hover {

@@ -4,8 +4,10 @@
 @import url('variables.css');
 @import url('navigation.css');
 @import url('layout.css');
+@import url('sections.css');
 @import url('forms.css');
 @import url('cards.css');
+@import url('buttons.css');
 @import url('responsive.css');
 
 

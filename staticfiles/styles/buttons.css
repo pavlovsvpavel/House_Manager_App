@@ -1,0 +1,32 @@
+.details-house-elements .buttons {
+    display: flex;
+    flex: 0 1 50%;
+}
+
+.details-house-elements .buttons ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none outside;
+    justify-content: space-between;
+}
+
+.details-house-elements .buttons ul li {
+    background-color: var(--card-bgnd);
+    padding: 0.5em;
+    border-radius: 0.5em;
+    transition: 0.3s ease-in-out;
+    width: 200px;
+    text-align: center;
+}
+
+.details-house-elements .buttons ul li a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.details-house-elements .buttons ul li:hover {
+    cursor: pointer;
+    background-color: var(--card-bgnd-hover);
+    box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);
+    transition: 0.3s ease-in-out;
+}

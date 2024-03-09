@@ -45,3 +45,11 @@ class HouseEditView(views.UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('details_house', kwargs={'pk': self.object.pk})
+
+
+class HouseDeleteView(views.DeleteView):
+    queryset = House.objects.all()
+    template_name = "houses/delete_house.html"
+
+    def get_success_url(self):
+        return reverse_lazy('dashboard')

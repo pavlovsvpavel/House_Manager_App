@@ -15,7 +15,7 @@ label, input, select, textarea {
 }
 
 input[class="btn"] {
-	display: inline-block;
+	/*display: inline-block;*/
 }
 
 h1 { font-size: 2.8em; }

@@ -14,6 +14,7 @@
                 {% endif %}
                 <p>{{ object.user.email }}</p>
                 <p>{{ object.full_name }}</p>
+                <p>{{ object.phone_number }}</p>
                 <div class="client-card-btns">
                     <a href="{% url "edit_profile" pk=object.pk %}">Edit</a>
                     <a href="{% url "delete_profile" pk=object.pk %}">Delete</a>
