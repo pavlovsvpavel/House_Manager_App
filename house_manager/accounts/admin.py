@@ -12,15 +12,15 @@ class AppUserAdmin(auth_admin.UserAdmin):
     add_form = HouseManagerUserCreationForm
     form = HouseManagerUserChangeForm
 
-    list_display = ('pk', 'email', 'is_staff', 'is_superuser')
-    search_fields = ('email',)
-    ordering = ('pk',)
+    list_display = ("email", "is_staff", "is_superuser", "pk")
+    search_fields = ("email",)
+    ordering = ("pk",)
 
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ()}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login',)}),
+        (None, {"fields": ("email", "password")}),
+        ("Personal info", {"fields": ()}),
+        ("Permissions", {"fields": ("is_active", "is_staff", "groups", "user_permissions")}),
+        ("Important dates", {"fields": ("last_login",)}),
     )
 
     add_fieldsets = (
@@ -32,3 +32,7 @@ class AppUserAdmin(auth_admin.UserAdmin):
             },
         ),
     )
+
+    def full_name(self, obj):
+        return obj.profile.full_name if obj.profile.full_name else ""
+

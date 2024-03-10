@@ -158,6 +158,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1em;
 }
 
 .profile-card img {
@@ -177,3 +178,28 @@
     height: auto;
 }
 
+.profile-card .details-profile-btns {
+    display: flex;
+    width: 100%;
+}
+
+.profile-card .details-profile-btns ul {
+    display: flex;
+    list-style-type: none;
+    align-items: center;
+    gap: 1em;
+    flex-basis: 100%;
+}
+
+.profile-card .details-profile-btns ul li {
+    background-color: var(--form-btn-color);
+    border-radius: 0.5em;
+    flex: 0 1 50%;
+    text-align: center;
+
+}
+
+.profile-card .details-profile-btns ul li a {
+    text-decoration: none;
+    color: #fff;
+}

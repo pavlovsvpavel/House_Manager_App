@@ -15,6 +15,7 @@ class GetCurrentHouseInstanceMixin:
         if house_id:
             house = House.objects.get(pk=house_id)
             form.instance.house = house
+
         form.instance.user = self.request.user
 
         return form

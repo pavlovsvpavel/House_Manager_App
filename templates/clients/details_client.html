@@ -43,6 +43,34 @@
                 <div class="back-button">
                     <a href="{% url "details_house" pk=house.pk %}"><i class="fa-solid fa-arrow-right"></i>Back to house</a>
                 </div>
+
+                <form class="searchbar" action="{% url 'details_client' pk=object.pk %}" method="get">
+                    <label>
+                        <select name="search_year">
+                            <option value="">Select Year</option>
+                            {% for year, label in year_choices %}
+                                <option value="{{ year }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    <label>
+                        <select name="search_month">
+                            <option value="">Select Month</option>
+                            {% for month, label in month_choices %}
+                                <option value="{{ month }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <button>
+                        Search
+                    </button>
+                </form>
+                {% for bill in clients_bills %}
+                    <p>{{ bill.month }}</p>
+                    <p>{{ bill.year }}</p>
+                    <p>{{ bill.total_amount }}</p>
+                {% endfor %}
             </div>
         </div>
     </section>

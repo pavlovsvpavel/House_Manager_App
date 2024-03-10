@@ -2,6 +2,7 @@ from django.db import IntegrityError
 from django.urls import reverse_lazy
 from django.views import generic as views
 
+from house_manager.client_bills.helpers.calculate_fees import calculate_fees
 from house_manager.house_bills.models import HouseMonthlyBill
 from house_manager.houses.mixins import GetCurrentHouseInstanceMixin
 from house_manager.houses.models import House
@@ -37,7 +38,15 @@ class HouseMonthlyBillCreateView(GetCurrentHouseInstanceMixin, views.CreateView)
     #     return form
 
     def form_valid(self, form):
+
         try:
+            self.object = form.save()
+            current_house_id = self.object.house.pk
+            current_year = self.object.year
+            current_month = self.object.month
+            current_user = self.request.user.pk
+            calculate_fees(current_house_id, current_year, current_month, current_user)
+
             return super().form_valid(form)
         except IntegrityError as e:
             error_message = "House bill with those month and year already exists."

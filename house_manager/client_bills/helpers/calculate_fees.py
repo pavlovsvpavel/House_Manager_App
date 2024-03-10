@@ -4,7 +4,7 @@ from house_manager.house_bills.models import HouseMonthlyBill
 from house_manager.houses.models import House
 
 
-def calculate_fees(house_id, year, month):
+def calculate_fees(house_id, year, month, user_id):
     house_bills = (HouseMonthlyBill
                    .objects
                    .get(house_id=house_id, year=year, month=month))
@@ -16,7 +16,7 @@ def calculate_fees(house_id, year, month):
 
     for client in house_clients:
         for field in house_bills._meta.get_fields():
-            if field.name in ['id', 'total_amount', 'client', 'house']:
+            if field.name in ['id', 'total_amount', 'client', 'house', 'user']:
                 continue
 
             field_value = getattr(house_bills, field.name)
@@ -35,15 +35,12 @@ def calculate_fees(house_id, year, month):
 
             calculated_values[field.name] = (field_value / total_people) * client.number_of_people
 
-        client_monthly_bill, created = (
-            ClientMonthlyBill
-            .objects
-            .get_or_create(house_id=house_id,
-                           client_id=client.pk,
-                           defaults=calculated_values)
-        )
+        ClientMonthlyBill.objects.create(house_id=house_id,
+                                             client_id=client.pk,
+                                             user_id=user_id,
+                                             **calculated_values)
 
-        if not created:
-            for field_name, value in calculated_values.items():
-                setattr(client_monthly_bill, field_name, value)
-            client_monthly_bill.save()
+        # if not created:
+        #     for field_name, value in calculated_values.items():
+        #         setattr(client_monthly_bill, field_name, value)
+        #     client_monthly_bill.save()
