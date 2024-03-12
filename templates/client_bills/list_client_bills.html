@@ -2,18 +2,19 @@
 
 {% block main_content %}
     <script>
-        function redirectToHouseBillDetails(houseBillId) {
-            window.location.href = "{% url "details_house_bills" pk=0 %}".replace("0", houseBillId);
+        function redirectToClientBillDetails(clientBillId) {
+            window.location.href = "{% url "edit_client_bill" pk=0 %}".replace("0", clientBillId);
         }
     </script>
 
-    <section class="site-section list-house-bills">
+<section class="site-section list-client-bills">
         <div class="container">
             <div class="wrapper">
                 <div class="clients-cards">
-                    {% if house_bills %}
-                        {% for bill in house_bills %}
-                            <div class="client-card" onclick="redirectToHouseBillDetails({{ bill.pk }})">
+                    {% if client_bills %}
+                        {% for bill in client_bills %}
+                            <div class="{% if bill.is_paid %} client-card {% else %} client-card-not-paid {% endif %}" 
+                                 onclick="redirectToClientBillDetails({{ bill.pk }})">
                                 <div class="card-column">
                                     <p class="column-name">Year</p>
                                     <p class="column-data">{{ bill.year }}</p>
@@ -27,13 +28,14 @@
                                     <p class="column-data">{{ bill.total_amount }}</p>
                                 </div>
                             </div>
+
                         {% endfor %}
                     {% else %}
                         <h1>No bills</h1>
                     {% endif %}
                 </div>
                 <div class="back-button">
-                    <a href="{% url "details_house" pk=object.pk %}"><i class="fa-solid fa-arrow-right"></i>Back to house</a>
+                    <a href="{% url "details_client" pk=object.pk %}"><i class="fa-solid fa-arrow-right"></i>Back to client</a>
                 </div>
             </div>
         </div>

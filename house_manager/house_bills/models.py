@@ -9,7 +9,7 @@ UserModel = get_user_model()
 class HouseMonthlyBill(MonthlyBill):
     class Meta:
         unique_together = ["year", "month", "house"]
-        ordering = ["year", "month"]
+        ordering = ["-year", "month"]
 
     house = models.ForeignKey(
         to=House,

@@ -2,75 +2,51 @@
 
 {% block main_content %}
 
-
     <section class="site-section details-client">
         <div class="container">
             <div class="wrapper">
                 <div class="client-card">
                     <div class="card-column">
                         <p class="column-name">Family Name</p>
-                        <p class="column-data">{{ client.family_name }}</p>
+                        <p class="column-data">{{ object.family_name }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">Floor</p>
-                        <p class="column-data">{{ client.floor }}</p>
+                        <p class="column-data">{{ object.floor }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">Apartment</p>
-                        <p class="column-data">{{ client.apartment }}</p>
+                        <p class="column-data">{{ object.apartment }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">People</p>
-                        <p class="column-data">{{ client.number_of_people }}</p>
+                        <p class="column-data">{{ object.number_of_people }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">Using lift</p>
-                        <p class="column-data">{{ client.is_using_lift|yesno:"Yes,No" }}</p>
+                        <p class="column-data">{{ object.is_using_lift|yesno:"Yes,No" }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">Occupied</p>
-                        <p class="column-data">{{ client.is_occupied|yesno:"Yes,No" }}</p>
+                        <p class="column-data">{{ object.is_occupied|yesno:"Yes,No" }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">Fixed fee</p>
-                        <p class="column-data">{{ client.fixed_fee|yesno:"Yes,No" }}</p>
+                        <p class="column-data">{{ object.fixed_fee|yesno:"Yes,No" }}</p>
                     </div>
                     <div class="client-card-btns">
                         <a href="{% url "edit_client" pk=object.pk %}">Edit</a>
                         <a href="{% url "delete_client" pk=object.pk %}">Delete</a>
                     </div>
                 </div>
-                <div class="back-button">
-                    <a href="{% url "details_house" pk=house.pk %}"><i class="fa-solid fa-arrow-right"></i>Back to house</a>
+                <div class="client-card-btns">
+                    <div class="bills-button">
+                        <a href="{% url "list_client_bills" pk=object.pk %}">Bills</a>
+                    </div>
+                    <div class="back-button">
+                        <a href="{% url "list_house_clients" pk=house.pk %}"><i class="fa-solid fa-arrow-right"></i>Back to clients</a>
+                    </div>
                 </div>
-
-                <form class="searchbar" action="{% url 'details_client' pk=object.pk %}" method="get">
-                    <label>
-                        <select name="search_year">
-                            <option value="">Select Year</option>
-                            {% for year, label in year_choices %}
-                                <option value="{{ year }}">{{ label }}</option>
-                            {% endfor %}
-                        </select>
-                    </label>
-                    <label>
-                        <select name="search_month">
-                            <option value="">Select Month</option>
-                            {% for month, label in month_choices %}
-                                <option value="{{ month }}">{{ label }}</option>
-                            {% endfor %}
-                        </select>
-                    </label>
-
-                    <button>
-                        Search
-                    </button>
-                </form>
-                {% for bill in clients_bills %}
-                    <p>{{ bill.month }}</p>
-                    <p>{{ bill.year }}</p>
-                    <p>{{ bill.total_amount }}</p>
-                {% endfor %}
             </div>
         </div>
     </section>

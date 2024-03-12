@@ -2,42 +2,19 @@
     display: flex;
     gap: 2em;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    flex-basis: 100%;
+    justify-content: center;
+    flex: 0 1 80%;
 }
 
 .dashboard .house-card {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--card-bgnd);
-    border-radius: 1em;
-    padding: 1em;
-    gap: 1em;
-    align-items: center;
+    justify-content: space-between;
+    flex: 0 1 30%;
+    background-image: url("../images/house-solid.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-blend-mode: soft-light;
     transition: 0.3s ease-in-out;
-    width: 200px;
-}
-
-.dashboard .house-card svg {
-    fill: var(--card-text-color);
-    stroke: black;
-    stroke-width: 1px;
-    stroke-dasharray: 2,2;
-    stroke-linejoin: round;
-    width: 100px;
-    height: auto;
-}
-
-.dashboard .house-card-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3em;
-    color: var(--card-text-color);
-}
-
-.dashboard .house-card-details span {
-    display: block;
-    font-weight: bold;
 }
 
 .dashboard .house-card:hover {
@@ -47,12 +24,15 @@
     transition: 0.3s ease-in-out;
 }
 
-.list-clients .clients-cards {
+.list-clients .clients-cards,
+.list-house-bills .clients-cards,
+.list-client-bills .clients-cards {
     display: flex;
     flex-direction: column;
     gap: 1em;
     justify-content: center;
     flex: 0 1 80%;
+    text-align: center;
 }
 
 .list-clients .clients-cards .create-client {
@@ -64,7 +44,10 @@
     align-self: flex-start;
 }
 
-.list-clients .client-card {
+.list-clients .client-card,
+.list-house-bills .client-card,
+.list-client-bills .client-card,
+.list-client-bills .client-card-not-paid {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -75,25 +58,41 @@
     transition: 0.3s ease-in-out;
 }
 
-.list-clients .client-card:hover {
+.list-client-bills .client-card-not-paid {
+    background-color: var(--card-bgnd-not-paid);
+}
+
+.list-clients .client-card:hover,
+.list-house-bills .client-card:hover,
+.list-client-bills .client-card:hover,
+.list-client-bills .client-card-not-paid:hover {
     cursor: pointer;
     background-color: var(--card-bgnd-hover);
     box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);
     transition: 0.3s ease-in-out;
 }
 
-.list-clients .card-column {
+.list-client-bills .client-card-not-paid:hover {
+    background-color: var(--card-bgnd-not-paid-hover);
+}
+
+.list-clients .card-column,
+.list-house-bills .card-column,
+.list-client-bills .card-column {
     display: flex;
     flex-direction: column;
-    /*flex: 0 1 10%;*/
     align-items: center;
 }
 
-.list-clients .card-column .column-name {
+.list-clients .card-column .column-name,
+.list-house-bills .card-column .column-name,
+.list-client-bills .card-column .column-name {
     font-weight: bold;
 }
 
-.details-client .client-card {
+.details-client .client-card,
+.details-house-bill .client-card,
+.details-client-bill .client-card {
     display: flex;
     flex-direction: column;
     background-color: var(--card-bgnd);
@@ -101,16 +100,19 @@
     padding: 1em;
     flex: 0 1 50%;
     gap: 1em;
-    /*align-items: center;*/
 }
 
-.details-client .client-card .card-column {
+.details-client .client-card .card-column,
+.details-house-bill .client-card .card-column,
+.details-client-bill .client-card .card-column {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #000;
 }
 
-.details-client .client-card .card-column p:last-of-type{
+.details-client .client-card .card-column p:last-of-type,
+.details-house-bill .client-card .card-column p:last-of-type,
+.details-client-bill .client-card .card-column p:last-of-type {
     font-weight: bold;
 }
 
@@ -188,18 +190,21 @@
     list-style-type: none;
     align-items: center;
     gap: 1em;
-    flex-basis: 100%;
+    flex: 0 1 100%;
+    justify-content: center;
 }
 
 .profile-card .details-profile-btns ul li {
-    background-color: var(--form-btn-color);
-    border-radius: 0.5em;
-    flex: 0 1 50%;
-    text-align: center;
-
+    display: flex;
+    flex-basis: 100%;
 }
 
 .profile-card .details-profile-btns ul li a {
+    display: block;
     text-decoration: none;
     color: #fff;
+    background-color: var(--form-btn-color);
+    border-radius: 0.5em;
+    text-align: center;
+    width: 100%;
 }

@@ -1,12 +1,16 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    flex: 0 1 50%;
+    flex: 0 1 80%;
     gap: 2em;
 }
 
 .wrapper .back-button {
     align-self: flex-end;
+}
+
+.details-client .wrapper {
+    flex: 0 1 50%;
 }
 
 .list-clients-house .wrapper {
@@ -20,7 +24,7 @@
 
 }
 
-.details-house-elements .house-card {
+.house-card {
     display: flex;
     flex-direction: column;
     background-color: var(--card-bgnd);
@@ -30,26 +34,28 @@
     padding: 1em;
 }
 
-.details-house-elements .house-card .card-column {
+.house-card .card-column {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #000;
     align-items: center;
 }
 
-.details-house-elements .house-card .card-column p:last-of-type {
+.house-card .card-column p:last-of-type {
     font-weight: bold;
     text-align: right;
 }
 
-.details-house-elements .house-card .client-card-btns {
+.details-house-elements .house-card .client-card-btns,
+.details-client .client-card-btns {
     display: flex;
     justify-content: space-between;
     padding-top: 0.5em;
 }
 
 .details-house-elements .house-card .client-card-btns a,
-.wrapper .back-button a {
+.wrapper .back-button a,
+.wrapper .bills-button a {
     text-decoration: none;
     color: #fff;
     padding: 0.5em;
@@ -60,10 +66,17 @@
     background-color: var(--form-btn-color);
     cursor: pointer;
     transition: 0.3s ease-in-out;
+    /*width: 200px;*/
+    display: block;
+}
+
+.wrapper .bills-button a {
+    width: 100px;
 }
 
 .details-house-elements .house-card .client-card-btns a:hover,
-.wrapper .back-button a:hover {
+.wrapper .back-button a:hover,
+.wrapper .bills-button a:hover {
     background-color: var(--form-btn-color-hover);
     transition: 0.3s ease-in-out;
 }

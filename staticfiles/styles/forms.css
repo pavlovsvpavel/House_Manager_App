@@ -15,10 +15,11 @@
     background-color: var(--form-bgnd);
     border-radius: 1em;
     padding: 2em;
-    /*align-items: center;*/
+    gap: 1em;
 }
 
-.create-form input {
+.create-form input,
+.is-paid-form input {
     padding: 0.5em;
     border-radius: 0.5em;
     border: 1px solid var(--form-input-border);
@@ -26,11 +27,13 @@
 
 .create-form label {
     font-size: 1.2em;
-    padding-top: 1em;
+    /*padding-top: 1em;*/
 }
 
-.create-form .btn {
-    margin-top: 4em;
+.create-form .btn,
+.is-paid-form .btn {
+    padding: 0.5em;
+    margin-top: 2em;
     border-radius: 1.5em;
     border-color: transparent;
     background-color: var(--form-btn-color);
@@ -38,10 +41,39 @@
     cursor: pointer;
     transition: 0.3s ease-in-out;
     align-self: center;
-    max-width: 200px;
+    width: 200px;
 }
 
-.create-form .btn:hover {
+.create-form .btn:hover,
+.is-paid-form .btn:hover {
     background-color: var(--form-btn-color-hover);
     transition: 0.3s ease-in-out;
 }
+
+.is-paid-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.is-paid-form div {
+    display: flex;
+    background-color: var(--card-bgnd);
+    padding: 1em;
+    border-radius: 0.5em;
+}
+
+.create-client .create-form div:nth-of-type(5),
+.create-client .create-form div:nth-of-type(6),
+.create-client .create-form div:nth-of-type(7) {
+    display: flex;
+    align-items: center;
+}
+
+.edit-client .create-form div:nth-of-type(5),
+.edit-client .create-form div:nth-of-type(6),
+.edit-client .create-form div:nth-of-type(7) {
+    display: flex;
+    align-items: center;
+}
+
+

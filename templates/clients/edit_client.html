@@ -2,14 +2,14 @@
 
 {% block main_content %}
     <section class="site-section edit-client">
-            <div class="container">
-                <form class="create-form" action="{% url "edit_client" pk=object.pk %}" method="post">
-                    <h3 class="create-form-heading">Edit Client</h3>
-                    {{ form }}
-                    {% csrf_token %}
-                    <input class="btn" type="submit" value="Edit Client">
-                </form>
-            </div>
-        </section>
+        <div class="container">
+            <form class="create-form" action="{% url "edit_client" pk=object.pk %}" method="post">
+                <h3 class="create-form-heading">Edit Client</h3>
+                {{ form }}
+                {% csrf_token %}
+                <input class="btn" type="submit" value="Edit Client">
+            </form>
+        </div>
+    </section>
 
 {% endblock %}

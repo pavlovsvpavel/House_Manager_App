@@ -10,6 +10,7 @@ urlpatterns = [
     path("houses/", include("house_manager.houses.urls")),
     path("clients/", include("house_manager.clients.urls")),
     path("house-bills/", include("house_manager.house_bills.urls")),
+    path("client-bills/", include("house_manager.client_bills.urls")),
 ]
 
 

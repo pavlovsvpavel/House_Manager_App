@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <section class="site-section details-house-bill">
+        <div class="container">
+            <div class="wrapper">
+                <div class="client-card">
+                    <div class="card-column">
+                        <p class="column-name">Year</p>
+                        <p class="column-data">{{ object.year }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Month</p>
+                        <p class="column-data">{{ object.month }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Electricity common</p>
+                        <p class="column-data">{{ object.electricity_common }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Electricity lift</p>
+                        <p class="column-data">{{ object.electricity_lift }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Internet</p>
+                        <p class="column-data">{{ object.internet }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Lift maintenance</p>
+                        <p class="column-data">{{ object.maintenance_lift }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Cleaner fee</p>
+                        <p class="column-data">{{ object.fee_cleaner }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Manager/Cashier fee</p>
+                        <p class="column-data">{{ object.fee_manager_and_cashier }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Repairs</p>
+                        <p class="column-data">{{ object.repairs }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Other expenses</p>
+                        <p class="column-data">{{ object.others }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Total BGN</p>
+                        <p class="column-data">{{ object.total_amount }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

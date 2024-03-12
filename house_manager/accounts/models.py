@@ -37,6 +37,7 @@ class HouseManagerUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixi
 class Profile(TimeStampModel):
     MAX_FIRST_NAME_LENGTH = 30
     MAX_LAST_NAME_LENGTH = 30
+    MAX_PHONE_NUMBER_LENGTH = 10
 
     first_name = models.CharField(
         max_length=MAX_FIRST_NAME_LENGTH,
@@ -57,7 +58,7 @@ class Profile(TimeStampModel):
     )
 
     phone_number = models.CharField(
-        max_length=10,
+        max_length=MAX_PHONE_NUMBER_LENGTH,
         blank=True,
         null=True,
         validators=[

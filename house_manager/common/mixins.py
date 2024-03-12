@@ -1,6 +1,4 @@
 from django.db import models
-import datetime
-
 from django.db.models import F
 from django.utils.translation import gettext_lazy as _
 
@@ -19,96 +17,102 @@ class TimeStampModel(models.Model):
 
 
 class MonthChoices(models.TextChoices):
-    JANUARY = 'January'
-    FEBRUARY = 'February'
-    MARCH = 'March'
-    APRIL = 'April'
-    MAY = 'May'
-    JUNE = 'June'
-    JULY = 'July'
-    AUGUST = 'August'
-    SEPTEMBER = 'September'
-    OCTOBER = 'October'
-    NOVEMBER = 'November'
-    DECEMBER = 'December'
-
-
-# TODO: fix the years to be generated dynamically in form and admin panel
-class YearChoices(models.TextChoices):
-    @staticmethod
-    def next_five_years():
-        today = datetime.date.today()
-        year = today.year
-        period = 5
-        years = [year - 1 + i for i in range(period)]
-
-        return years
-
-    YEAR_0 = str(next_five_years()[0]), _(str(next_five_years()[0]))
-    YEAR_1 = str(next_five_years()[1]), _(str(next_five_years()[1]))
-    YEAR_2 = str(next_five_years()[2]), _(str(next_five_years()[2]))
-    YEAR_3 = str(next_five_years()[3]), _(str(next_five_years()[3]))
-    YEAR_4 = str(next_five_years()[4]), _(str(next_five_years()[4]))
+    JANUARY = "1"
+    FEBRUARY = "2"
+    MARCH = "3"
+    APRIL = "4"
+    MAY = "5"
+    JUNE = "6"
+    JULY = "7"
+    AUGUST = "8"
+    SEPTEMBER = "9"
+    OCTOBER = "10"
+    NOVEMBER = "11"
+    DECEMBER = "12"
 
 
 class MonthlyBill(models.Model):
+    MAX_MONTH_LENGTH = 10
+    MAX_YEAR_LENGTH = 4
+    MAX_DECIMAL_DIGITS = 10
+    MAX_DECIMAL_PLACES = 2
+
     class Meta:
         abstract = True
 
     month = models.CharField(
-        max_length=10,
+        max_length=MAX_MONTH_LENGTH,
         choices=MonthChoices.choices,
+        blank=False,
+        null=False,
     )
 
     year = models.CharField(
-        max_length=4,
-        choices=YearChoices.choices,
+        max_length=MAX_YEAR_LENGTH,
+        blank=False,
+        null=False,
     )
 
     electricity_common = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=MAX_DECIMAL_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        blank=False,
+        null=False,
     )
 
     electricity_lift = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=MAX_DECIMAL_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        blank=False,
+        null=False,
     )
 
     internet = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=MAX_DECIMAL_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        blank=False,
+        null=False,
     )
 
     maintenance_lift = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=MAX_DECIMAL_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        blank=False,
+        null=False,
     )
 
     fee_cleaner = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=MAX_DECIMAL_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        blank=False,
+        null=False,
     )
 
     fee_manager_and_cashier = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=MAX_DECIMAL_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        blank=False,
+        null=False,
     )
 
     repairs = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=MAX_DECIMAL_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        blank=False,
+        null=False,
     )
 
     others = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=MAX_DECIMAL_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        blank=False,
+        null=False,
     )
 
     total_amount = models.GeneratedField(
         output_field=models.DecimalField(
-            max_digits=10,
-            decimal_places=2,
+            max_digits=MAX_DECIMAL_DIGITS,
+            decimal_places=MAX_DECIMAL_PLACES,
         ),
         db_persist=True,
         expression=(

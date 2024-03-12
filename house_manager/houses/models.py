@@ -10,15 +10,23 @@ UserModel = get_user_model()
 
 
 class House(TimeStampModel):
+    MAX_TOWN_LENGTH = 20
+    MAX_ADDRESS_LENGTH = 100
+    MAX_ENTRANCE_LENGTH = 2
+
     town = models.CharField(
-        max_length=20,
+        max_length=MAX_TOWN_LENGTH,
         validators=[
             validate_char_field,
-        ]
+        ],
+        blank=False,
+        null=False,
     )
 
     address = models.CharField(
-        max_length=100,
+        max_length=MAX_ADDRESS_LENGTH,
+        blank=False,
+        null=False,
     )
 
     building_number = models.PositiveIntegerField(
@@ -27,7 +35,9 @@ class House(TimeStampModel):
     )
 
     entrance = models.CharField(
-        max_length=1,
+        max_length=MAX_ENTRANCE_LENGTH,
+        blank=False,
+        null=False,
     )
 
     user = models.ForeignKey(
@@ -36,30 +46,6 @@ class House(TimeStampModel):
     )
 
     objects = SingleHouseManager()
-
-    # def total_people(self, house_id):
-    #     query = Q(id=house_id)
-    #
-    #     people = (
-    #         self.objects
-    #         .prefetch_related('clients')
-    #         .filter(query)
-    #         .aggregate(total_people=Sum('clients__number_of_people'))
-    #     )
-    #
-    #     return people['total_people']
-    #
-    # def total_people_using_lift(self, house_id):
-    #     query = Q(id=house_id) & Q(clients__is_using_lift=True)
-    #
-    #     people = (
-    #         self.objects
-    #         .prefetch_related('clients')
-    #         .filter(query)
-    #         .aggregate(total_people=Sum('clients__number_of_people'))
-    #     )
-    #
-    #     return people['total_people']
 
     def __str__(self):
         return (f"{self.town}, {self.address}, "

@@ -9,22 +9,35 @@ UserModel = get_user_model()
 
 
 class Client(TimeStampModel):
+    MAX_FAMILY_NAME_LENGTH = 30
+
     class Meta:
         unique_together = ['apartment', 'house']
         ordering = ['house', 'apartment']
 
     family_name = models.CharField(
-        max_length=30,
+        max_length=MAX_FAMILY_NAME_LENGTH,
         validators=[
             validate_char_field,
         ],
+        blank=False,
+        null=False,
     )
 
-    floor = models.PositiveIntegerField()
+    floor = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+    )
 
-    apartment = models.PositiveIntegerField()
+    apartment = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+    )
 
-    number_of_people = models.PositiveIntegerField()
+    number_of_people = models.PositiveIntegerField(
+        blank=False,
+        null=False,
+    )
 
     is_using_lift = models.BooleanField(
         default=True,

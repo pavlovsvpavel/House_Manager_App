@@ -11,7 +11,7 @@ UserModel = get_user_model()
 class ClientMonthlyBill(MonthlyBill):
     client = models.ForeignKey(
         to=Client,
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
         related_name='client_monthly_bills',
     )
 
@@ -24,4 +24,9 @@ class ClientMonthlyBill(MonthlyBill):
     user = models.ForeignKey(
         to=UserModel,
         on_delete=models.RESTRICT,
+    )
+
+    is_paid = models.BooleanField(
+        default=False,
+        verbose_name="Paid",
     )

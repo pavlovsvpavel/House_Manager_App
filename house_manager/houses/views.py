@@ -1,11 +1,8 @@
 import json
-
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic as views
-
-# from house_manager.accounts.mixins import GetProfileMixin
 from house_manager.houses.models import House
 
 
@@ -28,7 +25,7 @@ class HouseDetailsView(views.DetailView):
 
 class HouseClientsDetailsView(views.DetailView):
 
-    template_name = "houses/list_clients_house.html"
+    template_name = "houses/list_house_clients.html"
 
     def get_object(self, queryset=None):
         return get_object_or_404(House, pk=self.kwargs['pk'])

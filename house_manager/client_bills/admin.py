@@ -10,4 +10,4 @@ class ClientMonthlyBillAdmin(admin.ModelAdmin):
                     "fee_cleaner", "fee_manager_and_cashier", "repairs",
                     "others", "total_amount")
 
-    ordering = ("house", "month", "year")
+    ordering = ("house", "-year", "month")
