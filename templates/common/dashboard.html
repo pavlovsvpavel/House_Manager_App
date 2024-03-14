@@ -2,35 +2,17 @@
 {% load static %}
 
 {% block main_content %}
-
-    <script>
-        function selectCurrentHouseID(houseId) {
-            // AJAX request to store the selected house id
-            fetch("{% url 'store_selected_house' %}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({house_id: houseId})
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Redirect to the house details page or perform any other action
-                        window.location.href = "{% url 'details_house' pk=0 %}".replace("0", houseId);
-                    } else {
-                        console.error('Failed to store selected house id');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    </script>
-
     <section class="site-section dashboard">
         <div class="container">
             <div class="house-cards">
+            {% if houses %}
                 {% for house in houses %}
-                    <div class="house-card" onclick="selectCurrentHouseID({{ house.pk }})">
+                    <div class="house-card" 
+                         onclick="selectCurrentHouseID(
+                                 {{ house.pk }}, 
+                                 '{% url 'store_selected_house' %}', 
+                                 '{% url 'details_house' pk=0 %}', 
+                                 '{{ csrf_token }}')">
                         <div class="card-column">
                             <p class="column-name">Town</p>
                             <p class="column-data">{{ house.town }}</p>
@@ -49,6 +31,9 @@
                         </div>
                     </div>
                 {% endfor %}
+                {% else %}
+                <h1>No houses</h1>
+            {% endif %}
             </div>
         </div>
     </section>

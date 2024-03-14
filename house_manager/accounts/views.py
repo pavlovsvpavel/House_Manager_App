@@ -12,17 +12,17 @@ UserModel = get_user_model()
 
 
 class LogInUserView(OwnerRequiredMixin, auth_views.LoginView):
-    template_name = "accounts/login.html"
+    template_name = "accounts/login-register.html"
     redirect_authenticated_user = True
 
-
-def logout_user(request):
-    logout(request)
-    return redirect('index')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['register_form'] = HouseManagerUserCreationForm()
+        return context
 
 
 class RegisterUserView(OwnerRequiredMixin, views.CreateView):
-    template_name = "accounts/register.html"
+    template_name = "accounts/login-register.html"
     form_class = HouseManagerUserCreationForm
     success_url = reverse_lazy("index")
 
@@ -32,6 +32,11 @@ class RegisterUserView(OwnerRequiredMixin, views.CreateView):
         login(self.request, form.instance)
 
         return result
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('index')
 
 
 class ProfileDetailsView(OwnerRequiredMixin, views.DetailView):
@@ -56,7 +61,7 @@ class ProfileDeleteView(OwnerRequiredMixin, views.DeleteView):
 
     success_url = reverse_lazy("index")
 
-# TODO: Add confirmation with password
+    # TODO: Add confirmation with password
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         user = self.object.user

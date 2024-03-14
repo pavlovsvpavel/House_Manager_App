@@ -7,6 +7,31 @@
     .wrapper {
         flex: 0 1 80%;
     }
+
+    .form-container {
+        padding: 1em 0;
+    }
+
+    .form-container .cover {
+        display: none;
+    }
+
+    .form-content .login-form,
+    .form-content .register-form {
+        width: 100%;
+    }
+
+    .form-content .register-form {
+        display: none;
+    }
+
+    .form-container #flip:checked ~ .forms .register-form {
+        display: block;
+    }
+
+    .form-container #flip:checked ~ .forms .login-form {
+        display: none;
+    }
 }
 
 
@@ -89,6 +114,9 @@
     .list-house-bills .card-column .column-data {
         align-self: flex-start;
     }
+
+
+
 
     .create-form {
         flex: 0 1 100%;

@@ -1,11 +1,6 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-    <script>
-        function redirectToHouseBillDetails(houseBillId) {
-            window.location.href = "{% url "details_house_bills" pk=0 %}".replace("0", houseBillId);
-        }
-    </script>
 
     <section class="site-section list-house-bills">
         <div class="container">
@@ -13,7 +8,7 @@
                 <div class="clients-cards">
                     {% if house_bills %}
                         {% for bill in house_bills %}
-                            <div class="client-card" onclick="redirectToHouseBillDetails({{ bill.pk }})">
+                            <div class="client-card" onclick="redirectToHouseBillDetails({{ bill.pk }}, '{% url "details_house_bills" pk=0 %}')">
                                 <div class="card-column">
                                     <p class="column-name">Year</p>
                                     <p class="column-data">{{ bill.year }}</p>

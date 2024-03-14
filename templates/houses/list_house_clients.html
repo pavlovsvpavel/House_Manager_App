@@ -1,20 +1,15 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-    <script>
-        function redirectToClientDetails(clientId) {
-            window.location.href = "{% url "details_client" pk=0 %}".replace("0", clientId);
-        }
-    </script>
 
-    <section class="site-section list-clients-house">
+{#    <section class="site-section list-clients-house">#}
         <section class="site-section list-clients">
             <div class="container">
                 <div class="wrapper">
                     <div class="clients-cards">
                         {% if clients %}
                             {% for client in clients %}
-                                <div class="client-card" onclick="redirectToClientDetails({{ client.pk }})">
+                                <div class="client-card" onclick="redirectToClientDetails({{ client.pk }},'{% url "details_client" pk=0 %}')">
                                     <div class="card-column">
                                         <p class="column-name">Family Name</p>
                                         <p class="column-data">{{ client.family_name }}</p>
@@ -43,6 +38,6 @@
                 </div>
             </div>
         </section>
-    </section>
+{#    </section>#}
 
 {% endblock %}

@@ -34,7 +34,7 @@
     padding: 10em 0;
 }
 
-.headings h1, h3 {
+.headings h1 {
     text-align: center;
 }
 
@@ -47,6 +47,10 @@
 }
 
 .site-main {
+    /*padding: 4em 0;*/
+}
+
+.site-section {
     padding: 4em 0;
 }
 

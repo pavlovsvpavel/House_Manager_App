@@ -1,11 +1,6 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-    <script>
-        function redirectToClientBillDetails(clientBillId) {
-            window.location.href = "{% url "edit_client_bill" pk=0 %}".replace("0", clientBillId);
-        }
-    </script>
 
 <section class="site-section list-client-bills">
         <div class="container">
@@ -14,7 +9,7 @@
                     {% if client_bills %}
                         {% for bill in client_bills %}
                             <div class="{% if bill.is_paid %} client-card {% else %} client-card-not-paid {% endif %}" 
-                                 onclick="redirectToClientBillDetails({{ bill.pk }})">
+                                 onclick="redirectToClientBillDetails({{ bill.pk }},'{% url "edit_client_bill" pk=0 %}')">
                                 <div class="card-column">
                                     <p class="column-name">Year</p>
                                     <p class="column-data">{{ bill.year }}</p>

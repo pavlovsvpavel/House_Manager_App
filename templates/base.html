@@ -8,10 +8,12 @@
     <title>House Manager</title>
     <link rel="stylesheet" href="{% static "styles/styles.css" %}">
     <link href="{% static "images/favicon.ico" %}" rel="icon" type="image/x-icon">
+    <script src={% static "scripts/selectCurrentHouseId.js" %}></script>
+    <script src={% static "scripts/redirects.js" %}></script>
 </head>
 <body>
 <div class="site">
-    <header class="site-section site-header">
+    <header class="site-header">
         <div class="container">
             <div class="header-elements">
                 <div class="site-title">
@@ -34,7 +36,7 @@
                                 <li><a href="{% url "details_profile" pk=request.user.pk %}">Profile</a></li>
                                 <li><a href="{% url "logout_user" %}">Logout</a></li>
                             {% else %}
-                                <li><a href="{% url "register_user" %}">Register</a></li>
+{#                                <li><a href="{% url "register_user" %}">Register</a></li>#}
                                 <li><a href="{% url "login_user" %}">Login</a></li>
                             {% endif %}
                         </ul>
@@ -43,13 +45,11 @@
             </div>
         </div>
     </header>
-    <main class="site-section site-main">
+    <main class="site-main">
         {% block main_content %}
 
         {% endblock %}
-
     </main>
-
     <footer class="site-section site-footer">
         <div class="container">
             <p>&copy; 2024 Pavel Pavlov. All Rights Reserved.</p>
