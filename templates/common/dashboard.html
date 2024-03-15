@@ -8,11 +8,13 @@
             {% if houses %}
                 {% for house in houses %}
                     <div class="house-card" 
-                         onclick="selectCurrentHouseID(
-                                 {{ house.pk }}, 
-                                 '{% url 'store_selected_house' %}', 
-                                 '{% url 'details_house' pk=0 %}', 
-                                 '{{ csrf_token }}')">
+{#                         onclick="selectCurrentHouseID(#}
+{#                                 {{ house.pk }}, #}
+{#                                 '{% url 'store_selected_house' %}', #}
+{#                                 '{% url 'details_house' pk=0 %}', #}
+{#                                 '{{ csrf_token }}')">#}
+                            onclick="selectHouseId(
+                                     {{ house.pk }},'{% url "details_house" pk=0 %}')">
                         <div class="card-column">
                             <p class="column-name">Town</p>
                             <p class="column-data">{{ house.town }}</p>

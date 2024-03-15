@@ -7,8 +7,8 @@
             <div class="details-house-elements">
                 <div class="buttons">
                     <ul>
-                        <li><a class="create-client" href="{% url "create_client" pk=object.pk %}">Create Client</a></li>
-                        <li><a class="create-house-bill" href="{% url "create_house_bills" pk=object.pk %}">Create Bill</a></li>
+                        <li><a class="create-client" href="{% url "create_client" %}">Create Client</a></li>
+                        <li><a class="create-house-bill" href="{% url "create_house_bills" %}">Create Bill</a></li>
                         <li><a class="list-house-bills" href="{% url "list_house_bills" pk=object.pk %}">House Bills</a></li>
                         <li><a class="details-house-list-clients" onclick="redirectToHouseClients({{ object.pk }},'{% url "list_house_clients" pk=0 %}')">House Clients</a></li>
                     </ul>

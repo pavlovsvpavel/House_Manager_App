@@ -4,7 +4,7 @@
     
     <section class="site-section create-client">
         <div class="container">
-            <form class="create-form" action="{% url "create_client" pk=house.pk %}" method="post">
+            <form class="create-form" action="{% url "create_client" %}" method="post">
                 <h3 class="create-form-heading">Create Client</h3>
                 {{ form }}
                 {% csrf_token %}

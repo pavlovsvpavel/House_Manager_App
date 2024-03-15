@@ -17,7 +17,8 @@
         <div class="container">
             <div class="header-elements">
                 <div class="site-title">
-                    <a href="{% url "index" %}">House Manager</a>
+                    <a href="{% url "index" %}"></a>
+                    <h1>House Manager</h1>
                 </div>
                 <nav class="navigation">
                     <input type="checkbox" id="sidebar-active">
@@ -31,12 +32,11 @@
                         </label>
                         <ul>
                             {% if request.user.is_authenticated %}
-                                <li><a href="{% url "dashboard" %}">Dashboard</a></li>
+                                <li><a href="{% url "dashboard" %}">My Houses</a></li>
                                 <li><a href="{% url "create_house" %}">Create House</a></li>
                                 <li><a href="{% url "details_profile" pk=request.user.pk %}">Profile</a></li>
                                 <li><a href="{% url "logout_user" %}">Logout</a></li>
                             {% else %}
-{#                                <li><a href="{% url "register_user" %}">Register</a></li>#}
                                 <li><a href="{% url "login_user" %}">Login</a></li>
                             {% endif %}
                         </ul>

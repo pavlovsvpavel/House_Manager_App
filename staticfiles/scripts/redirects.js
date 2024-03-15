@@ -1,3 +1,7 @@
+function selectHouseId(houseId, currentHouseDetails) {
+    window.location.href = currentHouseDetails.replace("0", houseId);
+}
+
 function redirectToHouseBillDetails(houseBillId, detailsCurrentHouse) {
     window.location.href = detailsCurrentHouse.replace("0", houseBillId);
 }

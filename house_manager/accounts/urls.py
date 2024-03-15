@@ -1,7 +1,10 @@
 from django.urls import path
 
-from house_manager.accounts.views import LogInUserView, RegisterUserView, logout_user, ProfileDetailsView, \
+from house_manager.accounts.views import (
+    LogInUserView, RegisterUserView,
+    logout_user, ProfileDetailsView,
     ProfileUpdateView, ProfileDeleteView
+)
 
 urlpatterns = (
     path("login/", LogInUserView.as_view(), name="login_user"),

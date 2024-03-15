@@ -55,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 'house_manager.houses.middlewares.HouseMiddleware',
 ]
 
 ROOT_URLCONF = 'house_manager.urls'
