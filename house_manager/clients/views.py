@@ -25,16 +25,6 @@ class ClientCreateView(views.CreateView):
 
         return reverse_lazy('details_house', kwargs={'pk': selected_house_pk})
 
-    # def get_object(self, queryset=None):
-    #     return get_object_or_404(House, pk=self.kwargs["pk"])
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     house_id = self.request.session.get("selected_house_id")
-    #     if house_id:
-    #         context["house"] = House.objects.get(pk=house_id)
-    #     return context
-    #
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
         house_id = self.request.session.get("selected_house")

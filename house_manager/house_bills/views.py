@@ -4,13 +4,14 @@ from django.urls import reverse_lazy
 from django.views import generic as views
 
 from house_manager.client_bills.helpers.calculate_fees import calculate_fees
+from house_manager.clients.models import Client
 from house_manager.house_bills.forms import HouseMonthlyBillForm
 from house_manager.house_bills.models import HouseMonthlyBill
 from house_manager.houses.models import House
 
 
 class HouseMonthlyBillCreateView(views.CreateView):
-    queryset = HouseMonthlyBill.objects.all()
+    queryset = HouseMonthlyBill.objects.select_related('house')
     template_name = "house_bills/create_house_bills.html"
     form_class = HouseMonthlyBillForm
 
@@ -18,6 +19,15 @@ class HouseMonthlyBillCreateView(views.CreateView):
         selected_house_pk = self.request.session.get("selected_house")
 
         return reverse_lazy('details_house', kwargs={'pk': selected_house_pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        house_id = self.request.session.get("selected_house")
+
+        context['house_id'] = house_id
+        context['clients'] = Client.objects.filter(house=house_id)
+
+        return context
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)

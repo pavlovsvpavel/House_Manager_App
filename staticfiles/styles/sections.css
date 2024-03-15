@@ -9,6 +9,10 @@
     align-self: flex-end;
 }
 
+.create-house-bills .wrapper .clients-cards h1{
+    text-align: center;
+}
+
 .details-client .wrapper {
     flex: 0 1 50%;
 }
