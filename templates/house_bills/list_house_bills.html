@@ -8,14 +8,14 @@
                 <div class="clients-cards">
                     {% if house_bills %}
                         {% for bill in house_bills %}
-                            <div class="client-card" onclick="redirectToHouseBillDetails({{ bill.pk }}, '{% url "details_house_bills" pk=0 %}')">
+                            <div class="{% if bill.is_paid %} client-card {% else %} client-card-not-paid {% endif %}" onclick="redirectToHouseBillDetails({{ bill.pk }}, '{% url "details_house_bills" pk=0 %}')">
                                 <div class="card-column">
                                     <p class="column-name">Year</p>
                                     <p class="column-data">{{ bill.year }}</p>
                                 </div>
                                 <div class="card-column">
                                     <p class="column-name">Month</p>
-                                    <p class="column-data">{{ bill.month }}</p>
+                                    <p class="column-data">{{ bill.get_month_name }}</p>
                                 </div>
                                 <div class="card-column">
                                     <p class="column-name">Total BGN</p>

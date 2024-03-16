@@ -30,10 +30,6 @@
                         <p class="column-name">Occupied</p>
                         <p class="column-data">{{ object.is_occupied|yesno:"Yes,No" }}</p>
                     </div>
-                    <div class="card-column">
-                        <p class="column-name">Fixed fee</p>
-                        <p class="column-data">{{ object.fixed_fee|yesno:"Yes,No" }}</p>
-                    </div>
                     <div class="client-card-btns">
                         <a href="{% url "edit_client" pk=object.pk %}">Edit</a>
                         <a href="{% url "delete_client" pk=object.pk %}">Delete</a>

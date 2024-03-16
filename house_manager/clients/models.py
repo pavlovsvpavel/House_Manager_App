@@ -40,16 +40,20 @@ class Client(TimeStampModel):
     )
 
     is_using_lift = models.BooleanField(
+        blank=False,
+        null=False,
         default=True,
     )
 
     is_occupied = models.BooleanField(
+        blank=False,
+        null=False,
         default=True,
     )
 
-    fixed_fee = models.BooleanField(
-        default=False,
-    )
+    # fixed_fee = models.BooleanField(
+    #     default=False,
+    # )
 
     house = models.ForeignKey(
         to=House,

@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, Count
 
 
 class SingleHouseManager(models.Manager):
@@ -27,3 +27,14 @@ class SingleHouseManager(models.Manager):
         )
 
         return people['total_people']
+
+    def total_apartments(self, house_id):
+        query = Q(id=house_id)
+
+        apartments = (
+            self.get_queryset()
+            .filter(query)
+            .aggregate(total_apartments=Count('clients__apartment'))
+        )
+
+        return apartments['total_apartments']

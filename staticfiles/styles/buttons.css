@@ -10,13 +10,30 @@
     justify-content: space-between;
 }
 
-.details-house-elements .buttons ul li {
+.details-house-elements .buttons ul li:nth-of-type(1) a,
+.details-house-elements .buttons ul li:nth-of-type(2) a{
+    display: block;
+    background-color: #C5EBAA;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    transition: 0.3s ease-in-out;
+    width: 200px;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+}
 
+.details-house-elements .buttons ul li:nth-of-type(1) a:hover,
+.details-house-elements .buttons ul li:nth-of-type(2) a:hover {
+    cursor: pointer;
+    background-color: #A5DD9B;
+    box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);
+    transition: 0.3s ease-in-out;
 }
 
 .details-house-elements .buttons ul li a {
     display: block;
-    background-color: var(--card-bgnd);
+    background-color: #EFB495;
     padding: 0.5em;
     border-radius: 0.5em;
     transition: 0.3s ease-in-out;
@@ -28,7 +45,7 @@
 
 .details-house-elements .buttons ul li a:hover {
     cursor: pointer;
-    background-color: var(--card-bgnd-hover);
+    background-color: #EF9595;
     box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);
     transition: 0.3s ease-in-out;
 }

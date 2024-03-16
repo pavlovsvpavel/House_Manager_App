@@ -11,6 +11,11 @@ class HouseMonthlyBill(MonthlyBill):
         unique_together = ["year", "month", "house"]
         ordering = ["-year", "month"]
 
+    is_paid = models.BooleanField(
+        default=False,
+        verbose_name="Paid",
+    )
+
     house = models.ForeignKey(
         to=House,
         on_delete=models.CASCADE,
@@ -21,6 +26,9 @@ class HouseMonthlyBill(MonthlyBill):
         to=UserModel,
         on_delete=models.RESTRICT,
     )
+
+    def amount_without_repairs(self):
+        return self.total_amount - self.repairs
 
     def __str__(self):
         return f"Bill for '{self.house}' for {self.month} {self.year}"

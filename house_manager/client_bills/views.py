@@ -11,10 +11,6 @@ class ClientBillsDetailsView(views.DetailView):
     queryset = ClientMonthlyBill.objects.prefetch_related('client')
     template_name = "client_bills/list_client_bills.html"
 
-    # def get_queryset(self):
-    #     client_obj = self.get_object()
-    #     return ClientMonthlyBill.objects.filter(client=client_obj)
-
     def get_object(self, queryset=None):
         return get_object_or_404(Client, pk=self.kwargs['pk'])
 

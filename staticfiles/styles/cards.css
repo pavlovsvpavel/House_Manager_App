@@ -47,7 +47,8 @@
 .list-clients .client-card,
 .list-house-bills .client-card,
 .list-client-bills .client-card,
-.list-client-bills .client-card-not-paid {
+.list-client-bills .client-card-not-paid,
+.list-house-bills .client-card-not-paid {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -58,21 +59,24 @@
     transition: 0.3s ease-in-out;
 }
 
-.list-client-bills .client-card-not-paid {
+.list-client-bills .client-card-not-paid,
+.list-house-bills .client-card-not-paid {
     background-color: var(--card-bgnd-not-paid);
 }
 
 .list-clients .client-card:hover,
 .list-house-bills .client-card:hover,
 .list-client-bills .client-card:hover,
-.list-client-bills .client-card-not-paid:hover {
+.list-client-bills .client-card-not-paid:hover,
+.list-house-bills .client-card-not-paid:hover {
     cursor: pointer;
     background-color: var(--card-bgnd-hover);
     box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);
     transition: 0.3s ease-in-out;
 }
 
-.list-client-bills .client-card-not-paid:hover {
+.list-client-bills .client-card-not-paid:hover,
+.list-house-bills .client-card-not-paid:hover {
     background-color: var(--card-bgnd-not-paid-hover);
 }
 

@@ -1,4 +1,5 @@
 from django.db import IntegrityError
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic as views
@@ -6,11 +7,13 @@ from django.views import generic as views
 from house_manager.client_bills.helpers.calculate_fees import calculate_fees
 from house_manager.clients.models import Client
 from house_manager.house_bills.forms import HouseMonthlyBillForm
+from house_manager.house_bills.helpers.subtract_amount import subtract_amount_from_house_balance
 from house_manager.house_bills.models import HouseMonthlyBill
+from house_manager.houses.mixins import GetUserAndHouseInstanceMixin
 from house_manager.houses.models import House
 
 
-class HouseMonthlyBillCreateView(views.CreateView):
+class HouseMonthlyBillCreateView(GetUserAndHouseInstanceMixin, views.CreateView):
     queryset = HouseMonthlyBill.objects.select_related('house')
     template_name = "house_bills/create_house_bills.html"
     form_class = HouseMonthlyBillForm
@@ -28,16 +31,6 @@ class HouseMonthlyBillCreateView(views.CreateView):
         context['clients'] = Client.objects.filter(house=house_id)
 
         return context
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class=form_class)
-        house_id = self.request.session.get("selected_house")
-        if house_id:
-            house = House.objects.get(pk=house_id)
-            form.instance.house = house
-        form.instance.user = self.request.user
-
-        return form
 
     def form_valid(self, form):
         try:
@@ -71,18 +64,33 @@ class CurrentHouseMonthlyBillDetailView(views.DetailView):
         return context
 
 
-class HouseMonthlyBillDetailView(views.DetailView):
-    queryset = HouseMonthlyBill.objects.all()
+# class HouseMonthlyBillDetailView(views.DetailView):
+#     queryset = HouseMonthlyBill.objects.select_related("house")
+#     template_name = "house_bills/details_house_bills.html"
+
+
+class HouseMonthlyBillEditView(views.UpdateView):
+    queryset = HouseMonthlyBill.objects.prefetch_related("house")
     template_name = "house_bills/details_house_bills.html"
 
-# TODO: To decide if we need to implement Edit and Delete views
-# class HouseMonthlyBillEditView(views.UpdateView):
-#     queryset = HouseMonthlyBill.objects.all()
-#     template_name = "house_bills/edit_house_bill.html"
-#     fields = ("month", "year", "electricity_common",
-#               "electricity_lift", "internet", "maintenance_lift",
-#               "fee_cleaner", "fee_manager_and_cashier", "repairs",
-#               "others")
-#
-#     def get_success_url(self):
-#         return reverse_lazy("list_house_bills", kwargs={"pk": self.object.house.pk})
+    fields = ("is_paid",)
+
+    def get_success_url(self):
+        return reverse_lazy("list_house_bills", kwargs={"pk": self.object.house.pk})
+
+    def form_valid(self, form):
+        if not form.cleaned_data['is_paid']:
+            return self.form_invalid(form)
+        else:
+            house_id = form.instance.house_id
+            bill_id = form.instance.id
+            subtract_amount_from_house_balance(house_id, bill_id)
+            return super().form_valid(form)
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        if form.instance.is_paid:
+            form.fields["is_paid"].disabled = True
+        return form
+
+

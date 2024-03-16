@@ -59,9 +59,10 @@
     padding: 1em 0;
     text-align: center;
     background-color: #8EACCD;
+    color: #fff;
 }
 
 .site-footer p {
-    opacity: 80%;
+    /*opacity: 80%;*/
 }
 

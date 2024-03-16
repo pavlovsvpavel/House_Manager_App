@@ -11,7 +11,8 @@
                         <li><a class="details-house-list-clients" onclick="redirectToHouseClients({{ object.pk }},'{% url "list_house_clients" pk=0 %}')">House Clients</a></li>
                         <li><a class="create-house-bill" href="{% url "create_house_bills" %}">Create Bill</a></li>
                         <li><a class="list-house-bills" href="{% url "list_house_bills" pk=object.pk %}">House Bills</a></li>
-                        
+                        <li><a class="create-other-bill" href="#">Create other bill</a></li>
+                        <li><a class="list-other-bills" href="#">Other bills</a></li>
                     </ul>
                 </div>
 
@@ -31,6 +32,10 @@
                     <div class="card-column">
                         <p class="column-name">Entrance</p>
                         <p class="column-data">{{ object.entrance }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Balance</p>
+                        <p class="column-data">{{ object.money_balance }}</p>
                     </div>
                     <div class="client-card-btns">
                         <a href="{% url "edit_house" pk=object.pk %}">Edit</a>

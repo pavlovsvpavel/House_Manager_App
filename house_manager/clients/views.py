@@ -5,15 +5,16 @@ from django.views import generic as views
 
 from house_manager.client_bills.models import ClientMonthlyBill
 from house_manager.clients.models import Client
+from house_manager.houses.mixins import GetUserAndHouseInstanceMixin
 from house_manager.houses.models import House
 
 UserModel = get_user_model()
 
 
-class ClientCreateView(views.CreateView):
+class ClientCreateView(GetUserAndHouseInstanceMixin, views.CreateView):
     queryset = Client.objects.all()
     template_name = "clients/create_client.html"
-    fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied", "fixed_fee")
+    fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -24,16 +25,6 @@ class ClientCreateView(views.CreateView):
         selected_house_pk = self.request.session.get("selected_house")
 
         return reverse_lazy('details_house', kwargs={'pk': selected_house_pk})
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class=form_class)
-        house_id = self.request.session.get("selected_house")
-        if house_id:
-            house = House.objects.get(pk=house_id)
-            form.instance.house = house
-        form.instance.user = self.request.user
-
-        return form
 
     def form_valid(self, form):
         try:
@@ -80,7 +71,7 @@ class ClientDetailsView(views.DetailView):
 class ClientEditView(views.UpdateView):
     queryset = Client.objects.prefetch_related("house")
     template_name = "clients/edit_client.html"
-    fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied", "fixed_fee")
+    fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied")
 
     def get_success_url(self):
         return reverse_lazy("list_house_clients", kwargs={"pk": self.object.house.pk})

@@ -8,6 +8,6 @@ class ClientAdmin(admin.ModelAdmin):
     list_display = [
         'family_name', 'floor', 'apartment',
         'number_of_people', 'is_occupied',
-        'is_using_lift', 'fixed_fee', 'house'
+        'is_using_lift', 'house'
     ]
     list_filter = ['house']

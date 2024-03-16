@@ -17,8 +17,8 @@ class TimeStampModel(models.Model):
 
 
 class MonthChoices(models.TextChoices):
-    JANUARY = "1"
-    FEBRUARY = "2"
+    JANUARY = "1", "January"
+    FEBRUARY = "2", "February"
     MARCH = "3"
     APRIL = "4"
     MAY = "5"
@@ -126,3 +126,6 @@ class MonthlyBill(models.Model):
                 F('others')
         )
     )
+
+    def get_month_name(self):
+        return dict(MonthChoices.choices)[self.month]

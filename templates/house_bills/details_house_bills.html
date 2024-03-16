@@ -11,7 +11,7 @@
                     </div>
                     <div class="card-column">
                         <p class="column-name">Month</p>
-                        <p class="column-data">{{ object.month }}</p>
+                        <p class="column-data">{{ object.get_month_name }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">Electricity common</p>
@@ -38,18 +38,23 @@
                         <p class="column-data">{{ object.fee_manager_and_cashier }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">Repairs</p>
-                        <p class="column-data">{{ object.repairs }}</p>
-                    </div>
-                    <div class="card-column">
                         <p class="column-name">Other expenses</p>
                         <p class="column-data">{{ object.others }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">Total BGN</p>
-                        <p class="column-data">{{ object.total_amount }}</p>
+                        <p class="column-data">{{ object.amount_without_repairs }}</p>
                     </div>
                 </div>
+                <form class="is-paid-form" method="post" action="{% url "details_house_bills" pk=object.pk %}">
+                    {{ form }}
+                    {% csrf_token %}
+                    {% if form.instance.is_paid %}
+                        <button type="submit" class="btn" hidden="hidden">Save</button>
+                    {% else %}
+                        <button type="submit" class="btn">Save</button>
+                    {% endif %}
+                </form>
             </div>
         </div>
     </section>

@@ -21,7 +21,7 @@ class HouseCreateView(views.CreateView):
 
 @method_decorator(get_current_house_instance, name='dispatch')
 class HouseDetailsView(views.DetailView):
-    queryset = House.objects.all()
+    queryset = House.objects.prefetch_related("house_monthly_bills")
     template_name = "houses/details_house.html"
 
     def get(self, request, *args, **kwargs):
@@ -31,6 +31,13 @@ class HouseDetailsView(views.DetailView):
         request.session['selected_house'] = selected_house.pk
 
         return super().get(request, *args, **kwargs)
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #
+    #     context['money_balance'] = self.object.house_monthly_bills.filter(house_id=selected_house)
+    #
+    #     return context
 
 
 class HouseClientsDetailsView(views.DetailView):
