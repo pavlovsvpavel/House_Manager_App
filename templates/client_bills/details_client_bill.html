@@ -54,7 +54,11 @@
                 <form class="is-paid-form" method="post" action="{% url "edit_client_bill" pk=object.pk %}">
                     {{ form }}
                     {% csrf_token %}
+                    {% if form.instance.is_paid %}
+                        <button type="submit" class="btn" hidden="hidden">Save</button>
+                    {% else %}
                     <button type="submit" class="btn">Save</button>
+                    {% endif %}
                 </form>
             </div>
         </div>

@@ -39,6 +39,9 @@
                     <div class="bills-button">
                         <a href="{% url "list_client_bills" pk=object.pk %}">Bills</a>
                     </div>
+                    <div class="bills-button">
+                        <a href="{% url "list_other_client_bills" pk=object.pk %}">Other Bills</a>
+                    </div>
                     <div class="back-button">
                         <a href="{% url "list_house_clients" pk=house.pk %}"><i class="fa-solid fa-arrow-right"></i>Back to clients</a>
                     </div>

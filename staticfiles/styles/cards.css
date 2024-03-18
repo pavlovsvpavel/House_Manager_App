@@ -94,6 +94,10 @@
     font-weight: bold;
 }
 
+.list-house-bills .card-column .column-data {
+    max-width: 30ch;
+}
+
 .details-client .client-card,
 .details-house-bill .client-card,
 .details-client-bill .client-card {

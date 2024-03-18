@@ -46,7 +46,7 @@
                         <p class="column-data">{{ object.amount_without_repairs }}</p>
                     </div>
                 </div>
-                <form class="is-paid-form" method="post" action="{% url "details_house_bills" pk=object.pk %}">
+                <form class="is-paid-form" method="post" action="{% url "edit_house_bills" pk=object.pk %}">
                     {{ form }}
                     {% csrf_token %}
                     {% if form.instance.is_paid %}

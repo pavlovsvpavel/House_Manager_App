@@ -1,6 +1,7 @@
+import math
+
 from django.db import models
-from django.db.models import F
-from django.utils.translation import gettext_lazy as _
+from django.db.models import F, Func
 
 
 class TimeStampModel(models.Model):
@@ -116,15 +117,59 @@ class MonthlyBill(models.Model):
         ),
         db_persist=True,
         expression=(
-                F('electricity_common') +
-                F('electricity_lift') +
-                F('internet') +
-                F('maintenance_lift') +
-                F('fee_cleaner') +
-                F('fee_manager_and_cashier') +
-                F('repairs') +
-                F('others')
+            F('electricity_common') +
+            F('electricity_lift') +
+            F('internet') +
+            F('maintenance_lift') +
+            F('fee_cleaner') +
+            F('fee_manager_and_cashier') +
+            F('repairs') +
+            F('others')
         )
+    )
+
+    def get_month_name(self):
+        return dict(MonthChoices.choices)[self.month]
+
+
+class OtherBill(models.Model):
+    MAX_MONTH_LENGTH = 10
+    MAX_YEAR_LENGTH = 4
+    MAX_DECIMAL_DIGITS = 10
+    MAX_DECIMAL_PLACES = 2
+
+    class Meta:
+        abstract = True
+        ordering = ["-year", "month"]
+
+    month = models.CharField(
+        max_length=MAX_MONTH_LENGTH,
+        choices=MonthChoices.choices,
+        blank=False,
+        null=False,
+    )
+
+    year = models.CharField(
+        max_length=MAX_YEAR_LENGTH,
+        blank=False,
+        null=False,
+    )
+
+    comment = models.TextField(
+        blank=False,
+        null=False,
+    )
+
+    total_amount = models.DecimalField(
+        max_digits=MAX_DECIMAL_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        blank=False,
+        null=False,
+    )
+
+    is_paid = models.BooleanField(
+        default=False,
+        verbose_name="Paid",
     )
 
     def get_month_name(self):

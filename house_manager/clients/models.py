@@ -51,10 +51,6 @@ class Client(TimeStampModel):
         default=True,
     )
 
-    # fixed_fee = models.BooleanField(
-    #     default=False,
-    # )
-
     house = models.ForeignKey(
         to=House,
         on_delete=models.CASCADE,

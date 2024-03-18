@@ -99,7 +99,8 @@
     /*}*/
 
     .list-clients .client-card,
-    .list-house-bills .client-card {
+    .list-house-bills .client-card,
+    .list-house-bills .client-card-not-paid {
         flex-direction: column;
         align-items: stretch;
     }

@@ -10,7 +10,7 @@ from house_manager.houses.models import House
 class HouseCreateView(views.CreateView):
     queryset = House.objects.all()
     template_name = "houses/create_house.html"
-    fields = ("town", "address", "building_number", "entrance")
+    fields = ("town", "address", "building_number", "entrance", "money_balance")
     success_url = reverse_lazy("dashboard")
 
     def form_valid(self, form):
@@ -32,12 +32,18 @@ class HouseDetailsView(views.DetailView):
 
         return super().get(request, *args, **kwargs)
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #
-    #     context['money_balance'] = self.object.house_monthly_bills.filter(house_id=selected_house)
-    #
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        total_apartments = House.objects.total_apartments(house_id=self.kwargs.get('pk'))
+        total_people = House.objects.total_people(house_id=self.kwargs.get('pk'))
+        total_people_using_lift = House.objects.total_people_using_lift(house_id=self.kwargs.get('pk'))
+
+        context['total_apartments'] = total_apartments
+        context['total_people'] = total_people
+        context['total_people_using_lift'] = total_people_using_lift
+
+        return context
 
 
 class HouseClientsDetailsView(views.DetailView):
@@ -57,7 +63,7 @@ class HouseClientsDetailsView(views.DetailView):
 class HouseEditView(views.UpdateView):
     queryset = House.objects.all()
     template_name = "houses/edit_house.html"
-    fields = ("town", "address", "building_number", "entrance")
+    fields = ("town", "address", "building_number", "entrance", "money_balance")
 
     def get_success_url(self):
         return reverse_lazy('details_house', kwargs={'pk': self.object.pk})

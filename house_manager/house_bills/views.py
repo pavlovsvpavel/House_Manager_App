@@ -5,10 +5,11 @@ from django.urls import reverse_lazy
 from django.views import generic as views
 
 from house_manager.client_bills.helpers.calculate_fees import calculate_fees
+from house_manager.client_bills.helpers.calculate_fees_other_bills import calculate_fees_other_bills
 from house_manager.clients.models import Client
-from house_manager.house_bills.forms import HouseMonthlyBillForm
+from house_manager.house_bills.forms import HouseMonthlyBillForm, HouseOtherBillForm
 from house_manager.house_bills.helpers.subtract_amount import subtract_amount_from_house_balance
-from house_manager.house_bills.models import HouseMonthlyBill
+from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill
 from house_manager.houses.mixins import GetUserAndHouseInstanceMixin
 from house_manager.houses.models import House
 
@@ -84,7 +85,85 @@ class HouseMonthlyBillEditView(views.UpdateView):
         else:
             house_id = form.instance.house_id
             bill_id = form.instance.id
-            subtract_amount_from_house_balance(house_id, bill_id)
+            type_of_bill = self.queryset.model
+            subtract_amount_from_house_balance(type_of_bill, house_id, bill_id)
+            return super().form_valid(form)
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        if form.instance.is_paid:
+            form.fields["is_paid"].disabled = True
+        return form
+
+
+class HouseOtherBillCreateView(GetUserAndHouseInstanceMixin, views.CreateView):
+    queryset = HouseOtherBill.objects.select_related('house')
+    template_name = "house_bills/create_other_bill.html"
+    form_class = HouseOtherBillForm
+
+    def get_success_url(self):
+        selected_house_pk = self.request.session.get("selected_house")
+
+        return reverse_lazy('details_house', kwargs={'pk': selected_house_pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        house_id = self.request.session.get("selected_house")
+
+        context['house_id'] = house_id
+        context['clients'] = Client.objects.filter(house=house_id)
+
+        return context
+
+    def form_valid(self, form):
+        try:
+            response = super().form_valid(form)
+            current_year = form.instance.year
+            current_month = form.instance.month
+            house_id = form.instance.house_id
+            user_id = self.request.user.pk
+            calculate_fees_other_bills(house_id, current_year, current_month, user_id)
+
+            return response
+
+        except IntegrityError as e:
+            error_message = "House bill with those month and year already exists."
+            form.add_error(None, error_message)
+
+            return self.form_invalid(form)
+
+
+class CurrentHouseOtherBillDetailView(views.DetailView):
+    template_name = "house_bills/list_other_house_bills.html"
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(House, pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["house_bills"] = self.object.house_other_bills.all()
+
+        return context
+
+
+class HouseOtherBillEditView(views.UpdateView):
+    queryset = HouseOtherBill.objects.prefetch_related("house")
+    template_name = "house_bills/details_other_house_bills.html"
+
+    fields = ("is_paid",)
+
+    def get_success_url(self):
+        return reverse_lazy("list_other_house_bills", kwargs={"pk": self.object.house.pk})
+
+    def form_valid(self, form):
+        if not form.cleaned_data['is_paid']:
+            return self.form_invalid(form)
+        else:
+            house_id = form.instance.house_id
+            bill_id = form.instance.id
+            type_of_bill = self.queryset.model
+            subtract_amount_from_house_balance(type_of_bill, house_id, bill_id)
             return super().form_valid(form)
 
     def get_form(self, form_class=None):

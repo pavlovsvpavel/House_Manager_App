@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from house_manager.common.mixins import MonthlyBill
+from house_manager.common.mixins import MonthlyBill, OtherBill
 from house_manager.houses.models import House
 
 UserModel = get_user_model()
@@ -32,3 +32,18 @@ class HouseMonthlyBill(MonthlyBill):
 
     def __str__(self):
         return f"Bill for '{self.house}' for {self.month} {self.year}"
+
+
+class HouseOtherBill(OtherBill):
+    house = models.ForeignKey(
+        to=House,
+        on_delete=models.CASCADE,
+        related_name='house_other_bills'
+    )
+
+    user = models.ForeignKey(
+        to=UserModel,
+        on_delete=models.RESTRICT,
+    )
+
+

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <section class="site-section details-house-bill">
+        <div class="container">
+            <div class="wrapper">
+                <div class="client-card">
+                    <div class="card-column">
+                        <p class="column-name">Year</p>
+                        <p class="column-data">{{ object.year }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Month</p>
+                        <p class="column-data">{{ object.get_month_name }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Comment</p>
+                        <p class="column-data">{{ object.comment }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">Total BGN</p>
+                        <p class="column-data">{{ object.total_amount }}</p>
+                    </div>
+                </div>
+                <form class="is-paid-form" method="post" action="{% url "edit_other_house_bills" pk=object.pk %}">
+                    {{ form }}
+                    {% csrf_token %}
+                    {% if form.instance.is_paid %}
+                        <button type="submit" class="btn" hidden="hidden">Save</button>
+                    {% else %}
+                        <button type="submit" class="btn">Save</button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

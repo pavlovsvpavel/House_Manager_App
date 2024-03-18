@@ -1,7 +1,7 @@
 from django import forms
 
 from house_manager.house_bills.helpers.choices_for_year_field import next_five_years
-from house_manager.house_bills.models import HouseMonthlyBill
+from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill
 
 
 class YearDropdownField(forms.TypedChoiceField):
@@ -20,3 +20,11 @@ class HouseMonthlyBillForm(forms.ModelForm):
                   "electricity_lift", "internet", "maintenance_lift",
                   "fee_cleaner", "fee_manager_and_cashier", "repairs",
                   "others")
+
+
+class HouseOtherBillForm(forms.ModelForm):
+    year = YearDropdownField(label='Year')
+
+    class Meta:
+        model = HouseOtherBill
+        fields = ("month", "year", "comment", "total_amount")

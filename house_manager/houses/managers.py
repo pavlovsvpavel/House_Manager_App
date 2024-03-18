@@ -14,7 +14,7 @@ class SingleHouseManager(models.Manager):
             .aggregate(total_people=Sum('clients__number_of_people'))
         )
 
-        return people['total_people']
+        return people['total_people'] or 0
 
     def total_people_using_lift(self, house_id):
         query = Q(id=house_id) & Q(clients__is_using_lift=True)
@@ -26,7 +26,7 @@ class SingleHouseManager(models.Manager):
             .aggregate(total_people=Sum('clients__number_of_people'))
         )
 
-        return people['total_people']
+        return people['total_people'] or 0
 
     def total_apartments(self, house_id):
         query = Q(id=house_id)
@@ -37,4 +37,4 @@ class SingleHouseManager(models.Manager):
             .aggregate(total_apartments=Count('clients__apartment'))
         )
 
-        return apartments['total_apartments']
+        return apartments['total_apartments'] or 0

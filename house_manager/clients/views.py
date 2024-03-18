@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.urls import reverse_lazy
 from django.views import generic as views
 
-from house_manager.client_bills.models import ClientMonthlyBill
+from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 from house_manager.clients.models import Client
 from house_manager.houses.mixins import GetUserAndHouseInstanceMixin
 from house_manager.houses.models import House
@@ -47,6 +47,7 @@ class ClientDetailsView(views.DetailView):
         if house_id:
             context["house"] = House.objects.get(pk=house_id)
             context["clients_bills"] = ClientMonthlyBill.objects.filter(client_id=self.object.pk)
+            context["client_other_bills"] = ClientOtherBill.objects.filter(client_id=self.object.pk)
 
         return context
 
@@ -83,3 +84,6 @@ class ClientDeleteView(views.DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("list_house_clients", kwargs={"pk": self.object.house.pk})
+
+
+
