@@ -14,3 +14,56 @@
 {#    </section>#}
 {##}
 {#{% endblock %}#}
+
+{% extends "base.html" %}
+{% load static %}
+{% block main_content %}
+
+    <section class="site-section login-register-user">
+        <div class="container">
+            <div class="form-container">
+                <input type="checkbox" id="flip" checked>
+                <div class="cover">
+                    <div class="front">
+                        <div class="image-container">
+                            <img src="{% static 'images/login_from.jpg' %}" alt="">
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="image-container">
+                            <img src="{% static 'images/login_from.jpg' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="forms">
+                    <div class="form-content">
+                        
+                        <div class="login-form">
+                            <div class="create-form-heading">Login</div>
+                            <form class="create-form" action="{% url "login_user" %}?next={{ next }}" method="post">
+                                {{ login_form }}
+                                {% csrf_token %}
+                                <input class="btn" type="submit" value="Login">
+                                <div class="text sign-up-text">Don't have an account?
+                                    <label for="flip" id="register_now">Register now</label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="register-form">
+                            <div class="create-form-heading">Register</div>
+                            <form class="create-form" action="{% url "register_user" %}" method="post">
+                                {{ form }}
+                                {% csrf_token %}
+                                <input class="btn" type="submit" value="Register">
+                                <div class="text sign-up-text">Already have an account?
+                                    <label for="flip" id="login_now">Login now</label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

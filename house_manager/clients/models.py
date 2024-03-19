@@ -64,3 +64,4 @@ class Client(TimeStampModel):
 
     def __str__(self):
         return self.family_name
+

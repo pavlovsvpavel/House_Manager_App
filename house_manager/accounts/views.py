@@ -1,10 +1,10 @@
 from django.contrib.auth import views as auth_views, logout, login, get_user_model
-
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 
 from house_manager.accounts.forms import HouseManagerUserCreationForm
+from django.contrib.auth import forms as auth_forms
 from house_manager.accounts.mixins import OwnerRequiredMixin
 from house_manager.accounts.models import Profile
 
@@ -12,7 +12,7 @@ UserModel = get_user_model()
 
 
 class LogInUserView(OwnerRequiredMixin, auth_views.LoginView):
-    template_name = "accounts/login-register.html"
+    template_name = "accounts/login.html"
     redirect_authenticated_user = True
 
     def get_context_data(self, **kwargs):
@@ -22,9 +22,14 @@ class LogInUserView(OwnerRequiredMixin, auth_views.LoginView):
 
 
 class RegisterUserView(OwnerRequiredMixin, views.CreateView):
-    template_name = "accounts/login-register.html"
+    template_name = "accounts/register.html"
     form_class = HouseManagerUserCreationForm
     success_url = reverse_lazy("index")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['login_form'] = auth_forms.AuthenticationForm()
+        return context
 
     def form_valid(self, form):
         result = super().form_valid(form)

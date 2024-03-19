@@ -19,7 +19,9 @@ class ClientMonthlyBill(MonthlyBill):
 
     client = models.ForeignKey(
         to=Client,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
         related_name='client_monthly_bills',
     )
 
@@ -38,7 +40,9 @@ class ClientMonthlyBill(MonthlyBill):
 class ClientOtherBill(OtherBill):
     client = models.ForeignKey(
         to=Client,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
         related_name='client_other_bills',
     )
 

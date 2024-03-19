@@ -5,6 +5,7 @@
 
 .errorlist li {
     font-style: italic;
+    font-size: 0.8em;
 }
 
 .create-form {

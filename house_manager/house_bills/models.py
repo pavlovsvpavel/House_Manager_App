@@ -35,6 +35,10 @@ class HouseMonthlyBill(MonthlyBill):
 
 
 class HouseOtherBill(OtherBill):
+    class Meta:
+        unique_together = ["year", "month", "house"]
+        ordering = ["-year", "month"]
+
     house = models.ForeignKey(
         to=House,
         on_delete=models.CASCADE,

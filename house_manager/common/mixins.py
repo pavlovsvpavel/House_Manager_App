@@ -18,15 +18,15 @@ class TimeStampModel(models.Model):
 
 
 class MonthChoices(models.TextChoices):
-    JANUARY = "1", "January"
-    FEBRUARY = "2", "February"
-    MARCH = "3"
-    APRIL = "4"
-    MAY = "5"
-    JUNE = "6"
-    JULY = "7"
-    AUGUST = "8"
-    SEPTEMBER = "9"
+    JANUARY = "01"
+    FEBRUARY = "02"
+    MARCH = "03"
+    APRIL = "04"
+    MAY = "05"
+    JUNE = "06"
+    JULY = "07"
+    AUGUST = "08"
+    SEPTEMBER = "09"
     OCTOBER = "10"
     NOVEMBER = "11"
     DECEMBER = "12"
@@ -117,14 +117,14 @@ class MonthlyBill(models.Model):
         ),
         db_persist=True,
         expression=(
-            F('electricity_common') +
-            F('electricity_lift') +
-            F('internet') +
-            F('maintenance_lift') +
-            F('fee_cleaner') +
-            F('fee_manager_and_cashier') +
-            F('repairs') +
-            F('others')
+                F('electricity_common') +
+                F('electricity_lift') +
+                F('internet') +
+                F('maintenance_lift') +
+                F('fee_cleaner') +
+                F('fee_manager_and_cashier') +
+                F('repairs') +
+                F('others')
         )
     )
 

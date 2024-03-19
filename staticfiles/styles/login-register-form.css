@@ -1,3 +1,7 @@
+.helptext {
+    display: none;
+}
+
 .form-container {
     position: relative;
     max-width: 850px;
@@ -45,7 +49,7 @@
     position: absolute;
     height: 100%;
     width: 100%;
-    background: #7d2ae8;
+    background: #7091F5;
     opacity: 0.5;
     z-index: 12;
 }

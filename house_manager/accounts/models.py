@@ -11,10 +11,10 @@ from house_manager.common.validators import validate_char_field, validate_phone_
 
 class HouseManagerUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     email = models.EmailField(
-        _("email_address"),
+        _("email"),
         unique=True,
         error_messages={
-            "unique": _("A user with that email already exists."),
+            "unique": _("User with that email already exists."),
         },
     )
 
@@ -27,6 +27,7 @@ class HouseManagerUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixi
         _("active"),
         default=True,
     )
+
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
     USERNAME_FIELD = "email"
