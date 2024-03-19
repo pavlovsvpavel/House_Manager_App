@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block main_content %}
 
@@ -11,29 +12,29 @@
                             {% for client in clients %}
                                 <div class="client-card" onclick="redirectToClientDetails({{ client.pk }},'{% url "details_client" pk=0 %}')">
                                     <div class="card-column">
-                                        <p class="column-name">Family Name</p>
+                                        <p class="column-name">{% trans "Family Name" %}</p>
                                         <p class="column-data">{{ client.family_name }}</p>
                                     </div>
                                     <div class="card-column">
-                                        <p class="column-name">Floor</p>
+                                        <p class="column-name">{% trans "Floor" %}</p>
                                         <p class="column-data">{{ client.floor }}</p>
                                     </div>
                                     <div class="card-column">
-                                        <p class="column-name">Apartment</p>
+                                        <p class="column-name">{% trans "Apartment" %}</p>
                                         <p class="column-data">{{ client.apartment }}</p>
                                     </div>
                                     <div class="card-column">
-                                        <p class="column-name">People</p>
+                                        <p class="column-name">{% trans "People" %}</p>
                                         <p class="column-data">{{ client.number_of_people }}</p>
                                     </div>
                                 </div>
                             {% endfor %}
                         {% else %}
-                            <h1>No clients</h1>
+                            <h1>{% trans "No clients" %}</h1>
                         {% endif %}
                     </div>
                     <div class="back-button">
-                        <a href="{% url "details_house" pk=object.pk %}"><i class="fa-solid fa-arrow-right"></i>Back to house</a>
+                        <a href="{% url "details_house" pk=object.pk %}"><i class="fa-solid fa-arrow-right"></i>{% trans "Back to house" %}</a>
                     </div>
                 </div>
             </div>

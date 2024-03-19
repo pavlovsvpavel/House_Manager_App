@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 {% block main_content %}
 
@@ -21,24 +22,24 @@
                 <div class="forms">
                     <div class="form-content">
                         <div class="login-form">
-                            <div class="create-form-heading">Login</div>
+                            <div class="create-form-heading">{% trans "Login" %}</div>
                             <form class="create-form" action="{% url "login_user" %}?next={{ next }}" method="post">
                                 {{ form }}
                                 {% csrf_token %}
-                                <input class="btn" type="submit" value="Login">
-                                <div class="text sign-up-text">Don't have an account?
-                                    <label for="flip" id="register_now">Register now</label>
+                                <input class="btn" type="submit" value="{% trans "Login" %}">
+                                <div class="text sign-up-text">{% trans "Don't have an account?" %}
+                                    <label for="flip" id="register_now">{% trans "Register now" %}</label>
                                 </div>
                             </form>
                         </div>
                         <div class="register-form">
-                            <div class="create-form-heading">Register</div>
+                            <div class="create-form-heading">{% trans "Register" %}</div>
                             <form class="create-form" action="{% url "register_user" %}" method="post">
                                 {{ register_form }}
                                 {% csrf_token %}
-                                <input class="btn" type="submit" value="Register">
-                                <div class="text sign-up-text">Already have an account?
-                                    <label for="flip" id="login_now">Login now</label>
+                                <input class="btn" type="submit" value="{% trans "Register" %}">
+                                <div class="text sign-up-text">{% trans "Already have an account?" %}
+                                    <label for="flip" id="login_now">{% trans "Login now" %}</label>
                                 </div>
                             </form>
                         </div>

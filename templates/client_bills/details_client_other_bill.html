@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block main_content %}
 
@@ -7,29 +8,32 @@
             <div class="wrapper">
                 <div class="client-card">
                     <div class="card-column">
-                        <p class="column-name">Year</p>
+                        <p class="column-name">{% trans "Year" %}</p>
                         <p class="column-data">{{ object.year }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">Month</p>
+                        <p class="column-name">{% trans "Month" %}</p>
                         <p class="column-data">{{ object.get_month_name }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">Comment</p>
+                        <p class="column-name">{% trans "Comment" %}</p>
                         <p class="column-data">{{ object.comment }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">Total BGN</p>
+                        <p class="column-name">{% trans "Total BGN" %}</p>
                         <p class="column-data">{{ object.total_amount }}</p>
                     </div>
                 </div>
                 <form class="is-paid-form" method="post" action="{% url "edit_client_other_bill" pk=object.pk %}">
-                    {{ form }}
+{#                    {{ form }}#}
                     {% csrf_token %}
+                    <div>
+                        <label for="id_is_paid">{% trans "Paid" %}</label>{{ form.is_paid }}
+                    </div>
                     {% if form.instance.is_paid %}
-                        <button type="submit" class="btn" hidden="hidden">Save</button>
+                        <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
                     {% else %}
-                    <button type="submit" class="btn">Save</button>
+                        <button type="submit" class="btn">{% trans "Save" %}</button>
                     {% endif %}
                 </form>
             </div>

@@ -1,0 +1,385 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-19 22:55+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Pavel Pavlov\n"
+"Language-Team: Pavel Pavlov\n"
+"Language: Bulgarian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\house_manager\accounts\models.py:14
+msgid "email"
+msgstr "имейл"
+
+#: .\house_manager\accounts\models.py:17
+msgid "User with that email already exists."
+msgstr "Потребител с този имейл вече съществува"
+
+#: .\house_manager\accounts\models.py:22
+msgid "staff status"
+msgstr ""
+
+#: .\house_manager\accounts\models.py:27
+msgid "active"
+msgstr ""
+
+#: .\house_manager\accounts\models.py:31
+msgid "date joined"
+msgstr ""
+
+#: .\templates\accounts\details_profile.html:23
+#: .\templates\clients\details_client.html:35
+#: .\templates\houses\details_house.html:54
+msgid "Edit"
+msgstr "Промени"
+
+#: .\templates\accounts\details_profile.html:24
+#: .\templates\clients\details_client.html:36
+#: .\templates\houses\details_house.html:55
+msgid "Delete"
+msgstr "Изтрий"
+
+#: .\templates\accounts\login.html:25 .\templates\accounts\login.html:29
+#: .\templates\accounts\register.html:26 .\templates\accounts\register.html:30
+#: .\templates\base.html:41
+msgid "Login"
+msgstr "Вход"
+
+#: .\templates\accounts\login.html:30 .\templates\accounts\register.html:31
+msgid "Don't have an account?"
+msgstr "Все още нямате профил?"
+
+#: .\templates\accounts\login.html:31 .\templates\accounts\register.html:32
+msgid "Register now"
+msgstr "Регистрирай се сега"
+
+#: .\templates\accounts\login.html:36 .\templates\accounts\login.html:40
+#: .\templates\accounts\register.html:37 .\templates\accounts\register.html:41
+msgid "Register"
+msgstr "Регистрация"
+
+#: .\templates\accounts\login.html:41 .\templates\accounts\register.html:42
+msgid "Already have an account?"
+msgstr "Вече имате регистрация?"
+
+#: .\templates\accounts\login.html:42 .\templates\accounts\register.html:43
+msgid "Login now"
+msgstr "Вход"
+
+#: .\templates\base.html:36
+msgid "My Houses"
+msgstr "Моите къщи"
+
+#: .\templates\base.html:37 .\templates\houses\create_house.html:9
+msgid "Create House"
+msgstr "Създай къща"
+
+#: .\templates\base.html:38
+msgid "Profile"
+msgstr "Профил"
+
+#: .\templates\base.html:39
+msgid "Logout"
+msgstr "Изход"
+
+#: .\templates\client_bills\details_client_bill.html:11
+#: .\templates\client_bills\details_client_other_bill.html:11
+#: .\templates\client_bills\list_client_bills.html:15
+#: .\templates\client_bills\list_other_client_bills.html:15
+#: .\templates\house_bills\create_house_bills.html:16
+#: .\templates\house_bills\create_other_bill.html:16
+#: .\templates\house_bills\details_house_bills.html:10
+#: .\templates\house_bills\details_other_house_bills.html:10
+#: .\templates\house_bills\list_house_bills.html:15
+#: .\templates\house_bills\list_other_house_bills.html:15
+msgid "Year"
+msgstr "Година"
+
+#: .\templates\client_bills\details_client_bill.html:15
+#: .\templates\client_bills\details_client_other_bill.html:15
+#: .\templates\client_bills\list_client_bills.html:19
+#: .\templates\client_bills\list_other_client_bills.html:19
+#: .\templates\house_bills\create_house_bills.html:15
+#: .\templates\house_bills\create_other_bill.html:15
+#: .\templates\house_bills\details_house_bills.html:14
+#: .\templates\house_bills\details_other_house_bills.html:14
+#: .\templates\house_bills\list_house_bills.html:19
+#: .\templates\house_bills\list_other_house_bills.html:19
+msgid "Month"
+msgstr "Месец"
+
+#: .\templates\client_bills\details_client_bill.html:19
+#: .\templates\house_bills\create_house_bills.html:17
+#: .\templates\house_bills\details_house_bills.html:18
+msgid "Electricity common"
+msgstr "Ток общи нужди"
+
+#: .\templates\client_bills\details_client_bill.html:23
+#: .\templates\house_bills\create_house_bills.html:18
+#: .\templates\house_bills\details_house_bills.html:22
+msgid "Electricity lift"
+msgstr "Ток асансьор"
+
+#: .\templates\client_bills\details_client_bill.html:27
+#: .\templates\house_bills\create_house_bills.html:19
+#: .\templates\house_bills\details_house_bills.html:26
+msgid "Internet"
+msgstr "Интернет"
+
+#: .\templates\client_bills\details_client_bill.html:31
+#: .\templates\house_bills\create_house_bills.html:20
+#: .\templates\house_bills\details_house_bills.html:30
+msgid "Lift maintenance"
+msgstr "Поддръжка асансьор"
+
+#: .\templates\client_bills\details_client_bill.html:35
+#: .\templates\house_bills\create_house_bills.html:21
+#: .\templates\house_bills\details_house_bills.html:34
+msgid "Cleaner fee"
+msgstr "Такса хигиенист"
+
+#: .\templates\client_bills\details_client_bill.html:39
+#: .\templates\house_bills\create_house_bills.html:22
+#: .\templates\house_bills\details_house_bills.html:38
+msgid "Manager/Cashier fee"
+msgstr "Такса Домоуправител/Касиер"
+
+#: .\templates\client_bills\details_client_bill.html:43
+#: .\templates\house_bills\create_house_bills.html:23
+msgid "Repairs"
+msgstr "Фонд ремонти"
+
+#: .\templates\client_bills\details_client_bill.html:47
+#: .\templates\house_bills\create_house_bills.html:24
+#: .\templates\house_bills\details_house_bills.html:42
+msgid "Other expenses"
+msgstr "Други разходи"
+
+#: .\templates\client_bills\details_client_bill.html:51
+#: .\templates\client_bills\details_client_other_bill.html:23
+#: .\templates\client_bills\list_client_bills.html:23
+#: .\templates\client_bills\list_other_client_bills.html:23
+#: .\templates\house_bills\create_other_bill.html:18
+#: .\templates\house_bills\details_house_bills.html:46
+#: .\templates\house_bills\details_other_house_bills.html:22
+#: .\templates\house_bills\list_house_bills.html:23
+#: .\templates\house_bills\list_other_house_bills.html:27
+msgid "Total BGN"
+msgstr "Общо сума, ЛВ."
+
+#: .\templates\client_bills\details_client_bill.html:59
+#: .\templates\client_bills\details_client_other_bill.html:31
+#: .\templates\house_bills\details_house_bills.html:54
+#: .\templates\house_bills\details_other_house_bills.html:30
+msgid "Paid"
+msgstr "Платена"
+
+#: .\templates\client_bills\details_client_bill.html:63
+#: .\templates\client_bills\details_client_bill.html:65
+#: .\templates\client_bills\details_client_other_bill.html:34
+#: .\templates\client_bills\details_client_other_bill.html:36
+#: .\templates\clients\create_client.html:18
+#: .\templates\clients\edit_client.html:17
+#: .\templates\house_bills\create_house_bills.html:25
+#: .\templates\house_bills\create_other_bill.html:19
+#: .\templates\house_bills\details_house_bills.html:57
+#: .\templates\house_bills\details_house_bills.html:59
+#: .\templates\house_bills\details_other_house_bills.html:33
+#: .\templates\house_bills\details_other_house_bills.html:35
+#: .\templates\houses\create_house.html:17
+#: .\templates\houses\edit_house.html:16
+msgid "Save"
+msgstr "Запиши"
+
+#: .\templates\client_bills\details_client_other_bill.html:19
+#: .\templates\house_bills\create_other_bill.html:17
+#: .\templates\house_bills\details_other_house_bills.html:18
+#: .\templates\house_bills\list_other_house_bills.html:23
+msgid "Comment"
+msgstr "Коментар"
+
+#: .\templates\client_bills\list_client_bills.html:30
+#: .\templates\client_bills\list_other_client_bills.html:30
+#: .\templates\house_bills\list_house_bills.html:29
+#: .\templates\house_bills\list_other_house_bills.html:33
+msgid "No bills"
+msgstr "Няма въведени сметки"
+
+#: .\templates\client_bills\list_client_bills.html:34
+#: .\templates\client_bills\list_other_client_bills.html:34
+msgid "Back to client"
+msgstr "Назад към клиент"
+
+#: .\templates\clients\create_client.html:9
+#: .\templates\houses\details_house.html:11
+msgid "Create Client"
+msgstr "Създай клиент"
+
+#: .\templates\clients\create_client.html:12
+#: .\templates\clients\details_client.html:11
+#: .\templates\clients\edit_client.html:11
+#: .\templates\houses\list_house_clients.html:15
+msgid "Family Name"
+msgstr "Фамилия"
+
+#: .\templates\clients\create_client.html:13
+#: .\templates\clients\details_client.html:15
+#: .\templates\clients\edit_client.html:12
+#: .\templates\houses\list_house_clients.html:19
+msgid "Floor"
+msgstr "Етаж"
+
+#: .\templates\clients\create_client.html:14
+#: .\templates\clients\details_client.html:19
+#: .\templates\clients\edit_client.html:13
+#: .\templates\houses\list_house_clients.html:23
+msgid "Apartment"
+msgstr "Апартамент"
+
+#: .\templates\clients\create_client.html:15
+#: .\templates\clients\edit_client.html:14
+msgid "Number of People"
+msgstr "Брой на живущи"
+
+#: .\templates\clients\create_client.html:16
+#: .\templates\clients\edit_client.html:15
+msgid "Is Using Lift"
+msgstr "Използва ли асансьор"
+
+#: .\templates\clients\create_client.html:17
+#: .\templates\clients\edit_client.html:16
+msgid "Is Occupied"
+msgstr "Обитаем"
+
+#: .\templates\clients\delete_client.html:9
+msgid "Are you sure you want to delete this client?"
+msgstr "Сигурни ли сте, че искате да изтриете този клиент?"
+
+#: .\templates\clients\delete_client.html:12
+#: .\templates\houses\delete_house.html:12
+msgid "Yes"
+msgstr "Да"
+
+#: .\templates\clients\details_client.html:23
+#: .\templates\houses\list_house_clients.html:27
+msgid "People"
+msgstr "Живущи"
+
+#: .\templates\clients\details_client.html:27
+msgid "Using lift"
+msgstr "Използва ли асансьор"
+
+#: .\templates\clients\details_client.html:31
+msgid "Occupied"
+msgstr "Обитаем"
+
+#: .\templates\clients\details_client.html:41
+msgid "Bills"
+msgstr "Сметки"
+
+#: .\templates\clients\details_client.html:44
+#: .\templates\houses\details_house.html:16
+msgid "Other Bills"
+msgstr "Други сметки"
+
+#: .\templates\clients\details_client.html:47
+msgid "Back to clients"
+msgstr "Назад към всички клиенти"
+
+#: .\templates\clients\edit_client.html:8
+msgid "Edit Client"
+msgstr "Промяна клиент"
+
+#: .\templates\common\dashboard.html:15 .\templates\houses\create_house.html:12
+#: .\templates\houses\details_house.html:22
+#: .\templates\houses\edit_house.html:11
+msgid "Town"
+msgstr "Град"
+
+#: .\templates\common\dashboard.html:19 .\templates\houses\create_house.html:13
+#: .\templates\houses\details_house.html:26
+#: .\templates\houses\edit_house.html:12
+msgid "Address"
+msgstr "Адрес"
+
+#: .\templates\common\dashboard.html:23 .\templates\houses\create_house.html:14
+#: .\templates\houses\details_house.html:30
+#: .\templates\houses\edit_house.html:13
+msgid "Building number"
+msgstr "Блок"
+
+#: .\templates\common\dashboard.html:27 .\templates\houses\create_house.html:15
+#: .\templates\houses\details_house.html:34
+#: .\templates\houses\edit_house.html:14
+msgid "Entrance"
+msgstr "Вход"
+
+#: .\templates\common\dashboard.html:33
+msgid "No houses"
+msgstr "Няма създадени къщи"
+
+#: .\templates\house_bills\create_house_bills.html:12
+#: .\templates\house_bills\create_other_bill.html:12
+#: .\templates\houses\details_house.html:13
+msgid "Create Bill"
+msgstr "Създай сметка"
+
+#: .\templates\house_bills\create_house_bills.html:28
+#: .\templates\house_bills\create_other_bill.html:22
+msgid "Add clients first"
+msgstr "Първо добавете клиенти"
+
+#: .\templates\house_bills\create_house_bills.html:33
+#: .\templates\house_bills\create_other_bill.html:26
+#: .\templates\house_bills\list_house_bills.html:33
+#: .\templates\house_bills\list_other_house_bills.html:37
+#: .\templates\houses\list_house_clients.html:37
+msgid "Back to house"
+msgstr "Назад към къща"
+
+#: .\templates\houses\create_house.html:16
+#: .\templates\houses\details_house.html:50
+#: .\templates\houses\edit_house.html:15
+msgid "Balance"
+msgstr "Наличност"
+
+#: .\templates\houses\delete_house.html:9
+msgid "Are you sure you want to delete this house?"
+msgstr "Сигурни ли сте, че искате да изтриете тази къща?"
+
+#: .\templates\houses\details_house.html:12
+msgid "House Clients"
+msgstr "Клиенти"
+
+#: .\templates\houses\details_house.html:14
+msgid "House Bills"
+msgstr "Сметки"
+
+#: .\templates\houses\details_house.html:15
+msgid "Create Other Bill"
+msgstr "Създай друга сметка"
+
+#: .\templates\houses\details_house.html:38
+msgid "Total apartments"
+msgstr "Общо апартаменти"
+
+#: .\templates\houses\details_house.html:42
+msgid "Total people"
+msgstr "Общо живущи"
+
+#: .\templates\houses\details_house.html:46
+msgid "Total people using lift"
+msgstr "Общо живущи ползващи асансьор"
+
+#: .\templates\houses\edit_house.html:8
+msgid "Edit House"
+msgstr "Промяна на къща"
+
+#: .\templates\houses\list_house_clients.html:33
+msgid "No clients"
+msgstr "Няма създадени клиенти"

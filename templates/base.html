@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -32,13 +33,29 @@
                         </label>
                         <ul>
                             {% if request.user.is_authenticated %}
-                                <li><a href="{% url "dashboard" %}">My Houses</a></li>
-                                <li><a href="{% url "create_house" %}">Create House</a></li>
-                                <li><a href="{% url "details_profile" pk=request.user.pk %}">Profile</a></li>
-                                <li><a href="{% url "logout_user" %}">Logout</a></li>
+                                <li><a href="{% url "dashboard" %}">{% trans "My Houses" %}</a></li>
+                                <li><a href="{% url "create_house" %}">{% trans "Create House" %}</a></li>
+                                <li><a href="{% url "details_profile" pk=request.user.pk %}">{% trans "Profile" %}</a>
+                                </li>
+                                <li><a href="{% url "logout_user" %}">{% trans "Logout" %}</a></li>
+
                             {% else %}
-                                <li><a href="{% url "login_user" %}">Login</a></li>
+                                <li><a href="{% url "login_user" %}">{% trans "Login" %}</a></li>
                             {% endif %}
+                        </ul>
+                        <ul>
+                            <li>
+                                <form class="language-form" action="{% url 'set_language' %}" method="post">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ redirect_to }}"/>
+                                    <button class="language-form-btn" type="submit" name="language" value="en">
+                                        <img src="{% static "images/uk_flag.png" %}" alt="English Flag">
+                                    </button>
+                                    <button class="language-form-btn" type="submit" name="language" value="bg">
+                                        <img src="{% static "images/bg_flag.png" %}" alt="Bulgarian Flag">
+                                    </button>
+                                </form>
+                            </li>
                         </ul>
                     </div>
                 </nav>

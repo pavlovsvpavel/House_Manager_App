@@ -11,8 +11,8 @@ urlpatterns = [
     path("clients/", include("house_manager.clients.urls")),
     path("house-bills/", include("house_manager.house_bills.urls")),
     path("client-bills/", include("house_manager.client_bills.urls")),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

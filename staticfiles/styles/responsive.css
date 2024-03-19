@@ -1,4 +1,12 @@
-@media (max-width: 800px) {
+@media (max-width: 900px) {
+    html {
+        font-size: 16px;
+    }
+
+    .navigation ul {
+        font-size: 0.8em;
+    }
+
     .dashboard .house-cards {
         flex-direction: column;
         flex-wrap: nowrap;
@@ -37,7 +45,7 @@
 
 @media (max-width: 600px) {
     html {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .header-elements .site-title a {
@@ -49,8 +57,12 @@
         flex-direction: column;
         align-items: stretch;
         padding-left: 1em;
-        gap: 2em;
+        gap: 0.5em;
         width: 100%;
+    }
+
+    .navigation ul a {
+        padding: 1em 0.5em;
     }
 
     .links-container {
@@ -61,7 +73,7 @@
         right: -200%;
         z-index: 10;
         /*width: 250px;*/
-        background-color: #eee;
+        background-color: #8EACCD;
         opacity: 90%;
         box-shadow: -5px 0 5px rgba(0, 0, 0, 0.25);
         transition: 0.8s ease-out;
@@ -72,7 +84,7 @@
     }
 
     .close-sidebar-button {
-        padding: 2em 1em;
+        padding: 1em;
         display: block;
     }
 

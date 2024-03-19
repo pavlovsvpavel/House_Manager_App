@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block main_content %}
 
@@ -7,43 +8,43 @@
             <div class="wrapper">
                 <div class="client-card">
                     <div class="card-column">
-                        <p class="column-name">Family Name</p>
+                        <p class="column-name">{% trans "Family Name" %}</p>
                         <p class="column-data">{{ object.family_name }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">Floor</p>
+                        <p class="column-name">{% trans "Floor" %}</p>
                         <p class="column-data">{{ object.floor }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">Apartment</p>
+                        <p class="column-name">{% trans "Apartment" %}</p>
                         <p class="column-data">{{ object.apartment }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">People</p>
+                        <p class="column-name">{% trans "People" %}</p>
                         <p class="column-data">{{ object.number_of_people }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">Using lift</p>
+                        <p class="column-name">{% trans "Using lift" %}</p>
                         <p class="column-data">{{ object.is_using_lift|yesno:"Yes,No" }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">Occupied</p>
+                        <p class="column-name">{% trans "Occupied" %}</p>
                         <p class="column-data">{{ object.is_occupied|yesno:"Yes,No" }}</p>
                     </div>
                     <div class="client-card-btns">
-                        <a href="{% url "edit_client" pk=object.pk %}">Edit</a>
-                        <a href="{% url "delete_client" pk=object.pk %}">Delete</a>
+                        <a href="{% url "edit_client" pk=object.pk %}">{% trans "Edit" %}</a>
+                        <a href="{% url "delete_client" pk=object.pk %}">{% trans "Delete" %}</a>
                     </div>
                 </div>
                 <div class="client-card-btns">
                     <div class="bills-button">
-                        <a href="{% url "list_client_bills" pk=object.pk %}">Bills</a>
+                        <a href="{% url "list_client_bills" pk=object.pk %}">{% trans "Bills" %}</a>
                     </div>
                     <div class="bills-button">
-                        <a href="{% url "list_other_client_bills" pk=object.pk %}">Other Bills</a>
+                        <a href="{% url "list_other_client_bills" pk=object.pk %}">{% trans "Other Bills" %}</a>
                     </div>
                     <div class="back-button">
-                        <a href="{% url "list_house_clients" pk=house.pk %}"><i class="fa-solid fa-arrow-right"></i>Back to clients</a>
+                        <a href="{% url "list_house_clients" pk=house.pk %}"><i class="fa-solid fa-arrow-right"></i>{% trans "Back to clients" %}</a>
                     </div>
                 </div>
             </div>

@@ -11,10 +11,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: transform 0.3s
+}
+
+
+.site-title:hover {
+    transform: scale(1.05);
 }
 
 .site-title h1 {
     font-size: 0.8em;
+    text-align: center;
 }
 
 .site-title a {
@@ -38,6 +45,7 @@
 
 .navigation ul li {
     display: block;
+    position: relative;
 }
 
 .navigation ul a {
@@ -51,10 +59,31 @@
     display: block;
 }
 
-.navigation ul a:hover {
+.navigation ul a:after,
+.navigation ul a:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 3px;
     background-color: var(--form-btn-color-hover);
-    color: #fff;
-    transition: 0.3s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.navigation ul a:after {
+    top: 0;
+    right: 0;
+    transform-origin: right;
+}
+
+.navigation ul a:before {
+    left: 0;
+    bottom: 0;
+    transform-origin: left;
+}
+
+.navigation ul a:hover::after,
+.navigation ul a:hover::before {
+    width: 100%;
 }
 
 .navigation img {
@@ -68,6 +97,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 1em;
 }
 
 .navigation .home-link {

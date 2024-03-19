@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 {% block main_content %}
 
@@ -19,8 +20,8 @@
                 {% endif %}
                 <div class="details-profile-btns">
                     <ul>
-                        <li><a href="{% url "edit_profile" pk=object.pk %}">Edit</a></li>
-                        <li><a href="{% url "delete_profile" pk=object.pk %}">Delete</a></li>
+                        <li><a href="{% url "edit_profile" pk=object.pk %}">{% trans "Edit" %}</a></li>
+                        <li><a href="{% url "delete_profile" pk=object.pk %}">{% trans "Delete" %}</a></li>
                     </ul>
                 </div>
             </div>

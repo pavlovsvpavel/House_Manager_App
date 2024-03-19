@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 
 {% block main_content %}
@@ -7,34 +8,29 @@
             <div class="house-cards">
             {% if houses %}
                 {% for house in houses %}
-                    <div class="house-card" 
-{#                         onclick="selectCurrentHouseID(#}
-{#                                 {{ house.pk }}, #}
-{#                                 '{% url 'store_selected_house' %}', #}
-{#                                 '{% url 'details_house' pk=0 %}', #}
-{#                                 '{{ csrf_token }}')">#}
+                    <div class="house-card"
                             onclick="selectHouseId(
                                      {{ house.pk }},'{% url "details_house" pk=0 %}')">
                         <div class="card-column">
-                            <p class="column-name">Town</p>
+                            <p class="column-name">{% trans "Town" %}</p>
                             <p class="column-data">{{ house.town }}</p>
                         </div>
                         <div class="card-column">
-                            <p class="column-name">Address</p>
+                            <p class="column-name">{% trans "Address" %}</p>
                             <p class="column-data">{{ house.address }}</p>
                         </div>
                         <div class="card-column">
-                            <p class="column-name">Building number</p>
+                            <p class="column-name">{% trans "Building number" %}</p>
                             <p class="column-data">{{ house.building_number }}</p>
                         </div>
                         <div class="card-column">
-                            <p class="column-name">Entrance</p>
+                            <p class="column-name">{% trans "Entrance" %}</p>
                             <p class="column-data">{{ house.entrance }}</p>
                         </div>
                     </div>
                 {% endfor %}
                 {% else %}
-                <h1>No houses</h1>
+                <h1>{% trans "No houses" %}</h1>
             {% endif %}
             </div>
         </div>

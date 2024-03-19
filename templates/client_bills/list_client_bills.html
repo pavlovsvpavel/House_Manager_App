@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block main_content %}
 
@@ -11,26 +12,26 @@
                             <div class="{% if bill.is_paid %} client-card {% else %} client-card-not-paid {% endif %}" 
                                  onclick="redirectToClientBillDetails({{ bill.pk }},'{% url "edit_client_bill" pk=0 %}')">
                                 <div class="card-column">
-                                    <p class="column-name">Year</p>
+                                    <p class="column-name">{% trans "Year" %}</p>
                                     <p class="column-data">{{ bill.year }}</p>
                                 </div>
                                 <div class="card-column">
-                                    <p class="column-name">Month</p>
+                                    <p class="column-name">{% trans "Month" %}</p>
                                     <p class="column-data">{{ bill.get_month_name }}</p>
                                 </div>
                                 <div class="card-column">
-                                    <p class="column-name">Total BGN</p>
+                                    <p class="column-name">{% trans "Total BGN" %}</p>
                                     <p class="column-data">{{ bill.total_amount }}</p>
                                 </div>
                             </div>
 
                         {% endfor %}
                     {% else %}
-                        <h1>No bills</h1>
+                        <h3>{% trans "No bills" %}</h3>
                     {% endif %}
                 </div>
                 <div class="back-button">
-                    <a href="{% url "details_client" pk=object.pk %}"><i class="fa-solid fa-arrow-right"></i>Back to client</a>
+                    <a href="{% url "details_client" pk=object.pk %}"><i class="fa-solid fa-arrow-right"></i>{% trans "Back to client" %}</a>
                 </div>
             </div>
         </div>
