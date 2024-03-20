@@ -190,15 +190,16 @@
 
 .profile-card .details-profile-btns {
     display: flex;
-    width: 100%;
+    justify-content: center;
 }
 
 .profile-card .details-profile-btns ul {
     display: flex;
+    flex-wrap: wrap;
     list-style-type: none;
     align-items: center;
     gap: 1em;
-    flex: 0 1 100%;
+    width: 70%;
     justify-content: center;
 }
 

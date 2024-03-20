@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block main_content %}
     
     <section class="site-section delete-profile">
         <div class="container">
             <div class="delete-card">
-                <h1>Are you sure you want to delete your profile?</h1>
+                <h3>{% trans "Are you sure you want to delete your profile?" %}</h3>
                 <form action="{% url "delete_profile" pk=object.pk %}" method="post">
                     {% csrf_token %}
-                    <input class="btn" type="submit" value="Yes">
+                    <input class="btn" type="submit" value="{% trans "Yes" %}">
                 </form>
             </div>
         </div>

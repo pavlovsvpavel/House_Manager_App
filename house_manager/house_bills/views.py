@@ -2,6 +2,7 @@ from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic as views
+from django.utils.translation import gettext as _
 
 from house_manager.client_bills.helpers.calculate_fees import calculate_fees
 from house_manager.client_bills.helpers.calculate_fees_other_bills import calculate_fees_other_bills
@@ -64,7 +65,7 @@ class HouseMonthlyBillCreateView(HouseBaseBillCreateView):
             return response
 
         except IntegrityError as e:
-            error_message = "Bill with those month and year already exists."
+            error_message = _("Bill with those month and year already exists.")
             form.add_error(None, error_message)
 
             return self.form_invalid(form)
@@ -101,7 +102,7 @@ class HouseOtherBillCreateView(HouseBaseBillCreateView):
             return response
 
         except IntegrityError as e:
-            error_message = "Bill with those month and year already exists."
+            error_message = _("Bill with those month and year already exists.")
             form.add_error(None, error_message)
 
             return self.form_invalid(form)

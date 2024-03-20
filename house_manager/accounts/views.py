@@ -60,6 +60,14 @@ class ProfileUpdateView(OwnerRequiredMixin, views.UpdateView):
         })
 
 
+class ProfilePasswordChange(auth_views.PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+    model = UserModel
+
+    def get_success_url(self):
+        return reverse_lazy('details_profile', kwargs={'pk': self.request.user.pk})
+
+
 class ProfileDeleteView(OwnerRequiredMixin, views.DeleteView):
     queryset = UserModel.objects.all()
     template_name = "accounts/delete_profile.html"

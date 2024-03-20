@@ -1,15 +1,21 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block main_content %}
     <section class="site-section edit-profile">
-            <div class="container">
-                <form class="create-form" action="{% url "edit_profile" pk=object.pk %}" enctype="multipart/form-data" method="post">
-                    <h3 class="create-form-heading">Edit Profile</h3>
-                    {{ form }}
-                    {% csrf_token %}
-                    <input class="btn" type="submit" value="Edit Profile">
-                </form>
-            </div>
-        </section>
+        <div class="container">
+            <form class="create-form" action="{% url "edit_profile" pk=object.pk %}" enctype="multipart/form-data"
+                  method="post">
+                <h3 class="create-form-heading">{% trans "Edit Profile" %}</h3>
+{#                {{ form }}#}
+                {% csrf_token %}
+                <label for="id_first_name">{% trans "First name" %}</label>{{ form.first_name }}
+                <label for="id_last_name">{% trans "Last name" %}</label>{{ form.last_name }}
+                <label for="id_phone_number">{% trans "Phone number" %}</label>{{ form.phone_number }}
+                <label for="id_profile_picture">{% trans "Profile picture" %}</label>{{ form.profile_picture }}
+                <input class="btn" type="submit" value="{% trans "Save" %}">
+            </form>
+        </div>
+    </section>
 
 {% endblock %}

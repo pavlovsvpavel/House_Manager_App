@@ -12,6 +12,9 @@
                             <h3 class="create-form-heading">{% trans "Create Bill" %}</h3>
 {#                            {{ form }}#}
                             {% csrf_token %}
+                            {% if form.non_field_errors %}
+                                <div class="error-message">{{ form.non_field_errors }}</div>
+                            {% endif %}
                             <label for="id_month">{% trans "Month" %}</label>{{ form.month }}
                             <label for="id_year">{% trans "Year" %}</label>{{ form.year }}
                             <label for="id_comment">{% trans "Comment" %}</label>{{ form.comment }}

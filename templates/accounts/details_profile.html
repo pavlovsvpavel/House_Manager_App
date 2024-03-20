@@ -22,6 +22,7 @@
                     <ul>
                         <li><a href="{% url "edit_profile" pk=object.pk %}">{% trans "Edit" %}</a></li>
                         <li><a href="{% url "delete_profile" pk=object.pk %}">{% trans "Delete" %}</a></li>
+                        <li><a href="{% url "change_password" pk=object.pk %}">{% trans "Change password" %}</a></li>
                     </ul>
                 </div>
             </div>

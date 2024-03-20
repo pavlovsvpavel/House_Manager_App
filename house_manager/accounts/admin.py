@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth import admin as auth_admin, get_user_model
 
-from house_manager.accounts.forms import HouseManagerUserCreationForm, HouseManagerUserChangeForm
+from house_manager.accounts.forms import (
+    HouseManagerUserCreationForm,
+    HouseManagerUserChangeForm)
 
 UserModel = get_user_model()
 
@@ -12,13 +14,15 @@ class AppUserAdmin(auth_admin.UserAdmin):
     add_form = HouseManagerUserCreationForm
     form = HouseManagerUserChangeForm
 
-    list_display = ("email", "is_staff", "is_superuser", "pk")
+    list_display = ("email", "is_staff", "is_superuser", "full_name", "id",)
+
     search_fields = ("email",)
-    ordering = ("pk",)
+    search_help_text = "Search by user's email"
+
+    ordering = ("-is_staff", "email",)
 
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Personal info", {"fields": ()}),
         ("Permissions", {"fields": ("is_active", "is_staff", "groups", "user_permissions")}),
         ("Important dates", {"fields": ("last_login",)}),
     )
@@ -33,6 +37,14 @@ class AppUserAdmin(auth_admin.UserAdmin):
         ),
     )
 
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if not request.user.is_superuser:
+            queryset = queryset.exclude(is_superuser=True)
+        return queryset
+
     def full_name(self, obj):
         return obj.profile.full_name if obj.profile.full_name else ""
 
+    def phone_number(self, obj):
+        return obj.profile.phone_number if obj.profile.phone_number else ""

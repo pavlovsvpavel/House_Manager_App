@@ -10,3 +10,8 @@ class ClientMonthlyBillAdmin(admin.ModelAdmin):
                     "others", "total_amount")
 
     ordering = ("house", "-year", "month")
+
+    list_filter = ("year", "month")
+
+    search_fields = ["house"]
+    search_help_text = "Search by house"

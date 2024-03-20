@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import IntegrityError
 from django.urls import reverse_lazy
 from django.views import generic as views
+from django.utils.translation import gettext as _
 
 from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 from house_manager.clients.models import Client
@@ -31,7 +32,7 @@ class ClientCreateView(GetUserAndHouseInstanceMixin, views.CreateView):
             return super().form_valid(form)
 
         except IntegrityError as e:
-            error_message = "Client with this apartment already exist"
+            error_message = _("Client with this apartment already exist")
             form.add_error(None, error_message)
 
             return self.form_invalid(form)
