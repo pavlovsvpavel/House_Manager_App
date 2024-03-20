@@ -1,9 +1,12 @@
 from django.db import IntegrityError
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic as views
 from django.utils.translation import gettext as _
+from django.contrib.auth import mixins as auth_mixins
 
+from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.client_bills.helpers.calculate_fees import calculate_fees
 from house_manager.client_bills.helpers.calculate_fees_other_bills import calculate_fees_other_bills
 from house_manager.clients.models import Client
@@ -14,7 +17,7 @@ from house_manager.houses.mixins import GetUserAndHouseInstanceMixin
 from house_manager.houses.models import House
 
 
-class HouseBaseBillCreateView(GetUserAndHouseInstanceMixin, views.CreateView):
+class HouseBaseBillCreateView(CheckForLoggedInUserMixin, GetUserAndHouseInstanceMixin, views.CreateView):
     queryset = None
     template_name = None
     form_class = None
@@ -108,15 +111,27 @@ class HouseOtherBillCreateView(HouseBaseBillCreateView):
             return self.form_invalid(form)
 
 
-class CurrentHouseBaseBillDetailView(views.DetailView):
+class CurrentHouseBaseBillDetailView(CheckForLoggedInUserMixin, views.DetailView):
     template_name = None
 
     def get_object(self, queryset=None):
         return get_object_or_404(House, pk=self.kwargs['pk'])
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context["house_bills"] = self.get_type_of_house_bills()
+    #
+    #     return context
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["house_bills"] = self.get_type_of_house_bills()
+        house_id = self.request.session.get("selected_house")
+        if house_id:
+            current_house = self.get_object()
+            if current_house.id != house_id:
+                raise Http404("Bills not found in selected house.")
+            context["house_bills"] = self.get_type_of_house_bills()
+
         return context
 
     def get_type_of_house_bills(self):

@@ -1,9 +1,12 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
+from django.http import Http404
 from django.urls import reverse_lazy
 from django.views import generic as views
 from django.utils.translation import gettext as _
 
+from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 from house_manager.clients.models import Client
 from house_manager.houses.mixins import GetUserAndHouseInstanceMixin
@@ -12,7 +15,7 @@ from house_manager.houses.models import House
 UserModel = get_user_model()
 
 
-class ClientCreateView(GetUserAndHouseInstanceMixin, views.CreateView):
+class ClientCreateView(CheckForLoggedInUserMixin, GetUserAndHouseInstanceMixin, views.CreateView):
     queryset = Client.objects.all()
     template_name = "clients/create_client.html"
     fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied")
@@ -42,32 +45,27 @@ class ClientDetailsView(views.DetailView):
     queryset = Client.objects.all().prefetch_related("client_monthly_bills")
     template_name = "clients/details_client.html"
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     house_id = self.request.session.get("selected_house")
+    #     if house_id:
+    #         context["house"] = House.objects.get(pk=house_id)
+    #         context["clients_bills"] = ClientMonthlyBill.objects.filter(client_id=self.object.pk)
+    #         context["client_other_bills"] = ClientOtherBill.objects.filter(client_id=self.object.pk)
+    #
+    #     return context
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         house_id = self.request.session.get("selected_house")
         if house_id:
             context["house"] = House.objects.get(pk=house_id)
-            context["clients_bills"] = ClientMonthlyBill.objects.filter(client_id=self.object.pk)
-            context["client_other_bills"] = ClientOtherBill.objects.filter(client_id=self.object.pk)
-
+            client = self.get_object()
+            if client.house_id != house_id:
+                raise Http404("Client not found in selected house.")
+            context["clients_bills"] = ClientMonthlyBill.objects.filter(client_id=client.pk)
+            context["client_other_bills"] = ClientOtherBill.objects.filter(client_id=client.pk)
         return context
-
-    # def filter_by_period(self, queryset):
-    #     search_year = self.request.GET.get('search_year', None)
-    #     search_month = self.request.GET.get('search_month', None)
-    #     # client = self.get_object()
-    #
-    #     filter_query = {
-    #         "id": self.object.pk,
-    #     }
-    #
-    #     if search_year and search_month:
-    #         filter_query["client_monthly_bills__year"] = search_year
-    #         filter_query["client_monthly_bills__month"] = search_month
-    #
-    #     result = queryset.filter(**filter_query)
-    #
-    #     return result
 
 
 class ClientEditView(views.UpdateView):
@@ -78,6 +76,13 @@ class ClientEditView(views.UpdateView):
     def get_success_url(self):
         return reverse_lazy("list_house_clients", kwargs={"pk": self.object.house.pk})
 
+    def get_object(self, queryset=None):
+        client = super().get_object(queryset)
+        house_id = self.request.session.get("selected_house")
+        if house_id and client.house_id != house_id:
+            raise Http404("Client not found in selected house.")
+        return client
+
 
 class ClientDeleteView(views.DeleteView):
     queryset = Client.objects.prefetch_related("house").all()
@@ -86,5 +91,9 @@ class ClientDeleteView(views.DeleteView):
     def get_success_url(self):
         return reverse_lazy("list_house_clients", kwargs={"pk": self.object.house.pk})
 
-
-
+    def get_object(self, queryset=None):
+        client = super().get_object(queryset)
+        house_id = self.request.session.get("selected_house")
+        if house_id and client.house_id != house_id:
+            raise Http404("Client not found in selected house.")
+        return client

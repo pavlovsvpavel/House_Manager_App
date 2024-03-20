@@ -2,12 +2,14 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as views
+from django.contrib.auth import mixins as auth_mixins
 
+from house_manager.accounts.mixins import OwnerRequiredMixin, CheckForLoggedInUserMixin
 from house_manager.houses.decorators import get_current_house_instance
 from house_manager.houses.models import House
 
 
-class HouseCreateView(views.CreateView):
+class HouseCreateView(CheckForLoggedInUserMixin, views.CreateView):
     queryset = House.objects.all()
     template_name = "houses/create_house.html"
     fields = ("town", "address", "building_number", "entrance", "money_balance")
@@ -21,7 +23,7 @@ class HouseCreateView(views.CreateView):
 
 @method_decorator(get_current_house_instance, name='dispatch')
 class HouseDetailsView(views.DetailView):
-    queryset = House.objects.prefetch_related("house_monthly_bills")
+    queryset = House.objects.all()
     template_name = "houses/details_house.html"
 
     def get(self, request, *args, **kwargs):
@@ -60,6 +62,7 @@ class HouseClientsDetailsView(views.DetailView):
         return context
 
 
+@method_decorator(get_current_house_instance, name='dispatch')
 class HouseEditView(views.UpdateView):
     queryset = House.objects.all()
     template_name = "houses/edit_house.html"
@@ -69,10 +72,10 @@ class HouseEditView(views.UpdateView):
         return reverse_lazy('details_house', kwargs={'pk': self.object.pk})
 
 
+@method_decorator(get_current_house_instance, name='dispatch')
 class HouseDeleteView(views.DeleteView):
     queryset = House.objects.all()
     template_name = "houses/delete_house.html"
 
     def get_success_url(self):
         return reverse_lazy('dashboard')
-

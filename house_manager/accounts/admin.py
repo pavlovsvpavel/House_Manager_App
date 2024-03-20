@@ -14,7 +14,7 @@ class AppUserAdmin(auth_admin.UserAdmin):
     add_form = HouseManagerUserCreationForm
     form = HouseManagerUserChangeForm
 
-    list_display = ("email", "is_staff", "is_superuser", "full_name", "id",)
+    list_display = ("email", "is_staff", "is_superuser", "full_name", "phone_number", "id",)
 
     search_fields = ("email",)
     search_help_text = "Search by user's email"
@@ -47,4 +47,5 @@ class AppUserAdmin(auth_admin.UserAdmin):
         return obj.profile.full_name if obj.profile.full_name else ""
 
     def phone_number(self, obj):
-        return obj.profile.phone_number if obj.profile.phone_number else ""
+        return obj.profile.phone_number
+

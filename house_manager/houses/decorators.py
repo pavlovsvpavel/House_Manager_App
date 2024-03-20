@@ -16,5 +16,5 @@ def get_current_house_instance(view_func):
                     return view_func(request, selected_house=selected_house, *args, **kwargs)
                 except House.DoesNotExist:
                     raise Http404()
-        return redirect('dashboard')
+        return redirect('login_user')
     return wrapper

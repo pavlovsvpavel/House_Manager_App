@@ -60,7 +60,7 @@ class ProfileUpdateView(OwnerRequiredMixin, views.UpdateView):
         })
 
 
-class ProfilePasswordChange(auth_views.PasswordChangeView):
+class ProfilePasswordChange(OwnerRequiredMixin, auth_views.PasswordChangeView):
     template_name = 'accounts/password_change.html'
     model = UserModel
 

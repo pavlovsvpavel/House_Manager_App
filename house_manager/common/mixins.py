@@ -1,7 +1,5 @@
-import math
-
 from django.db import models
-from django.db.models import F, Func
+from django.db.models import F
 
 
 class TimeStampModel(models.Model):
@@ -33,7 +31,7 @@ class MonthChoices(models.TextChoices):
 
 
 class MonthlyBill(models.Model):
-    MAX_MONTH_LENGTH = 10
+    MAX_MONTH_LENGTH = max(len(x) for _, x in MonthChoices.choices)
     MAX_YEAR_LENGTH = 4
     MAX_DECIMAL_DIGITS = 10
     MAX_DECIMAL_PLACES = 2
