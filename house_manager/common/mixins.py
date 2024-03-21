@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import F
+from django.utils.translation import gettext_lazy as _
 
 
 class TimeStampModel(models.Model):
@@ -44,12 +45,14 @@ class MonthlyBill(models.Model):
         choices=MonthChoices.choices,
         blank=False,
         null=False,
+        verbose_name=_("Month"),
     )
 
     year = models.CharField(
         max_length=MAX_YEAR_LENGTH,
         blank=False,
         null=False,
+        verbose_name=_("Year"),
     )
 
     electricity_common = models.DecimalField(
@@ -57,6 +60,7 @@ class MonthlyBill(models.Model):
         decimal_places=MAX_DECIMAL_PLACES,
         blank=False,
         null=False,
+        verbose_name=_("Electricity common"),
     )
 
     electricity_lift = models.DecimalField(
@@ -64,6 +68,7 @@ class MonthlyBill(models.Model):
         decimal_places=MAX_DECIMAL_PLACES,
         blank=False,
         null=False,
+        verbose_name=_("Electricity lift"),
     )
 
     internet = models.DecimalField(
@@ -71,6 +76,7 @@ class MonthlyBill(models.Model):
         decimal_places=MAX_DECIMAL_PLACES,
         blank=False,
         null=False,
+        verbose_name=_("Internet"),
     )
 
     maintenance_lift = models.DecimalField(
@@ -78,6 +84,7 @@ class MonthlyBill(models.Model):
         decimal_places=MAX_DECIMAL_PLACES,
         blank=False,
         null=False,
+        verbose_name=_("Lift maintenance"),
     )
 
     fee_cleaner = models.DecimalField(
@@ -85,6 +92,7 @@ class MonthlyBill(models.Model):
         decimal_places=MAX_DECIMAL_PLACES,
         blank=False,
         null=False,
+        verbose_name=_("Cleaner fee"),
     )
 
     fee_manager_and_cashier = models.DecimalField(
@@ -92,6 +100,7 @@ class MonthlyBill(models.Model):
         decimal_places=MAX_DECIMAL_PLACES,
         blank=False,
         null=False,
+        verbose_name=_("Manager/Cashier fee"),
     )
 
     repairs = models.DecimalField(
@@ -99,6 +108,7 @@ class MonthlyBill(models.Model):
         decimal_places=MAX_DECIMAL_PLACES,
         blank=False,
         null=False,
+        verbose_name=_("Repairs"),
     )
 
     others = models.DecimalField(
@@ -106,6 +116,7 @@ class MonthlyBill(models.Model):
         decimal_places=MAX_DECIMAL_PLACES,
         blank=False,
         null=False,
+        verbose_name=_("Other expenses"),
     )
 
     total_amount = models.GeneratedField(
@@ -113,6 +124,7 @@ class MonthlyBill(models.Model):
             max_digits=MAX_DECIMAL_DIGITS,
             decimal_places=MAX_DECIMAL_PLACES,
         ),
+        verbose_name=_("Total BGN"),
         db_persist=True,
         expression=(
                 F('electricity_common') +
@@ -124,6 +136,11 @@ class MonthlyBill(models.Model):
                 F('repairs') +
                 F('others')
         )
+    )
+
+    is_paid = models.BooleanField(
+        default=False,
+        verbose_name=_("Paid"),
     )
 
     def get_month_name(self):
@@ -145,17 +162,20 @@ class OtherBill(models.Model):
         choices=MonthChoices.choices,
         blank=False,
         null=False,
+        verbose_name=_("Month"),
     )
 
     year = models.CharField(
         max_length=MAX_YEAR_LENGTH,
         blank=False,
         null=False,
+        verbose_name=_("Year"),
     )
 
     comment = models.TextField(
         blank=False,
         null=False,
+        verbose_name=_("Comment"),
     )
 
     total_amount = models.DecimalField(
@@ -163,11 +183,12 @@ class OtherBill(models.Model):
         decimal_places=MAX_DECIMAL_PLACES,
         blank=False,
         null=False,
+        verbose_name=_("Total BGN"),
     )
 
     is_paid = models.BooleanField(
         default=False,
-        verbose_name="Paid",
+        verbose_name=_("Paid"),
     )
 
     def get_month_name(self):

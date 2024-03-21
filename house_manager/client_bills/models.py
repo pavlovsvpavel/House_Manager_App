@@ -12,11 +12,6 @@ class ClientMonthlyBill(MonthlyBill):
     class Meta:
         ordering = ("-year", "month")
 
-    is_paid = models.BooleanField(
-        default=False,
-        verbose_name="Paid",
-    )
-
     client = models.ForeignKey(
         to=Client,
         on_delete=models.SET_NULL,

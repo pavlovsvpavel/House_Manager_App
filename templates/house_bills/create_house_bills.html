@@ -10,21 +10,8 @@
                     {% if clients %}
                         <form class="create-form" action="{% url "create_house_bills" %}" method="post">
                             <h3 class="create-form-heading">{% trans "Create Bill" %}</h3>
-                            {#                            {{ form }}#}
+                            {{ form }}
                             {% csrf_token %}
-                            {% if form.non_field_errors %}
-                                <div class="error-message">{{ form.non_field_errors }}</div>
-                            {% endif %}
-                            <label for="id_month">{% trans "Month" %}</label>{{ form.month }}
-                            <label for="id_year">{% trans "Year" %}</label>{{ form.year }}
-                            <label for="id_electricity_common">{% trans "Electricity common" %}</label>{{ form.electricity_common }}
-                            <label for="id_electricity_lift">{% trans "Electricity lift" %}</label>{{ form.electricity_lift }}
-                            <label for="id_internet">{% trans "Internet" %}</label>{{ form.internet }}
-                            <label for="id_maintenance_lift">{% trans "Lift maintenance" %}</label>{{ form.maintenance_lift }}
-                            <label for="id_fee_cleaner">{% trans "Cleaner fee" %}</label>{{ form.fee_cleaner }}
-                            <label for="id_fee_manager_and_cashier">{% trans "Manager/Cashier fee" %}</label>{{ form.fee_manager_and_cashier }}
-                            <label for="id_repairs">{% trans "Repairs" %}</label>{{ form.repairs }}
-                            <label for="id_others">{% trans "Other expenses" %}</label>{{ form.others }}
                             <input class="btn" type="submit" value="{% trans "Save" %}">
                         </form>
                     {% else %}

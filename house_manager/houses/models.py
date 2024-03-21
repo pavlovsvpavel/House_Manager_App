@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from house_manager.accounts.models import Profile
 from house_manager.common.mixins import TimeStampModel
@@ -21,23 +22,27 @@ class House(TimeStampModel):
         ],
         blank=False,
         null=False,
+        verbose_name=_("Town"),
     )
 
     address = models.CharField(
         max_length=MAX_ADDRESS_LENGTH,
         blank=False,
         null=False,
+        verbose_name=_("Address"),
     )
 
     building_number = models.PositiveIntegerField(
         blank=True,
         null=True,
+        verbose_name=_("Building number"),
     )
 
     entrance = models.CharField(
         max_length=MAX_ENTRANCE_LENGTH,
         blank=False,
         null=False,
+        verbose_name=_("Entrance"),
     )
 
     money_balance = models.DecimalField(
@@ -46,6 +51,7 @@ class House(TimeStampModel):
         blank=False,
         null=False,
         default=0,
+        verbose_name=_("Balance"),
     )
 
     user = models.ForeignKey(

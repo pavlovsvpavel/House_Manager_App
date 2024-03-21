@@ -45,7 +45,7 @@ def logout_user(request):
 
 
 class ProfileDetailsView(OwnerRequiredMixin, views.DetailView):
-    queryset = Profile.objects.prefetch_related("user").all()
+    queryset = Profile.objects.prefetch_related("user")
     template_name = "accounts/details_profile.html"
 
 

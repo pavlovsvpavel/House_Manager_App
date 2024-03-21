@@ -47,6 +47,7 @@ class Profile(TimeStampModel):
         validators=[
             validate_char_field
         ],
+        verbose_name=_("First name"),
     )
 
     last_name = models.CharField(
@@ -56,6 +57,7 @@ class Profile(TimeStampModel):
         validators=[
             validate_char_field
         ],
+        verbose_name=_("Last name"),
     )
 
     phone_number = models.CharField(
@@ -64,7 +66,8 @@ class Profile(TimeStampModel):
         null=True,
         validators=[
             validate_phone_number,
-        ]
+        ],
+        verbose_name=_("Phone number"),
     )
 
     profile_picture = models.ImageField(
@@ -73,7 +76,8 @@ class Profile(TimeStampModel):
         upload_to="profile_pictures",
         validators=(
             validate_profile_picture_size,
-        )
+        ),
+        verbose_name=_("Profile picture"),
     )
 
     user = models.OneToOneField(

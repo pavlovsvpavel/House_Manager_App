@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from house_manager.common.mixins import TimeStampModel
 from house_manager.common.validators import validate_char_field
@@ -22,33 +23,39 @@ class Client(TimeStampModel):
         ],
         blank=False,
         null=False,
+        verbose_name=_("Family Name"),
     )
 
     floor = models.PositiveIntegerField(
         blank=False,
         null=False,
+        verbose_name=_("Floor"),
     )
 
     apartment = models.PositiveIntegerField(
         blank=False,
         null=False,
+        verbose_name=_("Apartment"),
     )
 
     number_of_people = models.PositiveIntegerField(
         blank=False,
         null=False,
+        verbose_name=_("Number of people"),
     )
 
     is_using_lift = models.BooleanField(
         blank=False,
         null=False,
         default=True,
+        verbose_name=_("Using lift"),
     )
 
     is_occupied = models.BooleanField(
         blank=False,
         null=False,
         default=True,
+        verbose_name=_("Occupied"),
     )
 
     house = models.ForeignKey(

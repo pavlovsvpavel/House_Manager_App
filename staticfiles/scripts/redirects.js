@@ -1,5 +1,5 @@
 function selectHouseId(houseId, currentHouseDetails) {
-    window.location.href = currentHouseDetails.replace("0", houseId);
+    window.location.href = currentHouseDetails.replace(0, houseId);
 }
 
 function redirectToHouseBillDetails(houseBillId, detailsCurrentHouse) {
@@ -15,5 +15,9 @@ function redirectToClientBillDetails(clientBillId, detailsCurrentClientBill) {
 }
 
 function redirectToHouseClients(houseId, currentHouseClients) {
-    window.location.href = currentHouseClients.replace("0", houseId);
+    window.location.href = currentHouseClients.replace(0, houseId);
+}
+
+function redirectToClientBillsList(clientId, listBills) {
+    window.location.href = listBills.replace("0", clientId);
 }

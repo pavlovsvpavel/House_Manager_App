@@ -11,12 +11,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: transform 0.3s
-}
-
-
-.site-title:hover {
-    transform: scale(1.05);
 }
 
 .site-title h1 {

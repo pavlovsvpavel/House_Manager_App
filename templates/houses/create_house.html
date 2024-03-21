@@ -7,13 +7,8 @@
         <div class="container">
             <form class="create-form" action="{% url "create_house" %}" method="post">
                 <h3 class="create-form-heading">{% trans "Create House" %}</h3>
-                {#                {{ form }}#}
+                {{ form }}
                 {% csrf_token %}
-                <label for="id_town">{% trans "Town" %}</label>{{ form.town }}
-                <label for="id_address">{% trans "Address" %}</label>{{ form.address }}
-                <label for="id_building_number">{% trans "Building number" %}</label>{{ form.building_number }}
-                <label for="id_entrance">{% trans "Entrance" %}</label>{{ form.entrance }}
-                <label for="id_money_balance">{% trans "Balance" %}</label>{{ form.money_balance }}
                 <button class="btn" type="submit">{% trans "Save" %}</button>
             </form>
         </div>

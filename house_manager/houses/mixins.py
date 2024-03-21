@@ -1,7 +1,7 @@
 from house_manager.houses.models import House
 
 
-class GetUserAndHouseInstanceMixin:
+class GetHouseAndUserMixin:
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
         house_id = self.request.session.get("selected_house")

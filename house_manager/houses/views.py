@@ -2,10 +2,9 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as views
-from django.contrib.auth import mixins as auth_mixins
 
-from house_manager.accounts.mixins import OwnerRequiredMixin, CheckForLoggedInUserMixin
-from house_manager.houses.decorators import get_current_house_instance
+from house_manager.accounts.mixins import CheckForLoggedInUserMixin
+from house_manager.houses.decorators import get_current_house_id
 from house_manager.houses.models import House
 
 
@@ -21,8 +20,8 @@ class HouseCreateView(CheckForLoggedInUserMixin, views.CreateView):
         return super().form_valid(form)
 
 
-@method_decorator(get_current_house_instance, name='dispatch')
-class HouseDetailsView(views.DetailView):
+@method_decorator(get_current_house_id, name='dispatch')
+class HouseDetailView(views.DetailView):
     queryset = House.objects.all()
     template_name = "houses/details_house.html"
 
@@ -36,10 +35,11 @@ class HouseDetailsView(views.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        selected_house = self.kwargs.get('pk')
 
-        total_apartments = House.objects.total_apartments(house_id=self.kwargs.get('pk'))
-        total_people = House.objects.total_people(house_id=self.kwargs.get('pk'))
-        total_people_using_lift = House.objects.total_people_using_lift(house_id=self.kwargs.get('pk'))
+        total_apartments = House.objects.total_apartments(selected_house)
+        total_people = House.objects.total_people(selected_house)
+        total_people_using_lift = House.objects.total_people_using_lift(selected_house)
 
         context['total_apartments'] = total_apartments
         context['total_people'] = total_people
@@ -48,8 +48,10 @@ class HouseDetailsView(views.DetailView):
         return context
 
 
-class HouseClientsDetailsView(views.DetailView):
-    template_name = "houses/list_house_clients.html"
+@method_decorator(get_current_house_id, name='dispatch')
+class HouseClientsDetailView(CheckForLoggedInUserMixin, views.DetailView):
+    queryset = House.objects.prefetch_related('clients')
+    template_name = "houses/house_clients_list.html"
 
     def get_object(self, queryset=None):
         return get_object_or_404(House, pk=self.kwargs['pk'])
@@ -62,8 +64,8 @@ class HouseClientsDetailsView(views.DetailView):
         return context
 
 
-@method_decorator(get_current_house_instance, name='dispatch')
-class HouseEditView(views.UpdateView):
+@method_decorator(get_current_house_id, name='dispatch')
+class HouseEditView(CheckForLoggedInUserMixin, views.UpdateView):
     queryset = House.objects.all()
     template_name = "houses/edit_house.html"
     fields = ("town", "address", "building_number", "entrance", "money_balance")
@@ -72,8 +74,8 @@ class HouseEditView(views.UpdateView):
         return reverse_lazy('details_house', kwargs={'pk': self.object.pk})
 
 
-@method_decorator(get_current_house_instance, name='dispatch')
-class HouseDeleteView(views.DeleteView):
+@method_decorator(get_current_house_id, name='dispatch')
+class HouseDeleteView(CheckForLoggedInUserMixin, views.DeleteView):
     queryset = House.objects.all()
     template_name = "houses/delete_house.html"
 

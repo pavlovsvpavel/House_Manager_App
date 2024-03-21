@@ -4,6 +4,7 @@
     flex-wrap: wrap;
     justify-content: center;
     flex: 0 1 80%;
+    text-align: center;
 }
 
 .dashboard .house-card {
@@ -24,6 +25,7 @@
     transition: 0.3s ease-in-out;
 }
 
+.create-house-bills .clients-cards,
 .list-clients .clients-cards,
 .list-house-bills .clients-cards,
 .list-client-bills .clients-cards {

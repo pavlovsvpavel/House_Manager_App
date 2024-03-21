@@ -1,6 +1,4 @@
 from django.db.models import F
-
-from house_manager.client_bills.models import ClientMonthlyBill
 from house_manager.houses.models import House
 
 

@@ -6,14 +6,8 @@
         <div class="container">
             <form class="create-form" action="{% url "edit_client" pk=object.pk %}" method="post">
                 <h3 class="create-form-heading">{% trans "Edit Client" %}</h3>
-{#                {{ form }}#}
+                {{ form }}
                 {% csrf_token %}
-                <label for="id_family_name">{% trans "Family Name" %}</label>{{ form.family_name }}
-                <label for="id_floor">{% trans "Floor" %}</label>{{ form.floor }}
-                <label for="id_apartment">{% trans "Apartment" %}</label>{{ form.apartment }}
-                <label for="id_number_of_people">{% trans "Number of people" %}</label>{{ form.number_of_people }}
-                <label for="id_is_using_lift">{% trans "Using lift" %}</label>{{ form.is_using_lift }}
-                <label for="id_is_occupied">{% trans "Occupied" %}</label>{{ form.is_occupied }}
                 <input class="btn" type="submit" value="{% trans "Save" %}">
             </form>
         </div>
