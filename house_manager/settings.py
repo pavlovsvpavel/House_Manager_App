@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-w70!-e4iapgz$u(gh&**frt9g&m)8yu17g(^gok%zm!0fh$6y0'
 
 DEBUG = True
-ALLOWED_HOSTS = ["localhost", "https://ppavlov.azurewebsites.net/"]
+ALLOWED_HOSTS = ["localhost", "ppavlov.azurewebsites.net/"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
