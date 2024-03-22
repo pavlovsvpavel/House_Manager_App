@@ -1,12 +1,13 @@
 import os
 from pathlib import Path
+from decouple import config
 from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-w70!-e4iapgz$u(gh&**frt9g&m)8yu17g(^gok%zm!0fh$6y0'
+SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 ALLOWED_HOSTS = ["localhost", "https://pavlovp.azurewebsites.net/"]
 
 INSTALLED_APPS = [
@@ -59,11 +60,11 @@ WSGI_APPLICATION = 'house_manager.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "hm_db",
-        "USER": "postgres",
-        "PASSWORD": "edc8302",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "NAME": config('DB_NAME'),
+        "USER": config('DB_USER'),
+        "PASSWORD": config('DB_PASSWORD'),
+        "HOST": config('DB_HOST'),
+        "PORT": config('DB_PORT'),
     }
 }
 
