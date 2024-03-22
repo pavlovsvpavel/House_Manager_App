@@ -8,8 +8,7 @@
     }
 
     .dashboard .house-cards {
-        flex-direction: column;
-        flex-wrap: nowrap;
+        flex: 0 1 80%;
     }
 
     .wrapper {
@@ -40,6 +39,7 @@
     .form-container #flip:checked ~ .forms .login-form {
         display: none;
     }
+
 }
 
 
@@ -73,7 +73,6 @@
         top: 0;
         right: -200%;
         z-index: 10;
-        /*width: 250px;*/
         background-color: #8EACCD;
         opacity: 90%;
         box-shadow: -5px 0 5px rgba(0, 0, 0, 0.25);
@@ -106,10 +105,23 @@
         flex: 0 1 100%;
     }
 
-    /*.dashboard .house-cards {*/
-    /*    flex-direction: column;*/
-    /*    flex-wrap: nowrap;*/
-    /*}*/
+    .headings {
+        font-size: 0.8em;
+        line-height: 1.2;
+    }
+
+    .pricing-wrapper {
+        flex-direction: column;
+        padding: 1em;
+    }
+
+    .pricing-plans {
+        padding-top: 0;
+    }
+
+    .pricing-plans p {
+        padding-top: 1em;
+    }
 
     .list-clients .client-card,
     .list-house-bills .client-card,
@@ -129,19 +141,18 @@
         align-self: flex-start;
     }
 
-
-
-
     .create-form {
         flex: 0 1 100%;
     }
 
     .client-details .client-card {
-        flex: 0 1 80%;
+        flex: 0 1 100%;
     }
 
-    .details-client .client-card {
-        min-width: 250px;
+    .details-client .bills-client-card-btns:nth-of-type(2) {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 1em;
     }
 
     .details-house-elements {
@@ -157,5 +168,14 @@
 
     .details-house-elements .house-card .card-column {
         min-width: 250px;
+    }
+
+    .dashboard .house-cards {
+        flex: 0 1 100%;
+    }
+
+    .cookies-eu-banner {
+        flex-direction: column;
+        gap: 0.5em;
     }
 }

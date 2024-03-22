@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from django.views import generic as views
+from django.shortcuts import render
 
 
 class IndexView(views.TemplateView):

@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
-from django.http import Http404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as views
@@ -54,7 +54,7 @@ class ClientDetailView(CheckForLoggedInUserMixin, views.DetailView):
         client = super().get_object(queryset)
         selected_house_id = self.request.session.get("selected_house")
         if selected_house_id and client.house_id != selected_house_id:
-            raise Http404("Client not found for current house.")
+            raise PermissionDenied("Client not found for current house.")
         return client
 
     def get_context_data(self, **kwargs):
@@ -83,7 +83,7 @@ class ClientEditView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.Upda
         client = super().get_object(queryset)
         house_id = self.request.session.get("selected_house")
         if house_id and client.house_id != house_id:
-            raise Http404("Client not found for current house.")
+            raise PermissionDenied("Client not found for current house.")
         return client
 
 
@@ -99,5 +99,5 @@ class ClientDeleteView(CheckForLoggedInUserMixin, views.DeleteView):
         client = super().get_object(queryset)
         house_id = self.request.session.get("selected_house")
         if house_id and client.house_id != house_id:
-            raise Http404("Client not found for current house.")
+            raise PermissionDenied("Client not found for current house.")
         return client

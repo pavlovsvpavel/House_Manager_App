@@ -5,20 +5,16 @@
 
     <section class="site-section create-house-bills">
         <div class="container">
-            <div class="wrapper">
-                <div class="clients-cards">
-                    {% if clients %}
-                        <form class="create-form" action="{% url "create_house_bills" %}" method="post">
-                            <h3 class="create-form-heading">{% trans "Create Bill" %}</h3>
-                            {{ form }}
-                            {% csrf_token %}
-                            <input class="btn" type="submit" value="{% trans "Save" %}">
-                        </form>
-                    {% else %}
-                        <h3>{% trans "Add clients first" %}</h3>
-                    {% endif %}
-                </div>
-            </div>
+            {% if clients %}
+                <form class="create-form" action="{% url "create_house_bills" %}" method="post">
+                    <h3 class="create-form-heading">{% trans "Create Bill" %}</h3>
+                    {{ form }}
+                    {% csrf_token %}
+                    <input class="btn" type="submit" value="{% trans "Save" %}">
+                </form>
+            {% else %}
+                <h3>{% trans "Add clients first" %}</h3>
+            {% endif %}
         </div>
     </section>
 

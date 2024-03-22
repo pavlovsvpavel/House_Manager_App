@@ -1,5 +1,5 @@
+from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
-from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic as views
@@ -94,7 +94,7 @@ class CurrentHouseBaseBillDetailView(CheckForLoggedInUserMixin, views.DetailView
         if house_id:
             current_house = self.get_object()
             if current_house.id != house_id:
-                raise Http404(_("Bills not found in selected house."))
+                raise PermissionDenied(_("Bills not found in selected house."))
             context["house_bills"] = self.get_type_of_house_bills()
 
         return context
@@ -135,7 +135,7 @@ class HouseBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):
 
         current_house = self.object.house.pk
         if current_house != house_id:
-            raise Http404(_("Bills not found in selected house."))
+            raise PermissionDenied(_("Bills not found in selected house."))
 
         return context
 

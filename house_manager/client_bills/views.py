@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -17,8 +18,11 @@ class ClientBaseBillsDetailView(CheckForLoggedInUserMixin, views.DetailView):
     def get_object(self, queryset=None):
         selected_client_id = self.request.session.get("selected_client")
         if not selected_client_id or selected_client_id != self.kwargs['pk']:
-            raise Http404("Client not found for current house.")
-        return get_object_or_404(Client, pk=self.kwargs['pk'])
+            raise PermissionDenied("Client not found for current house.")
+        try:
+            return get_object_or_404(Client, pk=self.kwargs['pk'])
+        except ClientMonthlyBill.DoesNotExist:
+            raise Http404(_("Bill not found for current client"))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -59,7 +63,7 @@ class CurrentClientBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView)
 
         current_house = self.object.house.pk
         if current_house != house_id:
-            raise Http404(_("Bills not found in selected client."))
+            raise PermissionDenied(_("Bills not found in selected client."))
 
         return context
 
@@ -90,4 +94,3 @@ class CurrentClientOtherBillEditView(CurrentClientBaseBillEditView):
     queryset = ClientOtherBill.objects.prefetch_related('client')
     template_name = "client_bills/edit_client_other_bill.html"
     success_url_name = "list_other_client_bills"
-

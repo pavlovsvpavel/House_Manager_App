@@ -76,7 +76,6 @@
 
 .form-container .form-content {
     display: flex;
-    /*align-items: center;*/
     justify-content: space-between;
 }
 
@@ -94,7 +93,6 @@
     font-weight: 500;
     color: inherit;
     padding-left: 1.5em;
-
 }
 
 .forms .form-content .create-form-heading:before {
@@ -105,7 +103,6 @@
     height: 3px;
     width: 25px;
     background: #7d2ae8;
-
 }
 
 .forms .form-content .input-boxes {
@@ -185,11 +182,11 @@
 .forms .form-content .sign-up-text {
     text-align: center;
     margin-top: 25px;
-
 }
 
 .forms .form-content .sign-up-text label {
     text-decoration: underline;
+    text-align: center;
 }
 
 .form-container #flip {

@@ -16,7 +16,7 @@
     background-color: var(--form-bgnd);
     border-radius: 1em;
     padding: 1em 2em;
-    gap: 0.5em;
+    gap: 1em;
 }
 
 .create-form input,
@@ -28,7 +28,7 @@
 
 .create-form label {
     font-size: 1.2em;
-    /*padding-top: 1em;*/
+    text-align: left;
 }
 
 .create-form .btn,
@@ -67,7 +67,6 @@
 .create-client .create-form div:nth-of-type(6),
 .create-client .create-form div:nth-of-type(7) {
     display: flex;
-    align-items: center;
 }
 
 .edit-client .create-form div:nth-of-type(5),

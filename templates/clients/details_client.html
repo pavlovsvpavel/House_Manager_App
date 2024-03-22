@@ -36,16 +36,17 @@
                         <a href="{% url "delete_client" pk=object.pk %}">{% trans "Delete" %}</a>
                     </div>
                 </div>
-                <div class="client-card-btns">
+                <div class="bills-client-card-btns">
                     <div class="bills-button">
                         <a href="{% url "list_client_bills" pk=object.pk %}">{% trans "Bills" %}</a>
                     </div>
                     <div class="bills-button">
                         <a href="{% url "list_other_client_bills" pk=object.pk %}">{% trans "Other Bills" %}</a>
                     </div>
-                    <div class="back-button">
-                        <a href="{% url "house_clients_list" pk=house.pk %}"><i class="fa-solid fa-arrow-right"></i>{% trans "Back to clients" %}</a>
-                    </div>
+                </div>
+                <div class="back-button">
+                    <a href="{% url "house_clients_list" pk=house.pk %}"><i
+                            class="fa-solid fa-arrow-right"></i>{% trans "Back to clients" %}</a>
                 </div>
             </div>
         </div>

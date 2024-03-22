@@ -1,15 +1,14 @@
 .dashboard .house-cards {
     display: flex;
     gap: 2em;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
-    flex: 0 1 80%;
+    flex: 0 1 50%;
     text-align: center;
 }
 
 .dashboard .house-card {
     justify-content: space-between;
-    flex: 0 1 30%;
     background-image: url("../images/house-solid.svg");
     background-repeat: no-repeat;
     background-position: center;
@@ -126,7 +125,8 @@
     font-weight: bold;
 }
 
-.details-client .client-card .client-card-btns {
+.details-client .client-card .client-card-btns,
+.details-client .client-card .bills-client-card-btns {
     display: flex;
     justify-content: space-between;
     padding-top: 0.5em;
@@ -150,20 +150,33 @@
     transition: 0.3s ease-in-out;
 }
 
+.house-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--card-bgnd);
+    border-radius: 0.5em;
+    flex: 1 1 30%;
+    gap: 1em;
+    padding: 1em;
+}
+
+.house-card .card-column {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #000;
+    align-items: center;
+}
+
+.house-card .card-column p:last-of-type {
+    font-weight: bold;
+}
+
 .delete-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2em;
     text-align: center;
-}
-
-.delete-card .btn {
-    background-color: red;
-    padding: 0.3em 3em;
-    border-radius: 0.5em;
-    border: none;
-    cursor: pointer;
 }
 
 .profile-card {

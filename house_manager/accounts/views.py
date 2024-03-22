@@ -11,7 +11,7 @@ from house_manager.accounts.models import Profile
 UserModel = get_user_model()
 
 
-class LogInUserView(OwnerRequiredMixin, auth_views.LoginView):
+class LogInUserView(auth_views.LoginView):
     template_name = "accounts/login.html"
     redirect_authenticated_user = True
 
@@ -21,7 +21,7 @@ class LogInUserView(OwnerRequiredMixin, auth_views.LoginView):
         return context
 
 
-class RegisterUserView(OwnerRequiredMixin, views.CreateView):
+class RegisterUserView(views.CreateView):
     template_name = "accounts/register.html"
     form_class = HouseManagerUserCreationForm
     success_url = reverse_lazy("index")

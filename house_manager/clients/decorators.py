@@ -1,5 +1,6 @@
 from functools import wraps
-from django.http import Http404
+
+from django.core.exceptions import PermissionDenied
 from house_manager.clients.models import Client
 
 
@@ -11,12 +12,12 @@ def get_current_client_id(view_func):
             try:
                 selected_client = Client.objects.get(id=selected_client_id)
             except Client.DoesNotExist:
-                raise Http404("Client does not exist.")
+                raise PermissionDenied("Client does not exist.")
 
             if selected_client.user == request.user:
                 return view_func(request, *args, **kwargs)
             else:
-                raise Http404("You are not the owner of this house.")
+                raise PermissionDenied("You are not the owner of this house.")
         else:
-            raise Http404("Client does not exist.")
+            raise PermissionDenied("Client does not exist.")
     return wrapper

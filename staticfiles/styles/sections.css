@@ -13,10 +13,6 @@
     text-align: center;
 }
 
-.details-client .wrapper {
-    /*flex: 0 1 50%;*/
-}
-
 .list-clients .wrapper {
     flex: 0 1 80%;
 }
@@ -28,65 +24,78 @@
 
 }
 
-.house-card {
+.site-section.pricing-section {
+    padding: 0;
+}
+
+.pricing-wrapper {
+    display: flex;
+    gap: 1em;
+    background-color: var(--form-bgnd);
+    padding: 2em 3em;
+    flex: 0 1 100%;
+}
+
+.pricing-wrapper span {
+    font-size: 0.5em;
+}
+
+.pricing-plans {
     display: flex;
     flex-direction: column;
-    background-color: var(--card-bgnd);
-    border-radius: 0.5em;
-    flex: 1 1 30%;
+    flex: 1;
+    padding-top: 2em;
+}
+
+.pricing-plans p {
+    padding-top: 2em;
+}
+
+.price-card1,
+.price-card2 {
+    display: flex;
+    flex-direction: column;
     gap: 1em;
-    padding: 1em;
+    flex: 1;
+    padding: 2em 0;
+    border-radius: 0.5em;
 }
 
-.house-card .card-column {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #000;
-    align-items: center;
+.price-card1 h2,
+.price-card2 h2 {
+    padding: 0.5em 0;
+    margin: 0;
+    font-size: 3em;
+    font-weight: 300;
 }
 
-.house-card .card-column p:last-of-type {
-    font-weight: bold;
-    text-align: right;
+.price-card1 {
+    background-color: var(--card-bgnd);
+    text-align: center;
 }
 
-.details-house-elements .house-card .client-card-btns,
-.details-client .client-card-btns {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 0.5em;
-    align-items: center;
-}
-
-.details-house-elements .house-card .client-card-btns a,
-.wrapper .back-button a,
-.wrapper .bills-button a {
+.price-card1 a,
+.price-card2 a {
+    display: inline-block;
     text-decoration: none;
     color: #fff;
-    padding: 0.5em;
-    flex: 0 1 100px;
-    text-align: center;
-    border-radius: 1.5em;
-    border-color: transparent;
+    border-radius: 0.5em;
     background-color: var(--form-btn-color);
-    cursor: pointer;
+    padding: 0.5em 2em;
+    margin-top: 2em;
     transition: 0.3s ease-in-out;
-    /*width: 200px;*/
-    display: block;
 }
 
-.wrapper .bills-button a {
-    width: 150px;
+.price-card2 {
+    background-color: var(--card-bgnd-hover);
+    text-align: center;
 }
 
-.details-house-elements .house-card .client-card-btns a:hover,
-.wrapper .back-button a:hover,
-.wrapper .bills-button a:hover {
+.price-card1 a:hover ,
+.price-card2 a:hover {
     background-color: var(--form-btn-color-hover);
     transition: 0.3s ease-in-out;
 }
 
-.wrapper .back-button i {
-    padding-right: 0.5em;
-}
+
 

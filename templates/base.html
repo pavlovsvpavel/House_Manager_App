@@ -9,7 +9,6 @@
     <title>House Manager</title>
     <link rel="stylesheet" href="{% static "styles/styles.css" %}">
     <link href="{% static "images/favicon.ico" %}" rel="icon" type="image/x-icon">
-    <script src={% static "scripts/selectCurrentHouseId.js" %}></script>
     <script src={% static "scripts/redirects.js" %}></script>
 </head>
 <body>
@@ -72,6 +71,12 @@
             <p>&copy; 2024 Pavel Pavlov. All Rights Reserved.</p>
         </div>
     </footer>
+    <div class="cookies-eu-banner hidden">
+        <p>By clicking <strong>"Accept"</strong>, you agree storing of cookies on your device to
+            enhance site navigation, analyze site usage and improve marketing.</p>
+        <button>Accept</button>
+    </div>
 </div>
+<script src="{% static "scripts/cookiePopUp.js" %}"></script>
 </body>
 </html>
