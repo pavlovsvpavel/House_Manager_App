@@ -96,6 +96,12 @@
     display: block;
 }
 
+.wrapper .back-button a {
+    background-color: #FF8080;
+}
+
+
+
 .wrapper .bills-button a {
     width: 150px;
 }
@@ -105,6 +111,10 @@
 .wrapper .bills-button a:hover {
     background-color: var(--form-btn-color-hover);
     transition: 0.3s ease-in-out;
+}
+
+.wrapper .back-button a:hover {
+    background-color: #D37676;
 }
 
 .wrapper .back-button i {

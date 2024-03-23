@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-23 08:35+0200\n"
+"POT-Creation-Date: 2024-03-23 22:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -253,19 +253,19 @@ msgstr "Сигурни ли сте, че искате да изтриете то
 msgid "Yes"
 msgstr "Да"
 
-#: .\templates\accounts\details_profile.html:23
+#: .\templates\accounts\details_profile.html:27
 #: .\templates\clients\details_client.html:35
 #: .\templates\houses\details_house.html:54
 msgid "Edit"
 msgstr "Промени"
 
-#: .\templates\accounts\details_profile.html:24
+#: .\templates\accounts\details_profile.html:28
 #: .\templates\clients\details_client.html:36
 #: .\templates\houses\details_house.html:55
 msgid "Delete"
 msgstr "Изтрий"
 
-#: .\templates\accounts\details_profile.html:25
+#: .\templates\accounts\details_profile.html:29
 msgid "Change password"
 msgstr "Промяна на парола"
 
@@ -275,10 +275,10 @@ msgstr "Промяна на профил"
 
 #: .\templates\accounts\edit_profile.html:12
 #: .\templates\accounts\password_change.html:12
-#: .\templates\client_bills\edit_client_bill.html:63
-#: .\templates\client_bills\edit_client_bill.html:65
-#: .\templates\client_bills\edit_client_other_bill.html:34
-#: .\templates\client_bills\edit_client_other_bill.html:36
+#: .\templates\client_bills\edit_client_bill.html:59
+#: .\templates\client_bills\edit_client_bill.html:61
+#: .\templates\client_bills\edit_client_other_bill.html:31
+#: .\templates\client_bills\edit_client_other_bill.html:33
 #: .\templates\clients\create_client.html:12
 #: .\templates\clients\edit_client.html:11
 #: .\templates\house_bills\create_house_bills.html:13
@@ -349,8 +349,12 @@ msgstr "Няма въведени сметки"
 
 #: .\templates\client_bills\list_client_bills.html:34
 #: .\templates\client_bills\list_other_client_bills.html:34
-msgid "Back to client"
-msgstr "Назад към клиент"
+#: .\templates\clients\details_client.html:49
+#: .\templates\house_bills\list_house_bills.html:33
+#: .\templates\house_bills\list_other_house_bills.html:37
+#: .\templates\houses\house_clients_list.html:36
+msgid "Back"
+msgstr "Назад"
 
 #: .\templates\clients\create_client.html:9
 #: .\templates\houses\details_house.html:11
@@ -374,10 +378,6 @@ msgstr "Сметки"
 #: .\templates\houses\details_house.html:16
 msgid "Other Bills"
 msgstr "Други сметки"
-
-#: .\templates\clients\details_client.html:49
-msgid "Back to clients"
-msgstr "Назад към всички клиенти"
 
 #: .\templates\clients\edit_client.html:8
 msgid "Edit Client"
@@ -437,12 +437,6 @@ msgstr "Създай сметка"
 #: .\templates\house_bills\create_other_bill.html:16
 msgid "Add clients first"
 msgstr "Първо добавете клиенти"
-
-#: .\templates\house_bills\list_house_bills.html:33
-#: .\templates\house_bills\list_other_house_bills.html:37
-#: .\templates\houses\house_clients_list.html:36
-msgid "Back to house"
-msgstr "Назад към къща"
 
 #: .\templates\houses\delete_house.html:9
 msgid "Are you sure you want to delete this house?"

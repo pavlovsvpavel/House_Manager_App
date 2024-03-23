@@ -194,6 +194,12 @@
     gap: 1em;
 }
 
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap:0.5em;
+}
+
 .profile-card img {
     width: 200px;
     height: 200px;

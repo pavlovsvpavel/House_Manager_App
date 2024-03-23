@@ -145,6 +145,11 @@
         flex: 0 1 100%;
     }
 
+    .create-client .create-form div:nth-of-type(5),
+    .create-client .create-form div:nth-of-type(6) {
+        align-items: center;
+    }
+
     .client-details .client-card {
         flex: 0 1 100%;
     }
