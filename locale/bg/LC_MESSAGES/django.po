@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-22 15:43+0200\n"
+"POT-Creation-Date: 2024-03-23 08:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -184,10 +184,11 @@ msgid "Total BGN"
 msgstr "Общо сума, ЛВ."
 
 #: .\house_manager\common\mixins.py:143 .\house_manager\common\mixins.py:191
+#: .\templates\common\index.html:31
 #: .\templates\house_bills\edit_house_bills.html:54
 #: .\templates\house_bills\edit_other_house_bills.html:30
 msgid "Paid"
-msgstr "Платена"
+msgstr "Платен"
 
 #: .\house_manager\common\mixins.py:178
 #: .\templates\client_bills\edit_client_other_bill.html:19
@@ -307,6 +308,7 @@ msgstr "Регистрирай се сега"
 
 #: .\templates\accounts\login.html:36 .\templates\accounts\login.html:40
 #: .\templates\accounts\register.html:37 .\templates\accounts\register.html:41
+#: .\templates\common\index.html:28 .\templates\common\index.html:35
 msgid "Register"
 msgstr "Регистрация"
 
@@ -384,6 +386,46 @@ msgstr "Промяна клиент"
 #: .\templates\common\dashboard.html:33
 msgid "No houses"
 msgstr "Няма създадени къщи"
+
+#: .\templates\common\index.html:10
+msgid "Managing House Expenses"
+msgstr "Управление на домашните разходи"
+
+#: .\templates\common\index.html:11
+msgid "Your All-in-One Solution"
+msgstr "Вашето решение 'всичко в едно'"
+
+#: .\templates\common\index.html:20
+msgid "Pricing Plans"
+msgstr "Абонаментни планове"
+
+#: .\templates\common\index.html:21
+msgid "Choose your plan and start using our app."
+msgstr "Избери абонаментен план и започни да използваш нашето приложение"
+
+#: .\templates\common\index.html:24
+msgid "Free"
+msgstr "Безплатен"
+
+#: .\templates\common\index.html:25 .\templates\common\index.html:32
+msgid "BGN"
+msgstr "ЛВ."
+
+#: .\templates\common\index.html:25 .\templates\common\index.html:32
+msgid "month"
+msgstr "месец"
+
+#: .\templates\common\index.html:26
+msgid "House"
+msgstr "къща"
+
+#: .\templates\common\index.html:27 .\templates\common\index.html:34
+msgid "months period"
+msgstr "месечен период"
+
+#: .\templates\common\index.html:33
+msgid "Unlimited houses"
+msgstr "Неограничен брой къщи"
 
 #: .\templates\house_bills\create_house_bills.html:10
 #: .\templates\house_bills\create_other_bill.html:10

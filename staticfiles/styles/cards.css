@@ -53,11 +53,15 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    background-color: var(--card-bgnd);
+    background-color: var(--card-bgnd-paid);
     border-radius: 0.5em;
     padding: 0.5em;
     align-items: center;
     transition: 0.3s ease-in-out;
+}
+
+.list-clients .client-card {
+    background-color: var(--card-bgnd);
 }
 
 .list-client-bills .client-card-not-paid,
@@ -71,9 +75,13 @@
 .list-client-bills .client-card-not-paid:hover,
 .list-house-bills .client-card-not-paid:hover {
     cursor: pointer;
-    background-color: var(--card-bgnd-hover);
+    background-color: var(--card-bgnd-paid-hover);
     box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);
     transition: 0.3s ease-in-out;
+}
+
+.list-clients .client-card:hover {
+    background-color: var(--card-bgnd-hover);
 }
 
 .list-client-bills .client-card-not-paid:hover,

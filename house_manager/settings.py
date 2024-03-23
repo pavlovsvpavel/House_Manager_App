@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', cast=bool)
-ALLOWED_HOSTS = ["localhost", "https://pavlovp.azurewebsites.net/"]
+ALLOWED_HOSTS = ["localhost"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,6 +27,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -119,3 +121,4 @@ AUTH_USER_MODEL = "accounts.HouseManagerUser"
 LOGIN_REDIRECT_URL = reverse_lazy("index")
 LOGIN_URL = reverse_lazy("login_user")
 LOGOUT_REDIRECT_URL = reverse_lazy("index")
+

@@ -10,7 +10,7 @@ UserModel = get_user_model()
 
 class ClientMonthlyBill(MonthlyBill):
     class Meta:
-        ordering = ("-year", "month")
+        ordering = ("is_paid", "-year", "month")
 
     client = models.ForeignKey(
         to=Client,

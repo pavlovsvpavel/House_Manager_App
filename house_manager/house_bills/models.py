@@ -8,8 +8,8 @@ UserModel = get_user_model()
 
 class HouseMonthlyBill(MonthlyBill):
     class Meta:
-        unique_together = ["year", "month", "house"]
-        ordering = ["-year", "month"]
+        unique_together = ("year", "month", "house")
+        ordering = ("is_paid", "-year", "month")
 
     is_paid = models.BooleanField(
         default=False,
