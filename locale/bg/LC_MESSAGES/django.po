@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-23 22:50+0200\n"
+"POT-Creation-Date: 2024-03-24 22:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -53,14 +53,12 @@ msgid "The maximum file size should not exceed 1MB"
 msgstr "Размерът на снимката не трябва да надвишава 1MB"
 
 #: .\house_manager\client_bills\views.py:25
-#, fuzzy
-#| msgid "Bills not found in selected client."
 msgid "Bill not found for current client"
-msgstr "Не са намерени сметки на съответния клиент."
+msgstr "Не е намерена сметка на съответния клиент."
 
 #: .\house_manager\client_bills\views.py:66
-msgid "Bills not found in selected client."
-msgstr "Не са намерени сметки на съответния клиент."
+msgid "Bill not found for current client."
+msgstr "Не е намерена сметка на съответния клиент."
 
 #: .\house_manager\clients\models.py:26
 #: .\templates\clients\details_client.html:11
@@ -185,8 +183,8 @@ msgstr "Общо сума, ЛВ."
 
 #: .\house_manager\common\mixins.py:143 .\house_manager\common\mixins.py:191
 #: .\templates\common\index.html:31
-#: .\templates\house_bills\edit_house_bills.html:54
-#: .\templates\house_bills\edit_other_house_bills.html:30
+#: .\templates\house_bills\edit_house_bills.html:53
+#: .\templates\house_bills\edit_other_house_bills.html:29
 msgid "Paid"
 msgstr "Платен"
 
@@ -283,10 +281,10 @@ msgstr "Промяна на профил"
 #: .\templates\clients\edit_client.html:11
 #: .\templates\house_bills\create_house_bills.html:13
 #: .\templates\house_bills\create_other_bill.html:13
-#: .\templates\house_bills\edit_house_bills.html:57
-#: .\templates\house_bills\edit_house_bills.html:59
-#: .\templates\house_bills\edit_other_house_bills.html:33
-#: .\templates\house_bills\edit_other_house_bills.html:35
+#: .\templates\house_bills\edit_house_bills.html:56
+#: .\templates\house_bills\edit_house_bills.html:58
+#: .\templates\house_bills\edit_other_house_bills.html:32
+#: .\templates\house_bills\edit_other_house_bills.html:34
 #: .\templates\houses\create_house.html:12
 #: .\templates\houses\edit_house.html:11
 msgid "Save"
@@ -294,7 +292,7 @@ msgstr "Запиши"
 
 #: .\templates\accounts\login.html:25 .\templates\accounts\login.html:29
 #: .\templates\accounts\register.html:26 .\templates\accounts\register.html:30
-#: .\templates\base.html:42
+#: .\templates\base.html:40
 msgid "Login"
 msgstr "Вход"
 
@@ -336,7 +334,7 @@ msgstr "Създай къща"
 msgid "Profile"
 msgstr "Профил"
 
-#: .\templates\base.html:39
+#: .\templates\base.html:38
 msgid "Logout"
 msgstr "Изход"
 
@@ -388,12 +386,12 @@ msgid "No houses"
 msgstr "Няма създадени къщи"
 
 #: .\templates\common\index.html:10
-msgid "Managing House Expenses"
-msgstr "Управление на домашните разходи"
+msgid "Managing House Expenses."
+msgstr "Управление на домашните разходи."
 
 #: .\templates\common\index.html:11
-msgid "Your All-in-One Solution"
-msgstr "Вашето решение 'всичко в едно'"
+msgid "Your All-in-One Solution."
+msgstr "Вашето решение 'всичко в едно'."
 
 #: .\templates\common\index.html:20
 msgid "Pricing Plans"

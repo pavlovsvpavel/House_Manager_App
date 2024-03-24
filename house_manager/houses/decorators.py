@@ -1,6 +1,8 @@
 from functools import wraps
 
 from django.core.exceptions import PermissionDenied
+from django.http import Http404
+
 from house_manager.houses.models import House
 
 
@@ -12,12 +14,12 @@ def get_current_house_id(view_func):
             try:
                 selected_house = House.objects.get(id=selected_house_id)
             except House.DoesNotExist:
-                raise PermissionDenied("House does not exist.")
+                raise Http404("House does not exist.")
 
             if selected_house.user == request.user:
                 return view_func(request, *args, **kwargs)
             else:
                 raise PermissionDenied("You are not the owner of this house.")
         else:
-            raise PermissionDenied("House does not exist.")
+            raise Http404("House does not exist.")
     return wrapper

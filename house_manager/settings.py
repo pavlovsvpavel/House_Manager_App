@@ -88,9 +88,6 @@ AUTH_PASSWORD_VALIDATORS = [
 if DEBUG:
     AUTH_PASSWORD_VALIDATORS = ()
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -106,20 +103,26 @@ LANGUAGES = [
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 
-STATIC_URL = '/static/'
+
+STATIC_URL = 'static/'
+
 STATICFILES_DIRS = (
     BASE_DIR / 'staticfiles',
 )
 
+STATIC_ROOT = 'house_manager/staticfiles'
 
 MEDIA_ROOT = BASE_DIR / 'mediafiles'
-MEDIA_URL = '/media/'
+
+MEDIA_URL = 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "accounts.HouseManagerUser"
 
 LOGIN_REDIRECT_URL = reverse_lazy("index")
+
 LOGIN_URL = reverse_lazy("login_user")
+
 LOGOUT_REDIRECT_URL = reverse_lazy("index")
 

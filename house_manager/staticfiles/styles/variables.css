@@ -1,0 +1,13 @@
+:root {
+    --card-bgnd: #F2C18D;
+    --card-text-color: #071952;
+    --card-bgnd-hover: #F6995C;
+    --form-bgnd: #D2E0FB;
+    --form-input-border: #8EACCD;
+    --form-btn-color: #7091F5;
+    --form-btn-color-hover: #0079FF;
+    --card-bgnd-not-paid: #D37676;
+    --card-bgnd-not-paid-hover: #B06161;
+    --card-bgnd-paid: #C5EBAA;
+    --card-bgnd-paid-hover: #A5DD9B;
+}

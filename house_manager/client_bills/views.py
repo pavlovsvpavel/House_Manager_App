@@ -63,7 +63,7 @@ class CurrentClientBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView)
 
         current_house = self.object.house.pk
         if current_house != house_id:
-            raise PermissionDenied(_("Bills not found in selected client."))
+            raise PermissionDenied(_("Bill not found for current client."))
 
         return context
 

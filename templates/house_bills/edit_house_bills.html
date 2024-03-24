@@ -48,7 +48,6 @@
                     </div>
                 </div>
                 <form class="is-paid-form" method="post" action="{% url "edit_house_bills" pk=object.pk %}">
-{#                    {{ form }}#}
                     {% csrf_token %}
                     <div>
                         <label for="id_is_paid">{% trans "Paid" %}</label>{{ form.is_paid }}
