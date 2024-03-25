@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-25 09:45+0200\n"
+"POT-Creation-Date: 2024-03-25 13:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -52,29 +52,29 @@ msgstr "Профилна снимка"
 msgid "The maximum file size should not exceed 1MB"
 msgstr "Размерът на снимката не трябва да надвишава 1MB"
 
-#: .\house_manager\client_bills\views.py:25
+#: .\house_manager\client_bills\views.py:26
 msgid "Bill not found for current client"
 msgstr "Не е намерена сметка на съответния клиент."
 
-#: .\house_manager\client_bills\views.py:66
+#: .\house_manager\client_bills\views.py:89
 msgid "Bill not found for current client."
 msgstr "Не е намерена сметка на съответния клиент."
 
 #: .\house_manager\clients\models.py:26
 #: .\templates\clients\details_client.html:11
-#: .\templates\houses\house_clients_list.html:14
+#: .\templates\houses\house_clients_list.html:20
 msgid "Family Name"
 msgstr "Фамилия"
 
 #: .\house_manager\clients\models.py:32
 #: .\templates\clients\details_client.html:15
-#: .\templates\houses\house_clients_list.html:18
+#: .\templates\houses\house_clients_list.html:24
 msgid "Floor"
 msgstr "Етаж"
 
 #: .\house_manager\clients\models.py:38
 #: .\templates\clients\details_client.html:19
-#: .\templates\houses\house_clients_list.html:22
+#: .\templates\houses\house_clients_list.html:28
 msgid "Apartment"
 msgstr "Апартамент"
 
@@ -92,7 +92,7 @@ msgstr "Използва ли асансьор"
 msgid "Occupied"
 msgstr "Обитаем"
 
-#: .\house_manager\clients\views.py:34
+#: .\house_manager\clients\views.py:35
 msgid "Client with this apartment already exist"
 msgstr "Клиент с този апартамент вече съществува."
 
@@ -144,11 +144,11 @@ msgstr "Ноември"
 msgid "December"
 msgstr "Декември"
 
-#: .\house_manager\common\mixins.py:48 .\house_manager\common\mixins.py:165
+#: .\house_manager\common\mixins.py:48 .\house_manager\common\mixins.py:164
 #: .\templates\client_bills\edit_client_bill.html:15
 #: .\templates\client_bills\edit_client_other_bill.html:15
-#: .\templates\client_bills\list_client_bills.html:19
-#: .\templates\client_bills\list_other_client_bills.html:19
+#: .\templates\client_bills\list_client_bills.html:24
+#: .\templates\client_bills\list_other_client_bills.html:24
 #: .\templates\house_bills\edit_house_bills.html:14
 #: .\templates\house_bills\edit_other_house_bills.html:14
 #: .\templates\house_bills\list_house_bills.html:19
@@ -156,13 +156,13 @@ msgstr "Декември"
 msgid "Month"
 msgstr "Месец"
 
-#: .\house_manager\common\mixins.py:55 .\house_manager\common\mixins.py:172
+#: .\house_manager\common\mixins.py:55 .\house_manager\common\mixins.py:171
 #: .\house_manager\house_bills\forms.py:15
 #: .\house_manager\house_bills\forms.py:26
 #: .\templates\client_bills\edit_client_bill.html:11
 #: .\templates\client_bills\edit_client_other_bill.html:11
-#: .\templates\client_bills\list_client_bills.html:15
-#: .\templates\client_bills\list_other_client_bills.html:15
+#: .\templates\client_bills\list_client_bills.html:20
+#: .\templates\client_bills\list_other_client_bills.html:20
 #: .\templates\house_bills\edit_house_bills.html:10
 #: .\templates\house_bills\edit_other_house_bills.html:10
 #: .\templates\house_bills\list_house_bills.html:15
@@ -217,11 +217,11 @@ msgstr "Фонд ремонти"
 msgid "Other expenses"
 msgstr "Други разходи"
 
-#: .\house_manager\common\mixins.py:127 .\house_manager\common\mixins.py:186
+#: .\house_manager\common\mixins.py:127 .\house_manager\common\mixins.py:185
 #: .\templates\client_bills\edit_client_bill.html:51
 #: .\templates\client_bills\edit_client_other_bill.html:23
-#: .\templates\client_bills\list_client_bills.html:23
-#: .\templates\client_bills\list_other_client_bills.html:23
+#: .\templates\client_bills\list_client_bills.html:28
+#: .\templates\client_bills\list_other_client_bills.html:28
 #: .\templates\house_bills\edit_house_bills.html:46
 #: .\templates\house_bills\edit_other_house_bills.html:22
 #: .\templates\house_bills\list_house_bills.html:23
@@ -229,14 +229,16 @@ msgstr "Други разходи"
 msgid "Total BGN"
 msgstr "Общо сума, ЛВ."
 
-#: .\house_manager\common\mixins.py:143 .\house_manager\common\mixins.py:191
+#: .\house_manager\common\mixins.py:143 .\house_manager\common\mixins.py:190
+#: .\templates\client_bills\list_client_bills.html:11
+#: .\templates\client_bills\list_other_client_bills.html:11
 #: .\templates\common\index.html:31
 #: .\templates\house_bills\edit_house_bills.html:53
 #: .\templates\house_bills\edit_other_house_bills.html:29
 msgid "Paid"
 msgstr "Платен"
 
-#: .\house_manager\common\mixins.py:178
+#: .\house_manager\common\mixins.py:177
 #: .\templates\client_bills\edit_client_other_bill.html:19
 #: .\templates\house_bills\edit_other_house_bills.html:18
 #: .\templates\house_bills\list_other_house_bills.html:23
@@ -386,19 +388,30 @@ msgstr "Профил"
 msgid "Logout"
 msgstr "Изход"
 
-#: .\templates\client_bills\list_client_bills.html:30
-#: .\templates\client_bills\list_other_client_bills.html:30
+#: .\templates\client_bills\list_client_bills.html:10
+#: .\templates\client_bills\list_other_client_bills.html:10
+#: .\templates\houses\house_clients_list.html:10
+msgid "All"
+msgstr "Всички"
+
+#: .\templates\client_bills\list_client_bills.html:12
+#: .\templates\client_bills\list_other_client_bills.html:12
+msgid "Unpaid"
+msgstr "Неплатен"
+
+#: .\templates\client_bills\list_client_bills.html:35
+#: .\templates\client_bills\list_other_client_bills.html:35
 #: .\templates\house_bills\list_house_bills.html:29
 #: .\templates\house_bills\list_other_house_bills.html:33
 msgid "No bills"
-msgstr "Няма въведени сметки"
+msgstr "Няма сметки"
 
-#: .\templates\client_bills\list_client_bills.html:34
-#: .\templates\client_bills\list_other_client_bills.html:34
+#: .\templates\client_bills\list_client_bills.html:40
+#: .\templates\client_bills\list_other_client_bills.html:40
 #: .\templates\clients\details_client.html:49
 #: .\templates\house_bills\list_house_bills.html:33
 #: .\templates\house_bills\list_other_house_bills.html:37
-#: .\templates\houses\house_clients_list.html:36
+#: .\templates\houses\house_clients_list.html:43
 msgid "Back"
 msgstr "Назад"
 
@@ -412,7 +425,7 @@ msgid "Are you sure you want to delete this client?"
 msgstr "Сигурни ли сте, че искате да изтриете този клиент?"
 
 #: .\templates\clients\details_client.html:23
-#: .\templates\houses\house_clients_list.html:26
+#: .\templates\houses\house_clients_list.html:32
 msgid "People"
 msgstr "Живущи"
 
@@ -516,6 +529,14 @@ msgstr "Общо живущи ползващи асансьор"
 msgid "Edit House"
 msgstr "Промяна на къща"
 
-#: .\templates\houses\house_clients_list.html:32
+#: .\templates\houses\house_clients_list.html:11
+msgid "Paid bills"
+msgstr "Платени сметки"
+
+#: .\templates\houses\house_clients_list.html:12
+msgid "Unpaid bills"
+msgstr "Неплатени сметки"
+
+#: .\templates\houses\house_clients_list.html:38
 msgid "No clients"
-msgstr "Няма създадени клиенти"
+msgstr "Няма клиенти"

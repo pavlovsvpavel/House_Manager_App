@@ -3,26 +3,16 @@
 
 {% block main_content %}
 
-<section class="site-section list-client-bills">
+    <section class="site-section list-client-bills">
         <div class="container">
             <div class="wrapper">
+                {% include "partials/filter_buttons.html" %}
                 <div class="clients-cards">
                     {% if client_bills %}
-                        {% for bill in client_bills %}
-                            <div class="{% if bill.is_paid %} client-card {% else %} client-card-not-paid {% endif %}" 
-                                 onclick="redirectToClientBillDetails({{ bill.pk }},'{% url "edit_client_bill" pk=0 %}')">
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Year" %}</p>
-                                    <p class="column-data">{{ bill.year }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Month" %}</p>
-                                    <p class="column-data">{{ bill.get_month_name }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Total BGN" %}</p>
-                                    <p class="column-data">{{ bill.total_amount }}</p>
-                                </div>
+                        {% for object in client_bills %}
+                            <div class="{% if object.is_paid %} client-card {% else %} client-card-not-paid {% endif %}"
+                                 onclick="redirectToClientBillDetails({{ object.pk }},'{% url "edit_client_bill" pk=0 %}')">
+                                {% include "partials/details_other_client_bills.html" %}
                             </div>
 
                         {% endfor %}
@@ -31,7 +21,8 @@
                     {% endif %}
                 </div>
                 <div class="back-button">
-                    <a href="{% url "details_client" pk=object.pk %}"><i class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
+                    <a href="{% url "details_client" pk=object.pk %}"><i
+                            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                 </div>
             </div>
         </div>

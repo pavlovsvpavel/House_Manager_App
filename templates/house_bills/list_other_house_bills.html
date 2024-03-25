@@ -6,10 +6,11 @@
     <section class="site-section list-house-bills">
         <div class="container">
             <div class="wrapper">
+                {% include "partials/filter_buttons.html" %}
                 <div class="clients-cards">
                     {% if house_bills %}
                         {% for bill in house_bills %}
-                            <div class="{% if bill.is_paid %} client-card {% else %} client-card-not-paid {% endif %}" 
+                            <div class="{% if bill.is_paid %} client-card {% else %} client-card-not-paid {% endif %}"
                                  onclick="redirectToHouseBillDetails({{ bill.pk }}, '{% url "edit_other_house_bills" pk=0 %}')">
                                 <div class="card-column">
                                     <p class="column-name">{% trans "Year" %}</p>
@@ -34,7 +35,8 @@
                     {% endif %}
                 </div>
                 <div class="back-button">
-                    <a href="{% url "details_house" pk=object.pk %}"><i class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
+                    <a href="{% url "details_house" pk=object.pk %}"><i
+                            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                 </div>
             </div>
         </div>

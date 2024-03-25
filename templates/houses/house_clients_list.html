@@ -6,11 +6,7 @@
     <section class="site-section list-clients">
         <div class="container">
             <div class="wrapper">
-                <div class="filter-buttons">
-                    <a href="?">All</a>
-                    <a href="?is_paid=True">Paid bills</a>
-                    <a href="?is_paid=False">Unpaid bills</a>
-                </div>
+            {% include "partials/filter_buttons.html" %}
                 <div class="clients-cards">
                     {% if clients %}
                         {% for client in clients %}

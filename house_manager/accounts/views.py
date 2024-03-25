@@ -2,6 +2,7 @@ from django.contrib.auth import views as auth_views, logout, login, get_user_mod
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
+from django.utils.translation import gettext_lazy as _
 
 from house_manager.accounts.forms import HouseManagerUserCreationForm
 from django.contrib.auth import forms as auth_forms
@@ -58,9 +59,15 @@ class ProfileUpdateView(OwnerRequiredMixin, views.UpdateView):
     fields = ("first_name", "last_name", "phone_number", "profile_picture")
 
     def get_success_url(self):
-        return reverse("details_profile", kwargs={
-            "pk": self.object.pk,
-        })
+        return reverse("details_profile", kwargs={"pk": self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["action_url"] = reverse_lazy("edit_profile", kwargs={'pk': self.object.pk})
+        context["form_title"] = _("Edit Profile")
+
+        return context
 
 
 class ProfilePasswordChange(OwnerRequiredMixin, auth_views.PasswordChangeView):
@@ -69,6 +76,14 @@ class ProfilePasswordChange(OwnerRequiredMixin, auth_views.PasswordChangeView):
 
     def get_success_url(self):
         return reverse_lazy('details_profile', kwargs={'pk': self.request.user.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["action_url"] = reverse_lazy("change_password", kwargs={'pk': self.request.user.pk})
+        context["form_title"] = _("Password change")
+
+        return context
 
 
 class ProfileDeleteView(OwnerRequiredMixin, views.DeleteView):

@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as views
+from django.utils.translation import gettext_lazy as _
 
 from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.houses.decorators import get_current_house_id
@@ -19,6 +20,14 @@ class HouseCreateView(CheckForLoggedInUserMixin, views.CreateView):
         form.instance.user = self.request.user
 
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["action_url"] = reverse_lazy("create_house")
+        context["title"] = _("Create House")
+
+        return context
 
 
 @method_decorator(get_current_house_id, name='dispatch')
@@ -98,6 +107,13 @@ class HouseEditView(CheckForLoggedInUserMixin, views.UpdateView):
     def get_success_url(self):
         return reverse_lazy('details_house', kwargs={'pk': self.object.pk})
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["action_url"] = reverse_lazy("edit_house", kwargs={'pk': self.object.pk})
+        context["form_title"] = _("Edit House")
+
+        return context
 
 @method_decorator(get_current_house_id, name='dispatch')
 class HouseDeleteView(CheckForLoggedInUserMixin, views.DeleteView):

@@ -37,6 +37,14 @@ class ClientCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.Cr
 
             return self.form_invalid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["action_url"] = reverse_lazy("create_client")
+        context["title"] = _("Create Client")
+
+        return context
+
 
 @method_decorator(get_current_client_id, name='dispatch')
 class ClientDetailView(CheckForLoggedInUserMixin, views.DetailView):
@@ -88,6 +96,14 @@ class ClientEditView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.Upda
         if house_id and client.house_id != house_id:
             raise PermissionDenied("Client not found for current house.")
         return client
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["action_url"] = reverse_lazy("edit_client", kwargs={'pk': self.object.pk})
+        context["form_title"] = _("Edit Client")
+
+        return context
 
 
 @method_decorator(get_current_client_id, name='dispatch')

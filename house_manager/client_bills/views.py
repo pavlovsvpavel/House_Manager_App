@@ -9,6 +9,7 @@ from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.client_bills.helpers.add_amount_to_balance import add_amount_to_house_balance
 from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 from house_manager.clients.models import Client
+from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
 
 
 class ClientBaseBillsDetailView(CheckForLoggedInUserMixin, views.DetailView):
@@ -26,7 +27,14 @@ class ClientBaseBillsDetailView(CheckForLoggedInUserMixin, views.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["client_bills"] = self.get_type_of_client_bills()
+
+        is_paid = self.request.GET.get('is_paid', None)
+        client_bills = self.get_type_of_client_bills()
+
+        if is_paid is not None:
+            client_bills = filter_bills_by_payment_status(client_bills, is_paid)
+
+        context["client_bills"] = client_bills
 
         return context
 

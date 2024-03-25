@@ -10,6 +10,7 @@ from house_manager.client_bills.helpers.calculate_fees import calculate_fees
 from house_manager.client_bills.helpers.calculate_fees_other_bills import calculate_fees_other_bills
 from house_manager.clients.models import Client
 from house_manager.house_bills.forms import HouseMonthlyBillForm, HouseOtherBillForm
+from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
 from house_manager.house_bills.helpers.subtract_amount_from_balance import subtract_amount_from_house_balance
 from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill
 from house_manager.houses.mixins import GetHouseAndUserMixin
@@ -20,6 +21,7 @@ class HouseBaseBillCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, v
     queryset = None
     template_name = None
     form_class = None
+    action_url = None
 
     def get_success_url(self):
         selected_house_id = self.request.session.get("selected_house")
@@ -32,6 +34,8 @@ class HouseBaseBillCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, v
 
         context['house_id'] = selected_house_id
         context['clients'] = Client.objects.filter(house=selected_house_id)
+        context['action_url'] = self.action_url
+        context["title"] = _("Create Bill")
 
         return context
 
@@ -40,6 +44,7 @@ class HouseMonthlyBillCreateView(HouseBaseBillCreateView):
     queryset = HouseMonthlyBill.objects.select_related('house')
     template_name = "house_bills/create_house_bills.html"
     form_class = HouseMonthlyBillForm
+    action_url = reverse_lazy("create_house_bills")
 
     def form_valid(self, form):
         try:
@@ -63,6 +68,7 @@ class HouseOtherBillCreateView(HouseBaseBillCreateView):
     queryset = HouseOtherBill.objects.select_related('house')
     template_name = "house_bills/create_other_bill.html"
     form_class = HouseOtherBillForm
+    action_url = reverse_lazy("create_other_bill")
 
     def form_valid(self, form):
         try:
@@ -91,11 +97,20 @@ class CurrentHouseBaseBillDetailView(CheckForLoggedInUserMixin, views.DetailView
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         house_id = self.request.session.get("selected_house")
+
+        is_paid = self.request.GET.get('is_paid', None)
+
         if house_id:
             current_house = self.get_object()
             if current_house.id != house_id:
                 raise PermissionDenied(_("Bills not found in selected house."))
-            context["house_bills"] = self.get_type_of_house_bills()
+
+            house_bills = self.get_type_of_house_bills()
+
+            if is_paid is not None:
+                house_bills = filter_bills_by_payment_status(house_bills, is_paid)
+
+            context["house_bills"] = house_bills
 
         return context
 
@@ -166,4 +181,3 @@ class HouseOtherBillEditView(HouseBaseBillEditView):
     queryset = HouseOtherBill.objects.prefetch_related("house")
     template_name = "house_bills/edit_other_house_bills.html"
     success_url_name = "list_other_house_bills"
-

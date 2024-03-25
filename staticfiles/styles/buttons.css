@@ -88,7 +88,7 @@
     text-decoration: none;
     color: #fff;
     padding: 0.5em;
-    flex: 0 1 120px;
+    flex: 0 1 100px;
     text-align: center;
     border-radius: 1.5em;
     border-color: transparent;
@@ -102,7 +102,9 @@
     background-color: #FF8080;
 }
 
-
+.filter-buttons a {
+    flex: 0 1 180px;
+}
 
 .wrapper .bills-button a {
     width: 150px;

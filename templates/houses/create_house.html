@@ -1,16 +1,10 @@
 {% extends "base.html" %}
-{% load i18n %}
 
 {% block main_content %}
 
     <section class="site-section create-house">
         <div class="container">
-            <form class="create-form" action="{% url "create_house" %}" method="post">
-                <h3 class="create-form-heading">{% trans "Create House" %}</h3>
-                {{ form }}
-                {% csrf_token %}
-                <button class="btn" type="submit">{% trans "Save" %}</button>
-            </form>
+            {% include "partials/create_form.html" %}
         </div>
     </section>
 

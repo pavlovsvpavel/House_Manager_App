@@ -1,0 +1,8 @@
+{% load i18n %}
+
+<form class="create-form" action="{{ action_url }}" method="post">
+    <h3 class="create-form-heading">{{ title }}</h3>
+    {{ form }}
+    {% csrf_token %}
+    <button class="btn" type="submit">{% trans "Save" %}</button>
+</form>

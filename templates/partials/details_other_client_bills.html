@@ -1,0 +1,13 @@
+{% load i18n %}
+<div class="card-column">
+    <p class="column-name">{% trans "Year" %}</p>
+    <p class="column-data">{{ object.year }}</p>
+</div>
+<div class="card-column">
+    <p class="column-name">{% trans "Month" %}</p>
+    <p class="column-data">{{ object.get_month_name }}</p>
+</div>
+<div class="card-column">
+    <p class="column-name">{% trans "Total BGN" %}</p>
+    <p class="column-data">{{ object.total_amount }}</p>
+</div>
