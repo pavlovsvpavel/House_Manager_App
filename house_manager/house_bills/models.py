@@ -38,8 +38,8 @@ class HouseMonthlyBill(MonthlyBill):
 
 class HouseOtherBill(OtherBill):
     class Meta:
-        unique_together = ["year", "month", "house"]
-        ordering = ["-year", "month"]
+        unique_together = ("year", "month", "house")
+        ordering = ("is_paid", "-year", "month")
 
     house = models.ForeignKey(
         to=House,

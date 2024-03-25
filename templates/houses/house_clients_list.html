@@ -2,41 +2,48 @@
 {% load i18n %}
 
 {% block main_content %}
-    
-        <section class="site-section list-clients">
-            <div class="container">
-                <div class="wrapper">
-                    <div class="clients-cards">
-                        {% if clients %}
-                            {% for client in clients %}
-                                <div class="client-card" onclick="redirectToClientDetails({{ client.pk }},'{% url "details_client" pk=0 %}')">
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Family Name" %}</p>
-                                        <p class="column-data">{{ client.family_name }}</p>
-                                    </div>
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Floor" %}</p>
-                                        <p class="column-data">{{ client.floor }}</p>
-                                    </div>
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Apartment" %}</p>
-                                        <p class="column-data">{{ client.apartment }}</p>
-                                    </div>
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "People" %}</p>
-                                        <p class="column-data">{{ client.number_of_people }}</p>
-                                    </div>
+
+    <section class="site-section list-clients">
+        <div class="container">
+            <div class="wrapper">
+                <div class="filter-buttons">
+                    <a href="?">All</a>
+                    <a href="?is_paid=True">Paid bills</a>
+                    <a href="?is_paid=False">Unpaid bills</a>
+                </div>
+                <div class="clients-cards">
+                    {% if clients %}
+                        {% for client in clients %}
+                            <div class="client-card"
+                                 onclick="redirectToClientDetails({{ client.pk }},'{% url "details_client" pk=0 %}')">
+                                <div class="card-column">
+                                    <p class="column-name">{% trans "Family Name" %}</p>
+                                    <p class="column-data">{{ client.family_name }}</p>
                                 </div>
-                            {% endfor %}
-                        {% else %}
-                            <h3>{% trans "No clients" %}</h3>
-                        {% endif %}
-                    </div>
-                    <div class="back-button">
-                        <a href="{% url "details_house" pk=object.pk %}"><i class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
-                    </div>
+                                <div class="card-column">
+                                    <p class="column-name">{% trans "Floor" %}</p>
+                                    <p class="column-data">{{ client.floor }}</p>
+                                </div>
+                                <div class="card-column">
+                                    <p class="column-name">{% trans "Apartment" %}</p>
+                                    <p class="column-data">{{ client.apartment }}</p>
+                                </div>
+                                <div class="card-column">
+                                    <p class="column-name">{% trans "People" %}</p>
+                                    <p class="column-data">{{ client.number_of_people }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <h3>{% trans "No clients" %}</h3>
+                    {% endif %}
+                </div>
+                <div class="back-button">
+                    <a href="{% url "details_house" pk=object.pk %}"><i
+                            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
 {% endblock %}

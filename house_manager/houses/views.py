@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -59,7 +60,31 @@ class HouseClientsDetailView(CheckForLoggedInUserMixin, views.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["clients"] = self.object.clients.all()
+        is_paid = self.request.GET.get('is_paid', None)
+        clients = self.object.clients.all()
+
+        if is_paid is not None:
+            if is_paid == 'True':
+                clients = (
+                    clients
+                    .filter(
+                        Q(client_monthly_bills__is_paid=True) |
+                        Q(client_other_bills__is_paid=True)
+                    )
+                    .distinct()
+                )
+
+            elif is_paid == 'False':
+                clients = (
+                    clients
+                    .filter(
+                        Q(client_monthly_bills__is_paid=False) |
+                        Q(client_other_bills__is_paid=False)
+                    )
+                    .distinct()
+                )
+
+        context["clients"] = clients
 
         return context
 

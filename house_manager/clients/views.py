@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
+from django.http import Http404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as views
@@ -39,7 +40,7 @@ class ClientCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.Cr
 
 @method_decorator(get_current_client_id, name='dispatch')
 class ClientDetailView(CheckForLoggedInUserMixin, views.DetailView):
-    queryset = Client.objects.all().prefetch_related("client_monthly_bills")
+    queryset = Client.objects.all()
     template_name = "clients/details_client.html"
 
     def get(self, request, *args, **kwargs):
@@ -63,6 +64,8 @@ class ClientDetailView(CheckForLoggedInUserMixin, views.DetailView):
         client = self.get_object()
         if selected_house_id:
             context["house"] = House.objects.get(pk=selected_house_id)
+        else:
+            raise Http404("House not found")
 
         context["clients_bills"] = ClientMonthlyBill.objects.filter(client_id=client.pk)
         context["client_other_bills"] = ClientOtherBill.objects.filter(client_id=client.pk)

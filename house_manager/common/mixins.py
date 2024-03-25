@@ -17,18 +17,18 @@ class TimeStampModel(models.Model):
 
 
 class MonthChoices(models.TextChoices):
-    JANUARY = "01"
-    FEBRUARY = "02"
-    MARCH = "03"
-    APRIL = "04"
-    MAY = "05"
-    JUNE = "06"
-    JULY = "07"
-    AUGUST = "08"
-    SEPTEMBER = "09"
-    OCTOBER = "10"
-    NOVEMBER = "11"
-    DECEMBER = "12"
+    JANUARY = ("01", _("January"))
+    FEBRUARY = ("02", _("February"))
+    MARCH = ("03", _("March"))
+    APRIL = ("04", _("April"))
+    MAY = ("05", _("May"))
+    JUNE = ("06", _("June"))
+    JULY = ("07", _("July"))
+    AUGUST = ("08", _("August"))
+    SEPTEMBER = ("09", _("September"))
+    OCTOBER = ("10", _("October"))
+    NOVEMBER = ("11", _("November"))
+    DECEMBER = ("12", _("December"))
 
 
 class MonthlyBill(models.Model):
@@ -155,7 +155,6 @@ class OtherBill(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ["-year", "month"]
 
     month = models.CharField(
         max_length=MAX_MONTH_LENGTH,

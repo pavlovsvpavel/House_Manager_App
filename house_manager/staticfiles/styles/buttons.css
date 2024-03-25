@@ -73,20 +73,22 @@
     align-items: center;
 }
 
+.filter-buttons,
 .details-client .bills-client-card-btns {
     display: flex;
     padding-top: 0.5em;
     align-items: center;
-    gap: 2em;
+    gap: 1em;
 }
 
+.filter-buttons a,
 .details-house-elements .house-card .client-card-btns a,
 .wrapper .back-button a,
 .wrapper .bills-button a {
     text-decoration: none;
     color: #fff;
     padding: 0.5em;
-    flex: 0 1 100px;
+    flex: 0 1 120px;
     text-align: center;
     border-radius: 1.5em;
     border-color: transparent;
@@ -106,6 +108,7 @@
     width: 150px;
 }
 
+.filter-buttons a:hover,
 .details-house-elements .house-card .client-card-btns a:hover,
 .wrapper .back-button a:hover,
 .wrapper .bills-button a:hover {

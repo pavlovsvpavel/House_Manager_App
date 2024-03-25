@@ -33,6 +33,9 @@ class ClientMonthlyBill(MonthlyBill):
 
 
 class ClientOtherBill(OtherBill):
+    class Meta:
+        ordering = ("is_paid", "-year", "month")
+
     client = models.ForeignKey(
         to=Client,
         on_delete=models.SET_NULL,

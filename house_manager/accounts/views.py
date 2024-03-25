@@ -15,6 +15,9 @@ class LogInUserView(auth_views.LoginView):
     template_name = "accounts/login.html"
     redirect_authenticated_user = True
 
+    def get_redirect_url(self):
+        return reverse_lazy("dashboard")
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['register_form'] = HouseManagerUserCreationForm()

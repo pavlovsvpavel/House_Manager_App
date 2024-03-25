@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-24 22:13+0200\n"
+"POT-Creation-Date: 2024-03-25 09:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -95,6 +95,54 @@ msgstr "Обитаем"
 #: .\house_manager\clients\views.py:34
 msgid "Client with this apartment already exist"
 msgstr "Клиент с този апартамент вече съществува."
+
+#: .\house_manager\common\mixins.py:20
+msgid "January"
+msgstr "Януари"
+
+#: .\house_manager\common\mixins.py:21
+msgid "February"
+msgstr "Февруари"
+
+#: .\house_manager\common\mixins.py:22
+msgid "March"
+msgstr "Март"
+
+#: .\house_manager\common\mixins.py:23
+msgid "April"
+msgstr "Април"
+
+#: .\house_manager\common\mixins.py:24
+msgid "May"
+msgstr "Май"
+
+#: .\house_manager\common\mixins.py:25
+msgid "June"
+msgstr "Юни"
+
+#: .\house_manager\common\mixins.py:26
+msgid "July"
+msgstr "Юли"
+
+#: .\house_manager\common\mixins.py:27
+msgid "August"
+msgstr "Август"
+
+#: .\house_manager\common\mixins.py:28
+msgid "September"
+msgstr "Септември"
+
+#: .\house_manager\common\mixins.py:29
+msgid "October"
+msgstr "Октомври"
+
+#: .\house_manager\common\mixins.py:30
+msgid "November"
+msgstr "Ноември"
+
+#: .\house_manager\common\mixins.py:31
+msgid "December"
+msgstr "Декември"
 
 #: .\house_manager\common\mixins.py:48 .\house_manager\common\mixins.py:165
 #: .\templates\client_bills\edit_client_bill.html:15
