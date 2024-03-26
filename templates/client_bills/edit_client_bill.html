@@ -8,6 +8,10 @@
             <div class="wrapper">
                 <div class="client-card">
                     <div class="card-column">
+                        <p class="column-name">{% trans "Family name" %}</p>
+                        <p class="column-data">{{ object.client.family_name }}</p>
+                    </div>
+                    <div class="card-column">
                         <p class="column-name">{% trans "Year" %}</p>
                         <p class="column-data">{{ object.year }}</p>
                     </div>

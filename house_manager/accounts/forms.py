@@ -9,7 +9,7 @@ class HouseManagerUserCreationForm(auth_forms.UserCreationForm):
 
     class Meta(auth_forms.UserCreationForm.Meta):
         model = UserModel
-        fields = ('email', )
+        fields = ('email',)
 
 
 class HouseManagerUserChangeForm(auth_forms.UserChangeForm):

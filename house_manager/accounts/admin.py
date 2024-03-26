@@ -14,12 +14,12 @@ class AppUserAdmin(auth_admin.UserAdmin):
     add_form = HouseManagerUserCreationForm
     form = HouseManagerUserChangeForm
 
-    list_display = ("email", "is_staff", "is_superuser", "full_name", "phone_number", "id",)
+    list_display = ("email", "is_superuser", "is_staff", "full_name", "phone_number", "id",)
 
     search_fields = ("email",)
     search_help_text = "Search by user's email"
 
-    ordering = ("-is_staff", "email",)
+    ordering = ("-is_superuser", "email",)
 
     fieldsets = (
         (None, {"fields": ("email", "password")}),
@@ -43,9 +43,10 @@ class AppUserAdmin(auth_admin.UserAdmin):
             queryset = queryset.exclude(is_superuser=True)
         return queryset
 
-    def full_name(self, obj):
+    @staticmethod
+    def full_name(obj):
         return obj.profile.full_name if obj.profile.full_name else ""
 
-    def phone_number(self, obj):
+    @staticmethod
+    def phone_number(obj):
         return obj.profile.phone_number
-

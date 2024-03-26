@@ -77,7 +77,6 @@
 .details-client .bills-client-card-btns {
     display: flex;
     padding-top: 0.5em;
-    align-items: center;
     gap: 1em;
 }
 

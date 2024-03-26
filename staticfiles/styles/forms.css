@@ -12,7 +12,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    flex: 0 1 70%;
+    flex: 0 1 50%;
     background-color: var(--form-bgnd);
     border-radius: 1em;
     padding: 1em 2em;
@@ -70,16 +70,12 @@
 }
 
 .create-client .create-form div:nth-of-type(5),
-.create-client .create-form div:nth-of-type(6),
-.create-client .create-form div:nth-of-type(7) {
+.create-client .create-form div:nth-of-type(6) {
     display: flex;
 }
 
 .edit-client .create-form div:nth-of-type(5),
-.edit-client .create-form div:nth-of-type(6),
-.edit-client .create-form div:nth-of-type(7) {
+.edit-client .create-form div:nth-of-type(6) {
     display: flex;
-    align-items: center;
+    /*align-items: center;*/
 }
-
-

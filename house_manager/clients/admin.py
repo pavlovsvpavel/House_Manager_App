@@ -1,9 +1,11 @@
 from django.contrib import admin
+
+from house_manager.accounts.mixins import CheckUserModelInstancesMixin
 from house_manager.clients.models import Client
 
 
 @admin.register(Client)
-class ClientAdmin(admin.ModelAdmin):
+class ClientAdmin(CheckUserModelInstancesMixin, admin.ModelAdmin):
     list_display = [
         "family_name", "floor", "apartment",
         "number_of_people", "is_occupied",

@@ -20,7 +20,7 @@ class HouseManagerUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixi
 
     is_staff = models.BooleanField(
         _("staff status"),
-        default=False,
+        default=True,
     )
 
     is_active = models.BooleanField(

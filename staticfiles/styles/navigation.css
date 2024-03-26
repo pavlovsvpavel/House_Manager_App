@@ -80,6 +80,45 @@
     width: 100%;
 }
 
+/*Start Profile menu*/
+.navigation .profile-menu .menu-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    z-index: 1000;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding-top: 0.5em;
+    background-color: var(--form-input-border);
+    border-radius: 0.5em;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0s;
+}
+
+.navigation li:hover .menu-links {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s, visibility 0s;
+}
+
+.navigation .menu-links li {
+    width: 100%;
+}
+
+.navigation .menu-links a:before,
+.navigation .menu-links a:after{
+    content: none;
+}
+
+.navigation .menu-links a:hover {
+    background-color: var(--form-btn-color-hover);
+    border-radius: 0.5em;
+}
+/*End Profile menu*/
+
 .navigation img {
     width: 50px;
     height: 50px;

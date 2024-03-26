@@ -10,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 from house_manager.clients.decorators import get_current_client_id
+from house_manager.clients.forms import ClientCreateForm
 from house_manager.clients.models import Client
 from house_manager.houses.mixins import GetHouseAndUserMixin
 from house_manager.houses.models import House
@@ -20,7 +21,7 @@ UserModel = get_user_model()
 class ClientCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.CreateView):
     queryset = Client.objects.all()
     template_name = "clients/create_client.html"
-    fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied")
+    form_class = ClientCreateForm
 
     def get_success_url(self):
         selected_house_id = self.request.session.get("selected_house")

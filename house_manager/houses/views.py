@@ -7,13 +7,14 @@ from django.utils.translation import gettext_lazy as _
 
 from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.houses.decorators import get_current_house_id
+from house_manager.houses.forms import HouseCreateForm
 from house_manager.houses.models import House
 
 
 class HouseCreateView(CheckForLoggedInUserMixin, views.CreateView):
     queryset = House.objects.all()
     template_name = "houses/create_house.html"
-    fields = ("town", "address", "building_number", "entrance", "money_balance")
+    form_class = HouseCreateForm
     success_url = reverse_lazy("dashboard")
 
     def form_valid(self, form):
@@ -114,6 +115,7 @@ class HouseEditView(CheckForLoggedInUserMixin, views.UpdateView):
         context["form_title"] = _("Edit House")
 
         return context
+
 
 @method_decorator(get_current_house_id, name='dispatch')
 class HouseDeleteView(CheckForLoggedInUserMixin, views.DeleteView):

@@ -50,8 +50,7 @@ class House(TimeStampModel):
         decimal_places=2,
         blank=False,
         null=False,
-        default=0,
-        verbose_name=_("Balance"),
+        verbose_name=_("Current Balance"),
     )
 
     user = models.ForeignKey(
