@@ -9,7 +9,7 @@
     align-self: flex-end;
 }
 
-.create-house-bills .wrapper .clients-cards h1{
+.create-house-bills .wrapper .clients-cards h1 {
     text-align: center;
 }
 
@@ -21,17 +21,93 @@
     display: flex;
     flex: 0 1 100%;
     justify-content: center;
-
 }
 
+/*What we offer section*/
+.what-we-offer {
+    background-color: var(--form-bgnd);
+}
+.what-we-offer-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 2em 0;
+    align-items: center;
+}
+
+.what-we-offer-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    text-align: center;
+}
+
+.what-we-offer-cards {
+    display: flex;
+    padding: 2em 3em;
+    justify-content: space-between;
+}
+
+.what-we-offer-cards .card {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 30%;
+    background-color: var(--card-bgnd);
+    border-radius: 0.5em;
+    padding: 1em;
+}
+
+.what-we-offer-cards .card h5 {
+    padding-bottom: 1em;
+}
+
+.what-we-offer-cards .card h5:after {
+    content: "";
+    display: block;
+    width: 2em;
+    height: 0.1em;
+    background-color: var(--form-btn-color-hover);
+}
+
+/*Get started section*/
+.get-started-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 2em 0;
+    gap: 1em;
+    align-items: center;
+    text-align: center;
+}
+
+.get-started-wrapper p {
+    /*align-self: flex-start;*/
+}
+
+.get-started-wrapper a {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 0.5em;
+    background-color: var(--form-btn-color);
+    padding: 0.5em 2em;
+    transition: 0.3s ease-in-out;
+    margin-top: 1em;
+}
+
+.get-started-wrapper a:hover {
+    background-color: var(--form-btn-color-hover);
+    transition: 0.3s ease-in-out;
+}
+
+/*Pricing plans section*/
 .site-section.pricing-section {
     padding: 0;
+    background-color: var(--form-bgnd);
 }
 
 .pricing-wrapper {
     display: flex;
     gap: 1em;
-    background-color: var(--form-bgnd);
     padding: 2em 3em;
     flex: 0 1 100%;
 }
@@ -91,10 +167,60 @@
     text-align: center;
 }
 
-.price-card1 a:hover ,
+.price-card1 a:hover,
 .price-card2 a:hover {
     background-color: var(--form-btn-color-hover);
     transition: 0.3s ease-in-out;
+}
+
+/*About section*/
+.site-section.about {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.site-section.about article {
+    /*min-height: 300px;*/
+}
+
+.site-section.about h3:after {
+    content: "";
+    display: block;
+    width: 2em;
+    height: 0.1em;
+    background-color: var(--form-btn-color-hover);
+}
+
+.site-section.about .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 2em 0;
+    flex: 0 1 100%;
+}
+.site-section.about .mission {
+    background-color: var(--form-bgnd);
+}
+
+.site-section.about .choose-us-cards {
+    display: flex;
+    gap: 1em;
+    justify-content: space-between;
+}
+
+.site-section.about .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    flex: 0 1 50%;
+    background-color: var(--card-bgnd);
+    border-radius: 0.5em;
+    padding: 1em;
+}
+
+.site-section.about .card:last-of-type {
+    justify-self: flex-end;
 }
 
 

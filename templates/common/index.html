@@ -5,11 +5,44 @@
 
     <section class="site-section hero-section">
         <div class="container">
-            <div class="hero-banner">
-                <div class="headings">
-                    <h1>{% trans "Managing House Expenses." %}</h1>
-                    <h1>{% trans "Your All-in-One Solution." %}</h1>
+            <div class="headings">
+                <h1>{% trans "Managing House Expenses." %}</h1>
+                <h1>{% trans "Your All-in-One Solution." %}</h1>
+            </div>
+        </div>
+    </section>
+    <section class="what-we-offer">
+        <div class="container">
+            <div class="what-we-offer-wrapper">
+                <div class="what-we-offer-heading">
+                    <h3>{% trans "What We Offer" %}</h3>
+                    <p>{% trans "Access to a range of powerful features tailored to meet the unique needs of building cashiers" %}</p>
                 </div>
+                <div class="what-we-offer-cards">
+                    <div class="card">
+                        <h5>{% trans "Expense Tracking" %}</h5>
+                        <p>{% trans "Easily monitor and track all expenses incurred within your building, ensuring transparency and accountability at every step." %}</p>
+                    </div>
+                    <div class="card">
+                        <h5>{% trans "Budget Management" %}</h5>
+                        <p>{% trans "Take control of your building's finances with our intuitive budget management tools, allowing you to set, track, and adjust budgets as needed." %}</p>
+                    </div>
+                    <div class="card">
+                        <h5>{% trans "Receipt Management" %}</h5>
+                        <p>{% trans "Say goodbye to manual receipt sorting and filing." %}</p>
+                        <p>{% trans "Our platform offers seamless receipt management, allowing you to digitize and organize receipts effortlessly." %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="get-started">
+        <div class="container">
+            <div class="get-started-wrapper">
+                <h3>{% trans "Get Started Today" %}</h3>
+                <p>{% trans "Join countless building cashiers who have already made the switch to our app and experience the difference firsthand." %}</p>
+                <p>{% trans "Register now to streamline your expenses management process and take your building's financial management to the next level." %}</p>
+                <a href="{% url "register_user" %}">{% trans "Register" %}</a>
             </div>
         </div>
     </section>
@@ -23,7 +56,7 @@
                 <div class="price-card1">
                     <h4>{% trans "Free" %}</h4>
                     <h3>0 <span>{% trans "BGN" %}</span><span>/{% trans "month" %}</span></h3>
-                    <p>1 {% trans "House" %}</p>
+                    <p>1 {% trans "house" %}</p>
                     <p>3 {% trans "months period" %}</p>
                     <div><a href="{% url "register_user" %}">{% trans "Register" %}</a></div>
                 </div>

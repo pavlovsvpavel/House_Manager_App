@@ -1,0 +1,7 @@
+{% load i18n %}
+{% load static %}
+<div class="cookies-eu-banner hidden">
+    <p>{% trans "By clicking 'Accept', you agree storing of cookies on your device to enhance site navigation, analyze site usage and improve marketing." %}</p>
+    <button>{% trans "Accept" %}</button>
+</div>
+<script src="{% static "scripts/cookiePopUp.js" %}"></script>

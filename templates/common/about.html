@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block main_content %}
+    <section class="site-section about">
+        <article class="heading">
+            <div class="container">
+                <div class="wrapper">
+                    <h3>{% trans "Welcome to House Manager" %}</h3>
+                    <h5>{% trans "Your ultimate solution for efficient expenses management tailored specifically for building cashiers." %}</h5>
+                    <p>{% trans "We understand the challenges faced by building cashiers in managing expenses effectively. From tracking receipts to balancing budgets, our platform is designed to simplify every aspect of the process, allowing you to focus on what matters most – ensuring financial integrity and smooth operations within your building." %}</p>
+                </div>
+            </div>
+        </article>
+
+        <article class="mission">
+            <div class="container">
+                <div class="wrapper">
+                    <h3>{% trans "Our Mission" %}</h3>
+                    <p>{% trans "Our mission is to empower building cashiers with a comprehensive and user-friendly tool to streamline expense management tasks. We strive to revolutionize the way expenses are handled, providing innovative solutions that save time, reduce errors, and enhance overall efficiency." %}</p>
+                </div>
+            </div>
+        </article>
+
+        <article class="choose-us">
+            <div class="container">
+                <div class="wrapper">
+                    <h3>{% trans "Why Choose Us" %}</h3>
+                    <div class="choose-us-cards">
+                        <div class="card">
+                            <h5>{% trans "User-Friendly Interface" %}</h5>
+                            <p>{% trans "Our platform is designed with simplicity and ease of use in mind, ensuring a seamless user experience for building cashiers of all levels." %}</p>
+                        </div>
+                        <div class="card">
+                            <h5>{% trans "Security and Privacy" %}</h5>
+                            <p>{% trans "We prioritize the security and privacy of your financial data, employing industry-leading measures to safeguard sensitive information." %}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+
+{% endblock %}

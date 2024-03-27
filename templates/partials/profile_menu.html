@@ -1,5 +1,5 @@
 {% load i18n %}
-<li class="profile-menu"><a href="">{% trans "Profile" %}</a>
+<li class="profile-menu"><a href="javascript:void(0);">{% trans "Profile" %}</a>
     <ul class="menu-links">
         <li><a href="{% url "details_profile" pk=request.user.pk %}">{% trans "Details" %}</a></li>
         {% if request.user.is_staff %}
@@ -8,3 +8,4 @@
         <li><a href="{% url "logout_user" %}">{% trans "Logout" %}</a></li>
     </ul>
 </li>
+

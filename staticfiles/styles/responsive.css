@@ -53,6 +53,12 @@
         height: 50px;
     }
 
+    .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
     .navigation ul {
         flex-direction: column;
         align-items: stretch;
@@ -117,10 +123,22 @@
 
     .pricing-plans {
         padding-top: 0;
+        text-align: center;
     }
 
     .pricing-plans p {
         padding-top: 1em;
+    }
+
+    .price-card1,
+    .price-card2 {
+        gap: 0.5em;
+        padding: 1em 0;
+    }
+
+    .price-card1 a,
+    .price-card2 a {
+        margin-top: 0.5em;
     }
 
     .list-clients .client-card,
@@ -182,5 +200,23 @@
     .cookies-eu-banner {
         flex-direction: column;
         gap: 0.5em;
+    }
+
+    .site-section.about .choose-us-cards {
+        flex-direction: column;
+    }
+
+    .what-we-offer-cards {
+        flex-direction: column;
+        padding: 0;
+        gap: 1em;
+    }
+
+    .what-we-offer-cards .card {
+        flex:0 1 100%
+    }
+
+    .site-footer .footer-wrapper {
+        flex-direction: column;
     }
 }

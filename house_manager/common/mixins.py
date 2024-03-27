@@ -108,7 +108,7 @@ class MonthlyBill(models.Model):
         decimal_places=MAX_DECIMAL_PLACES,
         blank=False,
         null=False,
-        verbose_name=_("Repairs"),
+        verbose_name=_("Repairs fund"),
     )
 
     others = models.DecimalField(

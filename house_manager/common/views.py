@@ -22,3 +22,7 @@ class DashboardView(views.TemplateView):
         context["houses"] = self.request.user.house_set.all()
 
         return context
+
+
+def about_view(request):
+    return render(request, "common/about.html")

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-26 16:52+0200\n"
+"POT-Creation-Date: 2024-03-27 14:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -14,7 +14,7 @@ msgstr ""
 
 #: .\house_manager\accounts\models.py:14
 msgid "email"
-msgstr "имейл"
+msgstr "Имейл"
 
 #: .\house_manager\accounts\models.py:17
 msgid "User with that email already exists."
@@ -41,6 +41,7 @@ msgid "Last name"
 msgstr "Фамилия"
 
 #: .\house_manager\accounts\models.py:70
+#: .\templates\accounts\details_profile.html:22
 msgid "Phone number"
 msgstr "Телефонен номер"
 
@@ -222,8 +223,7 @@ msgid "Manager/Cashier fee"
 msgstr "Такса Домоуправител/Касиер"
 
 #: .\house_manager\common\mixins.py:111
-#: .\templates\client_bills\edit_client_bill.html:47
-msgid "Repairs"
+msgid "Repairs fund"
 msgstr "Фонд ремонти"
 
 #: .\house_manager\common\mixins.py:119
@@ -244,7 +244,7 @@ msgid "Total BGN"
 msgstr "Общо сума, ЛВ."
 
 #: .\house_manager\common\mixins.py:143 .\house_manager\common\mixins.py:190
-#: .\templates\common\index.html:31
+#: .\templates\common\index.html:64
 #: .\templates\house_bills\edit_house_bills.html:53
 #: .\templates\house_bills\edit_other_house_bills.html:29
 msgid "Paid"
@@ -284,6 +284,10 @@ msgstr "Сметка с тези месец и година вече същес�
 msgid "Bills not found in selected house."
 msgstr "Не са намерени сметки на съответната къща."
 
+#: .\house_manager\houses\forms.py:25
+msgid "Enter house's current available amount"
+msgstr "Въведете текущата налична сума в касата"
+
 #: .\house_manager\houses\models.py:25 .\templates\common\dashboard.html:15
 #: .\templates\houses\details_house.html:22
 msgid "Town"
@@ -308,7 +312,7 @@ msgstr "Вход"
 msgid "Current Balance"
 msgstr "Наличност"
 
-#: .\house_manager\houses\views.py:29 .\templates\base.html:36
+#: .\house_manager\houses\views.py:29 .\templates\common\header.html:23
 msgid "Create House"
 msgstr "Създай къща"
 
@@ -325,6 +329,14 @@ msgstr "Сигурни ли сте, че искате да изтриете то
 #: .\templates\houses\delete_house.html:12
 msgid "Yes"
 msgstr "Да"
+
+#: .\templates\accounts\details_profile.html:17
+msgid "Email"
+msgstr "Имейл"
+
+#: .\templates\accounts\details_profile.html:19
+msgid "Name"
+msgstr "Име"
 
 #: .\templates\accounts\details_profile.html:27
 #: .\templates\clients\details_client.html:35
@@ -344,7 +356,7 @@ msgstr "Промяна на парола"
 
 #: .\templates\accounts\login.html:25 .\templates\accounts\login.html:29
 #: .\templates\accounts\register.html:26 .\templates\accounts\register.html:30
-#: .\templates\base.html:39
+#: .\templates\common\header.html:26
 msgid "Login"
 msgstr "Вход"
 
@@ -358,7 +370,8 @@ msgstr "Регистрирай се сега"
 
 #: .\templates\accounts\login.html:36 .\templates\accounts\login.html:40
 #: .\templates\accounts\register.html:37 .\templates\accounts\register.html:41
-#: .\templates\common\index.html:28 .\templates\common\index.html:35
+#: .\templates\common\index.html:45 .\templates\common\index.html:61
+#: .\templates\common\index.html:68
 msgid "Register"
 msgstr "Регистрация"
 
@@ -370,14 +383,16 @@ msgstr "Вече имате регистрация?"
 msgid "Login now"
 msgstr "Вход"
 
-#: .\templates\base.html:35
-msgid "My Houses"
-msgstr "Моите къщи"
-
 #: .\templates\client_bills\edit_client_bill.html:11
 #: .\templates\client_bills\edit_client_other_bill.html:11
 msgid "Family name"
 msgstr "Фамилия"
+
+#: .\templates\client_bills\edit_client_bill.html:47
+#, fuzzy
+#| msgid "Repairs fund"
+msgid "Repairs"
+msgstr "Фонд ремонти"
 
 #: .\templates\client_bills\edit_client_bill.html:63
 #: .\templates\client_bills\edit_client_bill.html:65
@@ -426,47 +441,216 @@ msgstr "Сметки"
 msgid "Other Bills"
 msgstr "Други сметки"
 
+#: .\templates\common\about.html:9
+msgid "Welcome to House Manager"
+msgstr "Добре дошли в House Manager"
+
+#: .\templates\common\about.html:10
+msgid ""
+"Your ultimate solution for efficient expenses management tailored "
+"specifically for building cashiers."
+msgstr ""
+"Вашият краен инструмент за ефективно управление на разходите, специално "
+"насочен към касиерите на сгради."
+
+#: .\templates\common\about.html:11
+msgid ""
+"We understand the challenges faced by building cashiers in managing expenses "
+"effectively. From tracking receipts to balancing budgets, our platform is "
+"designed to simplify every aspect of the process, allowing you to focus on "
+"what matters most – ensuring financial integrity and smooth operations "
+"within your building."
+msgstr ""
+"Ние разбираме предизвикателствата, пред които се изправят касиерите на "
+"сгради при управлението на разходите ефективно.От проследяване на касови "
+"бележки до балансиране на бюджети, нашата платформа е създадена с цел да "
+"опрости всеки аспект от процеса, като ви позволява да се концентрирате върху "
+"най-важното - гарантиране на финансова интегритет и плавна оперативна "
+"дейност във вашата сграда."
+
+#: .\templates\common\about.html:19
+msgid "Our Mission"
+msgstr "Нашата мисия"
+
+#: .\templates\common\about.html:20
+msgid ""
+"Our mission is to empower building cashiers with a comprehensive and user-"
+"friendly tool to streamline expense management tasks. We strive to "
+"revolutionize the way expenses are handled, providing innovative solutions "
+"that save time, reduce errors, and enhance overall efficiency."
+msgstr ""
+"Нашата мисия е да осигурим на касиерите на сгради комплексен и лесен за "
+"използване инструмент за оптимизиране на задачите по управление на разходите."
+"Ние стремим се да революционизираме начина, по който се управляват "
+"разходите, като предоставяме иновативни решения, които спестяват време, "
+"намаляват грешките и подобряват общата ефективност."
+
+#: .\templates\common\about.html:28
+msgid "Why Choose Us"
+msgstr "Защо да изберете нас"
+
+#: .\templates\common\about.html:31
+msgid "User-Friendly Interface"
+msgstr "Лесен за използване интерфейс"
+
+#: .\templates\common\about.html:32
+msgid ""
+"Our platform is designed with simplicity and ease of use in mind, ensuring a "
+"seamless user experience for building cashiers of all levels."
+msgstr ""
+"Нашата платформа е проектирана с простота и удобство за използване, "
+"гарантирайки безпроблемно преживяване за касиерите на сгради на всички нива."
+
+#: .\templates\common\about.html:35
+msgid "Security and Privacy"
+msgstr "Сигурност и Поверителност"
+
+#: .\templates\common\about.html:36
+msgid ""
+"We prioritize the security and privacy of your financial data, employing "
+"industry-leading measures to safeguard sensitive information."
+msgstr ""
+"Придаваме приоритет на сигурността и поверителността на вашите финансови "
+"данни, прилагайки водещи в отрасъла мерки за защита на чувствителната "
+"информация."
+
+#: .\templates\common\cookies-banner.html:4
+msgid ""
+"By clicking 'Accept', you agree storing of cookies on your device to enhance "
+"site navigation, analyze site usage and improve marketing."
+msgstr ""
+"Кликвайки върху 'Приемам', вие се съгласявате да съхранявате бисквитки на "
+"вашето устройство за подобряване навигацията на сайта, анализиране "
+"използването на сайта и подобряване на маркетинга."
+
+#: .\templates\common\cookies-banner.html:5
+msgid "Accept"
+msgstr "Приемам"
+
 #: .\templates\common\dashboard.html:33
 msgid "No houses"
 msgstr "Няма създадени къщи"
 
-#: .\templates\common\index.html:10
+#: .\templates\common\header.html:22
+msgid "My Houses"
+msgstr "Моите къщи"
+
+#: .\templates\common\header.html:28
+msgid "About"
+msgstr "За нас"
+
+#: .\templates\common\index.html:9
 msgid "Managing House Expenses."
 msgstr "Управление на домашните разходи."
 
-#: .\templates\common\index.html:11
+#: .\templates\common\index.html:10
 msgid "Your All-in-One Solution."
 msgstr "Вашето решение 'всичко в едно'."
 
-#: .\templates\common\index.html:20
+#: .\templates\common\index.html:18
+msgid "What We Offer"
+msgstr "Какво предлагаме"
+
+#: .\templates\common\index.html:19
+msgid ""
+"Access to a range of powerful features tailored to meet the unique needs of "
+"building cashiers"
+msgstr ""
+"Достъп до редица мощни функции, насочени към удовлетворяване на уникалните "
+"нужди на касиерите на сгради"
+
+#: .\templates\common\index.html:23
+msgid "Expense Tracking"
+msgstr "Следене на разходите"
+
+#: .\templates\common\index.html:24
+msgid ""
+"Easily monitor and track all expenses incurred within your building, "
+"ensuring transparency and accountability at every step."
+msgstr ""
+"Лесно проследяване и следене на всички разходи, които възникват във вашата "
+"сграда, гарантирайки прозрачност и отговорност на всяка стъпка."
+
+#: .\templates\common\index.html:27
+msgid "Budget Management"
+msgstr "Управление на бюджета"
+
+#: .\templates\common\index.html:28
+msgid ""
+"Take control of your building's finances with our intuitive budget "
+"management tools, allowing you to set, track, and adjust budgets as needed."
+msgstr ""
+"Вземете контрол върху финансите на вашата сграда с нашите интуитивни "
+"инструменти за управление на бюджета, позволявайки ви да задавате, "
+"проследявате и коригирате бюджетите според нуждите."
+
+#: .\templates\common\index.html:31
+msgid "Receipt Management"
+msgstr "Управление на касови бележки"
+
+#: .\templates\common\index.html:32
+msgid "Say goodbye to manual receipt sorting and filing."
+msgstr "Забравете ръчното сортиране и подреждане на касовите бележки."
+
+#: .\templates\common\index.html:33
+msgid ""
+"Our platform offers seamless receipt management, allowing you to digitize "
+"and organize receipts effortlessly."
+msgstr ""
+"Нашата платформа предлага безпроблемно управление на касовите бележки, "
+"позволявайки ви лесно да ги цифровизирате и организирате."
+
+#: .\templates\common\index.html:42
+msgid "Get Started Today"
+msgstr "Започнете днес"
+
+#: .\templates\common\index.html:43
+msgid ""
+"Join countless building cashiers who have already made the switch to our app "
+"and experience the difference firsthand."
+msgstr ""
+"Присъединете се към многото касиери на сгради, които вече го направиха и "
+"вижте разликата от първо лице."
+
+#: .\templates\common\index.html:44
+msgid ""
+"Register now to streamline your expenses management process and take your "
+"building's financial management to the next level."
+msgstr ""
+"Регистрирайте се сега, за да оптимизирате процеса на управление на разходите "
+"и да издигнете финансовото управление на вашата сграда на следващо ниво."
+
+#: .\templates\common\index.html:53
 msgid "Pricing Plans"
 msgstr "Абонаментни планове"
 
-#: .\templates\common\index.html:21
+#: .\templates\common\index.html:54
 msgid "Choose your plan and start using our app."
 msgstr "Избери абонаментен план и започни да използваш нашето приложение"
 
-#: .\templates\common\index.html:24
+#: .\templates\common\index.html:57
 msgid "Free"
 msgstr "Безплатен"
 
-#: .\templates\common\index.html:25 .\templates\common\index.html:32
+#: .\templates\common\index.html:58 .\templates\common\index.html:65
 msgid "BGN"
 msgstr "ЛВ."
 
-#: .\templates\common\index.html:25 .\templates\common\index.html:32
+#: .\templates\common\index.html:58 .\templates\common\index.html:65
 msgid "month"
 msgstr "месец"
 
-#: .\templates\common\index.html:26
-msgid "House"
+#: .\templates\common\index.html:59
+#, fuzzy
+#| msgid "House"
+msgid "house"
 msgstr "къща"
 
-#: .\templates\common\index.html:27 .\templates\common\index.html:34
+#: .\templates\common\index.html:60 .\templates\common\index.html:67
 msgid "months period"
 msgstr "месечен период"
 
-#: .\templates\common\index.html:33
+#: .\templates\common\index.html:66
 msgid "Unlimited houses"
 msgstr "Неограничен брой къщи"
 

@@ -1,6 +1,6 @@
 .cookies-eu-banner {
-  background: var(--card-bgnd);
-  color: var(--card-text-color);
+  background: black;
+  color: var(--site-bgnd);
   padding: 6px;
   text-align: center;
   position: fixed;

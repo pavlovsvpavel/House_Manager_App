@@ -12,68 +12,15 @@
     <script src={% static "scripts/redirects.js" %}></script>
 </head>
 <body>
-<div class="site">
-    <header class="site-header">
-        <div class="container">
-            <div class="header-elements">
-                <div class="site-title">
-                    <a href="{% url "index" %}"></a>
-                    <h1>House Manager</h1>
-                </div>
-                <nav class="navigation">
-                    <input type="checkbox" id="sidebar-active">
-                    <label for="sidebar-active" class="open-sidebar-button">
-                        <img src="{% static "images/menu.svg" %}" alt="menu-icon">
-                    </label>
-                    <label id="overlay" for="sidebar-active"></label>
-                    <div class="links-container">
-                        <label for="sidebar-active" class="close-sidebar-button">
-                            <img src="{% static "images/close.svg" %}" alt="close-icon">
-                        </label>
-                        <ul>
-                            {% if request.user.is_authenticated %}
-                                <li><a href="{% url "dashboard" %}">{% trans "My Houses" %}</a></li>
-                                <li><a href="{% url "create_house" %}">{% trans "Create House" %}</a></li>
-                                {% include "partials/profile_menu.html" %}
-                            {% else %}
-                                <li><a href="{% url "login_user" %}">{% trans "Login" %}</a></li>
-                            {% endif %}
-                        </ul>
-                        <ul>
-                            <li>
-                                <form class="language-form" action="{% url 'set_language' %}" method="post">
-                                    {% csrf_token %}
-                                    <input name="next" type="hidden" value="{{ redirect_to }}"/>
-                                    <button class="language-form-btn" type="submit" name="language" value="en">
-                                        <img src="{% static "images/uk_flag.png" %}" alt="English Flag">
-                                    </button>
-                                    <button class="language-form-btn" type="submit" name="language" value="bg">
-                                        <img src="{% static "images/bg_flag.png" %}" alt="Bulgarian Flag">
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
-    <main class="site-main">
-        {% block main_content %}
-
-        {% endblock %}
-    </main>
-    <footer class="site-section site-footer">
-        <div class="container">
-            <p>&copy; 2024 Pavel Pavlov. All Rights Reserved.</p>
-        </div>
-    </footer>
-    <div class="cookies-eu-banner hidden">
-        <p>By clicking <strong>"Accept"</strong>, you agree storing of cookies on your device to
-            enhance site navigation, analyze site usage and improve marketing.</p>
-        <button>Accept</button>
+    <div class="site">
+        {% include "common/header.html" %}
+        <main class="site-main">
+            {% block main_content %}
+    
+            {% endblock %}
+        </main>
+        {% include "common/footer.html" %}
+        {% include "common/cookies-banner.html" %}
     </div>
-</div>
-<script src="{% static "scripts/cookiePopUp.js" %}"></script>
 </body>
 </html>

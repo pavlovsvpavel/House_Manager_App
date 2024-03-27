@@ -14,12 +14,12 @@
                     </svg>
                 {% endif %}
                 <div class="profile-details">
-                    <p>Email: <strong>{{ object.user.email }}</strong></p>
+                    <p>{% trans "Email" %}: <strong>{{ object.user.email }}</strong></p>
                     {% if object.full_name %}
-                        <p>Name: <strong>{{ object.full_name }}</strong></p>
+                        <p>{% trans "Name" %}: <strong>{{ object.full_name }}</strong></p>
                     {% endif %}
                     {% if  object.phone_number %}
-                        <p>Phone number: <strong>{{ object.phone_number }}</strong></p>
+                        <p>{% trans "Phone number" %}: <strong>{{ object.phone_number }}</strong></p>
                     {% endif %}
                 </div>
                 <div class="details-profile-btns">
