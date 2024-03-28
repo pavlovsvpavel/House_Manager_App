@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 14:37+0200\n"
+"POT-Creation-Date: 2024-03-28 23:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -71,6 +71,7 @@ msgstr "Не е намерена сметка на съответния клие
 
 #: .\house_manager\clients\models.py:26
 #: .\templates\clients\details_client.html:11
+#: .\templates\common\reports.html:46
 #: .\templates\houses\house_clients_list.html:16
 msgid "Family Name"
 msgstr "Фамилия"
@@ -83,6 +84,7 @@ msgstr "Етаж"
 
 #: .\house_manager\clients\models.py:38
 #: .\templates\clients\details_client.html:19
+#: .\templates\common\reports.html:47
 #: .\templates\houses\house_clients_list.html:24
 msgid "Apartment"
 msgstr "Апартамент"
@@ -113,57 +115,58 @@ msgstr "Създай клиент"
 msgid "Edit Client"
 msgstr "Промяна клиент"
 
-#: .\house_manager\common\mixins.py:20
+#: .\house_manager\common\mixins.py:22
 msgid "January"
 msgstr "Януари"
 
-#: .\house_manager\common\mixins.py:21
+#: .\house_manager\common\mixins.py:23
 msgid "February"
 msgstr "Февруари"
 
-#: .\house_manager\common\mixins.py:22
+#: .\house_manager\common\mixins.py:24
 msgid "March"
 msgstr "Март"
 
-#: .\house_manager\common\mixins.py:23
+#: .\house_manager\common\mixins.py:25
 msgid "April"
 msgstr "Април"
 
-#: .\house_manager\common\mixins.py:24
+#: .\house_manager\common\mixins.py:26
 msgid "May"
 msgstr "Май"
 
-#: .\house_manager\common\mixins.py:25
+#: .\house_manager\common\mixins.py:27
 msgid "June"
 msgstr "Юни"
 
-#: .\house_manager\common\mixins.py:26
+#: .\house_manager\common\mixins.py:28
 msgid "July"
 msgstr "Юли"
 
-#: .\house_manager\common\mixins.py:27
+#: .\house_manager\common\mixins.py:29
 msgid "August"
 msgstr "Август"
 
-#: .\house_manager\common\mixins.py:28
+#: .\house_manager\common\mixins.py:30
 msgid "September"
 msgstr "Септември"
 
-#: .\house_manager\common\mixins.py:29
+#: .\house_manager\common\mixins.py:31
 msgid "October"
 msgstr "Октомври"
 
-#: .\house_manager\common\mixins.py:30
+#: .\house_manager\common\mixins.py:32
 msgid "November"
 msgstr "Ноември"
 
-#: .\house_manager\common\mixins.py:31
+#: .\house_manager\common\mixins.py:33
 msgid "December"
 msgstr "Декември"
 
-#: .\house_manager\common\mixins.py:48 .\house_manager\common\mixins.py:164
+#: .\house_manager\common\mixins.py:60 .\house_manager\common\mixins.py:177
 #: .\templates\client_bills\edit_client_bill.html:19
 #: .\templates\client_bills\edit_client_other_bill.html:19
+#: .\templates\common\reports.html:19 .\templates\common\reports.html:40
 #: .\templates\house_bills\edit_house_bills.html:14
 #: .\templates\house_bills\edit_other_house_bills.html:14
 #: .\templates\house_bills\list_house_bills.html:20
@@ -172,12 +175,10 @@ msgstr "Декември"
 msgid "Month"
 msgstr "Месец"
 
-#: .\house_manager\common\mixins.py:55 .\house_manager\common\mixins.py:171
-#: .\house_manager\house_bills\forms.py:8
-#: .\house_manager\house_bills\forms.py:28
-#: .\house_manager\house_bills\forms.py:39
+#: .\house_manager\common\mixins.py:68 .\house_manager\common\mixins.py:185
 #: .\templates\client_bills\edit_client_bill.html:15
 #: .\templates\client_bills\edit_client_other_bill.html:15
+#: .\templates\common\reports.html:11 .\templates\common\reports.html:39
 #: .\templates\house_bills\edit_house_bills.html:10
 #: .\templates\house_bills\edit_other_house_bills.html:10
 #: .\templates\house_bills\list_house_bills.html:16
@@ -186,55 +187,57 @@ msgstr "Месец"
 msgid "Year"
 msgstr "Година"
 
-#: .\house_manager\common\mixins.py:63
+#: .\house_manager\common\mixins.py:76
 #: .\templates\client_bills\edit_client_bill.html:23
 #: .\templates\house_bills\edit_house_bills.html:18
 msgid "Electricity common"
 msgstr "Ток общи нужди"
 
-#: .\house_manager\common\mixins.py:71
+#: .\house_manager\common\mixins.py:84
 #: .\templates\client_bills\edit_client_bill.html:27
 #: .\templates\house_bills\edit_house_bills.html:22
 msgid "Electricity lift"
 msgstr "Ток асансьор"
 
-#: .\house_manager\common\mixins.py:79
+#: .\house_manager\common\mixins.py:92
 #: .\templates\client_bills\edit_client_bill.html:31
 #: .\templates\house_bills\edit_house_bills.html:26
 msgid "Internet"
 msgstr "Интернет"
 
-#: .\house_manager\common\mixins.py:87
+#: .\house_manager\common\mixins.py:100
 #: .\templates\client_bills\edit_client_bill.html:35
 #: .\templates\house_bills\edit_house_bills.html:30
 msgid "Lift maintenance"
 msgstr "Поддръжка асансьор"
 
-#: .\house_manager\common\mixins.py:95
+#: .\house_manager\common\mixins.py:108
 #: .\templates\client_bills\edit_client_bill.html:39
 #: .\templates\house_bills\edit_house_bills.html:34
 msgid "Cleaner fee"
 msgstr "Такса хигиенист"
 
-#: .\house_manager\common\mixins.py:103
+#: .\house_manager\common\mixins.py:116
 #: .\templates\client_bills\edit_client_bill.html:43
 #: .\templates\house_bills\edit_house_bills.html:38
 msgid "Manager/Cashier fee"
 msgstr "Такса Домоуправител/Касиер"
 
-#: .\house_manager\common\mixins.py:111
+#: .\house_manager\common\mixins.py:124
+#: .\templates\client_bills\edit_client_bill.html:47
 msgid "Repairs fund"
 msgstr "Фонд ремонти"
 
-#: .\house_manager\common\mixins.py:119
+#: .\house_manager\common\mixins.py:132
 #: .\templates\client_bills\edit_client_bill.html:51
 #: .\templates\house_bills\edit_house_bills.html:42
 msgid "Other expenses"
 msgstr "Други разходи"
 
-#: .\house_manager\common\mixins.py:127 .\house_manager\common\mixins.py:185
+#: .\house_manager\common\mixins.py:140 .\house_manager\common\mixins.py:199
 #: .\templates\client_bills\edit_client_bill.html:55
 #: .\templates\client_bills\edit_client_other_bill.html:27
+#: .\templates\common\reports.html:41 .\templates\common\reports.html:48
 #: .\templates\house_bills\edit_house_bills.html:46
 #: .\templates\house_bills\edit_other_house_bills.html:22
 #: .\templates\house_bills\list_house_bills.html:24
@@ -243,14 +246,14 @@ msgstr "Други разходи"
 msgid "Total BGN"
 msgstr "Общо сума, ЛВ."
 
-#: .\house_manager\common\mixins.py:143 .\house_manager\common\mixins.py:190
+#: .\house_manager\common\mixins.py:156 .\house_manager\common\mixins.py:204
 #: .\templates\common\index.html:64
 #: .\templates\house_bills\edit_house_bills.html:53
 #: .\templates\house_bills\edit_other_house_bills.html:29
 msgid "Paid"
 msgstr "Платен"
 
-#: .\house_manager\common\mixins.py:177
+#: .\house_manager\common\mixins.py:191
 #: .\templates\client_bills\edit_client_other_bill.html:23
 #: .\templates\house_bills\edit_other_house_bills.html:18
 #: .\templates\house_bills\list_other_house_bills.html:24
@@ -289,26 +292,26 @@ msgid "Enter house's current available amount"
 msgstr "Въведете текущата налична сума в касата"
 
 #: .\house_manager\houses\models.py:25 .\templates\common\dashboard.html:15
-#: .\templates\houses\details_house.html:22
+#: .\templates\common\reports.html:32 .\templates\houses\details_house.html:24
 msgid "Town"
 msgstr "Град"
 
 #: .\house_manager\houses\models.py:32 .\templates\common\dashboard.html:19
-#: .\templates\houses\details_house.html:26
+#: .\templates\common\reports.html:33 .\templates\houses\details_house.html:28
 msgid "Address"
 msgstr "Адрес"
 
 #: .\house_manager\houses\models.py:38 .\templates\common\dashboard.html:23
-#: .\templates\houses\details_house.html:30
+#: .\templates\common\reports.html:34 .\templates\houses\details_house.html:32
 msgid "Building number"
 msgstr "Блок"
 
 #: .\house_manager\houses\models.py:45 .\templates\common\dashboard.html:27
-#: .\templates\houses\details_house.html:34
+#: .\templates\common\reports.html:35 .\templates\houses\details_house.html:36
 msgid "Entrance"
 msgstr "Вход"
 
-#: .\house_manager\houses\models.py:53 .\templates\houses\details_house.html:50
+#: .\house_manager\houses\models.py:53 .\templates\houses\details_house.html:52
 msgid "Current Balance"
 msgstr "Наличност"
 
@@ -340,13 +343,13 @@ msgstr "Име"
 
 #: .\templates\accounts\details_profile.html:27
 #: .\templates\clients\details_client.html:35
-#: .\templates\houses\details_house.html:54
+#: .\templates\houses\details_house.html:56
 msgid "Edit"
 msgstr "Промени"
 
 #: .\templates\accounts\details_profile.html:28
 #: .\templates\clients\details_client.html:36
-#: .\templates\houses\details_house.html:55
+#: .\templates\houses\details_house.html:57
 msgid "Delete"
 msgstr "Изтрий"
 
@@ -387,12 +390,6 @@ msgstr "Вход"
 #: .\templates\client_bills\edit_client_other_bill.html:11
 msgid "Family name"
 msgstr "Фамилия"
-
-#: .\templates\client_bills\edit_client_bill.html:47
-#, fuzzy
-#| msgid "Repairs fund"
-msgid "Repairs"
-msgstr "Фонд ремонти"
 
 #: .\templates\client_bills\edit_client_bill.html:63
 #: .\templates\client_bills\edit_client_bill.html:65
@@ -437,7 +434,7 @@ msgid "Bills"
 msgstr "Сметки"
 
 #: .\templates\clients\details_client.html:44
-#: .\templates\houses\details_house.html:16
+#: .\templates\houses\details_house.html:17
 msgid "Other Bills"
 msgstr "Други сметки"
 
@@ -450,8 +447,8 @@ msgid ""
 "Your ultimate solution for efficient expenses management tailored "
 "specifically for building cashiers."
 msgstr ""
-"Вашият краен инструмент за ефективно управление на разходите, специално "
-"насочен към касиерите на сгради."
+"Вашият инструмент за ефективно управление на разходите, специално насочен "
+"към касиерите на сгради."
 
 #: .\templates\common\about.html:11
 msgid ""
@@ -465,8 +462,8 @@ msgstr ""
 "сгради при управлението на разходите ефективно.От проследяване на касови "
 "бележки до балансиране на бюджети, нашата платформа е създадена с цел да "
 "опрости всеки аспект от процеса, като ви позволява да се концентрирате върху "
-"най-важното - гарантиране на финансова интегритет и плавна оперативна "
-"дейност във вашата сграда."
+"най-важното - гарантиране на финансов интегритет и плавна оперативна дейност "
+"във вашата сграда."
 
 #: .\templates\common\about.html:19
 msgid "Our Mission"
@@ -480,10 +477,10 @@ msgid ""
 "that save time, reduce errors, and enhance overall efficiency."
 msgstr ""
 "Нашата мисия е да осигурим на касиерите на сгради комплексен и лесен за "
-"използване инструмент за оптимизиране на задачите по управление на разходите."
-"Ние стремим се да революционизираме начина, по който се управляват "
-"разходите, като предоставяме иновативни решения, които спестяват време, "
-"намаляват грешките и подобряват общата ефективност."
+"използване инструмент за оптимизиране на задачите по управление на "
+"разходите. Ние се стремим да революционизираме начина, по който се "
+"управляват разходите, като предоставяме иновативни решения, които спестяват "
+"време, намаляват грешките и подобряват общата ефективност."
 
 #: .\templates\common\about.html:28
 msgid "Why Choose Us"
@@ -499,7 +496,7 @@ msgid ""
 "seamless user experience for building cashiers of all levels."
 msgstr ""
 "Нашата платформа е проектирана с простота и удобство за използване, "
-"гарантирайки безпроблемно преживяване за касиерите на сгради на всички нива."
+"гарантирайки безпроблемна работа за касиерите на сгради на всички нива."
 
 #: .\templates\common\about.html:35
 msgid "Security and Privacy"
@@ -510,9 +507,8 @@ msgid ""
 "We prioritize the security and privacy of your financial data, employing "
 "industry-leading measures to safeguard sensitive information."
 msgstr ""
-"Придаваме приоритет на сигурността и поверителността на вашите финансови "
-"данни, прилагайки водещи в отрасъла мерки за защита на чувствителната "
-"информация."
+"Приоритизираме сигурността и поверителността на вашите финансови данни, "
+"прилагайки водещи в отрасъла мерки за защита на чувствителната информация."
 
 #: .\templates\common\cookies-banner.html:4
 msgid ""
@@ -641,8 +637,6 @@ msgid "month"
 msgstr "месец"
 
 #: .\templates\common\index.html:59
-#, fuzzy
-#| msgid "House"
 msgid "house"
 msgstr "къща"
 
@@ -653,6 +647,18 @@ msgstr "месечен период"
 #: .\templates\common\index.html:66
 msgid "Unlimited houses"
 msgstr "Неограничен брой къщи"
+
+#: .\templates\common\reports.html:25
+msgid "Search"
+msgstr "Търсене"
+
+#: .\templates\common\reports.html:27
+msgid "Save as PDF"
+msgstr "Запази в PDF"
+
+#: .\templates\common\reports.html:49
+msgid "Signature"
+msgstr "Подпис"
 
 #: .\templates\house_bills\create_house_bills.html:11
 #: .\templates\house_bills\create_other_bill.html:11
@@ -672,18 +678,26 @@ msgid "House Bills"
 msgstr "Сметки"
 
 #: .\templates\houses\details_house.html:15
+msgid "Bills reports"
+msgstr "Репорти"
+
+#: .\templates\houses\details_house.html:16
 msgid "Create Other Bill"
 msgstr "Създай друга сметка"
 
-#: .\templates\houses\details_house.html:38
+#: .\templates\houses\details_house.html:18
+msgid "Other Bills reports"
+msgstr "Репорти"
+
+#: .\templates\houses\details_house.html:40
 msgid "Total apartments"
 msgstr "Общо апартаменти"
 
-#: .\templates\houses\details_house.html:42
+#: .\templates\houses\details_house.html:44
 msgid "Total people"
 msgstr "Общо живущи"
 
-#: .\templates\houses\details_house.html:46
+#: .\templates\houses\details_house.html:48
 msgid "Total people using lift"
 msgstr "Общо живущи ползващи асансьор"
 
@@ -718,3 +732,4 @@ msgstr "Администрация"
 #: .\templates\partials\profile_menu.html:8
 msgid "Logout"
 msgstr "Изход"
+

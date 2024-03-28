@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.db.models import F
 from django.utils.translation import gettext_lazy as _
@@ -31,9 +33,19 @@ class MonthChoices(models.TextChoices):
     DECEMBER = ("12", _("December"))
 
 
+class YearChoices(models.TextChoices):
+    @classmethod
+    def previous_and_next_years(cls):
+        current_year = datetime.date.today().year
+        period = 2
+        years = [(str(year), str(year)) for year in range(current_year - 1, current_year + period)]
+
+        return years
+
+
 class MonthlyBill(models.Model):
     MAX_MONTH_LENGTH = max(len(x) for _, x in MonthChoices.choices)
-    MAX_YEAR_LENGTH = 4
+    MAX_YEAR_LENGTH = max(len(x) for _, x in YearChoices.previous_and_next_years())
     MAX_DECIMAL_DIGITS = 10
     MAX_DECIMAL_PLACES = 2
 
@@ -50,6 +62,7 @@ class MonthlyBill(models.Model):
 
     year = models.CharField(
         max_length=MAX_YEAR_LENGTH,
+        choices=YearChoices.previous_and_next_years(),
         blank=False,
         null=False,
         verbose_name=_("Year"),
@@ -148,8 +161,8 @@ class MonthlyBill(models.Model):
 
 
 class OtherBill(models.Model):
-    MAX_MONTH_LENGTH = 10
-    MAX_YEAR_LENGTH = 4
+    MAX_MONTH_LENGTH = max(len(x) for _, x in MonthChoices.choices)
+    MAX_YEAR_LENGTH = max(len(x) for _, x in YearChoices.previous_and_next_years())
     MAX_DECIMAL_DIGITS = 10
     MAX_DECIMAL_PLACES = 2
 
@@ -166,6 +179,7 @@ class OtherBill(models.Model):
 
     year = models.CharField(
         max_length=MAX_YEAR_LENGTH,
+        choices=YearChoices.previous_and_next_years(),
         blank=False,
         null=False,
         verbose_name=_("Year"),

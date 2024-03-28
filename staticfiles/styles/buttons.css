@@ -55,13 +55,15 @@
     background-color: var(--card-bgnd-paid-hover);
 }
 
-.details-house-elements .buttons ul li:nth-of-type(5) a,
-.details-house-elements .buttons ul li:nth-of-type(6) a{
+.details-house-elements .buttons ul li:nth-of-type(6) a,
+.details-house-elements .buttons ul li:nth-of-type(7) a,
+.details-house-elements .buttons ul li:nth-of-type(8) a {
     background-color: #AAD7D9;
 }
 
-.details-house-elements .buttons ul li:nth-of-type(5) a:hover,
-.details-house-elements .buttons ul li:nth-of-type(6) a:hover {
+.details-house-elements .buttons ul li:nth-of-type(6) a:hover,
+.details-house-elements .buttons ul li:nth-of-type(7) a:hover,
+.details-house-elements .buttons ul li:nth-of-type(8) a:hover {
     background-color: #92C7CF;
 }
 

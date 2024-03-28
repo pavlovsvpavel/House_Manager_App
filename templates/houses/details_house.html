@@ -12,8 +12,10 @@
                         <li><a class="details-house-list-clients" onclick="redirectToHouseClients({{ object.pk }},'{% url "house_clients_list" pk=0 %}')">{% trans "House Clients" %}</a></li>
                         <li><a class="create-house-bill" href="{% url "create_house_bills" %}">{% trans "Create Bill" %}</a></li>
                         <li><a class="list-house-bills" href="{% url "list_house_bills" pk=object.pk %}">{% trans "House Bills" %}</a></li>
+                        <li><a class="report" href="{% url "reports" pk=object.pk %}">{% trans "Bills reports" %}</a></li>
                         <li><a class="create-other-bill" href="{% url "create_other_bill" %}">{% trans "Create Other Bill" %}</a></li>
                         <li><a class="list-other-bills" href="{% url "list_other_house_bills" pk=object.pk %}">{% trans "Other Bills" %}</a></li>
+                        <li><a class="report" href="{% url "reports" pk=object.pk %}">{% trans "Other Bills reports" %}</a></li>
                     </ul>
                 </div>
 

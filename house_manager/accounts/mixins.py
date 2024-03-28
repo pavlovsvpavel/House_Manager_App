@@ -16,7 +16,7 @@ class CheckForLoggedInUserMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
-class CheckUserModelInstancesMixin:
+class CheckLoggedInUserModelInstancesMixin:
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         if not request.user.is_superuser:

@@ -27,6 +27,7 @@
 .what-we-offer {
     background-color: var(--form-bgnd);
 }
+
 .what-we-offer-wrapper {
     display: flex;
     flex-direction: column;
@@ -199,6 +200,7 @@
     padding: 2em 0;
     flex: 0 1 100%;
 }
+
 .site-section.about .mission {
     background-color: var(--form-bgnd);
 }
@@ -223,5 +225,77 @@
     justify-self: flex-end;
 }
 
+/*Reports section*/
+.reports-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
 
+.search_by_month_and_year {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: flex-start;
+}
 
+.search_by_month_and_year select {
+    max-width: 20%;
+}
+
+.search_by_month_and_year .search-btn,
+.reports-wrapper .save-btn {
+    align-self: flex-start;
+    border: transparent;
+    border-radius: 0.5em;
+    background-color: var(--form-btn-color);
+    color: #fff;
+    padding: 0.5em;
+    cursor: pointer;
+}
+
+.search_by_month_and_year .search-btn:hover,
+.reports-wrapper .save-btn:hover {
+    background-color: var(--form-btn-color-hover);
+}
+
+.details-for-house {
+    display: flex;
+    gap: 2em;
+    font-size: 1.2em;
+}
+
+.details-for-house-bill {
+    display: flex;
+    gap: 2em;
+    font-size: 1.2em;
+}
+
+.report-results {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.report-results table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    margin-top: 2em;
+}
+
+.report-results table tr th {
+    text-align: center;
+}
+
+.report-results table th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+    width: 25%;
+}
+
+.report-results table th {
+    background-color: gray;
+    color: #fff;
+}
