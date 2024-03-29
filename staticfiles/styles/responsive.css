@@ -219,4 +219,22 @@
     .site-footer .footer-wrapper {
         flex-direction: column;
     }
+
+    .search_by_month_and_year {
+        width: 100%;
+    }
+
+    .reports-wrapper .buttons {
+        width: 100%;
+    }
+
+    .details-wrapper {
+        flex-direction: column;
+        gap: 0.5em;
+    }
+
+    .details-for-house,
+    .details-for-house-bill {
+        width: 100%;
+    }
 }

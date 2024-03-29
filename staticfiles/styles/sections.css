@@ -229,7 +229,7 @@
 .reports-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 2em;
+    gap: 1em;
 }
 
 .search_by_month_and_year {
@@ -237,13 +237,16 @@
     flex-direction: column;
     gap: 1em;
     align-items: flex-start;
+    width: 30%;
 }
 
-.search_by_month_and_year select {
-    max-width: 20%;
+.reports-wrapper .buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
 }
 
-.search_by_month_and_year .search-btn,
+.reports-wrapper .search-btn,
 .reports-wrapper .save-btn {
     align-self: flex-start;
     border: transparent;
@@ -252,23 +255,13 @@
     color: #fff;
     padding: 0.5em;
     cursor: pointer;
+    transition: 0.3s ease-in-out;
 }
 
-.search_by_month_and_year .search-btn:hover,
+.reports-wrapper .search-btn:hover,
 .reports-wrapper .save-btn:hover {
     background-color: var(--form-btn-color-hover);
-}
-
-.details-for-house {
-    display: flex;
-    gap: 2em;
-    font-size: 1.2em;
-}
-
-.details-for-house-bill {
-    display: flex;
-    gap: 2em;
-    font-size: 1.2em;
+    transition: 0.3s ease-in-out;
 }
 
 .report-results {
@@ -277,22 +270,47 @@
     gap: 0.5em;
 }
 
+.details-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.details-for-house,
+.details-for-house-bill {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
+.details-for-house .house-card,
+.details-for-house-bill .house-card {
+    display: flex;
+    gap: 0.5em;
+    font-size: 0.8em;
+    background-color: gray;
+    color: #fff;
+}
+
 .report-results table {
     border-collapse: collapse;
     width: 100%;
     table-layout: fixed;
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 .report-results table tr th {
     text-align: center;
 }
 
+.report-results table tr {
+    height: 10px;
+}
+
 .report-results table th, td {
     border: 1px solid black;
-    padding: 8px;
+    padding: 1px;
     text-align: center;
-    width: 25%;
 }
 
 .report-results table th {
