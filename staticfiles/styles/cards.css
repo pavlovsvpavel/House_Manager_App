@@ -245,4 +245,10 @@
     border-radius: 0.5em;
     text-align: center;
     width: 100%;
+    transition: 0.3s ease-in-out;
+}
+
+.profile-card .details-profile-btns ul li a:hover {
+    background-color: var(--form-btn-color-hover);
+    transition: 0.3s ease-in-out;
 }

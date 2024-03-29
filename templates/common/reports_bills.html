@@ -80,7 +80,7 @@
                             <th>{% trans "Total BGN" %}</th>
                             <th>{% trans "Signature" %}</th>
                         </tr>
-                        {% for client_bill in clients_bills %}
+                        {% for client_bill in clients_bills|dictsort:"client.apartment" %}
                             <tr>
                                 <td>{{ client_bill.client.family_name }}</td>
                                 <td>{{ client_bill.client.apartment }}</td>

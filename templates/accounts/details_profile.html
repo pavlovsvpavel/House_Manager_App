@@ -6,6 +6,7 @@
     <section class="site-section details-profile">
         <div class="container">
             <div class="profile-card">
+                <h5>{% trans "Profile details" %}</h5>
                 {% if object.profile_picture %}
                     <img src="{{ object.profile_picture.url }}" alt="profile-picture">
                 {% else %}

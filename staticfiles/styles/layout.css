@@ -8,8 +8,7 @@
 }
 
 .site-header {
-    background-color: #8EACCD;
-
+    background-color: var(--form-input-border);
 }
 
 .container {
@@ -59,7 +58,7 @@
     margin-top: auto;
     padding: 1em 0;
     text-align: center;
-    background-color: #8EACCD;
+    background-color: var(--form-input-border);
     color: var(--site-bgnd);
 }
 
