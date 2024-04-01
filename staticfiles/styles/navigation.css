@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1em 0;
+    padding: 0.5em 0;
     flex-basis: 100%;
     color: #fff;
 }
@@ -14,14 +14,14 @@
 }
 
 .site-title h1 {
-    font-size: 0.8em;
+    font-size: 0.5em;
     text-align: center;
 }
 
 .site-title a {
     display: block;
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     overflow: hidden;
     text-indent: -200vw;
     background-image: url("../images/site_logo.png");

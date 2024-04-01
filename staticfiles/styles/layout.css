@@ -1,4 +1,5 @@
 .site {
+    max-width: 1920px;
     margin: 0 auto;
     background-color: var(--site-bgnd);
     display: flex;
@@ -25,8 +26,8 @@
 }
 
 .hero-section {
-    background-image: url("../images/hero-bg.jpeg");
-    background-position: center;
+    background-image: url("../images/hero-bg.jpg");
+    background-position: bottom center;
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;

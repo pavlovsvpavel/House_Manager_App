@@ -109,11 +109,11 @@ STATICFILES_DIRS = (
     BASE_DIR / 'staticfiles',
 )
 
-STATIC_ROOT = 'house_manager/staticfiles'
-
-MEDIA_ROOT = BASE_DIR / 'mediafiles'
+STATIC_ROOT = BASE_DIR / 'static_files'
 
 MEDIA_URL = 'media/'
+
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
