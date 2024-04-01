@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-29 09:39+0200\n"
+"POT-Creation-Date: 2024-04-01 09:51+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -41,7 +41,7 @@ msgid "Last name"
 msgstr "Фамилия"
 
 #: .\house_manager\accounts\models.py:70
-#: .\templates\accounts\details_profile.html:22
+#: .\templates\accounts\details_profile.html:23
 msgid "Phone number"
 msgstr "Телефонен номер"
 
@@ -352,27 +352,31 @@ msgstr "Сигурни ли сте, че искате да изтриете то
 msgid "Yes"
 msgstr "Да"
 
-#: .\templates\accounts\details_profile.html:17
+#: .\templates\accounts\details_profile.html:9
+msgid "Profile details"
+msgstr "Детайли на профил"
+
+#: .\templates\accounts\details_profile.html:18
 msgid "Email"
 msgstr "Имейл"
 
-#: .\templates\accounts\details_profile.html:19
+#: .\templates\accounts\details_profile.html:20
 msgid "Name"
 msgstr "Име"
 
-#: .\templates\accounts\details_profile.html:27
+#: .\templates\accounts\details_profile.html:28
 #: .\templates\clients\details_client.html:35
 #: .\templates\houses\details_house.html:56
 msgid "Edit"
 msgstr "Промени"
 
-#: .\templates\accounts\details_profile.html:28
+#: .\templates\accounts\details_profile.html:29
 #: .\templates\clients\details_client.html:36
 #: .\templates\houses\details_house.html:57
 msgid "Delete"
 msgstr "Изтрий"
 
-#: .\templates\accounts\details_profile.html:29
+#: .\templates\accounts\details_profile.html:30
 msgid "Change password"
 msgstr "Промяна на парола"
 
