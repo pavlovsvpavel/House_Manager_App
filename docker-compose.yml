@@ -22,9 +22,10 @@ services:
     ports:
       - "5432:5432"
     environment:
+      POSTGRES_PASSWORD: edc8302
+      POSTGRES_USER: postgres
+      POSTGRES_DB: hm_db
       PGDATA: /var/lib/postgresql/data/pgdata
-    env_file:
-      - .env
     volumes:
       - ./postgresql:/var/lib/postgresql/data
   nginx:
