@@ -27,5 +27,5 @@ COPY locale /app/locale
 COPY mediafiles /app/mediafiles
 COPY templates /app/templates
 COPY staticfiles /app/staticfiles
-COPY static_files /app/static_files
+#COPY static_files /app/static_files
 COPY house_manager /app/house_manager
