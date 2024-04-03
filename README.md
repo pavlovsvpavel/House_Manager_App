@@ -11,19 +11,19 @@ The application is with responsive design and it's translated to bulgarian.
 ---
 **Home page**
 
-![home_page](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/a894d85a-bb20-4100-8691-6cb2ba419d85)
+![home_page](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/5982ee68-a0c2-49ff-9b4f-142ecf00d8cc)
 
 ---
 **Registered users** have access to their dashboard, profile details (profile picture, names, phone number and password change) and administration (Django default administartion panel with added custom searches and filters).
 
-![loggedin_user_nav](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/1fa69e5b-c1e9-4fcb-ac54-81df96875a1f)
+![loggedin_user_nav](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/24228413-6a51-47d4-bde3-db704a1d9b54)
 
 ---
 **Dashboard page**
 
 List of all user's houses
 
-![Dashboard](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/103bd765-fc28-4fa9-b65b-1ffa4e5cf35f)
+![Dashboard](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/619f6897-0cb9-425a-9aa6-4807fd6c57e8)
 
 ---
 **House details page**
@@ -35,14 +35,14 @@ On this page registered users have the ability to:
 - Check bills status - paid or unpaid
 - Generate reports in pdf format based on selected month and year
 
-![house_details](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/95cf5ca0-e8ae-4421-b5d0-ad1aa5407963)
+![house_details](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/1af0ed47-4bd2-4cb3-affa-d280221aa0c7)
 
 ---
 **Clients list page**
 
 List of all house's clients
 
-![clients_list](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/f4628a4c-192d-42e7-a7f4-b483463f06a0)
+![clients_list](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/4c664f63-5d3a-4f9c-8559-7ff7412ab359)
 
 ---
 **Client details page**
@@ -50,7 +50,7 @@ List of all house's clients
 On this page the users can edit/delete client.
 Choose which type of bills are paid or unpaid.
 
-![client_details](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/ab99ec64-44ab-4e95-96fd-7bb86f5fa7c7)
+![client_details](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/356e9ee1-cb73-4de6-999d-1481459bc890)
 
 ---
 **Client bills status**
@@ -61,26 +61,26 @@ On this page you can filter the bills:
 
 - red color are unpaid.
 
-![client_bills](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/6fe0775d-670e-487b-9e3e-5011def09866)
+![client_bills](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/4c14188c-3ebc-4c20-a2eb-b214fc9810b3)
 
 ---
 **Payment form**
 
-![paid_form](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/d3c4b012-1711-48cb-a828-f52f02711452)
-
+![paid_form](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/2d835c30-ee38-4ea7-9136-d1514fd5be3e)
 
 ---
 **Reports page**
 
 On this page the user can select month and year, and to generate reports in pdf.
 
-![report_page](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/30cd04e8-7759-47ef-9213-917417cebec6)
+![report_page](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/0d265f7d-c4a7-4598-8cea-3c3ab8b319ad)
 
 Example of pdf report:
 
-![pdf_report](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/c6f92269-c8ba-4743-a9dc-57bb14ccb361)
+![pdf_report](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/341e8a02-40de-4560-a3eb-3386c11ff80c)
 
 ---
 **About page**
 
-![about_page](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/4167721e-6a8f-4265-9543-715843d8db69)
+![about_page](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/a74be755-943f-45d2-9f15-e20dafdbc730)
+
