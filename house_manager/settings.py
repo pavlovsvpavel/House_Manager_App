@@ -107,8 +107,9 @@ STATICFILES_DIRS = (
     BASE_DIR / 'staticfiles',
 )
 
-STATIC_ROOT = BASE_DIR / 'static_files'
+# STATIC_ROOT = BASE_DIR / 'static_files'
 # STATIC_ROOT = 'house_manager/staticfiles'
+STATIC_ROOT = '/tmp/house_manager/staticfiles'
 
 MEDIA_URL = 'media/'
 
