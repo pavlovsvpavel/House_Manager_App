@@ -7,6 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', None)
 
 DEBUG = bool(int(os.getenv('DEBUG')))
+
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(" ")
 
 INSTALLED_APPS = [
@@ -107,6 +108,7 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = BASE_DIR / 'static_files'
+# STATIC_ROOT = 'house_manager/staticfiles'
 
 MEDIA_URL = 'media/'
 

@@ -20,7 +20,7 @@ RUN pip install -r requirements.txt
 
 COPY manage.py /app/manage.py
 COPY nginx /app/nginx
-COPY locale /app/locale_
+COPY locale /app/locale
 COPY mediafiles /app/mediafiles
 COPY templates /app/templates
 COPY staticfiles /app/staticfiles
