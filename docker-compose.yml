@@ -2,18 +2,17 @@ version: '3.8'
 
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ppavlovp/house_manager:latest
     ports:
       - "8000:8000"
     env_file:
       - envs/.env
     volumes:
-      - ./house_manager:/usr/src/app/
+      - static_volume:/home/app/web/static_files
+      - media_volume:/home/app/web/mediafiles
     platform: linux/amd64
-    command: python manage.py runserver 0.0.0.0:8000
-    links:
+    command: gunicorn house_manager.wsgi:application --bind=0.0.0.0:8000
+    depends_on:
       - postgres
   postgres:
     image: postgres
@@ -27,14 +26,17 @@ services:
   nginx:
     image: nginx
     ports:
-      - "81:80"
+      - "80:80"
       - "443:443"
     volumes:
-      - ./static_files:/app/static_files/
-      - ./mediafiles:/app/mediafiles/
+      - static_volume:/home/app/web/static_files
+      - media_volume:/home/app/web/mediafiles
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/logs:/var/log/nginx
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
-    links:
+    depends_on:
       - web
+volumes:
+  static_volume:
+  media_volume:
