@@ -92,7 +92,6 @@ class ProfileDeleteView(OwnerRequiredMixin, views.DeleteView):
 
     success_url = reverse_lazy("index")
 
-    # TODO: Add confirmation with password
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         user = self.object.user

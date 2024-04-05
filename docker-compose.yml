@@ -1,67 +1,18 @@
-#version: '3.8'
-#
-#services:
-#  web:
-#    image: house_manager
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    ports:
-#      - "8000:8000"
-#    env_file:
-#      - envs/.env
-#    volumes:
-#      - static_volume:/app/web/static_files
-#      - media_volume:/app/web/mediafiles
-#    platform: linux/amd64
-#    command: gunicorn house_manager.wsgi:application --bind=0.0.0.0:8000
-#    depends_on:
-#      - postgres
-#  postgres:
-#    image: postgres
-#    restart: always
-#    ports:
-#      - "5432:5432"
-#    env_file:
-#      - envs/.env
-#    volumes:
-#      - ./postgresql:/var/lib/postgresql/data
-#  nginx:
-#    image: nginx
-#    ports:
-#      - "80:80"
-#      - "443:443"
-#    volumes:
-#      - static_volume:/static
-#      - media_volume:/media
-#      - ./nginx/conf.d:/etc/nginx/conf.d
-#      - ./nginx/logs:/var/log/nginx
-#      - ./certbot/www:/var/www/certbot/:ro
-#      - ./certbot/conf/:/etc/nginx/ssl/:ro
-#    depends_on:
-#      - web
-#volumes:
-#  static_volume:
-#  media_volume:
-
 version: '3.8'
 
 services:
   web:
-    image: house_manager
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ppavlovp/house_manager
+    build: ./house_manager
     ports:
       - "8000:8000"
     env_file:
       - envs/.env
     volumes:
-      - ./staticfiles:/tmp/house_manager/staticfiles
-      - ./mediafiles:/home/app/web/mediafiles
+      - ./staticfiles:/tmp/house_manager/static_files
     platform: linux/amd64
     command: gunicorn house_manager.wsgi:application --bind=0.0.0.0:8000
-    depends_on:
+    links:
       - postgres
   postgres:
     image: postgres
@@ -78,13 +29,13 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./staticfiles:/home/app/web/staticfiles
-      - ./mediafiles:/home/app/web/mediafiles
+      - ./staticfiles:/home/app/web/static_files
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/logs:/var/log/nginx
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
-    depends_on:
+    links:
       - web
+
 
 
