@@ -11,6 +11,10 @@ DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
+# Production
+# CSRF_TRUSTED_ORIGINS = ['https://housemanager.line.pm']
+# CSRF_TRUSTED_ORIGINS = [f'https://{x}' for x in ALLOWED_HOSTS]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

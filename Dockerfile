@@ -1,6 +1,6 @@
 FROM python:3.11
 
-RUN apt update -y && apt upgrade -y
+RUN apt update -y && apt upgrade -y && apt gettext -y
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
