@@ -1,7 +1,7 @@
 ## Personal project for Python Web course part of [SoftUni's](https://softuni.bg/) software engineering program.
 ## Technologies used:&nbsp;&nbsp;&nbsp;[![Technologies](https://skillicons.dev/icons?i=python,django,postgres)](https://skillicons.dev)
 
-## [House Manager App](https://ppavlovp.pythonanywhere.com/)
+## [House Manager App](https://house manager.line.pm/)
 
 **House Manager** is an application for efficient expenses management tailored specifically for building cashiers.
 It is designed to simplify every aspect of the process, allowing you to focus on what matters most – ensuring financial integrity and smooth operations within your building.
