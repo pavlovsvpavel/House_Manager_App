@@ -12,8 +12,7 @@ DEBUG = config('DEBUG', cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 # Production
-# CSRF_TRUSTED_ORIGINS = ['https://housemanager.line.pm']
-# CSRF_TRUSTED_ORIGINS = [f'https://{x}' for x in ALLOWED_HOSTS]
+CSRF_TRUSTED_ORIGINS = [f'https://{x}' for x in ALLOWED_HOSTS]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -96,7 +95,7 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = [
@@ -104,7 +103,7 @@ LANGUAGES = [
     ('bg', 'Bulgarian'),
 ]
 
-LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
+LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'),]
 
 STATIC_URL = '/static/'
 
