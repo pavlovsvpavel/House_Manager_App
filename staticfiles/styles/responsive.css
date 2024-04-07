@@ -163,6 +163,10 @@
         flex: 0 1 100%;
     }
 
+    .form-buttons {
+        /*flex-direction: column;*/
+    }
+
     .create-form div:nth-of-type(5),
     .create-form div:nth-of-type(6) {
         align-items: center;

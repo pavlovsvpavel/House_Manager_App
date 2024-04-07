@@ -8,7 +8,7 @@ services:
     ports:
       - "8000:8000"
     env_file:
-      - .env
+      - .env.prod
     volumes:
       - ./staticfiles:/tmp/house_manager/static_files
       - ./mediafiles:/tmp/house_manager/mediafiles
@@ -23,7 +23,7 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - .env
+      - .env.prod
     volumes:
       - ./postgresql:/var/lib/postgresql/data
   nginx:

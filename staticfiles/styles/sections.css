@@ -2,10 +2,10 @@
     display: flex;
     flex-direction: column;
     flex: 0 1 80%;
-    gap: 2em;
+    gap: 1em;
 }
 
-.wrapper .back-button {
+.back-button {
     align-self: flex-end;
 }
 
@@ -316,4 +316,9 @@
 .report-results table th {
     background-color: gray;
     color: #fff;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
 }

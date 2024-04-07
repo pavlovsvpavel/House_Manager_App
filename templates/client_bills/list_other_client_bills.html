@@ -12,7 +12,7 @@
                         {% for object in client_bills %}
                             <div class="{% if object.is_paid %} client-card {% else %} client-card-not-paid {% endif %}"
                                  onclick="redirectToClientBillDetails({{ object.pk }},'{% url "edit_client_other_bill" pk=0 %}')">
-                                {% include "partials/details_other_client_bills.html" %}
+                                {% include "partials/details_client_bills.html" %}
                             </div>
                         {% endfor %}
                     {% else %}

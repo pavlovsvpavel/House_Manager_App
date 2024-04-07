@@ -30,8 +30,9 @@
                     </div>
                     {% if form.instance.is_paid %}
                         <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
+                        {% include "partials/back_button.html" %}
                     {% else %}
-                        <button type="submit" class="btn">{% trans "Save" %}</button>
+                        {% include "partials/form_buttons.html" %}
                     {% endif %}
                 </form>
             </div>

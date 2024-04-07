@@ -28,7 +28,7 @@ class LogInUserView(auth_views.LoginView):
 class RegisterUserView(views.CreateView):
     template_name = "accounts/register.html"
     form_class = HouseManagerUserCreationForm
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy("dashboard")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

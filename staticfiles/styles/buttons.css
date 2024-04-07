@@ -32,7 +32,7 @@
     padding: 0.5em;
     border-radius: 0.5em;
     transition: 0.3s ease-in-out;
-    width: 200px;
+    /*width: 200px;*/
     text-align: center;
     text-decoration: none;
     color: inherit;
@@ -105,6 +105,7 @@
 
 .filter-buttons a {
     flex: 0 1 180px;
+    padding: 0.5em 0;
 }
 
 .wrapper .bills-button a {
@@ -134,5 +135,24 @@
     border: none;
     cursor: pointer;
     color: #fff;
+}
+
+.back-btn {
+    color: #fff;
+    padding: 0.5em;
+    text-align: center;
+    border-radius: 1.5em;
+    border-color: transparent;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    background-color: #FF8080;
+}
+
+.back-btn i {
+    padding-right: 0.5em;
+}
+
+.back-btn:hover {
+    background-color: #D37676;
 }
 

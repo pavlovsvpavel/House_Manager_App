@@ -28,6 +28,7 @@
                 <div class="buttons">
                     <button class="save-btn" onclick="saveAsPDF()">{% trans "Save as PDF" %}</button>
                 </div>
+                {% include "partials/back_button.html" %}
                 <div class="report-results">
                     <div class="details-wrapper">
                         <div class="details-for-house">
@@ -63,11 +64,11 @@
                                     </div>
                                     <div class="card-column">
                                         <p class="column-name">{% trans "Total" %}</p>
-                                        <p class="column-data">{{ bill.total_amount }} лв.</p>
+                                        <p class="column-data">{{ bill.total_amount }} {% trans "BGN" %}</p>
                                     </div>
                                     <div class="card-column">
                                         <p class="column-name">{% trans "Current Balance" %}</p>
-                                        <p class="column-data">{{ current_house.money_balance }} лв.</p>
+                                        <p class="column-data">{{ current_house.money_balance }} {% trans "BGN" %}</p>
                                     </div>
                                 </div>
                             {% endif %}

@@ -1,5 +1,7 @@
 .helptext {
     display: none;
+    font-size: 0.5em;
+    color: red;
 }
 
 .form-container {
@@ -27,6 +29,10 @@
 
 .form-container #flip:checked ~ .cover {
     transform: rotateY(-180deg);
+}
+
+.form-container #flip {
+    display: none !important;
 }
 
 .form-container .cover .front,
@@ -188,8 +194,3 @@
     text-decoration: underline;
     text-align: center;
 }
-
-.form-container #flip {
-    display: none;
-}
-

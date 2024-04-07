@@ -4,5 +4,5 @@
     <h3 class="create-form-heading">{{ title }}</h3>
     {{ form }}
     {% csrf_token %}
-    <button class="btn" type="submit">{% trans "Save" %}</button>
+    {% include "partials/form_buttons.html" %}
 </form>

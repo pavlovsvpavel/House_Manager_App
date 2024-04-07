@@ -8,14 +8,14 @@
             <div class="details-house-elements">
                 <div class="buttons">
                     <ul>
-                        <li><a class="create-client" href="{% url "create_client" %}">{% trans "Create Client" %}</a></li>
-                        <li><a class="details-house-list-clients" onclick="redirectToHouseClients({{ object.pk }},'{% url "house_clients_list" pk=0 %}')">{% trans "House Clients" %}</a></li>
-                        <li><a class="create-house-bill" href="{% url "create_house_bills" %}">{% trans "Create Bill" %}</a></li>
-                        <li><a class="list-house-bills" href="{% url "list_house_bills" pk=object.pk %}">{% trans "House Bills" %}</a></li>
-                        <li><a class="report" href="{% url "reports_bills" pk=object.pk %}">{% trans "Bills reports" %}</a></li>
-                        <li><a class="create-other-bill" href="{% url "create_other_bill" %}">{% trans "Create Other Bill" %}</a></li>
-                        <li><a class="list-other-bills" href="{% url "list_other_house_bills" pk=object.pk %}">{% trans "Other Bills" %}</a></li>
-                        <li><a class="report" href="{% url "reports_other_bills" pk=object.pk %}">{% trans "Other Bills reports" %}</a></li>
+                        <li><a class="create-client" href="{% url "create_client" %}">{% trans "Create client" %}</a></li>
+                        <li><a class="details-house-list-clients" onclick="redirectToHouseClients({{ object.pk }},'{% url "house_clients_list" pk=0 %}')">{% trans "House's clients details" %}</a></li>
+                        <li><a class="create-house-bill" href="{% url "create_house_bills" %}">{% trans "Create regular bill" %}</a></li>
+                        <li><a class="list-house-bills" href="{% url "list_house_bills" pk=object.pk %}">{% trans "Regular bills details" %}</a></li>
+                        <li><a class="report" href="{% url "reports_bills" pk=object.pk %}">{% trans "Reports regular bills" %}</a></li>
+                        <li><a class="create-other-bill" href="{% url "create_other_bill" %}">{% trans "Create other bill" %}</a></li>
+                        <li><a class="list-other-bills" href="{% url "list_other_house_bills" pk=object.pk %}">{% trans "Other bills details" %}</a></li>
+                        <li><a class="report" href="{% url "reports_other_bills" pk=object.pk %}">{% trans "Reports other bills" %}</a></li>
                     </ul>
                 </div>
 
@@ -50,7 +50,7 @@
                     </div>
                     <div class="card-column">
                         <p class="column-name">{% trans "Current Balance" %}</p>
-                        <p class="column-data">{{ object.money_balance }} BGN</p>
+                        <p class="column-data">{{ object.money_balance }} {% trans "BGN" %}</p>
                     </div>
                     <div class="client-card-btns">
                         <a href="{% url "edit_house" pk=object.pk %}">{% trans "Edit" %}</a>

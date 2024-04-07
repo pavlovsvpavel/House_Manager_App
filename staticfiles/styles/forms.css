@@ -40,7 +40,6 @@
 .create-form .btn,
 .is-paid-form .btn {
     padding: 0.5em;
-    margin-top: 2em;
     border-radius: 1.5em;
     border-color: transparent;
     background-color: var(--form-btn-color);
@@ -48,7 +47,7 @@
     cursor: pointer;
     transition: 0.3s ease-in-out;
     align-self: center;
-    width: 200px;
+    width: 100px;
 }
 
 .create-form .btn:hover,
@@ -57,12 +56,17 @@
     transition: 0.3s ease-in-out;
 }
 
+.register-form .btn {
+    width: auto;
+}
+
 .is-paid-form {
     display: flex;
     flex-direction: column;
+    gap: 1em;
 }
 
-.is-paid-form div {
+.is-paid-form div:nth-of-type(1) {
     display: flex;
     background-color: var(--card-bgnd);
     padding: 1em;
@@ -77,5 +81,9 @@
 .edit-client .create-form div:nth-of-type(5),
 .edit-client .create-form div:nth-of-type(6) {
     display: flex;
-    /*align-items: center;*/
+}
+
+.is-paid-form .back-button {
+    background-color: transparent;
+    padding: 0;
 }
