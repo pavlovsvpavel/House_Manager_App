@@ -8,7 +8,7 @@ class HouseBaseBillForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             verbose_name = self.Meta.model._meta.get_field(field_name).verbose_name
 
-            if field_name in ["month", "year"]:
+            if field_name in ["month", "year", "type_of_bill"]:
                 field.widget.choices = [('', verbose_name)] + list(field.widget.choices)[1:]
 
             field.widget.attrs['placeholder'] = verbose_name
@@ -27,4 +27,4 @@ class HouseMonthlyBillForm(HouseBaseBillForm):
 class HouseOtherBillForm(HouseBaseBillForm):
     class Meta:
         model = HouseOtherBill
-        fields = ("month", "year", "comment", "total_amount")
+        fields = ("month", "year", "comment", "type_of_bill", "total_amount")

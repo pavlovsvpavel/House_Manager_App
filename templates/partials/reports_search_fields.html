@@ -1,11 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% load i18n %}
+
+<form class="search_by_month_and_year" method="get">
+    <label for="month">
+        <select name="month" id="month">
+            <option value="" selected disabled>{% trans "Month" %}</option>
+            {% for choice in MonthChoices.choices %}
+                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label for="year">
+        <select name="year" placeholder="Year" id="year">
+            <option value="" selected disabled>{% trans "Year" %}</option>
+            {% for choice in YearChoices %}
+                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <button class="search-btn" type="submit">{% trans "Search" %}</button>
+</form>
+<div class="buttons">
+    <button class="save-btn" onclick="saveAsPDF()">{% trans "Save as PDF" %}</button>
+</div>

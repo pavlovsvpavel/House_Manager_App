@@ -105,6 +105,7 @@
 
 .list-house-bills .card-column .column-data {
     max-width: 30ch;
+    /*word-wrap: break-word;*/
 }
 
 .details-client .client-card,

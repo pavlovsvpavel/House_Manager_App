@@ -18,7 +18,7 @@ def calculate_fees_other_bills(house_id, year, month, user_id):
             for field in obj._meta.fields:
                 field_value = getattr(obj, field.name)
 
-                if field.name in ['id', 'client', 'house', 'user']:
+                if field.name in ['id', 'client', 'house', 'user', 'type_of_bill']:
                     continue
 
                 if field.name in ['year', 'month', 'comment']:

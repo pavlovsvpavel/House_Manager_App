@@ -10,9 +10,11 @@ services:
       - .env
     volumes:
       - ./staticfiles:/tmp/house_manager/static_files
+      - ./mediafiles:/tmp/house_manager/mediafiles
+      - ./locale:/tmp/house_manager/locale
     platform: linux/amd64
     command: gunicorn house_manager.wsgi:application --bind=0.0.0.0:8000
-    links:
+    depends_on:
       - postgres
   postgres:
     image: postgres
@@ -30,9 +32,11 @@ services:
       - "443:443"
     volumes:
       - ./staticfiles:/home/app/web/static_files
+      - ./mediafiles:/home/app/web/mediafiles
+      - ./locale:/home/app/web/locale
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/logs:/var/log/nginx
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
-    links:
+    depends_on:
       - web

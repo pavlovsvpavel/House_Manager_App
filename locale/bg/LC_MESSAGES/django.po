@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-07 19:02+0300\n"
+"POT-Creation-Date: 2024-04-08 00:51+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -248,7 +248,7 @@ msgstr "Други разходи"
 #: .\templates\common\reports_bills.html:81
 #: .\templates\common\reports_other_bills.html:81
 #: .\templates\house_bills\edit_house_bills.html:46
-#: .\templates\house_bills\edit_other_house_bills.html:22
+#: .\templates\house_bills\edit_other_house_bills.html:26
 #: .\templates\house_bills\list_house_bills.html:24
 #: .\templates\house_bills\list_other_house_bills.html:28
 #: .\templates\partials\details_client_bills.html:11
@@ -258,9 +258,9 @@ msgstr "Общо сума, ЛВ."
 #: .\house_manager\common\mixins.py:156 .\house_manager\common\mixins.py:204
 #: .\templates\common\index.html:64
 #: .\templates\house_bills\edit_house_bills.html:53
-#: .\templates\house_bills\edit_other_house_bills.html:29
+#: .\templates\house_bills\edit_other_house_bills.html:33
 msgid "Paid"
-msgstr "Платен"
+msgstr "Платена"
 
 #: .\house_manager\common\mixins.py:191
 #: .\templates\client_bills\edit_client_other_bill.html:23
@@ -282,17 +282,30 @@ msgstr "Телефонният номер трябва да съдържа са�
 msgid "Phone number should be exactly 10 digits"
 msgstr "Телефонният номер трябва да бъде точно 10 цифри"
 
+#: .\house_manager\house_bills\models.py:41
+msgid "Single bill"
+msgstr "Единична сметка"
+
+#: .\house_manager\house_bills\models.py:42
+msgid "Bill for all clients"
+msgstr "Сметка за всички клиенти"
+
+#: .\house_manager\house_bills\models.py:57
+#: .\templates\house_bills\edit_other_house_bills.html:22
+msgid "Type of bill"
+msgstr "Тип сметка"
+
 #: .\house_manager\house_bills\views.py:38
 msgid "Create Bill"
 msgstr "Създай сметка"
 
 #: .\house_manager\house_bills\views.py:61
-#: .\house_manager\house_bills\views.py:85
+#: .\house_manager\house_bills\views.py:88
 msgid "Bill with those month and year already exists."
 msgstr "Сметка с тези месец и година вече съществува."
 
-#: .\house_manager\house_bills\views.py:106
-#: .\house_manager\house_bills\views.py:153
+#: .\house_manager\house_bills\views.py:109
+#: .\house_manager\house_bills\views.py:156
 msgid "Bills not found in selected house."
 msgstr "Не са намерени сметки на съответната къща."
 
@@ -419,7 +432,7 @@ msgstr "Фамилия"
 #: .\templates\client_bills\edit_client_bill.html:63
 #: .\templates\client_bills\edit_client_other_bill.html:35
 #: .\templates\house_bills\edit_house_bills.html:56
-#: .\templates\house_bills\edit_other_house_bills.html:32
+#: .\templates\house_bills\edit_other_house_bills.html:36
 #: .\templates\partials\form_buttons.html:4
 msgid "Save"
 msgstr "Запиши"
@@ -456,7 +469,7 @@ msgstr "Сметки"
 
 #: .\templates\clients\details_client.html:44
 msgid "Other Bills"
-msgstr "Други сметки - детайли"
+msgstr "Други сметки"
 
 #: .\templates\common\about.html:9
 msgid "Welcome to House Manager"
@@ -794,8 +807,3 @@ msgstr "Администрация"
 msgid "Logout"
 msgstr "Изход"
 
-#~ msgid "House Bills"
-#~ msgstr "Сметки - детайли"
-
-#~ msgid "Bills reports"
-#~ msgstr "Справки"

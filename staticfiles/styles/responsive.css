@@ -157,6 +157,7 @@
     .list-clients .card-column .column-data,
     .list-house-bills .card-column .column-data {
         align-self: flex-start;
+        text-align: right;
     }
 
     .create-form {

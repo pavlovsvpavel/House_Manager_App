@@ -75,8 +75,12 @@ class HouseOtherBillCreateView(HouseBaseBillCreateView):
             response = super().form_valid(form)
             current_year = form.instance.year
             current_month = form.instance.month
+            current_type_of_bill = form.instance.type_of_bill
             house_id = form.instance.house_id
             user_id = self.request.user.pk
+            if current_type_of_bill == "Single bill":
+                return response
+
             calculate_fees_other_bills(house_id, current_year, current_month, user_id)
 
             return response

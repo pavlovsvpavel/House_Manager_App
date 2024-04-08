@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.db import models
 from house_manager.common.mixins import MonthlyBill, OtherBill
@@ -36,10 +37,25 @@ class HouseMonthlyBill(MonthlyBill):
         return f"Bill for '{self.house}' for {self.month} {self.year}"
 
 
+class TypeOfBillChoices(models.TextChoices):
+    SINGLE_BILL = ('Single bill', _('Single bill'))
+    BILL_FOR_ALL_CLIENTS = ('Bill for all clients', _('Bill for all clients'))
+
+
 class HouseOtherBill(OtherBill):
+    MAX_TYPE_OF_BILL_LENGTH = max(len(x) for _, x in TypeOfBillChoices.choices)
+
     class Meta:
         unique_together = ("year", "month", "house")
         ordering = ("is_paid", "-year", "month")
+
+    type_of_bill = models.CharField(
+        max_length=MAX_TYPE_OF_BILL_LENGTH,
+        choices=TypeOfBillChoices.choices,
+        blank=False,
+        null=False,
+        verbose_name=_("Type of bill"),
+    )
 
     house = models.ForeignKey(
         to=House,
@@ -52,4 +68,5 @@ class HouseOtherBill(OtherBill):
         on_delete=models.RESTRICT,
     )
 
-
+    def get_type_of_bill(self):
+        return dict(TypeOfBillChoices.choices)[self.type_of_bill]
