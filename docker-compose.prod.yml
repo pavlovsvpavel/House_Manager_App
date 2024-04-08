@@ -11,8 +11,8 @@ services:
       - .env.prod
     volumes:
       - ./staticfiles:/tmp/house_manager/static_files
-      - ./mediafiles:/tmp/house_manager/mediafiles
-      - ./locale:/tmp/house_manager/locale
+      - ./mediafiles:/house_manager/mediafiles
+      - ./locale:/house_manager/locale
     platform: linux/amd64
     command: gunicorn house_manager.wsgi:application --bind=0.0.0.0:8000
     depends_on:
