@@ -5,7 +5,7 @@
     <section class="site-section reports">
         <div class="container">
             <div class="reports-wrapper">
-                {% include "partials/reports_search_fields.html" %}
+                {% include "partials/reports_other_bills_search_fields.html" %}
                 {% include "partials/back_button.html" %}
                 <div class="report-results">
                     <div class="details-wrapper">
@@ -30,7 +30,30 @@
                             </div>
                         </div>
                         <div class="details-for-house-bill">
-                            {% if bill %}
+                            {% if single_bills %}
+                                <div class="house-card">
+                                    <div class="card-column">
+                                        <p class="column-name">{% trans "Month" %}</p>
+                                        <p class="column-data">{{ single_bills.0.get_month_name }}</p>
+                                    </div>
+                                    <div class="card-column">
+                                        <p class="column-name">{% trans "Year" %}</p>
+                                        <p class="column-data">{{ single_bills.0.year }}</p>
+                                    </div>
+                                    <div class="card-column">
+                                        <p class="column-name">{% trans "Comment" %}</p>
+                                        <p class="column-data">{{ single_bills.0.comment }}</p>
+                                    </div>
+                                    <div class="card-column">
+                                        <p class="column-name">{% trans "Type of bill" %}</p>
+                                        <p class="column-data">{{ single_bills.0.get_type_of_bill }}</p>
+                                    </div>
+                                    <div class="card-column">
+                                        <p class="column-name">{% trans "Total" %}</p>
+                                        <p class="column-data">{{ calculated_total_amount }} лв.</p>
+                                    </div>
+                                </div>
+                                {% else %}
                                 <div class="house-card">
                                     <div class="card-column">
                                         <p class="column-name">{% trans "Month" %}</p>
@@ -57,12 +80,29 @@
                         </div>
                     </div>
                     <table>
-                        <tr>
-                            <th>{% trans "Family Name" %}</th>
-                            <th>{% trans "Apartment" %}</th>
-                            <th>{% trans "Total BGN" %}</th>
-                            <th>{% trans "Signature" %}</th>
-                        </tr>
+                        {% if clients_bills %}
+                            <tr>
+                                <th>{% trans "Family Name" %}</th>
+                                <th>{% trans "Apartment" %}</th>
+                                <th>{% trans "Total BGN" %}</th>
+                                <th>{% trans "Signature" %}</th>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <th>{% trans "Full name" %}</th>
+                                <th>{% trans "Comment" %}</th>
+                                <th>{% trans "Total BGN" %}</th>
+                                <th>{% trans "Signature" %}</th>
+                            </tr>
+                        {% endif %}
+                        {% for bill in single_bills %}
+                            <tr>
+                                <td></td>
+                                <td>{{ bill.comment }}</td>
+                                <td>{{ bill.total_amount }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
                         {% for client_bill in clients_bills %}
                             <tr>
                                 <td>{{ client_bill.client.family_name }}</td>

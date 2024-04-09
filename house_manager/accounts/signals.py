@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from house_manager.accounts.helpers.send_email_on_successful_registration import send_email_on_successful_registration
 from house_manager.accounts.models import Profile
 
 UserModel = get_user_model()
@@ -16,6 +17,8 @@ def user_created(sender, instance, created, **kwargs):
         return
 
     Profile.objects.create(user=instance)
+
+    send_email_on_successful_registration(instance)
 
 
 @receiver(post_save, sender=UserModel)
@@ -48,3 +51,7 @@ def setup_custom_admin_group(sender, instance, created, **kwargs):
         # Assign regular users to the custom admin group upon creation
         custom_admin_group, created = Group.objects.get_or_create(name='StandardUser')
         instance.groups.add(custom_admin_group)
+
+
+
+

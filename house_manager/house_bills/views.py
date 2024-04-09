@@ -78,6 +78,7 @@ class HouseOtherBillCreateView(HouseBaseBillCreateView):
             current_type_of_bill = form.instance.type_of_bill
             house_id = form.instance.house_id
             user_id = self.request.user.pk
+
             if current_type_of_bill == "Single bill":
                 return response
 
