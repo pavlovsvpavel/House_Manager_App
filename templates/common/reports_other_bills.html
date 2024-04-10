@@ -1,93 +1,28 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
 {% block main_content %}
     <section class="site-section reports">
         <div class="container">
             <div class="reports-wrapper">
-                {% include "partials/reports_other_bills_search_fields.html" %}
-                {% include "partials/back_button.html" %}
+                {% include "partials/reports/reports_other_bills_search_fields.html" %}
+                {% include "partials/reports/reports_back_button.html" %}
                 <div class="report-results">
                     <div class="details-wrapper">
-                        <div class="details-for-house">
-                            <div class="house-card">
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Town" %}</p>
-                                    <p class="column-data">{{ current_house.town }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Address" %}</p>
-                                    <p class="column-data">{{ current_house.address }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Building number" %}</p>
-                                    <p class="column-data">{{ current_house.building_number }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Entrance" %}</p>
-                                    <p class="column-data">{{ current_house.entrance }}</p>
-                                </div>
-                            </div>
-                        </div>
+                        {% include "partials/reports/reports_house_details.html" %}
                         <div class="details-for-house-bill">
                             {% if single_bills %}
-                                <div class="house-card">
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Month" %}</p>
-                                        <p class="column-data">{{ single_bills.0.get_month_name }}</p>
-                                    </div>
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Year" %}</p>
-                                        <p class="column-data">{{ single_bills.0.year }}</p>
-                                    </div>
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Comment" %}</p>
-                                        <p class="column-data">{{ single_bills.0.comment }}</p>
-                                    </div>
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Type of bill" %}</p>
-                                        <p class="column-data">{{ single_bills.0.get_type_of_bill }}</p>
-                                    </div>
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Total" %}</p>
-                                        <p class="column-data">{{ calculated_total_amount }} лв.</p>
-                                    </div>
-                                </div>
-                                {% else %}
-                                <div class="house-card">
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Month" %}</p>
-                                        <p class="column-data">{{ bill.get_month_name }}</p>
-                                    </div>
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Year" %}</p>
-                                        <p class="column-data">{{ bill.year }}</p>
-                                    </div>
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Comment" %}</p>
-                                        <p class="column-data">{{ bill.comment }}</p>
-                                    </div>
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Type of bill" %}</p>
-                                        <p class="column-data">{{ bill.get_type_of_bill }}</p>
-                                    </div>
-                                    <div class="card-column">
-                                        <p class="column-name">{% trans "Total" %}</p>
-                                        <p class="column-data">{{ bill.total_amount }} лв.</p>
-                                    </div>
-                                </div>
+                                {% include "partials/reports/filtered_other_bill_type_multi.html" %}
+                            {% elif clients_bills %}
+                                {% include "partials/reports/filtered_other_bill_type_single.html" %}
                             {% endif %}
                         </div>
                     </div>
                     <table>
                         {% if clients_bills %}
-                            <tr>
-                                <th>{% trans "Family Name" %}</th>
-                                <th>{% trans "Apartment" %}</th>
-                                <th>{% trans "Total BGN" %}</th>
-                                <th>{% trans "Signature" %}</th>
-                            </tr>
-                        {% else %}
+                            {% include "partials/reports/table_headers.html" %}
+                        {% elif single_bills %}
                             <tr>
                                 <th>{% trans "Full name" %}</th>
                                 <th>{% trans "Comment" %}</th>
@@ -103,18 +38,12 @@
                                 <td></td>
                             </tr>
                         {% endfor %}
-                        {% for client_bill in clients_bills %}
-                            <tr>
-                                <td>{{ client_bill.client.family_name }}</td>
-                                <td>{{ client_bill.client.apartment }}</td>
-                                <td>{{ client_bill.total_amount }}</td>
-                                <td></td>
-                            </tr>
+                        {% for client_bill in clients_bills|dictsort:"client.apartment" %}
+                            {% include "partials/reports/reports_clients_data.html" %}
                         {% endfor %}
                     </table>
                 </div>
             </div>
         </div>
     </section>
-
 {% endblock %}

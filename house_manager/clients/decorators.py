@@ -17,7 +17,7 @@ def get_current_client_id(view_func):
             if selected_client.user == request.user:
                 return view_func(request, *args, **kwargs)
             else:
-                raise PermissionDenied("You are not the owner of this house.")
+                raise PermissionDenied("You are not the owner of this client.")
         else:
             raise PermissionDenied("Client does not exist.")
     return wrapper

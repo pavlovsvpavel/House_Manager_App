@@ -1,4 +1,3 @@
-from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -8,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.houses.decorators import get_current_house_id
 from house_manager.houses.forms import HouseCreateForm
+from house_manager.houses.helpers.house_clients_filter_by_payment_status import filter_by_payment_status
 from house_manager.houses.models import House
 
 
@@ -73,28 +73,7 @@ class HouseClientsDetailView(CheckForLoggedInUserMixin, views.DetailView):
         is_paid = self.request.GET.get('is_paid', None)
         clients = self.object.clients.all()
 
-        if is_paid is not None:
-            if is_paid == 'True':
-                clients = (
-                    clients
-                    .filter(
-                        Q(client_monthly_bills__is_paid=True) |
-                        Q(client_other_bills__is_paid=True)
-                    )
-                    .distinct()
-                )
-
-            elif is_paid == 'False':
-                clients = (
-                    clients
-                    .filter(
-                        Q(client_monthly_bills__is_paid=False) |
-                        Q(client_other_bills__is_paid=False)
-                    )
-                    .distinct()
-                )
-
-        context["clients"] = clients
+        context["clients"] = filter_by_payment_status(clients, is_paid)
 
         return context
 

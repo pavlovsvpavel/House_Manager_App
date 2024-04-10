@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block main_content %}
 
@@ -7,5 +8,7 @@
             {% include "partials/edit_form.html" %}
         </div>
     </section>
-
+    
+    <script src={% static "scripts/clearProfilePicture.js" %}></script>
 {% endblock %}
+

@@ -3,6 +3,7 @@ from django.core import exceptions
 from django.test import TestCase
 
 from house_manager.accounts.models import Profile
+from house_manager.accounts.validators import validate_image_file, validate_profile_picture_size
 
 UserModel = get_user_model()
 
@@ -37,26 +38,38 @@ class ProfileTests(TestCase):
 
         self.assertEqual("['Phone number should contains only digits']", phone_number_exception)
 
-    def test_profile__add_profile_picture_size_exceed_limit__expect_validation_error(self):
-        user_data = {
-            'email': 'admin@admin.bg',
-            "password": "123456",
-        }
+    def test_profile__upload_unsupported_file_type__expect_validation_error(self):
+        file_data = b'PDF Content'
 
-        user = UserModel.objects.create_user(**user_data)
-        profile = Profile.objects.filter(user_id=user.id).first()
-
-        class MockFile:
-            def __init__(self, size):
+        class FakeFile:
+            def __init__(self, name, size, content_type):
+                self.name = name
                 self.size = size
+                self.content_type = content_type
 
-        mock_file = MockFile(size=2 * 1024 * 1024)
+        fake_file = FakeFile(name='test_file.pdf', size=len(file_data), content_type='application/pdf')
 
         with self.assertRaises(exceptions.ValidationError) as ve:
-            profile.profile_picture = mock_file
-            profile.full_clean()
+            validate_image_file(fake_file)
 
         exception = ve.exception
-        profile_picture_exception = str(exception.error_dict["profile_picture"][0])
 
-        self.assertEqual("['The maximum file size should not exceed 1MB']", profile_picture_exception)
+        self.assertEqual(exception.message, 'Unsupported file type. Please upload an image file (.jpg, .jpeg, .png, .gif)')
+
+    def test_profile__upload_image_bigger_than_size_limit__expect_validation_error(self):
+        file_data = b'x' * (3 * 1024 * 1024 + 1)
+
+        class FakeFile:
+            def __init__(self, name, size, content_type):
+                self.name = name
+                self.size = size
+                self.content_type = content_type
+
+        fake_file = FakeFile(name='test_file.jpg', size=len(file_data), content_type='image/jpeg')
+
+        with self.assertRaises(exceptions.ValidationError) as ve:
+            validate_profile_picture_size(fake_file)
+
+        exception = ve.exception
+
+        self.assertEqual(exception.message, 'The maximum file size should not exceed 3MB')

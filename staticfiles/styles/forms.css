@@ -87,3 +87,18 @@
     background-color: transparent;
     padding: 0;
 }
+
+.edit-profile .create-form div:nth-of-type(4) input[type=checkbox] {
+    display: none;
+}
+
+.edit-profile .create-form div:nth-of-type(4) label[for=profile_picture-clear_id] {
+    padding-top: 0.5em;
+    cursor: pointer;
+}
+
+.edit-profile .create-form div:nth-of-type(4) label[for=profile_picture-clear_id]:hover {
+    color: red;
+}
+
+

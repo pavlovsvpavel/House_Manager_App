@@ -17,3 +17,8 @@ function redirectToClientBillDetails(clientBillId, detailsCurrentClientBill) {
 function redirectToHouseClients(houseId, currentHouseClients) {
     window.location.href = currentHouseClients.replace(0, houseId);
 }
+
+function redirectToHouseDetails(houseId, detailsCurrentHouse) {
+    window.location.href = detailsCurrentHouse.replace(0, houseId);
+}
+

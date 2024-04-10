@@ -4,10 +4,10 @@ from house_manager.house_bills.models import HouseOtherBill
 from house_manager.houses.models import House
 
 
-def calculate_fees_other_bills(house_id, year, month, user_id):
+def calculate_fees_other_bills(house_id, year, month, user_id, current_other_bill):
     house_other_bills = (HouseOtherBill
                          .objects
-                         .filter(house_id=house_id, year=year, month=month))
+                         .filter(house_id=house_id, year=year, month=month, pk=current_other_bill))
 
     house_clients = Client.objects.select_related('house').filter(house_id=house_id)
     total_apartments = House.objects.total_apartments(house_id=house_id)
@@ -25,6 +25,7 @@ def calculate_fees_other_bills(house_id, year, month, user_id):
                     calculated_values[field.name] = field_value
                     continue
 
+                # Calculation based on total apartments
                 calculated_values[field.name] = field_value / total_apartments
 
             ClientOtherBill.objects.create(house_id=house_id,

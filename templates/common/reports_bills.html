@@ -1,34 +1,16 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
 {% block main_content %}
     <section class="site-section reports">
         <div class="container">
             <div class="reports-wrapper">
-                {% include "partials/reports_bills_search_fields.html" %}
-                {% include "partials/back_button.html" %}
+                {% include "partials/reports/reports_bills_search_fields.html" %}
+                {% include "partials/reports/reports_back_button.html" %}
                 <div class="report-results">
                     <div class="details-wrapper">
-                        <div class="details-for-house">
-                            <div class="house-card">
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Town" %}</p>
-                                    <p class="column-data">{{ current_house.town }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Address" %}</p>
-                                    <p class="column-data">{{ current_house.address }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Building number" %}</p>
-                                    <p class="column-data">{{ current_house.building_number }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Entrance" %}</p>
-                                    <p class="column-data">{{ current_house.entrance }}</p>
-                                </div>
-                            </div>
-                        </div>
+                        {% include "partials/reports/reports_house_details.html" %}
                         <div class="details-for-house-bill">
                             {% if bill %}
                                 <div class="house-card">
@@ -53,24 +35,15 @@
                         </div>
                     </div>
                     <table>
-                        <tr>
-                            <th>{% trans "Family Name" %}</th>
-                            <th>{% trans "Apartment" %}</th>
-                            <th>{% trans "Total BGN" %}</th>
-                            <th>{% trans "Signature" %}</th>
-                        </tr>
+                        {% if clients_bills %}
+                            {% include "partials/reports/table_headers.html" %}
+                        {% endif %}
                         {% for client_bill in clients_bills|dictsort:"client.apartment" %}
-                            <tr>
-                                <td>{{ client_bill.client.family_name }}</td>
-                                <td>{{ client_bill.client.apartment }}</td>
-                                <td>{{ client_bill.total_amount }}</td>
-                                <td></td>
-                            </tr>
+                            {% include "partials/reports/reports_clients_data.html" %}
                         {% endfor %}
                     </table>
                 </div>
             </div>
         </div>
     </section>
-
 {% endblock %}

@@ -11,21 +11,21 @@ class ClientMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAd
                     "fee_cleaner", "fee_manager_and_cashier", "repairs",
                     "others", "total_amount")
 
-    ordering = ("house", "-year", "month")
+    ordering = ("house", "client__apartment", "-year", "month")
 
     list_filter = ("year", "month")
 
-    search_fields = ["house__town", "house__address", "house__building_number"]
-    search_help_text = "Search by house details"
+    search_fields = ["house__town", "house__address", "house__building_number", "client__family_name"]
+    search_help_text = "Search by house details or family name"
 
 
 @admin.register(ClientOtherBill)
 class ClientOtherBillBillAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAdmin):
     list_display = ("house", "client", "month", "year", "comment", "total_amount")
 
-    ordering = ("house", "-year", "month")
+    ordering = ("house", "client__apartment", "-year", "month")
 
     list_filter = ("year", "month")
 
-    search_fields = ["house__town", "house__address", "house__building_number"]
-    search_help_text = "Search by house details"
+    search_fields = ["house__town", "house__address", "house__building_number", "client__family_name"]
+    search_help_text = "Search by house details or family name"

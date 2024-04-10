@@ -54,7 +54,6 @@ class ProfileDetailsView(OwnerRequiredMixin, views.DetailView):
 
 
 class ProfileUpdateView(OwnerRequiredMixin, views.UpdateView):
-    MAX_IMAGE_SIZE = 1 * 1024 * 1024
     queryset = Profile.objects.all()
     template_name = "accounts/edit_profile.html"
     fields = ("first_name", "last_name", "phone_number", "profile_picture")

@@ -47,7 +47,6 @@ class HouseOtherBill(OtherBill):
     MAX_TYPE_OF_BILL_LENGTH = max(len(x) for _, x in TypeOfBillChoices.choices)
 
     class Meta:
-        # unique_together = ("year", "month", "house")
         ordering = ("is_paid", "-year", "month")
 
     type_of_bill = models.CharField(

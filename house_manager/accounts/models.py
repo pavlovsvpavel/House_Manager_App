@@ -1,13 +1,11 @@
-# from cloudinary.models import CloudinaryField
-from cloudinary import models as cloudinary
-
 from django.db import models
 from django.contrib.auth import models as auth_models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from cloudinary import models as cloudinary
 
 from house_manager.accounts.managers import HouseManagerUserManager
-from house_manager.accounts.validators import validate_profile_picture_size
+from house_manager.accounts.validators import validate_profile_picture_size, validate_image_file
 from house_manager.common.mixins import TimeStampModel
 from house_manager.common.validators import validate_char_field, validate_phone_number
 
@@ -79,6 +77,7 @@ class Profile(TimeStampModel):
         null=True,
         validators=(
             validate_profile_picture_size,
+            validate_image_file,
         ),
     )
 

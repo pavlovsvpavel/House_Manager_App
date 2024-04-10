@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<div class="details-for-house">
+    <div class="house-card">
+        <div class="card-column">
+            <p class="column-name">{% trans "Town" %}</p>
+            <p class="column-data">{{ current_house.town }}</p>
+        </div>
+        <div class="card-column">
+            <p class="column-name">{% trans "Address" %}</p>
+            <p class="column-data">{{ current_house.address }}</p>
+        </div>
+        <div class="card-column">
+            <p class="column-name">{% trans "Building number" %}</p>
+            <p class="column-data">{{ current_house.building_number }}</p>
+        </div>
+        <div class="card-column">
+            <p class="column-name">{% trans "Entrance" %}</p>
+            <p class="column-data">{{ current_house.entrance }}</p>
+        </div>
+    </div>
+</div>

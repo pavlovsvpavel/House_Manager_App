@@ -19,6 +19,7 @@ def calculate_fees(house_id, year, month, user_id):
         for field in house_bills._meta.get_fields():
             field_value = getattr(house_bills, field.name)
 
+            # Calculations based on apartment occupation (True)
             if client.is_occupied:
                 if field.name in ['id', 'total_amount', 'client', 'house', 'user']:
                     continue
@@ -27,6 +28,7 @@ def calculate_fees(house_id, year, month, user_id):
                     calculated_values[field.name] = field_value
                     continue
 
+                # Calculation based on total people using lift or not using lift
                 if field.name in ['maintenance_lift', 'electricity_lift'] and client.is_using_lift:
                     calculated_values[field.name] = (field_value / total_people_using_lift) * client.number_of_people
                     continue
@@ -35,12 +37,14 @@ def calculate_fees(house_id, year, month, user_id):
                     calculated_values[field.name] = 0
                     continue
 
+                # Calculation based on total apartments
                 elif field.name in ['repairs', 'others', 'fee_manager_and_cashier']:
                     calculated_values[field.name] = field_value / total_apartments
                     continue
 
                 calculated_values[field.name] = (field_value / total_people) * client.number_of_people
 
+            # Calculations based on apartment occupation (False)
             elif not client.is_occupied:
                 if field.name in ['id', 'total_amount', 'client', 'house', 'user']:
                     continue
