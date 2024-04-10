@@ -6,7 +6,7 @@
 **House Manager** is an application for efficient expenses management tailored specifically for building cashiers.
 It is designed to simplify every aspect of the process, allowing you to focus on what matters most – ensuring financial integrity and smooth operations within your building.
 
-The application is with responsive design and it's translated to bulgarian.
+The application has a responsive design and has bilingual support (English and Bulgarian).
 
 ---
 **Home page**
@@ -35,14 +35,14 @@ On this page registered users have the ability to:
 - Check bills status - paid or unpaid
 - Generate reports in pdf format based on selected month and year
 
-![house_details](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/1af0ed47-4bd2-4cb3-affa-d280221aa0c7)
+![house_details](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/ba59c7ea-d79f-4fe8-8b49-ec982927737a)
 
 ---
 **Clients list page**
 
 List of all house's clients
 
-![clients_list](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/4c664f63-5d3a-4f9c-8559-7ff7412ab359)
+![clients_list](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/849fb0ec-732c-4107-83d5-e67bb0aced02)
 
 ---
 **Client details page**
@@ -69,9 +69,9 @@ On this page you can filter the bills:
 ![paid_form](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/2d835c30-ee38-4ea7-9136-d1514fd5be3e)
 
 ---
-**Reports page**
+**Reports pages**
 
-On this page the user can select month and year, and to generate reports in pdf.
+On those page the user can filter bills and can generate reports in pdf.
 
 ![report_page](https://github.com/pavlovsvpavel/House_Manager_App/assets/115422291/0d265f7d-c4a7-4598-8cea-3c3ab8b319ad)
 
