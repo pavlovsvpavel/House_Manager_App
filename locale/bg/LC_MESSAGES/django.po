@@ -57,8 +57,7 @@ msgstr "Размерът на снимката не трябва да надви
 msgid ""
 "Unsupported file type. Please upload an image file (.jpg, .jpeg, .png, .gif)"
 msgstr ""
-"Неподдържан файлов тип. Моля, качете файл с разширение (.jpg, .jpeg, .png, ."
-"gif)."
+"Неподдържан файлов формат. Моля, качете файл с разширение (.jpg, .jpeg, .png, .gif)."
 
 #: .\house_manager\accounts\views.py:68
 msgid "Edit Profile"

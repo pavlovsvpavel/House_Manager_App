@@ -72,15 +72,16 @@ class HouseOtherBill(OtherBill):
         return dict(TypeOfBillChoices.choices)[self.type_of_bill]
 
     def validate_unique(self, exclude=None):
-        if self.type_of_bill == "Bill for all clients":
-            existing_qs = type(self).objects.filter(
-                year=self.year,
-                month=self.month,
-                house=self.house,
-                type_of_bill="Bill for all clients"
-            )
-            if existing_qs:
-                raise ValidationError(
-                    _("Bill for all clients with those month and year already exists.")
+        if self._state.adding:
+            if self.type_of_bill == "Bill for all clients":
+                existing_qs = type(self).objects.filter(
+                    year=self.year,
+                    month=self.month,
+                    house=self.house,
+                    type_of_bill="Bill for all clients"
                 )
+                if existing_qs:
+                    raise ValidationError(
+                        _("Bill for all clients with those month and year already exists.")
+                    )
 
