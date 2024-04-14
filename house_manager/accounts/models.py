@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField
 from django.db import models
 from django.contrib.auth import models as auth_models
 from django.utils import timezone
@@ -71,7 +72,7 @@ class Profile(TimeStampModel):
         verbose_name=_("Phone number"),
     )
 
-    profile_picture = cloudinary.CloudinaryField(
+    profile_picture = CloudinaryField(
         _("Profile picture"),
         blank=True,
         null=True,

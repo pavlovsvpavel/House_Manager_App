@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -14,6 +15,7 @@ class House(TimeStampModel):
     MAX_TOWN_LENGTH = 20
     MAX_ADDRESS_LENGTH = 100
     MAX_ENTRANCE_LENGTH = 2
+    MIN_VALUE = 0
 
     town = models.CharField(
         max_length=MAX_TOWN_LENGTH,
@@ -50,6 +52,9 @@ class House(TimeStampModel):
         decimal_places=2,
         blank=False,
         null=False,
+        validators=(
+            MinValueValidator(MIN_VALUE, message=_("Please enter a value greater than zero")),
+        ),
         verbose_name=_("Current balance"),
     )
 

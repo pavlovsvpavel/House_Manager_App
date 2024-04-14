@@ -139,6 +139,12 @@ cloudinary.config(
     api_secret=config("api_secret")
 )
 
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": config("cloud_name"),
+    "API_KEY": config("api_key"),
+    "API_SECRET": config("api_secret")
+}
+
 EMAIL_BACKEND = config("EMAIL_BACKEND")
 EMAIL_HOST = config("EMAIL_HOST")
 EMAIL_PORT = config("EMAIL_PORT")

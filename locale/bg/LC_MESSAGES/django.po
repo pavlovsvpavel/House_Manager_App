@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-10 16:27+0300\n"
+"POT-Creation-Date: 2024-04-14 21:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -49,15 +49,16 @@ msgstr "Телефонен номер"
 msgid "Profile picture"
 msgstr "Профилна снимка"
 
-#: .\house_manager\accounts\validators.py:11
+#: .\house_manager\accounts\validators.py:17
 msgid "The maximum file size should not exceed 3MB"
 msgstr "Размерът на снимката не трябва да надвишава 3MB"
 
-#: .\house_manager\accounts\validators.py:16
+#: .\house_manager\accounts\validators.py:24
 msgid ""
 "Unsupported file type. Please upload an image file (.jpg, .jpeg, .png, .gif)"
 msgstr ""
-"Неподдържан файлов формат. Моля, качете файл с разширение (.jpg, .jpeg, .png, .gif)."
+"Неподдържан файлов формат. Моля, качете файл с разширение (.jpg, .jpeg, ."
+"png, .gif)."
 
 #: .\house_manager\accounts\views.py:68
 msgid "Edit Profile"
@@ -121,55 +122,55 @@ msgstr "Създай клиент"
 msgid "Edit Client"
 msgstr "Промяна клиент"
 
-#: .\house_manager\common\mixins.py:22
+#: .\house_manager\common\mixins.py:23
 msgid "January"
 msgstr "Януари"
 
-#: .\house_manager\common\mixins.py:23
+#: .\house_manager\common\mixins.py:24
 msgid "February"
 msgstr "Февруари"
 
-#: .\house_manager\common\mixins.py:24
+#: .\house_manager\common\mixins.py:25
 msgid "March"
 msgstr "Март"
 
-#: .\house_manager\common\mixins.py:25
+#: .\house_manager\common\mixins.py:26
 msgid "April"
 msgstr "Април"
 
-#: .\house_manager\common\mixins.py:26
+#: .\house_manager\common\mixins.py:27
 msgid "May"
 msgstr "Май"
 
-#: .\house_manager\common\mixins.py:27
+#: .\house_manager\common\mixins.py:28
 msgid "June"
 msgstr "Юни"
 
-#: .\house_manager\common\mixins.py:28
+#: .\house_manager\common\mixins.py:29
 msgid "July"
 msgstr "Юли"
 
-#: .\house_manager\common\mixins.py:29
+#: .\house_manager\common\mixins.py:30
 msgid "August"
 msgstr "Август"
 
-#: .\house_manager\common\mixins.py:30
+#: .\house_manager\common\mixins.py:31
 msgid "September"
 msgstr "Септември"
 
-#: .\house_manager\common\mixins.py:31
+#: .\house_manager\common\mixins.py:32
 msgid "October"
 msgstr "Октомври"
 
-#: .\house_manager\common\mixins.py:32
+#: .\house_manager\common\mixins.py:33
 msgid "November"
 msgstr "Ноември"
 
-#: .\house_manager\common\mixins.py:33
+#: .\house_manager\common\mixins.py:34
 msgid "December"
 msgstr "Декември"
 
-#: .\house_manager\common\mixins.py:60 .\house_manager\common\mixins.py:177
+#: .\house_manager\common\mixins.py:62 .\house_manager\common\mixins.py:207
 #: .\templates\client_bills\edit_client_bill.html:19
 #: .\templates\client_bills\edit_client_other_bill.html:19
 #: .\templates\common\reports_bills.html:18
@@ -185,7 +186,7 @@ msgstr "Декември"
 msgid "Month"
 msgstr "Месец"
 
-#: .\house_manager\common\mixins.py:68 .\house_manager\common\mixins.py:185
+#: .\house_manager\common\mixins.py:70 .\house_manager\common\mixins.py:215
 #: .\templates\client_bills\edit_client_bill.html:15
 #: .\templates\client_bills\edit_client_other_bill.html:15
 #: .\templates\common\reports_bills.html:22
@@ -201,54 +202,63 @@ msgstr "Месец"
 msgid "Year"
 msgstr "Година"
 
-#: .\house_manager\common\mixins.py:76
+#: .\house_manager\common\mixins.py:79 .\house_manager\common\mixins.py:90
+#: .\house_manager\common\mixins.py:101 .\house_manager\common\mixins.py:112
+#: .\house_manager\common\mixins.py:123 .\house_manager\common\mixins.py:134
+#: .\house_manager\common\mixins.py:145 .\house_manager\common\mixins.py:156
+#: .\house_manager\common\mixins.py:167 .\house_manager\common\mixins.py:230
+#: .\house_manager\houses\models.py:56
+msgid "Please enter a value greater than zero"
+msgstr "Моля въведете число по-голямо от нула"
+
+#: .\house_manager\common\mixins.py:81
 #: .\templates\client_bills\edit_client_bill.html:23
 #: .\templates\house_bills\edit_house_bills.html:18
 msgid "Electricity common"
 msgstr "Ток общи нужди"
 
-#: .\house_manager\common\mixins.py:84
+#: .\house_manager\common\mixins.py:92
 #: .\templates\client_bills\edit_client_bill.html:27
 #: .\templates\house_bills\edit_house_bills.html:22
 msgid "Electricity lift"
 msgstr "Ток асансьор"
 
-#: .\house_manager\common\mixins.py:92
+#: .\house_manager\common\mixins.py:103
 #: .\templates\client_bills\edit_client_bill.html:31
 #: .\templates\house_bills\edit_house_bills.html:26
 msgid "Internet"
 msgstr "Интернет"
 
-#: .\house_manager\common\mixins.py:100
+#: .\house_manager\common\mixins.py:114
 #: .\templates\client_bills\edit_client_bill.html:35
 #: .\templates\house_bills\edit_house_bills.html:30
 msgid "Lift maintenance"
 msgstr "Поддръжка асансьор"
 
-#: .\house_manager\common\mixins.py:108
+#: .\house_manager\common\mixins.py:125
 #: .\templates\client_bills\edit_client_bill.html:39
 #: .\templates\house_bills\edit_house_bills.html:34
 msgid "Cleaner fee"
 msgstr "Такса хигиенист"
 
-#: .\house_manager\common\mixins.py:116
+#: .\house_manager\common\mixins.py:136
 #: .\templates\client_bills\edit_client_bill.html:43
 #: .\templates\house_bills\edit_house_bills.html:38
 msgid "Manager/Cashier fee"
 msgstr "Такса Домоуправител/Касиер"
 
-#: .\house_manager\common\mixins.py:124
+#: .\house_manager\common\mixins.py:147
 #: .\templates\client_bills\edit_client_bill.html:47
 msgid "Repairs fund"
 msgstr "Фонд ремонти"
 
-#: .\house_manager\common\mixins.py:132
+#: .\house_manager\common\mixins.py:158
 #: .\templates\client_bills\edit_client_bill.html:51
 #: .\templates\house_bills\edit_house_bills.html:42
 msgid "Other expenses"
 msgstr "Други разходи"
 
-#: .\house_manager\common\mixins.py:140 .\house_manager\common\mixins.py:199
+#: .\house_manager\common\mixins.py:169 .\house_manager\common\mixins.py:232
 #: .\templates\client_bills\edit_client_bill.html:55
 #: .\templates\client_bills\edit_client_other_bill.html:27
 #: .\templates\common\reports_other_bills.html:29
@@ -261,14 +271,14 @@ msgstr "Други разходи"
 msgid "Total BGN"
 msgstr "Общо сума, ЛВ."
 
-#: .\house_manager\common\mixins.py:156 .\house_manager\common\mixins.py:204
+#: .\house_manager\common\mixins.py:185 .\house_manager\common\mixins.py:237
 #: .\templates\common\index.html:64
 #: .\templates\house_bills\edit_house_bills.html:53
 #: .\templates\house_bills\edit_other_house_bills.html:33
 msgid "Paid"
 msgstr "Платена"
 
-#: .\house_manager\common\mixins.py:191
+#: .\house_manager\common\mixins.py:221
 #: .\templates\client_bills\edit_client_other_bill.html:23
 #: .\templates\common\reports_other_bills.html:28
 #: .\templates\house_bills\edit_other_house_bills.html:18
@@ -306,7 +316,7 @@ msgstr "Сметка за всички клиенти"
 msgid "Type of bill"
 msgstr "Тип сметка"
 
-#: .\house_manager\house_bills\models.py:84
+#: .\house_manager\house_bills\models.py:85
 msgid "Bill for all clients with those month and year already exists."
 msgstr "Сметка за всички клиенти с тези месец и година вече съществува."
 
@@ -332,31 +342,31 @@ msgstr "Начално салдо, ЛВ."
 msgid "Enter house's current available amount"
 msgstr "Въведете текущата налична сума в касата"
 
-#: .\house_manager\houses\models.py:25 .\templates\common\dashboard.html:15
+#: .\house_manager\houses\models.py:27 .\templates\common\dashboard.html:15
 #: .\templates\houses\details_house.html:24
 #: .\templates\partials\reports\reports_house_details.html:6
 msgid "Town"
 msgstr "Град"
 
-#: .\house_manager\houses\models.py:32 .\templates\common\dashboard.html:19
+#: .\house_manager\houses\models.py:34 .\templates\common\dashboard.html:19
 #: .\templates\houses\details_house.html:28
 #: .\templates\partials\reports\reports_house_details.html:10
 msgid "Address"
 msgstr "Адрес"
 
-#: .\house_manager\houses\models.py:38 .\templates\common\dashboard.html:23
+#: .\house_manager\houses\models.py:40 .\templates\common\dashboard.html:23
 #: .\templates\houses\details_house.html:32
 #: .\templates\partials\reports\reports_house_details.html:14
 msgid "Building number"
 msgstr "Блок"
 
-#: .\house_manager\houses\models.py:45 .\templates\common\dashboard.html:27
+#: .\house_manager\houses\models.py:47 .\templates\common\dashboard.html:27
 #: .\templates\houses\details_house.html:36
 #: .\templates\partials\reports\reports_house_details.html:18
 msgid "Entrance"
 msgstr "Вход"
 
-#: .\house_manager\houses\models.py:53
+#: .\house_manager\houses\models.py:58
 msgid "Current balance"
 msgstr "Настоящо салдо"
 
