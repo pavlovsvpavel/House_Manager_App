@@ -4,7 +4,7 @@
     justify-content: space-between;
     padding: 0.5em 0;
     flex-basis: 100%;
-    color: #fff;
+    color: var(--site-bgnd);
 }
 
 .site-title {
@@ -24,7 +24,7 @@
     height: 50px;
     overflow: hidden;
     text-indent: -200vw;
-    background-image: url("../images/site_logo.png");
+    background-image: url("../images/site_logo.webp");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -59,7 +59,7 @@
     position: absolute;
     width: 0;
     height: 3px;
-    background-color: var(--form-btn-color-hover);
+    background-color: var(--site-bgnd);
     transition: all 0.5s ease-in-out;
 }
 
@@ -114,7 +114,7 @@
 }
 
 .navigation .menu-links a:hover {
-    background-color: var(--form-btn-color-hover);
+    background-color: #608AB8;
     border-radius: 0.5em;
 }
 /*End Profile menu*/

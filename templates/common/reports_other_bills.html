@@ -3,6 +3,7 @@
 {% load i18n %}
 
 {% block main_content %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.0/html2pdf.bundle.min.js"></script>
     <section class="site-section reports">
         <div class="container">
             <div class="reports-wrapper">
@@ -13,9 +14,9 @@
                         {% include "partials/reports/reports_house_details.html" %}
                         <div class="details-for-house-bill">
                             {% if single_bills %}
-                                {% include "partials/reports/filtered_other_bill_type_multi.html" %}
-                            {% elif clients_bills %}
                                 {% include "partials/reports/filtered_other_bill_type_single.html" %}
+                            {% elif clients_bills %}
+                                {% include "partials/reports/filtered_other_bill_type_multi.html" %}
                             {% endif %}
                         </div>
                     </div>

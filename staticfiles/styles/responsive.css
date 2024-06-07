@@ -39,9 +39,7 @@
     .form-container #flip:checked ~ .forms .login-form {
         display: none;
     }
-
 }
-
 
 @media (max-width: 600px) {
     html {
@@ -79,8 +77,8 @@
         top: 0;
         right: -200%;
         z-index: 10;
-        background-color: #8EACCD;
-        opacity: 90%;
+        background-color: #35587D;
+        opacity: 95%;
         box-shadow: -5px 0 5px rgba(0, 0, 0, 0.25);
         transition: 0.8s ease-out;
     }

@@ -15,7 +15,7 @@
         <div class="container">
             <div class="what-we-offer-wrapper">
                 <div class="what-we-offer-heading">
-                    <h3>{% trans "What We Offer" %}</h3>
+                    <h4>{% trans "What We Offer" %}</h4>
                     <p>{% trans "Access to a range of powerful features tailored to meet the unique needs of building cashiers" %}</p>
                 </div>
                 <div class="what-we-offer-cards">
@@ -46,29 +46,29 @@
             </div>
         </div>
     </section>
-    <section class="site-section pricing-section">
-        <div class="container">
-            <div class="pricing-wrapper">
-                <div class="pricing-plans">
-                    <h3>{% trans "Pricing Plans" %}</h3>
-                    <p>{% trans "Choose your plan and start using our app." %}</p>
-                </div>
-                <div class="price-card1">
-                    <h4>{% trans "Free" %}</h4>
-                    <h3>0 <span>{% trans "BGN" %}</span><span>/{% trans "month" %}</span></h3>
-                    <p>1 {% trans "house" %}</p>
-                    <p>3 {% trans "months period" %}</p>
-                    <div><a href="{% url "register_user" %}">{% trans "Register" %}</a></div>
-                </div>
-                <div class="price-card2">
-                    <h4>{% trans "Paid" %}</h4>
-                    <h3>33 <span>{% trans "BGN" %}</span><span>/{% trans "month" %}</span></h3>
-                    <p>{% trans "Unlimited houses" %}</p>
-                    <p>12 {% trans "months period" %}</p>
-                    <div><a href="{% url "register_user" %}">{% trans "Register" %}</a></div>
-                </div>
-            </div>
-        </div>
-    </section>
+{#    <section class="site-section pricing-section">#}
+{#        <div class="container">#}
+{#            <div class="pricing-wrapper">#}
+{#                <div class="pricing-plans">#}
+{#                    <h3>{% trans "Pricing Plans" %}</h3>#}
+{#                    <p>{% trans "Choose your plan and start using our app." %}</p>#}
+{#                </div>#}
+{#                <div class="price-card1">#}
+{#                    <h4>{% trans "Free" %}</h4>#}
+{#                    <h3>0 <span>{% trans "BGN" %}</span><span>/{% trans "month" %}</span></h3>#}
+{#                    <p>1 {% trans "house" %}</p>#}
+{#                    <p>3 {% trans "months period" %}</p>#}
+{#                    <div><a href="{% url "register_user" %}">{% trans "Register" %}</a></div>#}
+{#                </div>#}
+{#                <div class="price-card2">#}
+{#                    <h4>{% trans "Paid" %}</h4>#}
+{#                    <h3>33 <span>{% trans "BGN" %}</span><span>/{% trans "month" %}</span></h3>#}
+{#                    <p>{% trans "Unlimited houses" %}</p>#}
+{#                    <p>12 {% trans "months period" %}</p>#}
+{#                    <div><a href="{% url "register_user" %}">{% trans "Register" %}</a></div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </section>#}
 
 {% endblock %}
