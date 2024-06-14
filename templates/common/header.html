@@ -10,12 +10,12 @@
                 <nav class="navigation">
                     <input type="checkbox" id="sidebar-active">
                     <label for="sidebar-active" class="open-sidebar-button">
-                        <img src="{% static "images/menu.svg" %}" alt="menu-icon">
+                        <img class="menu-btn" src="{% static "images/menu.svg" %}" alt="menu-icon">
                     </label>
                     <label id="overlay" for="sidebar-active"></label>
                     <div class="links-container">
                         <label for="sidebar-active" class="close-sidebar-button">
-                            <img src="{% static "images/close.svg" %}" alt="close-icon">
+                            <img class="menu-btn" src="{% static "images/close.svg" %}" alt="close-icon">
                         </label>
                         <ul>
                             {% if request.user.is_authenticated %}

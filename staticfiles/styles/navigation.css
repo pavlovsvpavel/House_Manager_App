@@ -124,6 +124,10 @@
     height: 50px;
 }
 
+.navigation .menu-btn {
+    filter: brightness(0) saturate(100%) invert(85%) sepia(1%) saturate(1107%) hue-rotate(353deg) brightness(117%) contrast(97%);
+}
+
 .links-container {
   height: 100%;
   width: 100%;
