@@ -18,6 +18,10 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 # Production
 CSRF_TRUSTED_ORIGINS = [f'https://{x}' for x in ALLOWED_HOSTS]
 
+# Development
+if DEBUG:
+    CSRF_TRUSTED_ORIGINS = ['http://localhost:81']
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
