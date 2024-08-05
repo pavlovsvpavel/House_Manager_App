@@ -53,7 +53,7 @@ def calculate_fees(house_id, year, month, user_id):
                     calculated_values[field.name] = field_value
                     continue
 
-                if field.name in ['repairs', 'others']:
+                if field.name in ['fee_manager_and_cashier', 'repairs', 'others']:
                     calculated_values[field.name] = field_value / total_apartments
                     continue
 

@@ -1,10 +1,11 @@
-# Production
 version: '3.8'
 
 services:
   web:
     image: ppavlovp/house_manager:latest
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     env_file:
