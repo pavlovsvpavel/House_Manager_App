@@ -1,3 +1,4 @@
+from house_manager.client_bills.helpers.round_up_second_decimal import round_up_second_decimal
 from house_manager.client_bills.models import ClientMonthlyBill
 from house_manager.clients.models import Client
 from house_manager.house_bills.models import HouseMonthlyBill
@@ -30,7 +31,8 @@ def calculate_fees(house_id, year, month, user_id):
 
                 # Calculation based on total people using lift or not using lift
                 if field.name in ['maintenance_lift', 'electricity_lift'] and client.is_using_lift:
-                    calculated_values[field.name] = (field_value / total_people_using_lift) * client.number_of_people
+                    calculated_amount = (field_value / total_people_using_lift) * client.number_of_people
+                    calculated_values[field.name] = round_up_second_decimal(calculated_amount)
                     continue
 
                 elif field.name in ['maintenance_lift', 'electricity_lift'] and not client.is_using_lift:
@@ -39,10 +41,12 @@ def calculate_fees(house_id, year, month, user_id):
 
                 # Calculation based on total apartments
                 elif field.name in ['repairs', 'others', 'fee_manager_and_cashier']:
-                    calculated_values[field.name] = field_value / total_apartments
+                    calculated_amount = field_value / total_apartments
+                    calculated_values[field.name] = round_up_second_decimal(calculated_amount)
                     continue
 
-                calculated_values[field.name] = (field_value / total_people) * client.number_of_people
+                calculated_amount = (field_value / total_people) * client.number_of_people
+                calculated_values[field.name] = round_up_second_decimal(calculated_amount)
 
             # Calculations based on apartment occupation (False)
             elif not client.is_occupied:
@@ -54,7 +58,8 @@ def calculate_fees(house_id, year, month, user_id):
                     continue
 
                 if field.name in ['fee_manager_and_cashier', 'repairs', 'others']:
-                    calculated_values[field.name] = field_value / total_apartments
+                    calculated_amount = field_value / total_apartments
+                    calculated_values[field.name] = round_up_second_decimal(calculated_amount)
                     continue
 
                 calculated_values[field.name] = 0

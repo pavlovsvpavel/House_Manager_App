@@ -1,4 +1,7 @@
-from django.db.models import Sum
+from decimal import Decimal
+
+from django.db.models import Sum, Value
+from django.db.models.functions import Coalesce
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic as views
@@ -56,6 +59,14 @@ class ReportMonthlyBillView(views.DetailView):
         context["clients_bills"] = (current_house.client_house_monthly_bills
                                     .filter(month=selected_month, year=selected_year))
 
+        clients_bills_total_amount = (
+            current_house.client_house_monthly_bills
+            .filter(month=selected_month, year=selected_year)
+            .aggregate(total_amount=Coalesce(Sum("total_amount"), Value(Decimal("0.00"))))["total_amount"]
+        )
+
+        context["clients_bills_total_amount"] = clients_bills_total_amount
+
         return context
 
 
@@ -82,6 +93,14 @@ class ReportOtherBillView(views.DetailView):
             context["clients_bills"] = (current_house.client_house_other_bills
                                         .filter(month=selected_month, year=selected_year))
 
+            clients_bills_total_amount = (
+                current_house.client_house_other_bills
+                .filter(month=selected_month, year=selected_year)
+                .aggregate(total_amount=Coalesce(Sum("total_amount"), Value(Decimal("0.00"))))["total_amount"]
+            )
+
+            context["clients_bills_total_amount"] = clients_bills_total_amount
+
             context["bill"] = (
                 current_house.house_other_bills
                 .filter(month=selected_month, year=selected_year, type_of_bill=selected_type_of_bill)
@@ -98,7 +117,7 @@ class ReportOtherBillView(views.DetailView):
             )
 
             calculated_total_amount = single_bills.aggregate(
-                total_amount=Sum('total_amount'))['total_amount']
+                total_amount=Sum("total_amount"))["total_amount"]
 
             context["single_bills"] = single_bills
             context["calculated_total_amount"] = calculated_total_amount
