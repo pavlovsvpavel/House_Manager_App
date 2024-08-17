@@ -21,11 +21,11 @@ class HouseMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAdm
 
 @admin.register(HouseOtherBill)
 class HouseOtherBillBillAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAdmin):
-    list_display = ("house", "month", "year", "comment", "total_amount")
+    list_display = ("type_of_bill", "house", "month", "year", "comment", "total_amount")
 
     ordering = ("house", "-year", "month")
 
-    list_filter = ("year", "month")
+    list_filter = ("year", "month", "type_of_bill")
 
     search_fields = ["house__town", "house__address", "house__building_number"]
     search_help_text = "Search by house details"

@@ -12,7 +12,7 @@ class ClientAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAdmin):
         "is_using_lift", "house", "id"
     ]
 
-    list_filter = ["is_using_lift", "is_occupied", "house"]
+    list_filter = ["is_using_lift", "is_occupied"]
 
     ordering = ["house", "apartment"]
 
