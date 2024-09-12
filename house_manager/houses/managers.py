@@ -38,3 +38,15 @@ class SingleHouseManager(models.Manager):
         )
 
         return apartments['total_apartments'] or 0
+
+    def uninhabitable_apartments(self, house_id):
+        query = Q(id=house_id)
+
+        uninhabitable_apartments = (
+            self.get_queryset()
+            .filter(query)
+            .filter(clients__is_inhabitable=False)
+            .aggregate(uninhabitable_apartments=Count('clients__apartment'))
+        )
+
+        return uninhabitable_apartments['uninhabitable_apartments'] or 0

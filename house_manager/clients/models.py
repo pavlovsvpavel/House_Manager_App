@@ -58,6 +58,13 @@ class Client(TimeStampModel):
         verbose_name=_("Occupied"),
     )
 
+    is_inhabitable = models.BooleanField(
+        blank=False,
+        null=False,
+        default=True,
+        verbose_name=_("Inhabitable"),
+    )
+
     house = models.ForeignKey(
         to=House,
         on_delete=models.CASCADE,

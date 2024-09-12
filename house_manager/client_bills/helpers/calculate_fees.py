@@ -13,15 +13,27 @@ def calculate_fees(house_id, year, month, user_id):
     house_clients = Client.objects.select_related('house').filter(house_id=house_id)
     total_people = House.objects.total_people(house_id=house_id)
     total_people_using_lift = House.objects.total_people_using_lift(house_id=house_id)
-    total_apartments = House.objects.total_apartments(house_id=house_id)
+    uninhabitable_apartments = House.objects.uninhabitable_apartments(house_id=house_id)
+    total_apartments = House.objects.total_apartments(house_id=house_id) - uninhabitable_apartments
     calculated_values = {}
 
     for client in house_clients:
         for field in house_bills._meta.get_fields():
             field_value = getattr(house_bills, field.name)
 
-            # Calculations based on apartment occupation (True)
-            if client.is_occupied:
+            # Calculations based on apartment status - inhabitable (False)
+            if not client.is_inhabitable:
+                if field.name in ['id', 'total_amount', 'client', 'house', 'user']:
+                    continue
+
+                if field.name in ['year', 'month']:
+                    calculated_values[field.name] = field_value
+                    continue
+
+                calculated_values[field.name] = 0
+
+            # Calculations based on apartment status - occupation (True)
+            elif client.is_occupied:
                 if field.name in ['id', 'total_amount', 'client', 'house', 'user']:
                     continue
 

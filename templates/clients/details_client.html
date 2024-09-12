@@ -31,6 +31,10 @@
                         <p class="column-name">{% trans "Occupied" %}</p>
                         <p class="column-data">{{ object.is_occupied|yesno:"Yes,No" }}</p>
                     </div>
+                    <div class="card-column">
+                        <p class="column-name">{% trans "Inhabitable" %}</p>
+                        <p class="column-data">{{ object.is_inhabitable|yesno:"Yes,No" }}</p>
+                    </div>
                     <div class="client-card-btns">
                         <a href="{% url "edit_client" pk=object.pk %}">{% trans "Edit" %}</a>
                         <a href="{% url "delete_client" pk=object.pk %}">{% trans "Delete" %}</a>

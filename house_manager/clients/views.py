@@ -86,7 +86,7 @@ class ClientDetailView(CheckForLoggedInUserMixin, views.DetailView):
 class ClientEditView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.UpdateView):
     queryset = Client.objects.prefetch_related("house")
     template_name = "clients/edit_client.html"
-    fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied")
+    fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied", "is_inhabitable")
 
     def get_success_url(self):
         return reverse_lazy("house_clients_list", kwargs={"pk": self.object.house.pk})
