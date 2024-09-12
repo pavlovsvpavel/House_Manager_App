@@ -206,6 +206,11 @@
     text-align: center;
 }
 
+.delete-card form {
+    display: flex;
+    gap: 2em;
+}
+
 .profile-card {
     display: flex;
     flex-direction: column;

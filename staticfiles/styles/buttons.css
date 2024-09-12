@@ -128,12 +128,22 @@
 }
 
 .delete-card .btn {
+    background-color: green;
+    padding: 0.3em 3em;
+    border-radius: 0.5em;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+}
+
+.delete-card .no-btn {
     background-color: red;
     padding: 0.3em 3em;
     border-radius: 0.5em;
     border: none;
     cursor: pointer;
     color: #fff;
+    text-decoration: none;
 }
 
 .back-btn {

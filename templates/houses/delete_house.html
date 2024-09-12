@@ -10,6 +10,7 @@
                 <form action="{% url "delete_house" pk=object.pk %}" method="post">
                     {% csrf_token %}
                     <input class="btn" type="submit" value="{% trans "Yes" %}">
+                    <a class="no-btn" href="{% url "details_house" pk=object.pk %}">{% trans "No" %}</a>
                 </form>
             </div>
         </div>
