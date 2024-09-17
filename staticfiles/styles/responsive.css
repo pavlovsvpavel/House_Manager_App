@@ -39,6 +39,10 @@
     .form-container #flip:checked ~ .forms .login-form {
         display: none;
     }
+
+    th, td {
+        font-size: 0.8em;
+    }
 }
 
 @media (max-width: 600px) {
@@ -240,5 +244,9 @@
     .details-for-house,
     .details-for-house-bill {
         width: 100%;
+    }
+
+    th, td {
+        font-size: 0.6em;
     }
 }

@@ -1,48 +1,48 @@
 {% load i18n %}
 {% load static %}
 <header class="site-header">
-        <div class="container">
-            <div class="header-elements">
-                <div class="site-title">
-                    <a href="{% url "index" %}">House Manager Logo</a>
-                    <h1>House Manager</h1>
-                </div>
-                <nav class="navigation">
-                    <input type="checkbox" id="sidebar-active">
-                    <label for="sidebar-active" class="open-sidebar-button">
-                        <img class="menu-btn" src="{% static "images/menu.svg" %}" alt="menu-icon">
-                    </label>
-                    <label id="overlay" for="sidebar-active"></label>
-                    <div class="links-container">
-                        <label for="sidebar-active" class="close-sidebar-button">
-                            <img class="menu-btn" src="{% static "images/close.svg" %}" alt="close-icon">
-                        </label>
-                        <ul>
-                            {% if request.user.is_authenticated %}
-                                <li><a href="{% url "dashboard" %}">{% trans "My Houses" %}</a></li>
-                                <li><a href="{% url "create_house" %}">{% trans "Create House" %}</a></li>
-                                {% include "partials/profile_menu.html" %}
-                            {% else %}
-                                <li><a href="{% url "login_user" %}">{% trans "Login" %}</a></li>
-                            {% endif %}
-                                <li><a href="{% url "about" %}">{% trans "About" %}</a></li>
-                        </ul>
-                        <ul>
-                            <li>
-                                <form class="language-form" action="{% url 'set_language' %}" method="post">
-                                    {% csrf_token %}
-                                    <input name="next" type="hidden" value="{{ redirect_to }}"/>
-                                    <button class="language-form-btn" type="submit" name="language" value="en">
-                                        <img src="{% static "images/uk_flag.avif" %}" alt="English Flag">
-                                    </button>
-                                    <button class="language-form-btn" type="submit" name="language" value="bg">
-                                        <img src="{% static "images/bg_flag.avif" %}" alt="Bulgarian Flag">
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+    <div class="container">
+        <div class="header-elements">
+            <div class="site-title">
+                <a href="{% url "index" %}">House Manager Logo</a>
+                <h1>House Manager</h1>
             </div>
+            <nav class="navigation">
+                <input type="checkbox" id="sidebar-active">
+                <label for="sidebar-active" class="open-sidebar-button">
+                    <img class="menu-btn" src="{% static "images/menu.svg" %}" alt="menu-icon">
+                </label>
+                <label id="overlay" for="sidebar-active"></label>
+                <div class="links-container">
+                    <label for="sidebar-active" class="close-sidebar-button">
+                        <img class="menu-btn" src="{% static "images/close.svg" %}" alt="close-icon">
+                    </label>
+                    <ul>
+                        {% if request.user.is_authenticated %}
+                            <li><a href="{% url "dashboard" %}">{% trans "My Houses" %}</a></li>
+                            <li><a href="{% url "create_house" %}">{% trans "Create House" %}</a></li>
+                            {% include "partials/profile_menu.html" %}
+                        {% else %}
+                            <li><a href="{% url "login_user" %}">{% trans "Login" %}</a></li>
+                        {% endif %}
+                            <li><a href="{% url "about" %}">{% trans "About" %}</a></li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <form class="language-form" action="{% url 'set_language' %}" method="post">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="{{ redirect_to }}"/>
+                                <button class="language-form-btn" type="submit" name="language" value="en">
+                                    <img src="{% static "images/uk_flag.avif" %}" alt="English Flag">
+                                </button>
+                                <button class="language-form-btn" type="submit" name="language" value="bg">
+                                    <img src="{% static "images/bg_flag.avif" %}" alt="Bulgarian Flag">
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-    </header>
+    </div>
+</header>

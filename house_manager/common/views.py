@@ -4,10 +4,15 @@ from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import generic as views
 from django.shortcuts import render
+
+from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.common.mixins import MonthChoices, YearChoices
 from house_manager.house_bills.models import TypeOfBillChoices
+from house_manager.houses.decorators import get_current_house_id
+from house_manager.houses.mixins import GetHouseAndUserMixin
 from house_manager.houses.models import House
 
 
@@ -35,7 +40,7 @@ class DashboardView(views.TemplateView):
 def about_view(request):
     return render(request, "common/about.html")
 
-
+@method_decorator(get_current_house_id, name='dispatch')
 class ReportMonthlyBillView(views.DetailView):
     template_name = "common/reports_bills.html"
     success_url = reverse_lazy("reports_bills")
@@ -56,8 +61,10 @@ class ReportMonthlyBillView(views.DetailView):
         context["bill"] = (current_house.house_monthly_bills
                            .filter(month=selected_month, year=selected_year).first())
 
-        context["clients_bills"] = (current_house.client_house_monthly_bills
+        clients_bills = (current_house.client_house_monthly_bills
                                     .filter(month=selected_month, year=selected_year))
+
+        context["clients_bills"] = clients_bills
 
         clients_bills_total_amount = (
             current_house.client_house_monthly_bills
@@ -67,9 +74,27 @@ class ReportMonthlyBillView(views.DetailView):
 
         context["clients_bills_total_amount"] = clients_bills_total_amount
 
+        # Calculate unpaid bills from previous months for each client
+        unpaid_bills = {}
+        for client_bill in clients_bills:
+            client = client_bill.client
+            total_unpaid = (current_house.client_house_monthly_bills
+            .filter(client=client, is_paid=False)
+            .exclude(month=selected_month, year=selected_year)
+            .aggregate(total_unpaid=Coalesce(Sum("total_amount"), Value(Decimal("0.00"))))
+            ["total_unpaid"])
+            unpaid_bills[client.id] = total_unpaid
+
+        context["unpaid_bills"] = unpaid_bills
+
+        unpaid_bills_total_amount = sum(unpaid_bills.values())
+
+        # Calculate total amount of current month bills and unpaid bills from previous months
+        context["amount_for_collection"] = clients_bills_total_amount + unpaid_bills_total_amount
+
         return context
 
-
+@method_decorator(get_current_house_id, name='dispatch')
 class ReportOtherBillView(views.DetailView):
     template_name = "common/reports_other_bills.html"
     success_url = reverse_lazy("reports_other_bills")

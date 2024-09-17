@@ -22,7 +22,7 @@
                     </div>
                     <table>
                         {% if clients_bills %}
-                            {% include "partials/reports/table_headers.html" %}
+                            {% include "partials/reports/table_headers_other_bills.html" %}
                         {% elif single_bills %}
                             <tr>
                                 <th>{% trans "Full name" %}</th>
@@ -40,7 +40,7 @@
                             </tr>
                         {% endfor %}
                         {% for client_bill in clients_bills|dictsort:"client.apartment" %}
-                            {% include "partials/reports/reports_clients_data.html" %}
+                            {% include "partials/reports/reports_clients_data_other_bills.html" %}
                         {% endfor %}
                     </table>
                 </div>

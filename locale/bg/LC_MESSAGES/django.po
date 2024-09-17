@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-12 12:50+0300\n"
+"POT-Creation-Date: 2024-09-17 22:16+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -272,7 +272,6 @@ msgstr "Други разходи"
 #: .\templates\house_bills\list_house_bills.html:24
 #: .\templates\house_bills\list_other_house_bills.html:28
 #: .\templates\partials\details_client_bills.html:11
-#: .\templates\partials\reports\table_headers.html:6
 msgid "Total BGN"
 msgstr "Общо сума, ЛВ."
 
@@ -390,6 +389,12 @@ msgstr "Сигурни ли сте, че искате да изтриете то
 #: .\templates\houses\delete_house.html:12
 msgid "Yes"
 msgstr "Да"
+
+#: .\templates\accounts\delete_profile.html:13
+#: .\templates\clients\delete_client.html:13
+#: .\templates\houses\delete_house.html:13
+msgid "No"
+msgstr "Не"
 
 #: .\templates\accounts\details_profile.html:10
 msgid "Profile details"
@@ -674,10 +679,8 @@ msgstr ""
 "и да издигнете финансовото управление на вашата сграда на следващо ниво."
 
 #: .\templates\common\reports_bills.html:27
-#: .\templates\partials\reports\filtered_other_bill_type_multi.html:44
-#: .\templates\partials\reports\filtered_other_bill_type_single.html:40
-msgid "Total"
-msgstr "Общо сума"
+msgid "Amount for collection"
+msgstr "Сума за събиране"
 
 #: .\templates\common\reports_bills.html:28
 #: .\templates\common\reports_bills.html:32
@@ -697,7 +700,7 @@ msgid "Full name"
 msgstr "Име и Фамилия"
 
 #: .\templates\common\reports_other_bills.html:31
-#: .\templates\partials\reports\table_headers.html:7
+#: .\templates\partials\reports\table_headers.html:9
 msgid "Signature"
 msgstr "Подпис"
 
@@ -799,6 +802,11 @@ msgstr "Администрация"
 msgid "Logout"
 msgstr "Изход"
 
+#: .\templates\partials\reports\filtered_other_bill_type_multi.html:44
+#: .\templates\partials\reports\filtered_other_bill_type_single.html:40
+msgid "Total"
+msgstr "Общо сума"
+
 #: .\templates\partials\reports\reports_bills_search_fields.html:20
 #: .\templates\partials\reports\reports_other_bills_search_fields.html:28
 msgid "Search"
@@ -808,6 +816,18 @@ msgstr "Търсене"
 #: .\templates\partials\reports\reports_other_bills_search_fields.html:31
 msgid "Save as PDF"
 msgstr "Запази в PDF"
+
+#: .\templates\partials\reports\table_headers.html:6
+msgid "Unpaid bills, BGN"
+msgstr "Неплатени сметки, ЛВ"
+
+#: .\templates\partials\reports\table_headers.html:7
+msgid "Monthly bill, BGN"
+msgstr "Месечна сметка, ЛВ"
+
+#: .\templates\partials\reports\table_headers.html:8
+msgid "Total, BGN"
+msgstr "Общо сума, ЛВ."
 
 #~ msgid "Pricing Plans"
 #~ msgstr "Абонаментни планове"

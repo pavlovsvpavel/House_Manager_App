@@ -1,6 +1,9 @@
+{% load custom_filters %}
 <tr>
     <td>{{ client_bill.client.family_name }}</td>
     <td>{{ client_bill.client.apartment }}</td>
-    <td>{{ client_bill.total_amount }}</td>
+    <td>{{ unpaid_bills|get_item:client_bill.client.id }}</td>
+    <td>{{ client_bill.total_amount }}</td>  <!-- Total amount searched month/year client_monthly bill -->
+    <td>{{ unpaid_bills|get_item:client_bill.client.id|add:client_bill.total_amount }}</td> 
     <td></td>
 </tr>
