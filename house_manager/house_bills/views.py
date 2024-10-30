@@ -164,6 +164,10 @@ class HouseBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):
         if not form.cleaned_data['is_paid']:
             return self.form_invalid(form)
         else:
+            signature_data = self.request.POST.get('signature')
+            if signature_data:
+                signature_base64 = f"data:image/svg+xml;base64,{signature_data}"
+                form.instance.signature = signature_base64
             house_id = form.instance.house_id
             bill_id = form.instance.id
             type_of_bill = self.queryset.model

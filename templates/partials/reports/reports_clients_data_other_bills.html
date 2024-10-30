@@ -2,5 +2,13 @@
     <td>{{ client_bill.client.family_name }}</td>
     <td>{{ client_bill.client.apartment }}</td>
     <td>{{ client_bill.total_amount }}</td>
-    <td></td>
+    <td style="text-align: center; height: 50px;">
+        {% if client_bill.signature %}
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <img src="{{ client_bill.signature }}" alt="Signature" style="width: 100px; height: 50px;" />
+            </div>
+        {% else %}
+            <div style="display: flex; justify-content: center; align-items: center;"></div>
+        {% endif %}
+    </td>
 </tr>

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
 {% block main_content %}
@@ -30,16 +31,22 @@
                 <form class="is-paid-form" method="post" action="{% url "edit_other_house_bills" pk=object.pk %}">
                     {% csrf_token %}
                     <div>
-                        <label for="id_is_paid">{% trans "Paid" %}</label>{{ form.is_paid }}
+                        <label for="id_is_paid">{% trans "Paid" %}</label>
+                        {{ form.is_paid }}
                     </div>
                     {% if form.instance.is_paid %}
                         <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
+                        {% include "partials/signature-show.html" %}
                         {% include "partials/back_button.html" %}
                     {% else %}
+                        {% include "partials/signature-pad.html" %}
                         {% include "partials/form_buttons.html" %}
                     {% endif %}
                 </form>
             </div>
         </div>
     </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jSignature/2.1.3/jSignature.min.js"></script>
+    <script src={% static "scripts/signature.js" %}></script>
 {% endblock %}

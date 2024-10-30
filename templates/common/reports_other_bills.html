@@ -36,7 +36,16 @@
                                 <td></td>
                                 <td>{{ bill.comment }}</td>
                                 <td>{{ bill.total_amount }}</td>
-                                <td></td>
+                                <td style="text-align: center; height: 50px;">
+                                    {% if bill.signature %}
+                                        <div style="display: flex; justify-content: center; align-items: center;">
+                                            <img src="{{ bill.signature }}" alt="Signature"
+                                                 style="width: 100px; height: 50px;"/>
+                                        </div>
+                                    {% else %}
+                                        <div style="display: flex; justify-content: center; align-items: center;"></div>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         {% for client_bill in clients_bills|dictsort:"client.apartment" %}
