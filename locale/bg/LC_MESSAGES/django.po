@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-30 18:24+0200\n"
+"POT-Creation-Date: 2024-10-30 20:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -182,12 +182,12 @@ msgstr "Декември"
 #: .\templates\client_bills\edit_client_other_bill.html:20
 #: .\templates\common\reports_bills.html:19
 #: .\templates\house_bills\edit_house_bills.html:14
-#: .\templates\house_bills\edit_other_house_bills.html:14
+#: .\templates\house_bills\edit_other_house_bills.html:15
 #: .\templates\house_bills\list_house_bills.html:20
 #: .\templates\house_bills\list_other_house_bills.html:20
 #: .\templates\partials\details_client_bills.html:7
-#: .\templates\partials\reports\filtered_other_bill_type_multi.html:28
-#: .\templates\partials\reports\filtered_other_bill_type_single.html:28
+#: .\templates\partials\reports\filtered_other_bill_type_multi.html:5
+#: .\templates\partials\reports\filtered_other_bill_type_single.html:5
 #: .\templates\partials\reports\reports_bills_search_fields.html:6
 #: .\templates\partials\reports\reports_other_bills_search_fields.html:6
 msgid "Month"
@@ -198,12 +198,12 @@ msgstr "Месец"
 #: .\templates\client_bills\edit_client_other_bill.html:16
 #: .\templates\common\reports_bills.html:23
 #: .\templates\house_bills\edit_house_bills.html:10
-#: .\templates\house_bills\edit_other_house_bills.html:10
+#: .\templates\house_bills\edit_other_house_bills.html:11
 #: .\templates\house_bills\list_house_bills.html:16
 #: .\templates\house_bills\list_other_house_bills.html:16
 #: .\templates\partials\details_client_bills.html:3
-#: .\templates\partials\reports\filtered_other_bill_type_multi.html:32
-#: .\templates\partials\reports\filtered_other_bill_type_single.html:32
+#: .\templates\partials\reports\filtered_other_bill_type_multi.html:9
+#: .\templates\partials\reports\filtered_other_bill_type_single.html:9
 #: .\templates\partials\reports\reports_bills_search_fields.html:14
 #: .\templates\partials\reports\reports_other_bills_search_fields.html:14
 msgid "Year"
@@ -270,7 +270,7 @@ msgstr "Други разходи"
 #: .\templates\client_bills\edit_client_other_bill.html:28
 #: .\templates\common\reports_other_bills.html:30
 #: .\templates\house_bills\edit_house_bills.html:46
-#: .\templates\house_bills\edit_other_house_bills.html:26
+#: .\templates\house_bills\edit_other_house_bills.html:27
 #: .\templates\house_bills\list_house_bills.html:24
 #: .\templates\house_bills\list_other_house_bills.html:28
 #: .\templates\partials\details_client_bills.html:11
@@ -280,15 +280,15 @@ msgstr "Общо сума, ЛВ."
 
 #: .\house_manager\common\mixins.py:185 .\house_manager\common\mixins.py:241
 #: .\templates\house_bills\edit_house_bills.html:53
-#: .\templates\house_bills\edit_other_house_bills.html:33
+#: .\templates\house_bills\edit_other_house_bills.html:34
 msgid "Paid"
 msgstr "Платена"
 
 #: .\house_manager\common\mixins.py:225
 #: .\templates\client_bills\edit_client_other_bill.html:24
 #: .\templates\common\reports_other_bills.html:29
-#: .\templates\house_bills\edit_other_house_bills.html:18
-#: .\templates\partials\reports\filtered_other_bill_type_multi.html:36
+#: .\templates\house_bills\edit_other_house_bills.html:19
+#: .\templates\partials\reports\filtered_other_bill_type_multi.html:13
 msgid "Comment"
 msgstr "Коментар"
 
@@ -313,10 +313,10 @@ msgid "Bill for all clients"
 msgstr "Сметка за всички клиенти"
 
 #: .\house_manager\house_bills\models.py:57
-#: .\templates\house_bills\edit_other_house_bills.html:22
+#: .\templates\house_bills\edit_other_house_bills.html:23
 #: .\templates\house_bills\list_other_house_bills.html:24
-#: .\templates\partials\reports\filtered_other_bill_type_multi.html:40
-#: .\templates\partials\reports\filtered_other_bill_type_single.html:36
+#: .\templates\partials\reports\filtered_other_bill_type_multi.html:17
+#: .\templates\partials\reports\filtered_other_bill_type_single.html:13
 #: .\templates\partials\reports\reports_other_bills_search_fields.html:22
 msgid "Type of bill"
 msgstr "Тип сметка"
@@ -463,7 +463,7 @@ msgstr "Фамилия"
 #: .\templates\client_bills\edit_client_bill.html:64
 #: .\templates\client_bills\edit_client_other_bill.html:36
 #: .\templates\house_bills\edit_house_bills.html:56
-#: .\templates\house_bills\edit_other_house_bills.html:36
+#: .\templates\house_bills\edit_other_house_bills.html:38
 #: .\templates\partials\form_buttons.html:4
 msgid "Save"
 msgstr "Запиши"
@@ -688,8 +688,8 @@ msgstr "Сума за събиране"
 #: .\templates\common\reports_bills.html:28
 #: .\templates\common\reports_bills.html:32
 #: .\templates\houses\details_house.html:53
-#: .\templates\partials\reports\filtered_other_bill_type_multi.html:45
-#: .\templates\partials\reports\filtered_other_bill_type_single.html:41
+#: .\templates\partials\reports\filtered_other_bill_type_multi.html:22
+#: .\templates\partials\reports\filtered_other_bill_type_single.html:18
 msgid "BGN"
 msgstr "ЛВ."
 
@@ -806,8 +806,8 @@ msgstr "Администрация"
 msgid "Logout"
 msgstr "Изход"
 
-#: .\templates\partials\reports\filtered_other_bill_type_multi.html:44
-#: .\templates\partials\reports\filtered_other_bill_type_single.html:40
+#: .\templates\partials\reports\filtered_other_bill_type_multi.html:21
+#: .\templates\partials\reports\filtered_other_bill_type_single.html:17
 msgid "Total"
 msgstr "Общо сума"
 
@@ -833,7 +833,7 @@ msgstr "Месечна сметка, ЛВ"
 msgid "Total, BGN"
 msgstr "Общо сума, ЛВ."
 
-#: .\templates\partials\signature-pad.html:6
+#: .\templates\partials\signature-pad.html:5
 msgid "Signature:"
 msgstr "Подпис:"
 
