@@ -5,10 +5,10 @@
     <td>{{ unpaid_bills|get_item:client_bill.client.id }}</td>
     <td>{{ client_bill.total_amount }}</td>  <!-- Total amount searched month/year client_monthly bill -->
     <td>{{ unpaid_bills|get_item:client_bill.client.id|add:client_bill.total_amount }}</td> 
-    <td style="text-align: center; height: 50px;">
+    <td style="text-align: center; height: 30px;">
         {% if client_bill.signature %}
             <div style="display: flex; justify-content: center; align-items: center;">
-                <img src="{{ client_bill.signature }}" alt="Signature" style="width: 100px; height: 50px;" />
+                <img src="{{ client_bill.signature }}" alt="Signature" style="width: 100px; height: 30px;" />
             </div>
         {% else %}
             <div style="display: flex; justify-content: center; align-items: center;"></div>

@@ -43,10 +43,6 @@
     th, td {
         font-size: 0.8em;
     }
-
-    #signature {
-        height: 300px;
-    }
 }
 
 @media (max-width: 600px) {
@@ -252,9 +248,5 @@
 
     th, td {
         font-size: 0.6em;
-    }
-
-    #signature {
-        height: 300px;
     }
 }
