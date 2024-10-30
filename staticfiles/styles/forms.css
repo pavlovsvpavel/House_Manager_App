@@ -128,12 +128,14 @@
 
 #displaySignature {
     padding: 1em;
-    color: #FF8080;
     font-weight: bold;
+}
+
+#displaySignature img {
+    width: auto;
+    height: 100px;
 }
 
 .is-paid-form .signature-label {
     padding-left: 1em;
 }
-
-

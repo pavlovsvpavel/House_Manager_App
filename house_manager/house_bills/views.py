@@ -142,7 +142,7 @@ class HouseBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):
     queryset = None
     template_name = None
     success_url_name = None
-    fields = ("is_paid",)
+    fields = ("is_paid", )
 
     def get_success_url(self):
         return reverse_lazy(self.success_url_name, kwargs={"pk": self.object.house.pk})
@@ -164,10 +164,6 @@ class HouseBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):
         if not form.cleaned_data['is_paid']:
             return self.form_invalid(form)
         else:
-            signature_data = self.request.POST.get('signature')
-            if signature_data:
-                signature_base64 = f"data:image/svg+xml;base64,{signature_data}"
-                form.instance.signature = signature_base64
             house_id = form.instance.house_id
             bill_id = form.instance.id
             type_of_bill = self.queryset.model

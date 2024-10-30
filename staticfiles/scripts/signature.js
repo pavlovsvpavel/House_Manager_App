@@ -38,5 +38,5 @@ $(document).ready(function (data) {
     const image = new Image();
     const signature = signatureDataFromDataBase;
     image.src = 'data:' + signature;
-    $(image).appendTo('#displaySignature')
-})
+    $(image).appendTo('#displaySignature');
+});
