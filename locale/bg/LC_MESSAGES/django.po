@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-17 22:16+0300\n"
+"POT-Creation-Date: 2024-10-30 16:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -80,6 +80,7 @@ msgstr "Не е намерена сметка на съответния клие
 #: .\templates\clients\details_client.html:11
 #: .\templates\houses\house_clients_list.html:16
 #: .\templates\partials\reports\table_headers.html:4
+#: .\templates\partials\reports\table_headers_other_bills.html:4
 msgid "Family Name"
 msgstr "Фамилия"
 
@@ -93,6 +94,7 @@ msgstr "Етаж"
 #: .\templates\clients\details_client.html:19
 #: .\templates\houses\house_clients_list.html:24
 #: .\templates\partials\reports\table_headers.html:5
+#: .\templates\partials\reports\table_headers_other_bills.html:5
 msgid "Apartment"
 msgstr "Апартамент"
 
@@ -175,7 +177,7 @@ msgstr "Ноември"
 msgid "December"
 msgstr "Декември"
 
-#: .\house_manager\common\mixins.py:62 .\house_manager\common\mixins.py:207
+#: .\house_manager\common\mixins.py:62 .\house_manager\common\mixins.py:211
 #: .\templates\client_bills\edit_client_bill.html:19
 #: .\templates\client_bills\edit_client_other_bill.html:19
 #: .\templates\common\reports_bills.html:19
@@ -191,7 +193,7 @@ msgstr "Декември"
 msgid "Month"
 msgstr "Месец"
 
-#: .\house_manager\common\mixins.py:70 .\house_manager\common\mixins.py:215
+#: .\house_manager\common\mixins.py:70 .\house_manager\common\mixins.py:219
 #: .\templates\client_bills\edit_client_bill.html:15
 #: .\templates\client_bills\edit_client_other_bill.html:15
 #: .\templates\common\reports_bills.html:23
@@ -211,7 +213,7 @@ msgstr "Година"
 #: .\house_manager\common\mixins.py:101 .\house_manager\common\mixins.py:112
 #: .\house_manager\common\mixins.py:123 .\house_manager\common\mixins.py:134
 #: .\house_manager\common\mixins.py:145 .\house_manager\common\mixins.py:156
-#: .\house_manager\common\mixins.py:167 .\house_manager\common\mixins.py:230
+#: .\house_manager\common\mixins.py:167 .\house_manager\common\mixins.py:234
 #: .\house_manager\houses\models.py:56
 msgid "Please enter a value greater than zero"
 msgstr "Моля въведете число по-голямо от нула"
@@ -263,7 +265,7 @@ msgstr "Фонд ремонти"
 msgid "Other expenses"
 msgstr "Други разходи"
 
-#: .\house_manager\common\mixins.py:169 .\house_manager\common\mixins.py:232
+#: .\house_manager\common\mixins.py:169 .\house_manager\common\mixins.py:236
 #: .\templates\client_bills\edit_client_bill.html:55
 #: .\templates\client_bills\edit_client_other_bill.html:27
 #: .\templates\common\reports_other_bills.html:30
@@ -272,16 +274,17 @@ msgstr "Други разходи"
 #: .\templates\house_bills\list_house_bills.html:24
 #: .\templates\house_bills\list_other_house_bills.html:28
 #: .\templates\partials\details_client_bills.html:11
+#: .\templates\partials\reports\table_headers_other_bills.html:6
 msgid "Total BGN"
 msgstr "Общо сума, ЛВ."
 
-#: .\house_manager\common\mixins.py:185 .\house_manager\common\mixins.py:237
+#: .\house_manager\common\mixins.py:185 .\house_manager\common\mixins.py:241
 #: .\templates\house_bills\edit_house_bills.html:53
 #: .\templates\house_bills\edit_other_house_bills.html:33
 msgid "Paid"
 msgstr "Платена"
 
-#: .\house_manager\common\mixins.py:221
+#: .\house_manager\common\mixins.py:225
 #: .\templates\client_bills\edit_client_other_bill.html:23
 #: .\templates\common\reports_other_bills.html:29
 #: .\templates\house_bills\edit_other_house_bills.html:18
@@ -457,13 +460,21 @@ msgstr "Вход"
 msgid "Family name"
 msgstr "Фамилия"
 
-#: .\templates\client_bills\edit_client_bill.html:63
+#: .\templates\client_bills\edit_client_bill.html:64
 #: .\templates\client_bills\edit_client_other_bill.html:35
 #: .\templates\house_bills\edit_house_bills.html:56
 #: .\templates\house_bills\edit_other_house_bills.html:36
 #: .\templates\partials\form_buttons.html:4
 msgid "Save"
 msgstr "Запиши"
+
+#: .\templates\client_bills\edit_client_bill.html:69
+msgid "No signature"
+msgstr "Няма подпис"
+
+#: .\templates\client_bills\edit_client_bill.html:74
+msgid "Signature:"
+msgstr "Подпис:"
 
 #: .\templates\client_bills\list_client_bills.html:20
 #: .\templates\client_bills\list_other_client_bills.html:19
@@ -701,6 +712,7 @@ msgstr "Име и Фамилия"
 
 #: .\templates\common\reports_other_bills.html:31
 #: .\templates\partials\reports\table_headers.html:9
+#: .\templates\partials\reports\table_headers_other_bills.html:7
 msgid "Signature"
 msgstr "Подпис"
 

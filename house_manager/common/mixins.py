@@ -185,6 +185,10 @@ class MonthlyBill(models.Model):
         verbose_name=_("Paid"),
     )
 
+    signature = models.TextField(
+        default="",
+    )
+
     def get_month_name(self):
         return dict(MonthChoices.choices)[self.month]
 
@@ -235,6 +239,12 @@ class OtherBill(models.Model):
     is_paid = models.BooleanField(
         default=False,
         verbose_name=_("Paid"),
+    )
+
+    signature = models.TextField(
+        default="",
+        blank=False,
+        null=False,
     )
 
     def get_month_name(self):

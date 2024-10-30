@@ -165,3 +165,9 @@
     background-color: #D37676;
 }
 
+.btn-reset-signature {
+    background-color: transparent;
+    border-style: none;
+    font-size: 2em;
+}
+

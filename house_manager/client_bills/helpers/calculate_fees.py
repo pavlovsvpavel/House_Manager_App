@@ -23,7 +23,7 @@ def calculate_fees(house_id, year, month, user_id):
 
             # Calculations based on apartment status - inhabitable (False)
             if not client.is_inhabitable:
-                if field.name in ['id', 'total_amount', 'client', 'house', 'user']:
+                if field.name in ['id', 'total_amount', 'client', 'house', 'user', 'signature']:
                     continue
 
                 if field.name in ['year', 'month']:
@@ -34,7 +34,7 @@ def calculate_fees(house_id, year, month, user_id):
 
             # Calculations based on apartment status - occupation (True)
             elif client.is_occupied:
-                if field.name in ['id', 'total_amount', 'client', 'house', 'user']:
+                if field.name in ['id', 'total_amount', 'client', 'house', 'user', 'signature']:
                     continue
 
                 if field.name in ['year', 'month']:
@@ -62,7 +62,7 @@ def calculate_fees(house_id, year, month, user_id):
 
             # Calculations based on apartment occupation (False)
             elif not client.is_occupied:
-                if field.name in ['id', 'total_amount', 'client', 'house', 'user']:
+                if field.name in ['id', 'total_amount', 'client', 'house', 'user', 'signature']:
                     continue
 
                 if field.name in ['year', 'month']:

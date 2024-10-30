@@ -1,0 +1,9 @@
+{% load i18n %}
+
+<div class="column-data" id="displaySignature">
+    {% if object.signature %}
+        <img src="{{ object.signature }}" alt="Signature"/>
+    {% else %}
+        <p>{% trans "No signature" %}</p>
+    {% endif %}
+</div>
