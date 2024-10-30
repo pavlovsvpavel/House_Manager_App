@@ -8,11 +8,9 @@ from django.utils.decorators import method_decorator
 from django.views import generic as views
 from django.shortcuts import render
 
-from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.common.mixins import MonthChoices, YearChoices
 from house_manager.house_bills.models import TypeOfBillChoices
 from house_manager.houses.decorators import get_current_house_id
-from house_manager.houses.mixins import GetHouseAndUserMixin
 from house_manager.houses.models import House
 
 
