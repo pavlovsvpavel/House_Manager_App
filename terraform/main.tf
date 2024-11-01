@@ -16,10 +16,6 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "aws_s3_bucket" "env_bucket" {
-  bucket = "storage-for-env-files"
-}
-
 resource "aws_iam_policy" "s3_access_policy" {
   name        = "S3AccessPolicy"
   description = "Policy to allow access to the .env.aws file in S3"
@@ -142,7 +138,7 @@ resource "aws_instance" "awsi" {
 
   provisioner "remote-exec" {
     inline = [
-      "aws s3 cp s3://${aws_s3_bucket.env_bucket.bucket}.env.aws /home/ubuntu/app/envs/.env.aws"
+      "aws s3 cp s3://storage-for-env-files/.env.aws /home/ubuntu/app/envs/.env.aws"
     ]
   }
 
