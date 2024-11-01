@@ -35,7 +35,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.1.7"
+          terraform_version: "1.3.0"
 
       - name: Terraform Init
         run: cd terraform && terraform init
@@ -50,10 +50,13 @@ jobs:
         run: cd terraform && terraform plan -var-file="values.tfvars" -input=false
 
       - name: Check and Import Key Pair if Exists
-        run: cd terraform ./check_keypair.sh
+        id: check_key
+        run: |
+          cd terraform 
+          ./check_keypair.sh
 
       - name: Terraform Apply
-        if: ${{ steps.check_key.outputs.exists != 'true' }}
+        if: steps.check_key.outputs.exists != 'true'
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
 
