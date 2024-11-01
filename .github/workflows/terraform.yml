@@ -49,6 +49,9 @@ jobs:
 
         run: cd terraform && terraform plan -var-file="values.tfvars" -input=false
 
+      - name: Make Check Key Pair Script Executable
+        run: chmod +x terraform/check_keypair.sh
+
       - name: Check and Import Key Pair if Exists
         id: check_key
         run: |
