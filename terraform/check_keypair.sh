@@ -1,15 +1,21 @@
 #!/bin/bash
 
-# Define the key pair name
-KEY_NAME="house-manager-terraform-key"
+# Output current operation
+echo "Checking if the key pair exists..."
 
-# Check if the key pair already exists in AWS
-aws ec2 describe-key-pairs --key-names "$KEY_NAME" >/dev/null 2>&1
+# Attempt to get the key pair details
+KEY_PAIR_NAME="house-manager-terraform-key"
+KEY_PAIR_INFO=$(aws ec2 describe-key-pairs --key-names "$KEY_PAIR_NAME" 2>&1)
 
-# Import the key pair into Terraform if it exists
-if [ $? -eq 0 ]; then
-  echo "Key pair '$KEY_NAME' already exists. Importing into Terraform..."
-  terraform import aws_key_pair.akp "$KEY_NAME"
+if echo "$KEY_PAIR_INFO" | grep -q "not found"; then
+    echo "Key pair '$KEY_PAIR_NAME' does not exist. Creating a new one..."
+    # Your command to create the key pair here, if necessary
+    # e.g., aws ec2 create-key-pair --key-name "$KEY_PAIR_NAME" ...
+    echo "::set-output name=exists::false"  # Key pair does not exist
 else
-  echo "Key pair '$KEY_NAME' does not exist. Terraform will create it."
+    echo "Key pair '$KEY_PAIR_NAME' already exists. Importing into Terraform..."
+    echo "::set-output name=exists::true"  # Key pair exists
 fi
+
+# Exit with status code 0 for success
+exit 0
