@@ -16,8 +16,8 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "aws_iam_policy" "s3_access_policy" {
-  name        = "S3AccessPolicy"
+resource "aws_iam_policy" "access_policy" {
+  name        = "MyS3AccessPolicy"
   description = "Policy to allow access to the .env.aws file in S3"
 
   policy = jsonencode({
@@ -33,7 +33,7 @@ resource "aws_iam_policy" "s3_access_policy" {
 }
 
 resource "aws_iam_role" "access_role" {
-  name = "s3_access_role" # Replace with your desired role name
+  name = "my_s3_access_role" # Replace with your desired role name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -50,7 +50,7 @@ resource "aws_iam_role" "access_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach_policy" {
-  policy_arn = aws_iam_policy.s3_access_policy.arn
+  policy_arn = aws_iam_policy.access_policy.arn
   role       = aws_iam_role.access_role.name
 }
 

@@ -49,7 +49,12 @@ jobs:
 
         run: cd terraform && terraform plan -var-file="values.tfvars" -input=false
 
+      - name: Check for existing key pair
+        run: |
+          aws ec2 describe-key-pairs --key-names "house-manager-terraform-key" || exit 0
+
       - name: Terraform Apply
+        if: ${{ steps.check_key.outputs.exists != 'true' }}
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
 
