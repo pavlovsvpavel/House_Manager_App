@@ -50,7 +50,7 @@ jobs:
         run: cd terraform && terraform plan -var-file="values.tfvars" -input=false
 
       - name: Check and Import Key Pair if Exists
-        run: ./check_keypair.sh
+        run: cd terraform ./check_keypair.sh
 
       - name: Terraform Apply
         if: ${{ steps.check_key.outputs.exists != 'true' }}
