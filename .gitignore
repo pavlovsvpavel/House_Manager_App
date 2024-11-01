@@ -124,6 +124,7 @@ envs/
 .env
 .env.prod
 .env.dev
+.env.aws
 .venv
 env/
 venv/
