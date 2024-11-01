@@ -11,11 +11,12 @@ if echo "$KEY_PAIR_INFO" | grep -q "not found"; then
     echo "Key pair '$KEY_PAIR_NAME' does not exist. Creating a new one..."
     # Your command to create the key pair here, if necessary
     # e.g., aws ec2 create-key-pair --key-name "$KEY_PAIR_NAME" ...
-    echo "::set-output name=exists::false"  # Key pair does not exist
+    echo "exists=false" >> $GITHUB_ENV  # Key pair does not exist
 else
     echo "Key pair '$KEY_PAIR_NAME' already exists. Importing into Terraform..."
-    echo "::set-output name=exists::true"  # Key pair exists
+    echo "exists=true" >> $GITHUB_ENV  # Key pair exists
 fi
 
 # Exit with status code 0 for success
 exit 0
+
