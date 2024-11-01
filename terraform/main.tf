@@ -120,7 +120,7 @@ resource "aws_instance" "awsi" {
   ami                    = var.instance_image_id
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.asg.id]
-  key_name               = aws_key_pair.akp.key_name
+  key_name               = aws_key_pair.akp[0].key_name
 
   root_block_device {
     volume_size = var.ebs_volume_size
