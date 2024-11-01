@@ -186,6 +186,7 @@ resource "aws_instance" "awsi" {
 }
 
 resource "aws_eip_association" "aeipa" {
+  depends_on    = [aws_instance.awsi]
   instance_id   = aws_instance.awsi.id
   allocation_id = var.existing_eip_allocation_id
 }
