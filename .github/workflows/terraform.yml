@@ -22,28 +22,36 @@ jobs:
         shell: bash
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: "1.1.7"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-europe-1
 
-    - name: Terraform Init
-      run: cd terraform && terraform init
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.1.7"
 
-    - name: Terraform Format
-      run: cd terraform && terraform fmt -check
+      - name: Terraform Init
+        run: cd terraform && terraform init
 
-    - name: Terraform Plan
-      run: cd terraform && terraform plan -var-file="values.tfvars" -input=false
+      - name: Terraform Format
+        run: cd terraform && terraform fmt -check
 
-    - name: Terraform Apply
-      env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Terraform Plan
+        env:
           GH_PAT: ${{ secrets.GH_PAT }}
 
-      run: cd terraform && terraform apply -var-file="values.tfvars" -auto-approve -input=false
+        run: cd terraform && terraform plan -var-file="values.tfvars" -input=false
+
+      - name: Terraform Apply
+        env:
+            GH_PAT: ${{ secrets.GH_PAT }}
+
+        run: cd terraform && terraform apply -var-file="values.tfvars" -auto-approve -input=false
 
