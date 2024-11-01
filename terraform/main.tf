@@ -60,9 +60,11 @@ resource "tls_private_key" "tlspk" {
 }
 
 resource "aws_key_pair" "akp" {
+  count      = var.key_pair_exists ? 0 : 1  # Create if it doesn't exist
   key_name   = var.aws_key_pair
   public_key = tls_private_key.tlspk.public_key_openssh
 }
+
 
 resource "local_file" "private_key" {
   filename = "${path.module}/house-manager-terraform-key.pem" # Specify the path and filename to save the private key

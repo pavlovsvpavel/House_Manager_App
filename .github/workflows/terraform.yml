@@ -56,10 +56,15 @@ jobs:
           chmod +x ./check_keypair.sh
           ./check_keypair.sh
 
+      - name: Terraform Import Key Pair if Exists
+        if: env.exists == 'true'  # Only run this if the key pair exists
+        run: |
+          cd terraform
+          terraform import aws_key_pair.akp house-manager-terraform-key
+
       - name: Terraform Apply
-        if: steps.check_key.outputs.exists != 'true'
+        if: env.exists != 'true'  # Apply if the key pair does not exist
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
-
         run: cd terraform && terraform apply -var-file="values.tfvars" -auto-approve -input=false
 

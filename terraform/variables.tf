@@ -47,3 +47,9 @@ variable "connection_user" {
   description = "The user for ssh connection"
   type        = string
 }
+
+variable "key_pair_exists" {
+  description = "Indicates whether the EC2 key pair already exists."
+  type        = bool
+  default     = false  # Default to false if you want to assume it doesn't exist unless stated otherwise
+}
