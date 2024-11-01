@@ -1,8 +1,11 @@
 FROM python:3.11
 
-RUN apt-get update
-RUN apt upgrade -y
-RUN apt-get install -y gettext
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update -y && \
+    apt upgrade -y && \
+    apt install -y gettext apt-utils && \
+    rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
