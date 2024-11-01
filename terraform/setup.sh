@@ -24,7 +24,7 @@ if [ -d "House_Manager_App/.git" ]; then
   cd House_Manager_App
   git pull origin main  # Pulls the latest changes
 else
-  git clone https://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@github.com/pavlovsvpavel/House_Manager_App.git
+  git clone https://$GH_PAT@github.com/pavlovsvpavel/House_Manager_App.git
   cd House_Manager_App
 fi
 

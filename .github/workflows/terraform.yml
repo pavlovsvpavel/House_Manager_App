@@ -43,7 +43,7 @@ jobs:
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
+          GH_PAT: ${{ secrets.GH_PAT }}
 
       run: cd terraform && terraform apply -var-file="values.tfvars" -auto-approve -input=false
 
