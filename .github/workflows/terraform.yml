@@ -26,11 +26,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-europe-1
+          aws-region: eu-central-1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -51,7 +51,7 @@ jobs:
 
       - name: Terraform Apply
         env:
-            GH_PAT: ${{ secrets.GH_PAT }}
+          GH_PAT: ${{ secrets.GH_PAT }}
 
         run: cd terraform && terraform apply -var-file="values.tfvars" -auto-approve -input=false
 
