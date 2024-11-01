@@ -51,5 +51,5 @@ variable "connection_user" {
 variable "key_pair_exists" {
   description = "Indicates whether the EC2 key pair already exists."
   type        = bool
-  default     = false  # Default to false if you want to assume it doesn't exist unless stated otherwise
+  default     = false # Default to false if you want to assume it doesn't exist unless stated otherwise
 }
