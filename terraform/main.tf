@@ -98,37 +98,42 @@ resource "aws_instance" "awsi" {
     private_key = local_file.private_key.content # Path to your SSH private key
   }
 
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "mkdir -p /home/ubuntu/app/envs"
-  #   ]
-  # }
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p /home/ubuntu/app/envs",
+      "mkdir -p /home/ubuntu/app/scripts",
+    ]
+  }
 
-  # provisioner "file" {
-  #   source      = "${path.module}/.env.aws"        # Path to your local .env file
-  #   destination = "/home/ubuntu/app/envs/.env.aws" # Destination path on the EC2 instance
-  # }
-  #
-  # provisioner "file" {
-  #   source      = "${path.module}/setup.sh"
-  #   destination = "/home/ubuntu/setup.sh"
-  # }
-  #
-  # provisioner "file" {
-  #   source      = "${path.module}/setup-web-container.sh"
-  #   destination = "/home/ubuntu/setup-web-container.sh"
-  # }
+  provisioner "file" {
+    source      = "${path.module}/.env.aws"        # Path to your local .env file
+    destination = "/home/ubuntu/app/envs/.env.aws" # Destination path on the EC2 instance
+  }
 
-#   provisioner "remote-exec" {
-#     inline = [
-#       "chmod +x /home/ubuntu/setup.sh",
-#       "sleep 5",
-#       "sudo /home/ubuntu/setup.sh",
-#       "chmod +x /home/ubuntu/setup-web-container.sh",
-#       "sleep 5",
-#       "sudo /home/ubuntu/setup-web-container.sh"
-#     ]
-#   }
+  provisioner "file" {
+    source      = "${path.module}/scripts/setup.sh"
+    destination = "/home/ubuntu/app/scripts/setup.sh"
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/scripts/setup-web-container.sh"
+    destination = "/home/ubuntu/app/scripts/setup-web-container.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /home/ubuntu/app/scripts/setup.sh",
+      "sleep 5",
+      "sudo /home/ubuntu/app/scripts/setup.sh",
+      "chmod +x /home/ubuntu/app/scripts/setup-web-container.sh",
+      "sleep 5",
+      "sudo /home/ubuntu/app/scripts/setup-web-container.sh"
+    ]
+  }
+}
+
+output "private_ip" {
+  value = aws_instance.awsi.private_ip
 }
 
 resource "aws_eip_association" "aeipa" {
@@ -136,6 +141,7 @@ resource "aws_eip_association" "aeipa" {
   allocation_id = var.existing_eip_allocation_id
 }
 
+## Use this resource after initial deploy for future scripts execution
 # resource "null_resource" "run_setup_script" {
 #   # Add a trigger to force rerun when needed
 #   triggers = {
@@ -152,23 +158,20 @@ resource "aws_eip_association" "aeipa" {
 #   provisioner "remote-exec" {
 #     inline = [
 #       "sleep 5",
-#       "chmod +x /home/ubuntu/setup.sh",
-#       "sudo /home/ubuntu/setup.sh",
-#       "chmod +x /home/ubuntu/setup-web-container.sh",
+#       "chmod +x /home/ubuntu/app/scripts/setup.sh",
+#       "sudo /home/ubuntu/app/scripts/setup.sh",
+#       "chmod +x /home/ubuntu/app/scripts/setup-web-container.sh",
 #       "sleep 5",
-#       "sudo /home/ubuntu/setup-web-container.sh"
+#       "sudo /home/ubuntu/app/scripts/setup-web-container.sh"
 #     ]
 #   }
 # }
 
-# Use this resourse, if you don't have elastic IP
+## Use this resource, if you don't have elastic IP
 # resource "aws_eip" "aeip" {
 #   allocation_id = var.existing_eip_allocation_id
 # }
 
-output "private_ip" {
-  value = aws_instance.awsi.private_ip
-}
 
 
 
