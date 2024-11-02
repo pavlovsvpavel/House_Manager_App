@@ -50,18 +50,11 @@ jobs:
           chmod +x ./check_keypair.sh
           ./check_keypair.sh
 
-      - name: Remove Key Pair from Terraform State (if exists)
-        if: env.exists == 'true'
-        run: |
-          cd terraform
-          terraform state rm aws_key_pair.akp
-
       - name: Terraform Import Key Pair if Exists
         if: env.exists == 'true'
         run: |
           cd terraform
           terraform import aws_key_pair.akp house-manager-terraform-key
-          
 
       - name: Terraform Plan
         env:
