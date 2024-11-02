@@ -46,7 +46,9 @@ jobs:
 
       - name: Get Private IP from Terraform Outputs
         id: get_private_ip
-        run: echo "::set-output name=private_ip::$(terraform output -raw private_ip)"
+        run: |
+          cd terraform
+          echo "private_ip=$(terraform output -raw private_ip)" >> $GITHUB_ENV
 
       - name: Extract SSH Key
         run: |
@@ -64,7 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: create_ec2_instance
     env:
-      PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
+      PRIVATE_IP: ${{ env.private_ip }}
       SSH_KEY_PATH: ./ec2_key.pem
     steps:
       - name: Download SSH Key Artifact
@@ -85,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ create_ec2_instance, copy_scripts ]
     env:
-      PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
+      PRIVATE_IP: ${{ env.private_ip }}
       SSH_KEY_PATH: ./ec2_key.pem
     steps:
       - name: Configure AWS CLI
@@ -114,7 +116,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ create_ec2_instance, copy_scripts, copy_env_file ]
     env:
-      PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
+      PRIVATE_IP: ${{ env.private_ip }}
       SSH_KEY_PATH: ./ec2_key.pem
     steps:
       - name: Download SSH Key Artifact
