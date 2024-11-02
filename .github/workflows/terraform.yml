@@ -33,7 +33,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           cd terraform
-            terraform plan -var-file="values.tfvars" -auto-approve -input=false
+            terraform plan -var-file="values.tfvars" -input=false
 
       - name: Terraform Apply
         env:
