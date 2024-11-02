@@ -64,10 +64,12 @@ jobs:
           cd terraform
           POLICY_ARN=$(aws iam list-policies --query "Policies[?PolicyName=='MyS3AccessPolicy'].Arn" --output text)
           if [ -n "$POLICY_ARN" ]; then
-            echo "IAM policy already exists. Importing into Terraform..."
-            terraform import aws_iam_policy.access_policy $POLICY_ARN
+          echo "IAM policy already exists. Importing into Terraform..."
+          terraform import aws_iam_policy.access_policy $POLICY_ARN
+          echo "policy_exists=true" >> $GITHUB_ENV
           else
-            echo "IAM policy does not exist. Terraform will create it."
+          echo "IAM policy does not exist. Terraform will create it."
+          echo "policy_exists=false" >> $GITHUB_ENV
           fi
 
       - name: Check and Import IAM Role if Exists
@@ -77,8 +79,10 @@ jobs:
           if [ -n "$ROLE_ARN" ]; then
             echo "IAM role already exists. Importing into Terraform..."
             terraform import aws_iam_role.access_role $ROLE_ARN
+            echo "role_exists=true" >> $GITHUB_ENV
           else
             echo "IAM role does not exist. Terraform will create it."
+            echo "role_exists=false" >> $GITHUB_ENV
           fi
 
       - name: Terraform Plan
@@ -88,7 +92,6 @@ jobs:
         run: cd terraform && terraform plan -var-file="values.tfvars" -input=false
 
       - name: Terraform Apply
-        if: env.exists != 'true'  # Apply if the key pair does not exist
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: cd terraform && terraform apply -var-file="values.tfvars" -auto-approve -input=false

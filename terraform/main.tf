@@ -16,44 +16,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "aws_iam_policy" "access_policy" {
-  name        = "MyS3AccessPolicy"
-  description = "Policy to allow access to the .env.aws file in S3"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect   = "Allow"
-        Action   = "s3:GetObject"
-        Resource = "arn:aws:s3:::storage-for-env-files/.env.aws"
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role" "access_role" {
-  name = "my_s3_access_role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "attach_policy" {
-  policy_arn = aws_iam_policy.access_policy.arn
-  role       = aws_iam_role.access_role.name
-}
-
+# Key pair
 resource "tls_private_key" "tlspk" {
   algorithm = "RSA"
   rsa_bits  = 2048 # Specify the number of bits for the RSA key
@@ -77,6 +40,50 @@ resource "local_file" "private_key" {
 output "private_key" {
   value     = tls_private_key.tlspk.private_key_pem
   sensitive = true # Mark the output as sensitive to avoid displaying it in the console
+}
+
+# IAM Policy
+resource "aws_iam_policy" "access_policy" {
+  count       = var.policy_exists ? 0 : 1 # Create if it doesn't exist
+  name        = "MyS3AccessPolicy"
+  description = "Policy to allow access to the .env.aws file in S3"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "s3:GetObject"
+        Resource = "arn:aws:s3:::storage-for-env-files/.env.aws"
+      }
+    ]
+  })
+}
+
+# IAM Role
+resource "aws_iam_role" "access_role" {
+  count = var.role_exists ? 0 : 1 # Create if it doesn't exist
+  name  = "my_s3_access_role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+# IAM Role Policy Attachment
+resource "aws_iam_role_policy_attachment" "attach_policy" {
+  count      = (var.policy_exists && var.role_exists) ? 1 : 0 # Attach only if both exist
+  policy_arn = aws_iam_policy.access_policy[0].arn
+  role       = aws_iam_role.access_role[0].name
 }
 
 resource "aws_security_group" "asg" {

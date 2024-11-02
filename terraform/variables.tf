@@ -53,3 +53,15 @@ variable "key_pair_exists" {
   type        = bool
   default     = false # Default to false if you want to assume it doesn't exist unless stated otherwise
 }
+
+variable "policy_exists" {
+  type        = bool
+  description = "Indicates if the IAM policy exists"
+  default     = false
+}
+
+variable "role_exists" {
+  type        = bool
+  description = "Indicates if the IAM role exists"
+  default     = false
+}
