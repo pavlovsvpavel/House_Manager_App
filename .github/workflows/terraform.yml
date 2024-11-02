@@ -46,7 +46,7 @@ jobs:
 
       - name: Get Private IP from Terraform Outputs
         id: get_private_ip
-        run: echo "private_ip=$(terraform output -raw private_ip)" >> $GITHUB_ENV
+        run: echo "::set-output name=private_ip::$(terraform output -raw private_ip)"
 
       - name: Extract SSH Key
         run: |
