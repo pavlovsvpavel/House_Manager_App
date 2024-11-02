@@ -53,13 +53,13 @@ jobs:
       - name: Extract SSH Key
         run: |
           echo "${{ secrets.EC2_SSH_KEY_CONTENT }}" > ec2_key.pem
-          chmod 600 ec2_key.pem
+          chmod 600 house-manager-terraform-key.pem
 
       - name: Upload SSH Key as Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ec2_key
-          path: ./ec2_key.pem
+          name: house-manager-terraform-key
+          path: ./house-manager-terraform-key.pem
 
   # Job 2: Copy Scripts to EC2
   copy_scripts:
@@ -71,11 +71,11 @@ jobs:
       - name: Download SSH Key Artifact
         uses: actions/download-artifact@v3
         with:
-          name: ec2_key
-          path: ./ec2_key.pem
+          name: house-manager-terraform-key
+          path: ./house-manager-terraform-key.pem
 
       - name: Set SSH Key Permissions
-        run: chmod 600 ec2_key.pem
+        run: chmod 600 house-manager-terraform-key.pem
 
       - name: Set SSH Key Path
         run: echo "SSH_KEY_PATH=/home/runner/work/House_Manager_App/House_Manager_App/ec2_key.pem" >> $GITHUB_ENV
