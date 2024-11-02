@@ -78,7 +78,7 @@ jobs:
         run: chmod 600 house-manager-terraform-key.pem
 
       - name: Set SSH Key Path
-        run: echo "SSH_KEY_PATH=/home/runner/work/House_Manager_App/House_Manager_App/ec2_key.pem" >> $GITHUB_ENV
+        run: echo "SSH_KEY_PATH=/home/runner/work/House_Manager_App/House_Manager_App/house-manager-terraform-key.pem" >> $GITHUB_ENV
 
       - name: Wait for EC2 to be ready
         run: sleep 30  # Wait for 30 seconds before proceeding
