@@ -43,12 +43,6 @@ jobs:
       - name: Terraform Format
         run: cd terraform && terraform fmt -check
 
-      - name: Terraform Plan
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-
-        run: cd terraform && terraform plan -var-file="values.tfvars" -input=false
-
       - name: Check and Import Key Pair if Exists
         id: check_key
         run: |
@@ -56,11 +50,24 @@ jobs:
           chmod +x ./check_keypair.sh
           ./check_keypair.sh
 
+      - name: Remove Key Pair from Terraform State (if exists)
+        if: env.exists == 'true'
+        run: |
+          cd terraform
+          terraform state rm aws_key_pair.akp
+
       - name: Terraform Import Key Pair if Exists
-        if: env.exists == 'true'  # Only run this if the key pair exists
+        if: env.exists == 'true'
         run: |
           cd terraform
           terraform import aws_key_pair.akp house-manager-terraform-key
+          
+
+      - name: Terraform Plan
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+
+        run: cd terraform && terraform plan -var-file="values.tfvars" -input=false
 
       - name: Terraform Apply
         if: env.exists != 'true'  # Apply if the key pair does not exist
