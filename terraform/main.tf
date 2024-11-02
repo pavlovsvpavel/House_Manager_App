@@ -16,43 +16,43 @@ provider "aws" {
   region = var.aws_region
 }
 
-# resource "aws_iam_policy" "access_policy" {
-#   name        = "MyS3AccessPolicy"
-#   description = "Policy to allow access to the .env.aws file in S3"
-#
-#   policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Effect   = "Allow"
-#         Action   = "s3:GetObject"
-#         Resource = "arn:aws:s3:::storage-for-env-files/.env.aws"
-#       }
-#     ]
-#   })
-# }
-#
-# resource "aws_iam_role" "access_role" {
-#   name = "my_s3_access_role" # Replace with your desired role name
-#
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Effect = "Allow"
-#         Principal = {
-#           Service = "ec2.amazonaws.com"
-#         }
-#         Action = "sts:AssumeRole"
-#       }
-#     ]
-#   })
-# }
-#
-# resource "aws_iam_role_policy_attachment" "attach_policy" {
-#   policy_arn = aws_iam_policy.access_policy.arn
-#   role       = aws_iam_role.access_role.name
-# }
+resource "aws_iam_policy" "access_policy" {
+  name        = "MyS3AccessPolicy"
+  description = "Policy to allow access to the .env.aws file in S3"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "s3:GetObject"
+        Resource = "arn:aws:s3:::storage-for-env-files/.env.aws"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role" "access_role" {
+  name = "my_s3_access_role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_policy" {
+  policy_arn = aws_iam_policy.access_policy.arn
+  role       = aws_iam_role.access_role.name
+}
 
 resource "tls_private_key" "tlspk" {
   algorithm = "RSA"
