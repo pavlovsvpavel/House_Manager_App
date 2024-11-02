@@ -84,9 +84,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Download .env from S3 and Upload to EC2
+      - name: Set up SSH Key
+        uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Download .env from S3 and Upload to EC2
         run: |
           aws s3 cp s3://storage-for-env-files/.env/.env.aws .env.aws
           scp -i $SSH_KEY_PATH -o StrictHostKeyChecking=no .env.aws ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/app/envs/.env.aws
@@ -97,7 +100,13 @@ jobs:
     needs: [ create_ec2_instance, copy_scripts, copy_env_file ]
     env:
       PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
+
     steps:
+      - name: Set up SSH Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
       - name: Run Scripts on EC2
         run: |
           ssh -i $SSH_KEY_PATH -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$PRIVATE_IP "bash /home/ubuntu/scripts/setup.sh"
