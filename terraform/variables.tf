@@ -65,3 +65,14 @@ variable "role_exists" {
   description = "Indicates if the IAM role exists"
   default     = false
 }
+
+variable "s3_bucket_name" {
+  type        = string
+  description = "The name of the S3 bucket."
+}
+
+variable "s3_env_file_key" {
+  description = "The key for the .env file in S3"
+  type        = string
+  default = ".env.aws"
+}

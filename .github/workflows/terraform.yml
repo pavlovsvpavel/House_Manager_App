@@ -9,44 +9,95 @@ on:
       - main
 
 jobs:
-  deploy:
+  # Job 1: Create EC2 Instance with Terraform
+  create_ec2_instance:
     runs-on: ubuntu-latest
-
+    outputs:
+      private_ip: ${{ steps.get_private_ip.outputs.private_ip }}
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: 1.3.0
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.3.0 # Specify your Terraform version
 
-    - name: Terraform Init
-      run: cd terraform && terraform init
+      - name: Terraform Init
+        run: cd terraform && terraform init
 
-    - name: Terraform Plan
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-      run: |
-        cd terraform
-        terraform plan -var-file="values.tfvars" -var "aws_region=${{ secrets.AWS_REGION }}" -var "key_pair_exists=$(aws ec2 describe-key-pairs --key-name house-manager-terraform-key --query 'KeyPairs[?KeyName==`house-manager-terraform-key`]' --output text | wc -l)" -var "policy_exists=$(aws iam list-policies --query 'Policies[?PolicyName==`MyS3AccessPolicy`]' --output text | wc -l)" -var "role_exists=$(aws iam get-role --role-name my_s3_access_role --query 'Role.RoleName' --output text | wc -l)"
+      - name: Terraform Plan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          cd terraform
+            terraform plan -var-file="values.tfvars"
 
-    - name: Terraform Apply
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-      run: |
-        cd terraform
-        terraform apply -var-file="values.tfvars" -auto-approve -var "aws_region=${{ secrets.AWS_REGION }}" -var "key_pair_exists=$(aws ec2 describe-key-pairs --key-name house-manager-terraform-key --query 'KeyPairs[?KeyName==`house-manager-terraform-key`]' --output text | wc -l)" -var "policy_exists=$(aws iam list-policies --query 'Policies[?PolicyName==`MyS3AccessPolicy`]' --output text | wc -l)" -var "role_exists=$(aws iam get-role --role-name my_s3_access_role --query 'Role.RoleName' --output text | wc -l)"
+      - name: Terraform Apply
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          cd terraform
+          terraform apply -var-file="values.tfvars"
 
-    - name: Clean Up
-      run: |
-        cd terraform
-        terraform destroy -var-file="values.tfvars" -auto-approve
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Get Private IP from Terraform Outputs
+        id: get_private_ip
+        run: echo "::set-output name=private_ip::$(terraform output -raw private_ip)"
+
+      - name: Extract SSH Key
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > ec2_key.pem
+          chmod 600 ec2_key.pem
+          echo "SSH_KEY_PATH=$(pwd)/ec2_key.pem" >> $GITHUB_ENV
+
+  # Job 2: Copy Scripts to EC2
+  copy_scripts:
+    runs-on: ubuntu-latest
+    needs: create_ec2_instance
+    env:
+      PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
+    steps:
+      - name: Set up SSH Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Copy Scripts to EC2
+        run: |
+          scp -i $SSH_KEY_PATH -o StrictHostKeyChecking=no -r scripts/* ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/scripts/
+        
+  # Job 3: Copy .env file from S3 to EC2
+  copy_env_file:
+    runs-on: ubuntu-latest
+    needs: [ create_ec2_instance, copy_scripts ]
+    env:
+      PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
+    steps:
+      - name: Configure AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Download .env from S3 and Upload to EC2
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+        run: |
+          aws s3 cp s3://storage-for-env-files/.env/.env.aws .env.aws
+          scp -i $SSH_KEY_PATH -o StrictHostKeyChecking=no .env.aws ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/app/envs/.env.aws
+
+  # Job 4: Run Scripts on EC2
+  run_scripts:
+    runs-on: ubuntu-latest
+    needs: [ create_ec2_instance, copy_scripts, copy_env_file ]
+    env:
+      PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
+    steps:
+      - name: Run Scripts on EC2
+        run: |
+          ssh -i $SSH_KEY_PATH -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$PRIVATE_IP "bash /home/ubuntu/scripts/setup.sh"
