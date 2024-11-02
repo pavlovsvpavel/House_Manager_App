@@ -59,6 +59,12 @@ jobs:
             echo "key_pair_exists=false" >> $GITHUB_ENV
           fi
 
+      - name: Terraform Apply for Key Pair
+        if: env.key_pair_exists == 'false'
+        run: |
+          cd terraform
+          terraform apply -var="key_pair_exists=false" -auto-approve -input=false
+
       - name: Check and Import IAM Policy if Exists
         run: |
           cd terraform
