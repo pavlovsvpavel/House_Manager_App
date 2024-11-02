@@ -80,7 +80,7 @@ jobs:
 
       - name: Copy Scripts to EC2
         run: |
-          scp -i $SSH_KEY_PATH -o StrictHostKeyChecking=no -r scripts/* ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/scripts/
+          scp -i ./ec2_key.pem -o StrictHostKeyChecking=no -r scripts/* ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/scripts/
         
   # Job 3: Copy .env file from S3 to EC2
   copy_env_file:
@@ -109,7 +109,7 @@ jobs:
       - name: Download .env from S3 and Upload to EC2
         run: |
           aws s3 cp s3://storage-for-env-files/.env/.env.aws .env.aws
-          scp -i $SSH_KEY_PATH -o StrictHostKeyChecking=no .env.aws ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/app/envs/.env.aws
+          scp -i ./ec2_key.pem -o StrictHostKeyChecking=no .env.aws ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/app/envs/.env.aws
 
   # Job 4: Run Scripts on EC2
   run_scripts:
@@ -130,4 +130,4 @@ jobs:
 
       - name: Run Scripts on EC2
         run: |
-          ssh -i $SSH_KEY_PATH -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$PRIVATE_IP "bash /home/ubuntu/scripts/setup.sh"
+          ssh -i ./ec2_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$PRIVATE_IP "bash /home/ubuntu/scripts/setup.sh"
