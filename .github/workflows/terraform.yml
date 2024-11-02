@@ -85,7 +85,7 @@ jobs:
 
       - name: Copy Scripts to EC2
         run: |
-          scp -i $SSH_KEY_PATH -o StrictHostKeyChecking=no -r terraform/scripts/* ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/scripts/
+          scp -i $SSH_KEY_PATH -r terraform/scripts/* ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/scripts/
         
   # Job 3: Copy .env file from S3 to EC2
   copy_env_file:
