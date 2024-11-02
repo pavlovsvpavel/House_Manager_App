@@ -52,7 +52,7 @@ jobs:
 
       - name: Extract SSH Key
         run: |
-          echo "${{ secrets.EC2_SSH_KEY_CONTENT }}" > ec2_key.pem
+          echo "${{ secrets.EC2_SSH_KEY_CONTENT }}" > house-manager-terraform-key.pem
           chmod 600 house-manager-terraform-key.pem
 
       - name: Upload SSH Key as Artifact
