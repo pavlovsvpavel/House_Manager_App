@@ -63,7 +63,7 @@ jobs:
         if: env.key_pair_exists == 'false'
         run: |
           cd terraform
-          terraform apply -var="key_pair_exists=false" -auto-approve -input=false
+          terraform apply -var="key_pair_exists=false" -var-file="values.tfvars" -auto-approve -input=false
 
       - name: Check and Import IAM Policy if Exists
         run: |
