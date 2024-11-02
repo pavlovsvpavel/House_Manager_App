@@ -46,13 +46,18 @@ jobs:
 
       - name: Get Private IP from Terraform Outputs
         id: get_private_ip
-        run: echo "::set-output name=private_ip::$(terraform output -raw private_ip)"
+        run: echo "private_ip=$(terraform output -raw private_ip)" >> $GITHUB_ENV
 
       - name: Extract SSH Key
         run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > ec2_key.pem
+          echo "${{ secrets.EC2_SSH_KEY_CONTENT }}" > ec2_key.pem
           chmod 600 ec2_key.pem
-          echo "SSH_KEY_PATH=$(pwd)/ec2_key.pem" >> $GITHUB_ENV
+
+      - name: Upload SSH Key as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ec2_key
+          path: ec2_key.pem
 
   # Job 2: Copy Scripts to EC2
   copy_scripts:
@@ -60,11 +65,16 @@ jobs:
     needs: create_ec2_instance
     env:
       PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
+      SSH_KEY_PATH: ./ec2_key.pem
     steps:
-      - name: Set up SSH Key
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Download SSH Key Artifact
+        uses: actions/download-artifact@v3
         with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+          name: ec2_key
+          path: ./ec2_key.pem
+
+      - name: Set SSH Key Permissions
+        run: chmod 600 ec2_key.pem
 
       - name: Copy Scripts to EC2
         run: |
@@ -76,6 +86,7 @@ jobs:
     needs: [ create_ec2_instance, copy_scripts ]
     env:
       PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
+      SSH_KEY_PATH: ./ec2_key.pem
     steps:
       - name: Configure AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
@@ -84,10 +95,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Set up SSH Key
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Download SSH Key Artifact
+        uses: actions/download-artifact@v3
         with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+          name: ec2_key
+          path: ./ec2_key.pem
+
+      - name: Set SSH Key Permissions
+        run: chmod 600 ec2_key.pem
 
       - name: Download .env from S3 and Upload to EC2
         run: |
@@ -100,12 +115,16 @@ jobs:
     needs: [ create_ec2_instance, copy_scripts, copy_env_file ]
     env:
       PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
-
+      SSH_KEY_PATH: ./ec2_key.pem
     steps:
-      - name: Set up SSH Key
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Download SSH Key Artifact
+        uses: actions/download-artifact@v3
         with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+          name: ec2_key
+          path: ./ec2_key.pem
+
+      - name: Set SSH Key Permissions
+        run: chmod 600 ec2_key.pem
 
       - name: Run Scripts on EC2
         run: |
