@@ -79,6 +79,9 @@ jobs:
           cd terraform
           echo "PUBLIC_DNS=$(terraform output -raw public_dns)" >> $GITHUB_ENV
 
+      - name: Debug Environment Variables
+        run: printenv
+
       - name: Verify Public DNS Output
         run: |
           cd terraform
