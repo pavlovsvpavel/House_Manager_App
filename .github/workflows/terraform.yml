@@ -33,7 +33,7 @@ jobs:
     needs: create_key
     outputs:
       private_ip: ${{ steps.get_private_ip.outputs.private_ip }}
-      public_dns: ${{ steps.get_public_dns.outputs.public_dns }}  # Add this line
+      public_dns: ${{ steps.get_public_dns.outputs.public_dns }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -101,9 +101,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Check PRIVATE_IP and PUBLIC_DNS
+      - name: Check PUBLIC_DNS
         run: |
-          echo "PRIVATE_IP: $PRIVATE_IP"
           echo "PUBLIC_DNS: $PUBLIC_DNS"
 
       - name: Download SSH Key Artifact
@@ -111,15 +110,6 @@ jobs:
         with:
           name: ssh_private_key
           path: ./  # Downloads 'house_manager_new_key.pem' to the current directory
-
-      - name: Wait for EC2 to be ready
-        run: |
-          echo "Waiting for EC2 instance to become available at $PUBLIC_DNS"
-          while ! nc -z $PUBLIC_DNS 22; do  # Use PUBLIC_DNS instead of PRIVATE_IP
-            echo "Waiting for SSH to become available..."
-            sleep 10  # Increase wait time
-          done
-          echo "EC2 instance is ready for SSH."
 
       - name: Copy Scripts to EC2
         run: |

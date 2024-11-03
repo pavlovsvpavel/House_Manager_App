@@ -144,18 +144,24 @@ resource "aws_instance" "awsi" {
   #   }
 }
 
-output "private_ip" {
-  value = aws_instance.awsi.private_ip
-}
-
 resource "aws_eip_association" "aeipa" {
   instance_id   = aws_instance.awsi.id
   allocation_id = var.existing_eip_allocation_id
 }
 
-output "public_dns" {
-  value = aws_instance.awsi.public_dns
+output "private_ip" {
+  value = aws_instance.awsi.private_ip
 }
+
+output "elastic_ip" {
+  value = aws_eip_association.aeipa.allocation_id
+}
+
+output "public_dns" {
+  value = "ec2-${replace(aws_instance.awsi.public_ip, ".", "-")}.${var.aws_region}.compute-1.amazonaws.com"
+}
+
+
 
 ## Use this resource after initial deploy for future scripts execution
 # resource "null_resource" "run_setup_script" {
