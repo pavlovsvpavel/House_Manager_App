@@ -144,18 +144,18 @@ resource "aws_instance" "awsi" {
   #   }
 }
 
-resource "aws_eip_association" "aeipa" {
-  instance_id   = aws_instance.awsi.id
-  allocation_id = var.existing_eip_allocation_id
-}
+# resource "aws_eip_association" "aeipa" {
+#   instance_id   = aws_instance.awsi.id
+#   allocation_id = var.existing_eip_allocation_id
+# }
 
 output "private_ip" {
   value = aws_instance.awsi.private_ip
 }
 
-output "elastic_ip" {
-  value = aws_eip_association.aeipa.public_ip
-}
+# output "elastic_ip" {
+#   value = aws_eip_association.aeipa.public_ip
+# }
 
 output "public_dns" {
   value = aws_instance.awsi.public_dns

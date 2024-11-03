@@ -48,33 +48,9 @@ variable "connection_user" {
   type        = string
 }
 
-variable "key_pair_exists" {
-  description = "Indicates whether the EC2 key pair already exists."
-  type        = bool
-  default     = false # Default to false if you want to assume it doesn't exist unless stated otherwise
-}
-
-variable "policy_exists" {
-  type        = bool
-  description = "Indicates if the IAM policy exists"
-  default     = false
-}
-
-variable "role_exists" {
-  type        = bool
-  description = "Indicates if the IAM role exists"
-  default     = false
-}
-
 variable "s3_bucket_name" {
   type        = string
   description = "The name of the S3 bucket."
-}
-
-variable "s3_env_file_key" {
-  description = "The key for the .env file in S3"
-  type        = string
-  default     = ".env.aws"
 }
 
 variable "private_key_path" {
