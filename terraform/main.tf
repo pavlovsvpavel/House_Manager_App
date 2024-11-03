@@ -16,27 +16,46 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "tls_private_key" "tlspk" {
-  algorithm = "RSA"
-  rsa_bits  = 2048 # Specify the number of bits for the RSA key
+# resource "tls_private_key" "tlspk" {
+#   algorithm = "RSA"
+#   rsa_bits  = 2048 # Specify the number of bits for the RSA key
+# }
+
+# resource "aws_key_pair" "akp" {
+#   key_name   = var.aws_key_pair
+#   public_key = tls_private_key.tlspk.public_key_openssh
+# }
+
+# resource "local_file" "private_key" {
+#   filename = "${path.module}/house-manager-terraform-key.pem" # Specify the path and filename to save the private key
+#   content  = tls_private_key.tlspk.private_key_pem            # Use the private key content from the TLS resource
+#
+#   # Set permissions if desired
+#   file_permission = "0400" # Set the file to read-only for the owner
+# }
+
+# output "private_key" {
+#   value     = tls_private_key.tlspk.private_key_pem
+#   sensitive = true # Mark the output as sensitive to avoid displaying it in the console
+# }
+
+# Reference an already existing key pair in AWS
+data "aws_key_pair" "existing_key" {
+  key_name = var.aws_key_pair # Replace this with the name of your existing key pair
 }
 
-resource "aws_key_pair" "akp" {
-  key_name   = var.aws_key_pair
-  public_key = tls_private_key.tlspk.public_key_openssh
+# Use the key pair in your EC2 instance configuration (or wherever it’s needed)
+resource "aws_instance" "example" {
+  ami           = "ami-12345678" # Replace with your desired AMI
+  instance_type = "t2.micro"
+  key_name      = data.aws_key_pair.existing_key.key_name
+
+  # Add any other required configuration
 }
 
-resource "local_file" "private_key" {
-  filename = "${path.module}/house-manager-terraform-key.pem" # Specify the path and filename to save the private key
-  content  = tls_private_key.tlspk.private_key_pem            # Use the private key content from the TLS resource
-
-  # Set permissions if desired
-  file_permission = "0400" # Set the file to read-only for the owner
-}
-
-output "private_key" {
-  value     = tls_private_key.tlspk.private_key_pem
-  sensitive = true # Mark the output as sensitive to avoid displaying it in the console
+# Optional: Output the key name if needed
+output "key_pair_name" {
+  value = data.aws_key_pair.existing_key.key_name
 }
 
 resource "aws_security_group" "asg" {
@@ -80,7 +99,8 @@ resource "aws_instance" "awsi" {
   ami                    = var.instance_image_id
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.asg.id]
-  key_name               = aws_key_pair.akp.key_name
+  # key_name               = aws_key_pair.akp.key_name
+  key_name = data.aws_key_pair.existing_key.key_name
 
   root_block_device {
     volume_size = var.ebs_volume_size
@@ -92,10 +112,10 @@ resource "aws_instance" "awsi" {
   }
 
   connection {
-    type        = "ssh"
-    host        = aws_instance.awsi.public_ip
-    user        = var.connection_user
-    private_key = local_file.private_key.content # Path to your SSH private key
+    type = "ssh"
+    host = aws_instance.awsi.public_ip
+    user = var.connection_user
+    # private_key = local_file.private_key.content # Path to your SSH private key
   }
 
   provisioner "remote-exec" {

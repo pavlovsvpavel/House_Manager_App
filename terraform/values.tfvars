@@ -1,5 +1,5 @@
 aws_region                 = "eu-central-1"
-aws_key_pair               = "house-manager-terraform-key"
+aws_key_pair               = "house_manager_new_key"
 aws_security_group         = "house-manager-sg"
 instance_image_id          = "ami-0084a47cc718c111a"
 instance_type              = "t2.micro"
@@ -9,4 +9,4 @@ instance_name              = "HouseManagerInstance"
 existing_eip_allocation_id = "eipalloc-019fec538524322b8"
 connection_user            = "ubuntu"
 s3_bucket_name             = "storage-for-env-files"
-
+private_key_path           = "../house_manager_new_key.pem"

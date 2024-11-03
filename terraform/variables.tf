@@ -76,3 +76,8 @@ variable "s3_env_file_key" {
   type        = string
   default     = ".env.aws"
 }
+
+variable "private_key_path" {
+  description = "The private key path"
+  type        = string
+}
