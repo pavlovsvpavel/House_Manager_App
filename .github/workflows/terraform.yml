@@ -93,6 +93,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Check PRIVATE_IP
+        run:
+          echo "PRIVATE_IP: $PRIVATE_IP"
+
       - name: Download SSH Key Artifact
         uses: actions/download-artifact@v3
         with:
