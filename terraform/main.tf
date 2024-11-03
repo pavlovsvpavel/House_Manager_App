@@ -116,6 +116,7 @@ resource "aws_instance" "awsi" {
     host = aws_instance.awsi.public_ip
     user = var.connection_user
     # private_key = local_file.private_key.content # Path to your SSH private key
+    private_key = file("${path.module}/house_manager_new_key.pem")
   }
 
   provisioner "remote-exec" {
