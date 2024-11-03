@@ -44,15 +44,6 @@ data "aws_key_pair" "existing_key" {
   key_name = var.aws_key_pair # Replace this with the name of your existing key pair
 }
 
-# Use the key pair in your EC2 instance configuration (or wherever it’s needed)
-resource "aws_instance" "example" {
-  ami           = "ami-12345678" # Replace with your desired AMI
-  instance_type = "t2.micro"
-  key_name      = data.aws_key_pair.existing_key.key_name
-
-  # Add any other required configuration
-}
-
 # Optional: Output the key name if needed
 output "key_pair_name" {
   value = data.aws_key_pair.existing_key.key_name
