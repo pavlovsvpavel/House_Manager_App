@@ -5,6 +5,7 @@ from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
 
 from house_manager.accounts.mixins import CheckForLoggedInUserMixin
+from house_manager.common.mixins import MonthChoices
 from house_manager.houses.decorators import get_current_house_id
 from house_manager.houses.forms import HouseCreateForm
 from house_manager.houses.helpers.house_clients_filter_by_payment_status import filter_by_payment_status
@@ -71,9 +72,11 @@ class HouseClientsDetailView(CheckForLoggedInUserMixin, views.DetailView):
         context = super().get_context_data(**kwargs)
 
         is_paid = self.request.GET.get('is_paid', None)
+        month = self.request.GET.get('month', None)
         clients = self.object.clients.all()
 
-        context["clients"] = filter_by_payment_status(clients, is_paid)
+        context["clients"] = filter_by_payment_status(clients, is_paid, month)
+        context["MonthChoices"] = MonthChoices
 
         return context
 

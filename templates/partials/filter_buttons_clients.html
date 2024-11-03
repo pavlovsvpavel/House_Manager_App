@@ -1,6 +1,21 @@
 {% load i18n %}
-<div class="filter-buttons">
-    <a href="?">{% trans "All" %}</a>
-    <a href="?is_paid=True">{% trans "with paid bills" %}</a>
-    <a href="?is_paid=False">{% trans "with unpaid bills" %}</a>
-</div>
+
+<form method="get">
+    <div class="filter-buttons">
+        <label for="month" class="month-label">
+            <select name="month" id="month" onchange="this.form.submit();">
+                <option value="" selected disabled>{% trans "Month" %}</option>
+                <option value="">{% trans "All" %}</option> 
+                {% for choice in MonthChoices.choices %}
+                    <option value="{{ choice.0 }}"
+                            {% if request.GET.month == choice.0 %}selected{% endif %}>{{ choice.1 }}
+                    </option>
+                {% endfor %}
+            </select>
+        </label>
+        <a href="?is_paid=True&month={{ request.GET.month }}" {% if request.GET.month == "" %} class="disabled"
+           onclick="return false;"{% endif %}> {% trans "with paid bills" %}</a>
+        <a href="?is_paid=False&month={{ request.GET.month }}" {% if request.GET.month == "" %} class="disabled"
+           onclick="return false;"{% endif %}> {% trans "with unpaid bills" %}</a>
+    </div>
+</form>

@@ -6,6 +6,7 @@ on:
 jobs:
   create_key:
     runs-on: ubuntu-latest
+    environment: development
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

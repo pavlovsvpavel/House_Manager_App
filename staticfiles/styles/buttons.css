@@ -79,6 +79,7 @@
     display: flex;
     padding-top: 0.5em;
     gap: 1em;
+    align-items: center;
 }
 
 .filter-buttons a,
@@ -171,3 +172,29 @@
     font-size: 2em;
 }
 
+.month-label {
+    display: inline-block;
+    background-color: var(--form-btn-color);
+    border-radius: 1.5em;
+    margin-right: 0.3em;
+    width: auto;
+    margin-bottom: 0.3em;
+}
+
+#month {
+    border-radius: 1.5em;
+    background-color: var(--form-btn-color);
+    cursor: pointer;
+    color: #fff;
+    display: inline-block;
+    width: auto;
+    text-align: center;
+    padding: 0.5em 0;
+}
+
+.filter-buttons .disabled {
+    background-color: #ccc;
+    pointer-events: none; /* Disable clicking on the link */
+    text-decoration: none; /* Remove underline */
+    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+}
