@@ -154,11 +154,11 @@ output "private_ip" {
 }
 
 output "elastic_ip" {
-  value = aws_eip_association.aeipa.allocation_id
+  value = aws_eip_association.aeipa.public_ip
 }
 
 output "public_dns" {
-  value = "ec2-${replace(aws_instance.awsi.public_ip, ".", "-")}.${var.aws_region}.compute-1.amazonaws.com"
+  value = aws_instance.awsi.public_dns
 }
 
 
