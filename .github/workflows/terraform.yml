@@ -26,11 +26,11 @@ jobs:
           name: ssh_private_key
           path: house_manager_new_key.pem
 
-  create_ec2_instance:
+  create_ec2_instance_and_deploy_the_app:
     runs-on: ubuntu-latest
     needs: create_key
     outputs:
-      public_dns_ec2: ${{ steps.get_public_dns.outputs.PUBLIC_DNS }}
+      public_dns: ${{ steps.get_public_dns.outputs.public_dns }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -76,75 +76,20 @@ jobs:
         id: get_public_dns
         run: |
           cd terraform
-          echo "PUBLIC_DNS=$(terraform output -raw public_dns)" >> "$GITHUB_OUTPUT"
-
-#      - name: Copy Scripts to EC2
-#        run: |
-#          scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no -r terraform/scripts/* ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/app/scripts/
-#
-#      - name: Download .env from S3
-#        run: |
-#          aws s3 cp s3://storage-for-env-files/.env/.env.aws .env.aws || { echo "Error: $?" ; exit 1; }
-#
-#      - name: Copy.env to EC2
-#        run: |
-#          scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no .env.aws ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/app/envs/
-#
-#      - name: Run Scripts on EC2
-#        run: |
-#          ssh -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$PUBLIC_DNS "bash /home/ubuntu/app/scripts/setup.sh"
-
-#  # Job 3: Copy Scripts to EC2
-  copy_scripts:
-    runs-on: ubuntu-latest
-    needs: [ create_key, create_ec2_instance ]
-    env:
-      PUBLIC_DNS: ${{needs.create_ec2_instance.outputs.public_dns_ec2}}
-    steps:
-      - name: Debug Environment Variables
-        run: printenv
-
-      - name: Check PUBLIC_DNS
-        run: |
-          echo "PUBLIC_DNS: $PUBLIC_DNS"
-
-      - name: Download SSH Key Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ssh_private_key
-          path: ./
+          echo "PUBLIC_DNS=$(terraform output -raw public_dns)" >> "$GITHUB_ENV"
 
       - name: Copy Scripts to EC2
         run: |
           scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no -r terraform/scripts/* ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/app/scripts/
 
-#  # Job 4: Copy .env file from S3 to EC2
-#  copy_env_file:
-#    runs-on: ubuntu-latest
-#    needs: [ create_key, create_ec2_instance, copy_scripts ]
-#    steps:
-#      - name: Download SSH Key Artifact
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: ssh_private_key
-#          path: ./  # Downloads 'house_manager_new_key.pem' to the current directory
-#
-#      - name: Download .env from S3 and Upload to EC2
-#        run: |
-#          aws s3 cp s3://storage-for-env-files/.env/.env.aws .env.aws
-#          scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no .env.aws ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/app/envs/.env.aws
-#
-#  # Job 5: Run Scripts on EC2
-#  run_scripts:
-#    runs-on: ubuntu-latest
-#    needs: [ create_key, create_ec2_instance, copy_scripts, copy_env_file ]
-#    steps:
-#      - name: Download SSH Key Artifact
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: ssh_private_key
-#          path: ./  # Downloads 'house_manager_new_key.pem' to the current directory
-#
-#      - name: Run Scripts on EC2
-#        run: |
-#          ssh -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$PUBLIC_DNS "bash /home/ubuntu/scripts/setup.sh"
+      - name: Download .env from S3
+        run: |
+          aws s3 cp s3://storage-for-env-files/.env/.env.aws .env.aws || { echo "Error: $?" ; exit 1; }
+
+      - name: Copy.env to EC2
+        run: |
+          scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no .env.aws ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/app/envs/
+
+      - name: Run Scripts on EC2
+        run: |
+          ssh -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$PUBLIC_DNS "bash /home/ubuntu/app/scripts/setup.sh"
