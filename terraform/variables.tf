@@ -3,10 +3,16 @@ variable "aws_region" {
   description = "AWS region"
 }
 
-variable "aws_key_pair" {
+variable "aws_new_key_pair" {
   type        = string
   description = "The name of the key pair"
 }
+
+variable "aws_existing_key_pair" {
+  type        = string
+  description = "The name of the key pair"
+}
+
 
 variable "aws_security_group" {
   type        = string

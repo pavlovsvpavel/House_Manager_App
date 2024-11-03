@@ -1,5 +1,6 @@
 aws_region                 = "eu-central-1"
-aws_key_pair               = "house_manager_new_key"
+aws_new_key_pair           = "house_manager_terraform_key"
+aws_existing_key_pair      = "house_manager_new_key"
 aws_security_group         = "house-manager-sg"
 instance_image_id          = "ami-0084a47cc718c111a"
 instance_type              = "t2.micro"

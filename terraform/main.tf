@@ -16,13 +16,14 @@ provider "aws" {
   region = var.aws_region
 }
 
+## Creation of new key pair for local deploy
 # resource "tls_private_key" "tlspk" {
 #   algorithm = "RSA"
 #   rsa_bits  = 2048 # Specify the number of bits for the RSA key
 # }
 
 # resource "aws_key_pair" "akp" {
-#   key_name   = var.aws_key_pair
+#   key_name   = var.aws_new_key_pair
 #   public_key = tls_private_key.tlspk.public_key_openssh
 # }
 
@@ -41,12 +42,7 @@ provider "aws" {
 
 # Reference an already existing key pair in AWS
 data "aws_key_pair" "existing_key" {
-  key_name = var.aws_key_pair # Replace this with the name of your existing key pair
-}
-
-# Optional: Output the key name if needed
-output "key_pair_name" {
-  value = data.aws_key_pair.existing_key.key_name
+  key_name = var.aws_existing_key_pair # Replace this with the name of your existing key pair
 }
 
 resource "aws_security_group" "asg" {
@@ -106,8 +102,11 @@ resource "aws_instance" "awsi" {
     type = "ssh"
     host = aws_instance.awsi.public_ip
     user = var.connection_user
+    ## If new key pair was created locally
     # private_key = local_file.private_key.content # Path to your SSH private key
-    private_key = file("${path.module}/../house_manager_new_key.pem")
+
+    ## If the key pair is already created in AWS
+    private_key = file("${path.module}/../${var.aws_existing_key_pair}.pem")
   }
 
   provisioner "remote-exec" {
@@ -153,15 +152,13 @@ output "private_ip" {
   value = aws_instance.awsi.private_ip
 }
 
-# output "elastic_ip" {
-#   value = aws_eip_association.aeipa.public_ip
-# }
-
 output "public_dns" {
   value = aws_instance.awsi.public_dns
 }
 
-
+output "key_pair_name" {
+  value = data.aws_key_pair.existing_key.key_name
+}
 
 ## Use this resource after initial deploy for future scripts execution
 # resource "null_resource" "run_setup_script" {
