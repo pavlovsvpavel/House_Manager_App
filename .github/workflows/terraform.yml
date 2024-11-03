@@ -79,9 +79,10 @@ jobs:
           cd terraform
           echo "PUBLIC_DNS=$(terraform output -raw public_dns)" >> $GITHUB_ENV
 
-      - name: Check PUBLIC_DNS
+      - name: Verify Public DNS Output
         run: |
-          echo "PUBLIC_DNS: $PUBLIC_DNS"
+          cd terraform
+          terraform output -raw public_dns
 
 
   # Job 3: Copy Scripts to EC2
