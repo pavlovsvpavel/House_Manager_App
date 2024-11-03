@@ -51,6 +51,9 @@ jobs:
           name: ssh_private_key
           path: ./  # Downloads 'house_manager_new_key.pem' to the current directory
 
+      - name: Check SSH Key Existence
+        run: ls -la ../house_manager_new_key.pem  # Adjust path if needed
+
       - name: Terraform Plan
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
