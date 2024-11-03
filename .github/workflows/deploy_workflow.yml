@@ -27,5 +27,6 @@ jobs:
                 sudo docker-compose -f docker-compose.prod.yml exec -T web python manage.py collectstatic --noinput
                 sudo docker-compose -f docker-compose.prod.yml exec -T web python manage.py makemessages -l bg
                 sudo docker-compose -f docker-compose.prod.yml exec -T web python manage.py compilemessages
-                
-                sudo docker restart $(docker ps -q)
+                docker restart $(docker ps -q)
+                sleep 30
+                docker image prune -a
