@@ -77,6 +77,7 @@ jobs:
         id: get_public_dns
         run: |
           cd terraform
+          echo "public_dns=$(terraform output -raw public_dns)" >> $GITHUB_ENV
           echo "::set-output name=public_dns::$(terraform output -raw public_dns)"
 
   # Job 3: Copy Scripts to EC2
