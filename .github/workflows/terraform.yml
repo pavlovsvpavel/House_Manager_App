@@ -95,7 +95,7 @@ jobs:
 
       - name: Check PRIVATE_IP
         run:
-          echo "PRIVATE_IP: $PRIVATE_IP"
+            echo "PRIVATE_IP: $PRIVATE_IP"
 
       - name: Download SSH Key Artifact
         uses: actions/download-artifact@v3
