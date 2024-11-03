@@ -6,7 +6,7 @@ instance_type              = "t2.micro"
 ebs_volume_size            = 10
 ebs_volume_type            = "gp2"
 instance_name              = "HouseManagerInstance"
-existing_eip_allocation_id = "eipalloc-0e0c01eed51156701"
+existing_eip_allocation_id = "eipalloc-019fec538524322b8"
 connection_user            = "ubuntu"
 s3_bucket_name             = "storage-for-env-files"
 
