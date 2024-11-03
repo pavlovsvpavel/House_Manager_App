@@ -1,6 +1,7 @@
 name: Deploy to AWS with Terraform
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -30,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: create_key
     outputs:
-      instance_id: ${{ steps.get_public_dns.outputs.instance_id }}
+      public_dns: ${{ steps.get_public_dns.outputs.public_dns }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -72,21 +73,15 @@ jobs:
           cd terraform
           terraform apply -var-file="values.tfvars" -auto-approve -input=false
 
-#      - name: Get Public DNS from Terraform Outputs
-#        id: get_public_dns
-#        run: |
-#          cd terraform
-#          echo "PUBLIC_DNS=$(terraform output -raw public_dns)" >> "$GITHUB_ENV"
-
-      - name: Get Instance ID from Terraform Outputs
-        id: get_instance_id
+      - name: Get Public DNS from Terraform Outputs
+        id: get_public_dns
         run: |
           cd terraform
-          echo "INSTANCE_ID=$(terraform output -raw instance_id)" >> "$GITHUB_ENV"
+          echo "PUBLIC_DNS=$(terraform output -raw public_dns)" >> "$GITHUB_ENV"
 
       - name: Copy Scripts to EC2
         run: |
-          scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no -r terraform/scripts/* ${{ secrets.EC2_USER }}@$INSTANCE_ID -o ProxyCommand='aws ec2-instance-connect open-tunnel --instance-id $INSTANCE_ID':/home/ubuntu/app/scripts/
+          scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no -r terraform/scripts/* ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/app/scripts/
 
       - name: Download .env from S3
         run: |
@@ -96,6 +91,10 @@ jobs:
         run: |
           scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no .env.aws ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/app/envs/
 
-      - name: Run Scripts on EC2
+      - name: Run commands for setting up Docker containers
         run: |
           ssh -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$PUBLIC_DNS "bash /home/ubuntu/app/scripts/setup.sh"
+
+      - name: Run Django management commands inside the web container
+        run: |
+          ssh -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$PUBLIC_DNS "bash /home/ubuntu/app/scripts/setup-web-container.sh"
