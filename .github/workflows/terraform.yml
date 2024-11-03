@@ -89,10 +89,13 @@ jobs:
         run: |
           scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no -r terraform/scripts/* ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/app/scripts/
 
-      - name: Download .env from S3 and Upload to EC2
+      - name: Download .env from S3
         run: |
-          aws s3 cp s3://storage-for-env-files/.env/.env.aws .env.aws
-          scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no .env.aws ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/app/envs/.env.aws
+          aws s3 cp s3://storage-for-env-files/.env/.env.aws .env.aws || { echo 'Failed to download .env.aws'; exit 1; }
+
+      - name: Copy.env to EC2
+        run: |
+          scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no .env.aws ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/app/envs/
 
       - name: Run Scripts on EC2
         run: |
