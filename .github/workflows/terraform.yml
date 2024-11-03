@@ -62,30 +62,37 @@ jobs:
           path: ./house-manager-terraform-key.pem
 
   # Job 2: Copy Scripts to EC2
-#  copy_scripts:
-#    runs-on: ubuntu-latest
-#    needs: create_ec2_instance
-#    env:
-#      PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
-#    steps:
-#      - name: Download SSH Key Artifact
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: house-manager-terraform-key
-#          path: ./house-manager-terraform-key.pem
-#
-#      - name: Set SSH Key Permissions
-#        run: chmod 600 house-manager-terraform-key.pem
-#
-#      - name: Set SSH Key Path
-#        run: echo "SSH_KEY_PATH=/home/runner/work/House_Manager_App/House_Manager_App/house-manager-terraform-key.pem" >> $GITHUB_ENV
-#
-#      - name: Wait for EC2 to be ready
-#        run: sleep 30  # Wait for 30 seconds before proceeding
-#
-#      - name: Copy Scripts to EC2
-#        run: |
-#          scp -i $SSH_KEY_PATH -r terraform/scripts/* ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/scripts/
+  copy_scripts:
+    runs-on: ubuntu-latest
+    needs: create_ec2_instance
+    env:
+      PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
+    steps:
+      - name: Configure AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Download SSH Key Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: house-manager-terraform-key
+          path: ./house-manager-terraform-key.pem
+
+      - name: Set SSH Key Permissions
+        run: chmod 600 house-manager-terraform-key.pem
+
+      - name: Set SSH Key Path
+        run: echo "SSH_KEY_PATH=/home/runner/work/House_Manager_App/House_Manager_App/house-manager-terraform-key.pem" >> $GITHUB_ENV
+
+      - name: Wait for EC2 to be ready
+        run: sleep 30  # Wait for 30 seconds before proceeding
+
+      - name: Copy Scripts to EC2
+        run: |
+          scp -i $SSH_KEY_PATH -r terraform/scripts/* ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/scripts/
         
   # Job 3: Copy .env file from S3 to EC2
   copy_env_file:
@@ -119,24 +126,31 @@ jobs:
           scp -i $SSH_KEY_PATH -o StrictHostKeyChecking=no .env.aws ${{ secrets.EC2_USER }}@$PRIVATE_IP:/home/ubuntu/app/envs/.env.aws
 
   # Job 4: Run Scripts on EC2
-#  run_scripts:
-#    runs-on: ubuntu-latest
-#    needs: [ create_ec2_instance, copy_scripts, copy_env_file ]
-#    env:
-#      PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
-#    steps:
-#      - name: Download SSH Key Artifact
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: ec2_key
-#          path: ./ec2_key.pem
-#
-#      - name: Set SSH Key Permissions
-#        run: chmod 600 ec2_key.pem
-#
-#      - name: Set SSH Key Path
-#        run: echo "SSH_KEY_PATH=/home/runner/work/House_Manager_App/House_Manager_App/ec2_key.pem" >> $GITHUB_ENV
-#
-#      - name: Run Scripts on EC2
-#        run: |
-#          ssh -i $SSH_KEY_PATH -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$PRIVATE_IP "bash /home/ubuntu/scripts/setup.sh"
+  run_scripts:
+    runs-on: ubuntu-latest
+    needs: [ create_ec2_instance, copy_scripts, copy_env_file ]
+    env:
+      PRIVATE_IP: ${{ needs.create_ec2_instance.outputs.private_ip }}
+    steps:
+      - name: Configure AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Download SSH Key Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: house-manager-terraform-key
+          path: ./house-manager-terraform-key.pem
+
+      - name: Set SSH Key Permissions
+        run: chmod 600 ec2_key.pem
+
+      - name: Set SSH Key Path
+        run: echo "SSH_KEY_PATH=/home/runner/work/House_Manager_App/House_Manager_App/house-manager-terraform-key.pem" >> $GITHUB_ENV
+
+      - name: Run Scripts on EC2
+        run: |
+          ssh -i $SSH_KEY_PATH -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$PRIVATE_IP "bash /home/ubuntu/scripts/setup.sh"

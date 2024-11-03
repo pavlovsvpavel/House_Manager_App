@@ -74,5 +74,5 @@ variable "s3_bucket_name" {
 variable "s3_env_file_key" {
   description = "The key for the .env file in S3"
   type        = string
-  default = ".env.aws"
+  default     = ".env.aws"
 }

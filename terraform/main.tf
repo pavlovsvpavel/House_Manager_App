@@ -105,31 +105,31 @@ resource "aws_instance" "awsi" {
     ]
   }
 
-  provisioner "file" {
-    source      = "${path.module}/.env.aws"        # Path to your local .env file
-    destination = "/home/ubuntu/app/envs/.env.aws" # Destination path on the EC2 instance
-  }
+  # provisioner "file" {
+  #   source      = "${path.module}/.env.aws"        # Path to your local .env file
+  #   destination = "/home/ubuntu/app/envs/.env.aws" # Destination path on the EC2 instance
+  # }
 
-  provisioner "file" {
-    source      = "${path.module}/scripts/setup.sh"
-    destination = "/home/ubuntu/app/scripts/setup.sh"
-  }
-
-  provisioner "file" {
-    source      = "${path.module}/scripts/setup-web-container.sh"
-    destination = "/home/ubuntu/app/scripts/setup-web-container.sh"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /home/ubuntu/app/scripts/setup.sh",
-      "sleep 5",
-      "sudo /home/ubuntu/app/scripts/setup.sh",
-      "chmod +x /home/ubuntu/app/scripts/setup-web-container.sh",
-      "sleep 5",
-      "sudo /home/ubuntu/app/scripts/setup-web-container.sh"
-    ]
-  }
+  #   provisioner "file" {
+  #     source      = "${path.module}/scripts/setup.sh"
+  #     destination = "/home/ubuntu/app/scripts/setup.sh"
+  #   }
+  #
+  #   provisioner "file" {
+  #     source      = "${path.module}/scripts/setup-web-container.sh"
+  #     destination = "/home/ubuntu/app/scripts/setup-web-container.sh"
+  #   }
+  #
+  #   provisioner "remote-exec" {
+  #     inline = [
+  #       "chmod +x /home/ubuntu/app/scripts/setup.sh",
+  #       "sleep 5",
+  #       "sudo /home/ubuntu/app/scripts/setup.sh",
+  #       "chmod +x /home/ubuntu/app/scripts/setup-web-container.sh",
+  #       "sleep 5",
+  #       "sudo /home/ubuntu/app/scripts/setup-web-container.sh"
+  #     ]
+  #   }
 }
 
 output "private_ip" {
