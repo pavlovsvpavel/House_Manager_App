@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: create_key
     outputs:
-      public_dns: ${{ steps.get_public_dns.outputs.public_dns }}
+      instance_id: ${{ steps.get_public_dns.outputs.instance_id }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -72,15 +72,21 @@ jobs:
           cd terraform
           terraform apply -var-file="values.tfvars" -auto-approve -input=false
 
-      - name: Get Public DNS from Terraform Outputs
-        id: get_public_dns
+#      - name: Get Public DNS from Terraform Outputs
+#        id: get_public_dns
+#        run: |
+#          cd terraform
+#          echo "PUBLIC_DNS=$(terraform output -raw public_dns)" >> "$GITHUB_ENV"
+
+      - name: Get Instance ID from Terraform Outputs
+        id: get_instance_id
         run: |
           cd terraform
-          echo "PUBLIC_DNS=$(terraform output -raw public_dns)" >> "$GITHUB_ENV"
+          echo "INSTANCE_ID=$(terraform output -raw instance_id)" >> "$GITHUB_ENV"
 
       - name: Copy Scripts to EC2
         run: |
-          scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no -r terraform/scripts/* ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/app/scripts/
+          scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no -r terraform/scripts/* ${{ secrets.EC2_USER }}@$INSTANCE_ID -o ProxyCommand='aws ec2-instance-connect open-tunnel --instance-id $INSTANCE_ID':/home/ubuntu/app/scripts/
 
       - name: Download .env from S3
         run: |

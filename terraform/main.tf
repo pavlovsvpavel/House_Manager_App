@@ -152,6 +152,10 @@ output "private_ip" {
   value = aws_instance.awsi.private_ip
 }
 
+output "instance_id" {
+  value = aws_instance.awsi.id
+}
+
 output "public_dns" {
   value = aws_instance.awsi.public_dns
 }
