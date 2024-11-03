@@ -249,4 +249,8 @@
     th, td {
         font-size: 0.6em;
     }
+
+    #displaySignature img {
+        height: 100px;
+    }
 }

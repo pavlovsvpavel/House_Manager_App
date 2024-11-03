@@ -32,12 +32,15 @@
                             <form class="language-form" action="{% url 'set_language' %}" method="post">
                                 {% csrf_token %}
                                 <input name="next" type="hidden" value="{{ redirect_to }}"/>
-                                <button class="language-form-btn" type="submit" name="language" value="en">
-                                    <img src="{% static "images/uk_flag.avif" %}" alt="English Flag">
-                                </button>
-                                <button class="language-form-btn" type="submit" name="language" value="bg">
-                                    <img src="{% static "images/bg_flag.avif" %}" alt="Bulgarian Flag">
-                                </button>
+                                {% if LANGUAGE_CODE == "bg" %}
+                                    <button class="language-form-btn" type="submit" name="language" value="en">
+                                        <img src="{% static "images/uk_flag.avif" %}" alt="English Flag">
+                                    </button>
+                                {% else %}
+                                    <button class="language-form-btn" type="submit" name="language" value="bg">
+                                        <img src="{% static "images/bg_flag.avif" %}" alt="Bulgarian Flag">
+                                    </button>
+                                {% endif %}
                             </form>
                         </li>
                     </ul>

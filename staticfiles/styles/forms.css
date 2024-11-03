@@ -132,7 +132,8 @@
 }
 
 #displaySignature img {
-    height: 100px;
+    width: 300px;
+    height: auto;
 }
 
 .is-paid-form .signature-label {
