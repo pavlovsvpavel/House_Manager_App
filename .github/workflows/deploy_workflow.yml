@@ -29,4 +29,5 @@ jobs:
                 sudo docker-compose -f docker-compose.prod.yml exec -T web python manage.py compilemessages
                 docker restart $(docker ps -q)
                 sleep 30
-                docker image prune -a
+                docker image prune -a --force
+                docker builder prune --force
