@@ -75,7 +75,7 @@ jobs:
         run: |
           cd terraform
 #          echo "::set-output name=private_ip::$(terraform output -raw private_ip)"
-           echo "private_ip=$(terraform output -raw private_ip)" >> $GITHUB_ENV
+          echo "private_ip=$(terraform output -raw private_ip)" >> $GITHUB_ENV
 
   # Job 3: Copy Scripts to EC2
   copy_scripts:
