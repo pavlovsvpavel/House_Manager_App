@@ -153,6 +153,10 @@ resource "aws_eip_association" "aeipa" {
   allocation_id = var.existing_eip_allocation_id
 }
 
+output "public_dns" {
+  value = aws_instance.awsi.public_dns
+}
+
 ## Use this resource after initial deploy for future scripts execution
 # resource "null_resource" "run_setup_script" {
 #   # Add a trigger to force rerun when needed
