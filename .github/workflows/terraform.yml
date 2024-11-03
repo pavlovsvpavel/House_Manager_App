@@ -82,10 +82,6 @@ jobs:
       - name: Debug Environment Variables
         run: printenv
 
-      - name: Verify Public DNS Output
-        run:
-          echo "PUBLIC_DNS: $PUBLIC_DNS
-
       - name: Copy Scripts to EC2
         run: |
           scp -i ./house_manager_new_key.pem -o StrictHostKeyChecking=no -r terraform/scripts/* ${{ secrets.EC2_USER }}@$PUBLIC_DNS:/home/ubuntu/scripts/
