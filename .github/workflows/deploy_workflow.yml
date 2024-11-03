@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: Update Django app
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  update_django_app:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to EC2
@@ -28,6 +28,6 @@ jobs:
                 sudo docker-compose -f docker-compose.prod.yml exec -T web python manage.py makemessages -l bg
                 sudo docker-compose -f docker-compose.prod.yml exec -T web python manage.py compilemessages
                 docker restart $(docker ps -q)
-                sleep 30
+                sleep 10
                 docker image prune -a --force
                 docker builder prune --force

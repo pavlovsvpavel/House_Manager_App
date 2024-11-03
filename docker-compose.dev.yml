@@ -6,6 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     ports:
       - "8000:8000"
     env_file:
@@ -29,6 +30,7 @@ services:
       - ./postgresql:/var/lib/postgresql/data
   nginx:
     image: nginx
+    restart: always
     ports:
       - "81:80"
     volumes:
