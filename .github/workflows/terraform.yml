@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Create SSH private key file
         run: |
@@ -40,7 +40,7 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.3.0 # Specify your Terraform version
+          terraform_version: 1.3.0
 
       - name: Terraform Init
         run: cd terraform && terraform init
@@ -77,7 +77,7 @@ jobs:
         id: get_private_ip
         run: |
           cd terraform
-          echo "private_ip=$(terraform output -raw private_ip)" >> $GITHUB_ENV
+          echo "::set-output name=private_ip::$(terraform output -raw private_ip)"
 
   # Job 3: Copy Scripts to EC2
   copy_scripts:
