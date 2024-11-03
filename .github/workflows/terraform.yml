@@ -51,6 +51,9 @@ jobs:
           name: ssh_private_key
           path: ./  # Downloads 'house_manager_new_key.pem' to the current directory
 
+      - name: Fix Permissions on Private Key
+        run: chmod 600 ./house_manager_new_key.pem
+
       - name: List Files
         run: ls -la
 
