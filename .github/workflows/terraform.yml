@@ -52,9 +52,6 @@ jobs:
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
           aws configure set region $AWS_REGION
 
-      - name: Terraform Init
-        run: cd terraform && terraform init
-
       - name: Download SSH Key Artifact
         uses: actions/download-artifact@v3
         with:
@@ -64,8 +61,8 @@ jobs:
       - name: Fix Permissions on Private Key
         run: chmod 600 ./house_manager_new_key.pem
 
-      - name: List Files
-        run: ls -la
+      - name: Terraform Init
+        run: cd terraform && terraform init
 
       - name: Terraform Plan
         run: |

@@ -30,7 +30,7 @@ fi
 
 # Move the env file to repository root folder
 if [ -f "/home/ubuntu/app/envs/.env.aws" ]; then
-    mv /home/ubuntu/app/envs/.env.aws .
+    mv /home/ubuntu/app/envs/.env.aws ./terraform
 else
     echo "No .env.aws file found."
 fi
