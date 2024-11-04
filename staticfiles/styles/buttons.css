@@ -181,7 +181,9 @@
     margin-bottom: 0.3em;
 }
 
-#month {
+#month,
+#year,
+#type_of_bill {
     border-radius: 1.5em;
     background-color: var(--form-btn-color);
     cursor: pointer;

@@ -9,6 +9,7 @@ from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.client_bills.helpers.calculate_fees import calculate_fees
 from house_manager.client_bills.helpers.calculate_fees_other_bills import calculate_fees_other_bills
 from house_manager.clients.models import Client
+from house_manager.common.mixins import MonthChoices
 from house_manager.house_bills.forms import HouseMonthlyBillForm, HouseOtherBillForm
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
 from house_manager.house_bills.helpers.subtract_amount_from_balance import subtract_amount_from_house_balance
@@ -105,6 +106,7 @@ class CurrentHouseBaseBillDetailView(CheckForLoggedInUserMixin, views.DetailView
         house_id = self.request.session.get("selected_house")
 
         is_paid = self.request.GET.get('is_paid', None)
+        month = self.request.GET.get('month', None)
 
         if house_id:
             current_house = self.get_object()
@@ -114,9 +116,10 @@ class CurrentHouseBaseBillDetailView(CheckForLoggedInUserMixin, views.DetailView
             house_bills = self.get_type_of_house_bills()
 
             if is_paid is not None:
-                house_bills = filter_bills_by_payment_status(house_bills, is_paid)
+                house_bills = filter_bills_by_payment_status(house_bills, is_paid, month)
 
             context["house_bills"] = house_bills
+            context["MonthChoices"] = MonthChoices
 
         return context
 

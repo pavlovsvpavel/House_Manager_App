@@ -10,7 +10,7 @@
         </select>
     </label>
     <label for="year">
-        <select name="year" placeholder="Year" id="year">
+        <select name="year" id="year" placeholder="Year" id="year">
             <option value="" selected disabled>{% trans "Year" %}</option>
             {% for choice in YearChoices %}
                 <option value="{{ choice.0 }}">{{ choice.1 }}</option>
@@ -25,8 +25,9 @@
             {% endfor %}
         </select>
     </label>
-    <button class="search-btn" type="submit">{% trans "Search" %}</button>
+    <button class="search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
 </form>
 <div class="buttons">
     <button class="save-btn" onclick="saveAsPDF()">{% trans "Save as PDF" %}</button>
+    {% include "partials/reports/reports_back_button.html" %}
 </div>

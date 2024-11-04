@@ -234,33 +234,40 @@
 
 .search_by_month_and_year {
     display: flex;
-    flex-direction: column;
-    gap: 1em;
-    align-items: flex-start;
-    width: 30%;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+
+.search_by_month_and_year label {
+    width: auto;
 }
 
 .reports-wrapper .buttons {
     display: flex;
     justify-content: space-between;
-    width: 30%;
+    flex-wrap: wrap;
+    gap: 1em;
 }
 
 .reports-wrapper .search-btn,
 .reports-wrapper .save-btn {
     align-self: flex-start;
     border: transparent;
-    border-radius: 0.5em;
-    background-color: var(--form-btn-color);
+    border-radius: 1.5em;
+    background-color: var(--card-bgnd-hover);
     color: #fff;
     padding: 0.5em;
     cursor: pointer;
     transition: 0.3s ease-in-out;
 }
 
+.reports-wrapper .save-btn {
+    background-color: #FF8080;
+}
+
 .reports-wrapper .search-btn:hover,
 .reports-wrapper .save-btn:hover {
-    background-color: var(--form-btn-color-hover);
+    background-color: var(--form-btn-color);
     transition: 0.3s ease-in-out;
 }
 
