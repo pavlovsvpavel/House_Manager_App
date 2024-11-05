@@ -1,6 +1,8 @@
+{% load static %}
 {% load i18n %}
 
 <form class="search_by_month_and_year" method="get">
+    <script src={% static "scripts/exportToPdf.js" %}></script>
     <label for="month">
         <select name="month" id="month">
             <option value="" selected disabled>{% trans "Month" %}</option>
@@ -25,9 +27,28 @@
             {% endfor %}
         </select>
     </label>
-    <button class="search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <button class="search-btn" type="submit">&#x1F50D;&#xFE0E;</button>
 </form>
 <div class="buttons">
-    <button class="save-btn" onclick="saveAsPDF()">{% trans "Save as PDF" %}</button>
+    <button id="generatePdf" class="save-btn">{% trans "Save as PDF" %}</button>
     {% include "partials/reports/reports_back_button.html" %}
 </div>
+
+<script>
+    document.getElementById('generatePdf').addEventListener('click', function () {
+        // Check if the html2pdf library is already loaded
+        if (typeof html2pdf === 'undefined') {
+            // Load the html2pdf script
+            const script = document.createElement('script');
+            script.src = "{% static 'scripts/html2pdf.js' %}";
+            script.onload = () => {
+                console.log("html2pdf loaded");
+                saveAsPDF();
+            };
+            document.head.appendChild(script);
+        } else {
+            console.log("html2pdf already loaded");
+            saveAsPDF();
+        }
+    });
+</script>

@@ -1,20 +1,23 @@
 $(document).ready(function () {
+     // jSignature element
+    const $signatureElement = $("#signature");
+
     // Initialize the signature widget
-    $('#signature').jSignature({
+    $signatureElement.jSignature({
         width: "100%",
-        height: 400,
+        height: 250,
 
     });
 
     function toggleSignaturePad() {
         if ($('#id_is_paid').is(':checked')) {
-            $('#signature').show();
+            $signatureElement.show();
             // Smooth scroll to the signature pad
             $('html, body').animate({
-                scrollTop: $('#signature').offset().top - 50
+                scrollTop: $signatureElement.offset().top - 50
             }, 600);
         } else {
-            $('#signature').hide();
+            $signatureElement.hide();
         }
     }
 
@@ -26,26 +29,19 @@ $(document).ready(function () {
         toggleSignaturePad();
     });
 
-    const emptySignature = $('#signature').jSignature('getData', 'svgbase64')[1];
+    const emptySignature = $signatureElement.jSignature('getData', 'svgbase64')[1];
     // Capture the signature data on form submission
     $('form.is-paid-form').submit(function (event) {
-        const data = $('#signature').jSignature('getData', 'svgbase64');
-        if (data[1] === emptySignature) {
+        const signatureData = $signatureElement.jSignature('getData', 'svgbase64')[1];
+        if (signatureData === emptySignature) {
             $('#signature_input').val('');  // Set to empty string if no signature
         } else {
-            $('#signature_input').val(data[1]);  // Save the base64 data if there's a signature
+            $('#signature_input').val(signatureData);  // Save the base64 data if there's a signature
         }
     });
 
     // Reset the signature when the reset button is clicked
     $('#reset_signature').click(function () {
-        $('#signature').jSignature('reset');
+        $signatureElement.jSignature('reset');
     });
-});
-
-$(document).ready(function (data) {
-    const image = new Image();
-    const signature = signatureDataFromDataBase;
-    image.src = 'data:' + signature;
-    $(image).appendTo('#displaySignature');
 });
