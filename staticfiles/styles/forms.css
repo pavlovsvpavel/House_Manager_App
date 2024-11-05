@@ -114,6 +114,8 @@
     flex-direction: column;
     border-radius: 0.5em;
     background-color: #CCC;
+    overflow: hidden;
+    position: relative;
 }
 
 #signature .btn-reset-signature {
