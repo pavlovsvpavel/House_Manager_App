@@ -22,3 +22,7 @@ function redirectToHouseDetails(houseId, detailsCurrentHouse) {
     window.location.href = detailsCurrentHouse.replace(0, houseId);
 }
 
+function redirectToClientBills(clientId, currentClientBills) {
+    window.location.href = currentClientBills.replace(0, clientId);
+}
+

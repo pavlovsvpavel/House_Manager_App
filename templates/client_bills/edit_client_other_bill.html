@@ -37,11 +37,11 @@
                         <script src="{% static "scripts/signatureShow.js" %}"></script>
                         <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
                         {% include "partials/signature-show.html" %}
-                        {% include "partials/back_button.html" %}
+                        {% include "partials/back_button_client_bills.html" %}
                     {% else %}
                         <script src={% static "scripts/signaturePad.js" %}></script>
                         {% include "partials/signature-pad.html" %}
-                        {% include "partials/form_buttons.html" %}
+                        {% include "partials/form_buttons_client_bills.html" %}
                     {% endif %}
                 </form>
             </div>
