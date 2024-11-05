@@ -125,7 +125,7 @@ class MonthlyBill(models.Model):
         verbose_name=_("Cleaner fee"),
     )
 
-    fee_manager_and_cashier = models.DecimalField(
+    fee_manager = models.DecimalField(
         max_digits=MAX_DECIMAL_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         blank=False,
@@ -133,7 +133,18 @@ class MonthlyBill(models.Model):
         validators=(
             MinValueValidator(MIN_VALUE, message=_("Please enter a value greater than zero")),
         ),
-        verbose_name=_("Manager/Cashier fee"),
+        verbose_name=_("Manager fee"),
+    )
+
+    fee_cashier = models.DecimalField(
+        max_digits=MAX_DECIMAL_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        blank=False,
+        null=False,
+        validators=(
+            MinValueValidator(MIN_VALUE, message=_("Please enter a value greater than zero")),
+        ),
+        verbose_name=_("Cashier fee"),
     )
 
     repairs = models.DecimalField(
@@ -189,6 +200,8 @@ class MonthlyBill(models.Model):
         default="",
     )
 
+    total_amount_temp = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+
     def get_month_name(self):
         return dict(MonthChoices.choices)[self.month]
 
@@ -243,8 +256,6 @@ class OtherBill(models.Model):
 
     signature = models.TextField(
         default="",
-        blank=False,
-        null=False,
     )
 
     def get_month_name(self):

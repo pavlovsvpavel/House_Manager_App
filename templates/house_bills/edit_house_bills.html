@@ -35,8 +35,12 @@
                         <p class="column-data">{{ object.fee_cleaner }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">{% trans "Manager/Cashier fee" %}</p>
+                        <p class="column-name">{% trans "Manager fee" %}</p>
                         <p class="column-data">{{ object.fee_manager_and_cashier }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">{% trans "Cashier fee" %}</p>
+                        <p class="column-data">{{ object.fee_cashier }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">{% trans "Other expenses" %}</p>

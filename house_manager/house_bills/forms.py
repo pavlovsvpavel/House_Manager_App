@@ -20,7 +20,7 @@ class HouseMonthlyBillForm(HouseBaseBillForm):
         model = HouseMonthlyBill
         fields = ("month", "year", "electricity_common",
                   "electricity_lift", "internet", "maintenance_lift",
-                  "fee_cleaner", "fee_manager_and_cashier", "repairs",
+                  "fee_cleaner", "fee_manager_and_cashier", "fee_cashier", "repairs",
                   "others")
 
 
