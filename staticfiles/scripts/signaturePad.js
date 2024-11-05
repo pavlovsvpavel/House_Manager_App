@@ -5,7 +5,7 @@ $(document).ready(function () {
     // Initialize the signature widget
     $signatureElement.jSignature({
         width: "100%",
-        height: "auto",
+        height: 250,
 
     });
 
