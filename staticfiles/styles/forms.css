@@ -139,3 +139,11 @@
 .is-paid-form .signature-label {
     padding-left: 1em;
 }
+
+/* Signature pad show/hide */
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+}

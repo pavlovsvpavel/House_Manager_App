@@ -3,9 +3,10 @@
 {% load i18n %}
 
 {% block main_content %}
+    <script src="{% static "scripts/jquery.js" %}"></script>
+    <script src="{% static "scripts/jSignature.js" %}"></script>
+    
     <section class="site-section details-client-bill">
-        <script src="{% static "scripts/jquery.js" %}"></script>
-        <script src="{% static "scripts/jSignature.js" %}"></script>
         <div class="container">
             <div class="wrapper">
                 <div class="client-card">
@@ -61,17 +62,17 @@
                 <form class="is-paid-form" method="post" action="{% url "edit_client_bill" pk=object.pk %}">
                     {{ form }}
                     {% csrf_token %}
-
+                    
                     {% if form.instance.is_paid %}
                         <script src="{% static "scripts/signatureShow.js" %}"></script>
                         <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
                         {% include "partials/signature-show.html" %}
-                        {% include "partials/back_button_client_bills.html" %}
+                        {% include "partials/back_button.html" %}
 
                     {% else %}
                         <script src="{% static "scripts/signaturePad.js" %}"></script>
                         {% include "partials/signature-pad.html" %}
-                        {% include "partials/form_buttons_client_bills.html" %}
+                        {% include "partials/form_buttons.html" %}
                     {% endif %}
                 </form>
             </div>

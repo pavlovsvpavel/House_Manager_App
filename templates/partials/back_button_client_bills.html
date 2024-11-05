@@ -1,6 +1,0 @@
-{% load i18n %}
-
-<div class="back-button">
-    <button class="back-btn" type="button" onclick="redirectToClientBills({{ object.client.pk }},'{% url "list_client_bills" pk=0 %}')">
-        <i class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</button>
-</div>
