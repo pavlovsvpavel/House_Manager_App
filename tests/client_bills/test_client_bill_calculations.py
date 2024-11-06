@@ -58,7 +58,8 @@ class TestClientBillCalculations(TestCase):
             "internet": 1,
             "maintenance_lift": 1,
             "fee_cleaner": 1,
-            "fee_manager_and_cashier": 1,
+            "fee_manager": 1,
+            "fee_cashier": 1,
             "repairs": 1,
             "others": 1,
             "user_id": self.user.id,
@@ -113,9 +114,13 @@ class TestClientBillCalculations(TestCase):
         fee_cleaner_expected = 0.25
         self.assertEqual(fee_cleaner_result, fee_cleaner_expected)
 
-        fee_manager_result = client_bill.fee_manager_and_cashier
+        fee_manager_result = client_bill.fee_manager
         fee_manager_expected = 0.5
         self.assertEqual(fee_manager_result, fee_manager_expected)
+
+        fee_cashier_result = client_bill.fee_cashier
+        fee_cashier_expected = 0.5
+        self.assertEqual(fee_cashier_result, fee_cashier_expected)
 
         repairs_result = client_bill.repairs
         repairs_expected = 0.5
@@ -127,7 +132,7 @@ class TestClientBillCalculations(TestCase):
 
 
         total_amount_result = client_bill.total_amount
-        total_amount_expected = 2.75
+        total_amount_expected = 3.25
 
         self.assertEqual(total_amount_result, total_amount_expected)
 
@@ -141,9 +146,13 @@ class TestClientBillCalculations(TestCase):
 
         client_bill = self.test_client.client_monthly_bills.filter(year=self.monthly_bill.year, month=self.monthly_bill.month).first()
 
-        fee_manager_and_cashier_result = client_bill.fee_manager_and_cashier
-        fee_manager_and_cashier_expected = 0.5
-        self.assertEqual(fee_manager_and_cashier_result, fee_manager_and_cashier_expected)
+        fee_manager_result = client_bill.fee_manager
+        fee_manager_expected = 0.5
+        self.assertEqual(fee_manager_result, fee_manager_expected)
+
+        fee_cashier_result = client_bill.fee_cashier
+        fee_cashier_expected = 0.5
+        self.assertEqual(fee_cashier_result, fee_cashier_expected)
 
         repairs_result = client_bill.repairs
         repairs_expected = 0.5
@@ -154,7 +163,7 @@ class TestClientBillCalculations(TestCase):
         self.assertEqual(others_result, others_expected)
 
         total_amount_result = client_bill.total_amount
-        total_amount_expected = 1.5
+        total_amount_expected = 2.0
         self.assertEqual(total_amount_result, total_amount_expected)
 
     def test_client_bill__when__is_using_lift__is_false(self):
@@ -188,9 +197,13 @@ class TestClientBillCalculations(TestCase):
         fee_cleaner_expected = 0.25
         self.assertEqual(fee_cleaner_result, fee_cleaner_expected)
 
-        fee_manager_result = client_bill.fee_manager_and_cashier
+        fee_manager_result = client_bill.fee_manager
         fee_manager_expected = 0.5
         self.assertEqual(fee_manager_result, fee_manager_expected)
+
+        fee_cashier_result = client_bill.fee_cashier
+        fee_cashier_expected = 0.5
+        self.assertEqual(fee_cashier_result, fee_cashier_expected)
 
         repairs_result = client_bill.repairs
         repairs_expected = 0.5
@@ -201,7 +214,7 @@ class TestClientBillCalculations(TestCase):
         self.assertEqual(others_result, others_expected)
 
         total_amount_result = client_bill.total_amount
-        total_amount_expected = 2.25
+        total_amount_expected = 2.75
 
         self.assertEqual(total_amount_result, total_amount_expected)
 

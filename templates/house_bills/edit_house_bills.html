@@ -35,8 +35,16 @@
                         <p class="column-data">{{ object.fee_cleaner }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">{% trans "Manager/Cashier fee" %}</p>
-                        <p class="column-data">{{ object.fee_manager_and_cashier }}</p>
+                        <p class="column-name">{% trans "Manager fee" %}</p>
+                        <p class="column-data">{{ object.fee_manager }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">{% trans "Cashier fee" %}</p>
+                        <p class="column-data">{{ object.fee_cashier }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">{% trans "Repairs fund" %}</p>
+                        <p class="column-data">{{ object.repairs }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">{% trans "Other expenses" %}</p>
@@ -44,7 +52,11 @@
                     </div>
                     <div class="card-column">
                         <p class="column-name">{% trans "Total BGN" %}</p>
-                        <p class="column-data">{{ object.amount_without_repairs }}</p>
+                        <p class="column-data">{{ object.total_amount }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">{% trans "Note about the payment" %}</p>
+                        <p class="column-data">{% trans "Without repairs" %}</p>
                     </div>
                 </div>
                 <form class="is-paid-form" method="post" action="{% url "edit_house_bills" pk=object.pk %}">
