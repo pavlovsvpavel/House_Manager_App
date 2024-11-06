@@ -2,13 +2,7 @@
 {% load i18n %}
 
 <li class="profile-menu">
-    <a class="profile-picture">
-        {% if request.user.profile.profile_picture %}
-            {% cloudinary request.user.profile.profile_picture %}
-        {% else %}
-            <i class="fa-solid fa-circle-user"></i>
-        {% endif %}
-    </a>
+    <a href="javascript:void(0);">{% trans "Profile" %}</a>
     <ul class="menu-links">
         {% if request.user.is_staff %}
             <li><a href="{% url "create_house" %}">{% trans "Create House" %}</a></li>
