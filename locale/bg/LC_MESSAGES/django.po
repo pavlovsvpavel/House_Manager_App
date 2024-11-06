@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-05 23:51+0200\n"
+"POT-Creation-Date: 2024-10-30 20:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -68,11 +68,11 @@ msgstr "Промяна на профил"
 msgid "Password change"
 msgstr "Промяна на парола"
 
-#: .\house_manager\client_bills\views.py:27
+#: .\house_manager\client_bills\views.py:26
 msgid "Bill not found for current client"
 msgstr "Не е намерена сметка на съответния клиент."
 
-#: .\house_manager\client_bills\views.py:77
+#: .\house_manager\client_bills\views.py:74
 msgid "Bill not found for current client."
 msgstr "Не е намерена сметка на съответния клиент."
 
@@ -177,28 +177,26 @@ msgstr "Ноември"
 msgid "December"
 msgstr "Декември"
 
-#: .\house_manager\common\mixins.py:62 .\house_manager\common\mixins.py:223
-#: .\templates\client_bills\edit_client_bill.html:22
-#: .\templates\client_bills\edit_client_other_bill.html:22
-#: .\templates\common\reports_bills.html:17
+#: .\house_manager\common\mixins.py:62 .\house_manager\common\mixins.py:211
+#: .\templates\client_bills\edit_client_bill.html:19
+#: .\templates\client_bills\edit_client_other_bill.html:20
+#: .\templates\common\reports_bills.html:19
 #: .\templates\house_bills\edit_house_bills.html:14
 #: .\templates\house_bills\edit_other_house_bills.html:15
 #: .\templates\house_bills\list_house_bills.html:20
 #: .\templates\house_bills\list_other_house_bills.html:20
 #: .\templates\partials\details_client_bills.html:7
-#: .\templates\partials\filter_buttons.html:7
-#: .\templates\partials\filter_buttons_clients.html:7
 #: .\templates\partials\reports\filtered_other_bill_type_multi.html:5
 #: .\templates\partials\reports\filtered_other_bill_type_single.html:5
-#: .\templates\partials\reports\reports_bills_search_fields.html:8
-#: .\templates\partials\reports\reports_other_bills_search_fields.html:8
+#: .\templates\partials\reports\reports_bills_search_fields.html:6
+#: .\templates\partials\reports\reports_other_bills_search_fields.html:6
 msgid "Month"
 msgstr "Месец"
 
-#: .\house_manager\common\mixins.py:70 .\house_manager\common\mixins.py:231
-#: .\templates\client_bills\edit_client_bill.html:18
-#: .\templates\client_bills\edit_client_other_bill.html:18
-#: .\templates\common\reports_bills.html:21
+#: .\house_manager\common\mixins.py:70 .\house_manager\common\mixins.py:219
+#: .\templates\client_bills\edit_client_bill.html:15
+#: .\templates\client_bills\edit_client_other_bill.html:16
+#: .\templates\common\reports_bills.html:23
 #: .\templates\house_bills\edit_house_bills.html:10
 #: .\templates\house_bills\edit_other_house_bills.html:11
 #: .\templates\house_bills\list_house_bills.html:16
@@ -206,8 +204,8 @@ msgstr "Месец"
 #: .\templates\partials\details_client_bills.html:3
 #: .\templates\partials\reports\filtered_other_bill_type_multi.html:9
 #: .\templates\partials\reports\filtered_other_bill_type_single.html:9
-#: .\templates\partials\reports\reports_bills_search_fields.html:16
-#: .\templates\partials\reports\reports_other_bills_search_fields.html:16
+#: .\templates\partials\reports\reports_bills_search_fields.html:14
+#: .\templates\partials\reports\reports_other_bills_search_fields.html:14
 msgid "Year"
 msgstr "Година"
 
@@ -215,69 +213,63 @@ msgstr "Година"
 #: .\house_manager\common\mixins.py:101 .\house_manager\common\mixins.py:112
 #: .\house_manager\common\mixins.py:123 .\house_manager\common\mixins.py:134
 #: .\house_manager\common\mixins.py:145 .\house_manager\common\mixins.py:156
-#: .\house_manager\common\mixins.py:167 .\house_manager\common\mixins.py:178
-#: .\house_manager\common\mixins.py:246 .\house_manager\houses\models.py:56
+#: .\house_manager\common\mixins.py:167 .\house_manager\common\mixins.py:234
+#: .\house_manager\houses\models.py:56
 msgid "Please enter a value greater than zero"
 msgstr "Моля въведете число по-голямо от нула"
 
 #: .\house_manager\common\mixins.py:81
-#: .\templates\client_bills\edit_client_bill.html:26
+#: .\templates\client_bills\edit_client_bill.html:23
 #: .\templates\house_bills\edit_house_bills.html:18
 msgid "Electricity common"
 msgstr "Ток общи нужди"
 
 #: .\house_manager\common\mixins.py:92
-#: .\templates\client_bills\edit_client_bill.html:30
+#: .\templates\client_bills\edit_client_bill.html:27
 #: .\templates\house_bills\edit_house_bills.html:22
 msgid "Electricity lift"
 msgstr "Ток асансьор"
 
 #: .\house_manager\common\mixins.py:103
-#: .\templates\client_bills\edit_client_bill.html:34
+#: .\templates\client_bills\edit_client_bill.html:31
 #: .\templates\house_bills\edit_house_bills.html:26
 msgid "Internet"
 msgstr "Интернет"
 
 #: .\house_manager\common\mixins.py:114
-#: .\templates\client_bills\edit_client_bill.html:38
+#: .\templates\client_bills\edit_client_bill.html:35
 #: .\templates\house_bills\edit_house_bills.html:30
 msgid "Lift maintenance"
 msgstr "Поддръжка асансьор"
 
 #: .\house_manager\common\mixins.py:125
-#: .\templates\client_bills\edit_client_bill.html:42
+#: .\templates\client_bills\edit_client_bill.html:39
 #: .\templates\house_bills\edit_house_bills.html:34
 msgid "Cleaner fee"
 msgstr "Такса хигиенист"
 
 #: .\house_manager\common\mixins.py:136
-#: .\templates\client_bills\edit_client_bill.html:46
+#: .\templates\client_bills\edit_client_bill.html:43
 #: .\templates\house_bills\edit_house_bills.html:38
-msgid "Manager fee"
-msgstr "Такса Домоуправител"
+msgid "Manager/Cashier fee"
+msgstr "Такса Домоуправител/Касиер"
 
 #: .\house_manager\common\mixins.py:147
-#: .\templates\client_bills\edit_client_bill.html:50
-#: .\templates\house_bills\edit_house_bills.html:42
-msgid "Cashier fee"
-msgstr "Такса Касиер"
-
-#: .\house_manager\common\mixins.py:158
-#: .\templates\client_bills\edit_client_bill.html:54
+#: .\templates\client_bills\edit_client_bill.html:47
 msgid "Repairs fund"
 msgstr "Фонд ремонти"
 
-#: .\house_manager\common\mixins.py:169
-#: .\templates\client_bills\edit_client_bill.html:58
-#: .\templates\house_bills\edit_house_bills.html:46
+#: .\house_manager\common\mixins.py:158
+#: .\templates\client_bills\edit_client_bill.html:51
+#: .\templates\house_bills\edit_house_bills.html:42
 msgid "Other expenses"
 msgstr "Други разходи"
 
-#: .\house_manager\common\mixins.py:180 .\house_manager\common\mixins.py:248
-#: .\templates\client_bills\edit_client_bill.html:62
-#: .\templates\client_bills\edit_client_other_bill.html:30
-#: .\templates\common\reports_other_bills.html:28
-#: .\templates\house_bills\edit_house_bills.html:50
+#: .\house_manager\common\mixins.py:169 .\house_manager\common\mixins.py:236
+#: .\templates\client_bills\edit_client_bill.html:55
+#: .\templates\client_bills\edit_client_other_bill.html:28
+#: .\templates\common\reports_other_bills.html:30
+#: .\templates\house_bills\edit_house_bills.html:46
 #: .\templates\house_bills\edit_other_house_bills.html:27
 #: .\templates\house_bills\list_house_bills.html:24
 #: .\templates\house_bills\list_other_house_bills.html:28
@@ -286,15 +278,15 @@ msgstr "Други разходи"
 msgid "Total BGN"
 msgstr "Общо сума, ЛВ."
 
-#: .\house_manager\common\mixins.py:197 .\house_manager\common\mixins.py:253
-#: .\templates\house_bills\edit_house_bills.html:57
+#: .\house_manager\common\mixins.py:185 .\house_manager\common\mixins.py:241
+#: .\templates\house_bills\edit_house_bills.html:53
 #: .\templates\house_bills\edit_other_house_bills.html:34
 msgid "Paid"
 msgstr "Платена"
 
-#: .\house_manager\common\mixins.py:237
-#: .\templates\client_bills\edit_client_other_bill.html:26
-#: .\templates\common\reports_other_bills.html:27
+#: .\house_manager\common\mixins.py:225
+#: .\templates\client_bills\edit_client_other_bill.html:24
+#: .\templates\common\reports_other_bills.html:29
 #: .\templates\house_bills\edit_other_house_bills.html:19
 #: .\templates\partials\reports\filtered_other_bill_type_multi.html:13
 msgid "Comment"
@@ -325,7 +317,7 @@ msgstr "Сметка за всички клиенти"
 #: .\templates\house_bills\list_other_house_bills.html:24
 #: .\templates\partials\reports\filtered_other_bill_type_multi.html:17
 #: .\templates\partials\reports\filtered_other_bill_type_single.html:13
-#: .\templates\partials\reports\reports_other_bills_search_fields.html:24
+#: .\templates\partials\reports\reports_other_bills_search_fields.html:22
 msgid "Type of bill"
 msgstr "Тип сметка"
 
@@ -333,17 +325,17 @@ msgstr "Тип сметка"
 msgid "Bill for all clients with those month and year already exists."
 msgstr "Сметка за всички клиенти с тези месец и година вече съществува."
 
-#: .\house_manager\house_bills\views.py:39
+#: .\house_manager\house_bills\views.py:38
 msgid "Create Bill"
 msgstr "Създай сметка"
 
-#: .\house_manager\house_bills\views.py:62
-#: .\house_manager\house_bills\views.py:92
+#: .\house_manager\house_bills\views.py:61
+#: .\house_manager\house_bills\views.py:91
 msgid "Bill with those month and year already exists."
 msgstr "Сметка с тези месец и година вече съществува."
 
-#: .\house_manager\house_bills\views.py:114
-#: .\house_manager\house_bills\views.py:162
+#: .\house_manager\house_bills\views.py:112
+#: .\house_manager\house_bills\views.py:159
 msgid "Bills not found in selected house."
 msgstr "Не са намерени сметки на съответната къща."
 
@@ -383,11 +375,11 @@ msgstr "Вход"
 msgid "Current balance"
 msgstr "Настоящо салдо"
 
-#: .\house_manager\houses\views.py:30 .\templates\common\header.html:23
+#: .\house_manager\houses\views.py:29 .\templates\common\header.html:23
 msgid "Create House"
 msgstr "Създай къща"
 
-#: .\house_manager\houses\views.py:97
+#: .\house_manager\houses\views.py:94
 msgid "Edit House"
 msgstr "Промяна на къща"
 
@@ -463,14 +455,14 @@ msgstr "Вече имате регистрация?"
 msgid "Login now"
 msgstr "Вход"
 
-#: .\templates\client_bills\edit_client_bill.html:14
-#: .\templates\client_bills\edit_client_other_bill.html:14
+#: .\templates\client_bills\edit_client_bill.html:11
+#: .\templates\client_bills\edit_client_other_bill.html:12
 msgid "Family name"
 msgstr "Фамилия"
 
-#: .\templates\client_bills\edit_client_bill.html:72
-#: .\templates\client_bills\edit_client_other_bill.html:39
-#: .\templates\house_bills\edit_house_bills.html:60
+#: .\templates\client_bills\edit_client_bill.html:64
+#: .\templates\client_bills\edit_client_other_bill.html:36
+#: .\templates\house_bills\edit_house_bills.html:56
 #: .\templates\house_bills\edit_other_house_bills.html:38
 #: .\templates\partials\form_buttons.html:4
 msgid "Save"
@@ -689,28 +681,28 @@ msgstr ""
 "Регистрирайте се сега, за да оптимизирате процеса на управление на разходите "
 "и да издигнете финансовото управление на вашата сграда на следващо ниво."
 
-#: .\templates\common\reports_bills.html:25
+#: .\templates\common\reports_bills.html:27
 msgid "Amount for collection"
 msgstr "Сума за събиране"
 
-#: .\templates\common\reports_bills.html:26
-#: .\templates\common\reports_bills.html:30
+#: .\templates\common\reports_bills.html:28
+#: .\templates\common\reports_bills.html:32
 #: .\templates\houses\details_house.html:53
 #: .\templates\partials\reports\filtered_other_bill_type_multi.html:22
 #: .\templates\partials\reports\filtered_other_bill_type_single.html:18
 msgid "BGN"
 msgstr "ЛВ."
 
-#: .\templates\common\reports_bills.html:29
+#: .\templates\common\reports_bills.html:31
 #: .\templates\houses\details_house.html:52
 msgid "Current Balance"
 msgstr "Настоящо салдо"
 
-#: .\templates\common\reports_other_bills.html:26
+#: .\templates\common\reports_other_bills.html:28
 msgid "Full name"
 msgstr "Име и Фамилия"
 
-#: .\templates\common\reports_other_bills.html:29
+#: .\templates\common\reports_other_bills.html:31
 #: .\templates\partials\reports\table_headers.html:9
 #: .\templates\partials\reports\table_headers_other_bills.html:7
 msgid "Signature"
@@ -773,24 +765,24 @@ msgstr "Общо живущи ползващи асансьор"
 msgid "No clients"
 msgstr "Няма клиенти"
 
-#: .\templates\partials\filter_buttons.html:8
-#: .\templates\partials\filter_buttons_clients.html:8
+#: .\templates\partials\filter_buttons.html:3
+#: .\templates\partials\filter_buttons_clients.html:3
 msgid "All"
 msgstr "Всички"
 
-#: .\templates\partials\filter_buttons.html:19
+#: .\templates\partials\filter_buttons.html:4
 msgid "Paid bills"
 msgstr "Платени сметки"
 
-#: .\templates\partials\filter_buttons.html:22
+#: .\templates\partials\filter_buttons.html:5
 msgid "Unpaid bills"
 msgstr "Неплатени сметки"
 
-#: .\templates\partials\filter_buttons_clients.html:19
+#: .\templates\partials\filter_buttons_clients.html:4
 msgid "with paid bills"
 msgstr "с платени сметки"
 
-#: .\templates\partials\filter_buttons_clients.html:22
+#: .\templates\partials\filter_buttons_clients.html:5
 msgid "with unpaid bills"
 msgstr "с неплатени сметки"
 
@@ -819,8 +811,13 @@ msgstr "Изход"
 msgid "Total"
 msgstr "Общо сума"
 
-#: .\templates\partials\reports\reports_bills_search_fields.html:25
-#: .\templates\partials\reports\reports_other_bills_search_fields.html:33
+#: .\templates\partials\reports\reports_bills_search_fields.html:20
+#: .\templates\partials\reports\reports_other_bills_search_fields.html:28
+msgid "Search"
+msgstr "Търсене"
+
+#: .\templates\partials\reports\reports_bills_search_fields.html:23
+#: .\templates\partials\reports\reports_other_bills_search_fields.html:31
 msgid "Save as PDF"
 msgstr "Запази в PDF"
 
@@ -843,9 +840,6 @@ msgstr "Подпис:"
 #: .\templates\partials\signature-show.html:7
 msgid "No signature"
 msgstr "Няма подпис"
-
-#~ msgid "Search"
-#~ msgstr "Търсене"
 
 #~ msgid "Pricing Plans"
 #~ msgstr "Абонаментни планове"

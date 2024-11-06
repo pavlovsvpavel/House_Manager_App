@@ -8,7 +8,7 @@ from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 class ClientMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAdmin):
     list_display = ("house", "client", "month", "year", "electricity_common",
                     "electricity_lift", "internet", "maintenance_lift",
-                    "fee_cleaner", "fee_manager_and_cashier", "fee_cashier", "repairs",
+                    "fee_cleaner", "fee_manager_and_cashier", "repairs",
                     "others", "total_amount")
 
     ordering = ("house", "client__apartment", "-year", "month")
