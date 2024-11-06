@@ -261,6 +261,10 @@
     transition: 0.3s ease-in-out;
 }
 
+.reports-wrapper .search-btn {
+    padding: 0.5em 1.5em;
+}
+
 .reports-wrapper .save-btn {
     background-color: #FF8080;
 }
