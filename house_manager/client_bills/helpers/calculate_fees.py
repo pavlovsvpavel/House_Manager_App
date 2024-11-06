@@ -52,7 +52,7 @@ def calculate_fees(house_id, year, month, user_id):
                     continue
 
                 # Calculation based on total apartments
-                elif field.name in ['repairs', 'others', 'fee_manager_and_cashier']:
+                elif field.name in ['repairs', 'others', 'fee_manager', 'fee_cashier']:
                     calculated_amount = field_value / total_apartments
                     calculated_values[field.name] = round_up_second_decimal(calculated_amount)
                     continue
@@ -69,7 +69,7 @@ def calculate_fees(house_id, year, month, user_id):
                     calculated_values[field.name] = field_value
                     continue
 
-                if field.name in ['fee_manager_and_cashier', 'repairs', 'others']:
+                if field.name in ['fee_manager', 'fee_cashier', 'repairs', 'others']:
                     calculated_amount = field_value / total_apartments
                     calculated_values[field.name] = round_up_second_decimal(calculated_amount)
                     continue
