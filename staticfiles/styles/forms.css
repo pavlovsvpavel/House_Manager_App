@@ -37,8 +37,7 @@
     text-align: left;
 }
 
-.create-form .btn,
-.is-paid-form .btn {
+.create-form .btn {
     padding: 0.5em;
     border-radius: 1.5em;
     border-color: transparent;
@@ -50,8 +49,7 @@
     width: 100px;
 }
 
-.create-form .btn:hover,
-.is-paid-form .btn:hover {
+.create-form .btn:hover {
     background-color: var(--form-btn-color-hover);
     transition: 0.3s ease-in-out;
 }

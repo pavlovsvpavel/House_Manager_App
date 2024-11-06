@@ -1,11 +1,19 @@
+{% load cloudinary %}
 {% load i18n %}
 
 <li class="profile-menu">
-    <a href="javascript:void(0);">{% trans "Profile" %}</a>
+    <a class="profile-picture">
+        {% if request.user.profile.profile_picture %}
+            {% cloudinary request.user.profile.profile_picture %}
+        {% else %}
+            <i class="fa-solid fa-circle-user"></i>
+        {% endif %}
+    </a>
     <ul class="menu-links">
-        <li><a href="{% url "details_profile" pk=request.user.pk %}">{% trans "Details" %}</a></li>
         {% if request.user.is_staff %}
+            <li><a href="{% url "create_house" %}">{% trans "Create House" %}</a></li>
             <li><a href="{% url "admin:index" %}">{% trans "Administration" %}</a></li>
+            <li><a href="{% url "details_profile" pk=request.user.pk %}">{% trans "Settings" %}</a></li>
         {% endif %}
         <li><a href="{% url "logout_user" %}">{% trans "Logout" %}</a></li>
     </ul>

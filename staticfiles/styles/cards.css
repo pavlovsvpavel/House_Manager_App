@@ -231,6 +231,13 @@
     object-fit: cover;
 }
 
+.profile-card img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .profile-card svg {
     fill: var(--card-text-color);
     stroke: black;
@@ -275,4 +282,8 @@
 .profile-card .details-profile-btns ul li a:hover {
     background-color: var(--form-btn-color-hover);
     transition: 0.3s ease-in-out;
+}
+
+.profile-card .fa-solid {
+    font-size: 10em;
 }

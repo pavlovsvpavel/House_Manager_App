@@ -9,11 +9,6 @@
     padding-left: 0.5em;
 }
 
-.language-form-btn img {
-    width: 30px;
-    height: 30px;
-}
-
 .details-house-elements .buttons {
     display: flex;
     flex: 0 1 50%;
@@ -199,4 +194,28 @@
     pointer-events: none; /* Disable clicking on the link */
     text-decoration: none; /* Remove underline */
     cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+}
+
+.is-paid-form .btn {
+    padding: 0.5em;
+    border-radius: 1.5em;
+    border-color: transparent;
+    background-color: var(--form-btn-color);
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    align-self: center;
+    width: 100px;
+}
+
+.is-paid-form .btn:hover {
+    background-color: var(--form-btn-color-hover);
+    transition: 0.3s ease-in-out;
+}
+
+.is-paid-form .btn.disabled {
+    background-color: #ccc;
+    pointer-events: none;
+    text-decoration: none;
+    cursor: not-allowed;
 }

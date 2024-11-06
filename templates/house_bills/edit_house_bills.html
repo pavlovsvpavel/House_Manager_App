@@ -55,20 +55,23 @@
                         <p class="column-data">{{ object.total_amount }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">{% trans "Note about the payment" %}</p>
-                        <p class="column-data">{% trans "Without repairs" %}</p>
+                        <p style="color: #d51616" class="column-name">{% trans "The payment is without 'Repairs'" %}</p>
                     </div>
                 </div>
                 <form class="is-paid-form" method="post" action="{% url "edit_house_bills" pk=object.pk %}">
                     {% csrf_token %}
                     <div>
-                        <label for="id_is_paid">{% trans "Paid" %}</label>{{ form.is_paid }}
+                        <label for="id_is_paid">{% trans "Pay the bill:" %}</label>
+                        {{ form.is_paid }}
                     </div>
                     {% if form.instance.is_paid %}
                         <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
+                        <script>
+                            document.querySelector('label[for="id_is_paid"]').textContent = "{% trans 'Paid' %}";
+                        </script>
                         {% include "partials/back_button.html" %}
                     {% else %}
-                        {% include "partials/form_buttons.html" %}
+                        {% include "partials/form_buttons_edit_bills.html" %}
                     {% endif %}
                 </form>
             </div>

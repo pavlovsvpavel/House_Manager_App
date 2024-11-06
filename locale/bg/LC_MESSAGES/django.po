@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-06 11:59+0200\n"
+"POT-Creation-Date: 2024-11-06 15:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -41,7 +41,7 @@ msgid "Last name"
 msgstr "Фамилия"
 
 #: .\house_manager\accounts\models.py:71
-#: .\templates\accounts\details_profile.html:24
+#: .\templates\accounts\details_profile.html:21
 msgid "Phone number"
 msgstr "Телефонен номер"
 
@@ -288,7 +288,7 @@ msgid "Total BGN"
 msgstr "Общо сума, ЛВ."
 
 #: .\house_manager\common\mixins.py:197 .\house_manager\common\mixins.py:253
-#: .\templates\house_bills\edit_house_bills.html:65
+#: .\templates\house_bills\edit_house_bills.html:70
 #: .\templates\house_bills\edit_other_house_bills.html:34
 msgid "Paid"
 msgstr "Платена"
@@ -384,7 +384,7 @@ msgstr "Вход"
 msgid "Current balance"
 msgstr "Настоящо салдо"
 
-#: .\house_manager\houses\views.py:30 .\templates\common\header.html:23
+#: .\house_manager\houses\views.py:30 .\templates\partials\profile_menu.html:14
 msgid "Create House"
 msgstr "Създай къща"
 
@@ -408,37 +408,33 @@ msgstr "Да"
 msgid "No"
 msgstr "Не"
 
-#: .\templates\accounts\details_profile.html:10
-msgid "Profile details"
-msgstr "Детайли за профила"
-
-#: .\templates\accounts\details_profile.html:19
+#: .\templates\accounts\details_profile.html:16
 msgid "Email"
 msgstr "Имейл"
 
-#: .\templates\accounts\details_profile.html:21
+#: .\templates\accounts\details_profile.html:18
 msgid "Name"
 msgstr "Име"
 
-#: .\templates\accounts\details_profile.html:29
+#: .\templates\accounts\details_profile.html:26
 #: .\templates\clients\details_client.html:39
 #: .\templates\houses\details_house.html:56
 msgid "Edit"
 msgstr "Промени"
 
-#: .\templates\accounts\details_profile.html:30
+#: .\templates\accounts\details_profile.html:27
 #: .\templates\clients\details_client.html:40
 #: .\templates\houses\details_house.html:57
 msgid "Delete"
 msgstr "Изтрий"
 
-#: .\templates\accounts\details_profile.html:31
+#: .\templates\accounts\details_profile.html:28
 msgid "Change password"
 msgstr "Промяна на парола"
 
 #: .\templates\accounts\login.html:25 .\templates\accounts\login.html:29
 #: .\templates\accounts\register.html:26 .\templates\accounts\register.html:30
-#: .\templates\common\header.html:26
+#: .\templates\common\header.html:24
 msgid "Login"
 msgstr "Вход"
 
@@ -474,6 +470,7 @@ msgstr "Фамилия"
 #: .\templates\house_bills\edit_house_bills.html:68
 #: .\templates\house_bills\edit_other_house_bills.html:38
 #: .\templates\partials\form_buttons.html:4
+#: .\templates\partials\form_buttons_edit_bills.html:6
 msgid "Save"
 msgstr "Запиши"
 
@@ -602,10 +599,10 @@ msgid "No houses"
 msgstr "Няма създадени къщи"
 
 #: .\templates\common\header.html:22
-msgid "My Houses"
-msgstr "Моите къщи"
+msgid "Dashboard"
+msgstr "Табло"
 
-#: .\templates\common\header.html:28
+#: .\templates\common\header.html:27
 msgid "About"
 msgstr "За нас"
 
@@ -723,12 +720,12 @@ msgid "Add clients first"
 msgstr "Първо добавете клиенти"
 
 #: .\templates\house_bills\edit_house_bills.html:58
-msgid "Note about the payment"
-msgstr "Забележка"
+msgid "The payment is without 'Repairs'"
+msgstr "Плащането е без 'Фонд ремонти'"
 
-#: .\templates\house_bills\edit_house_bills.html:59
-msgid "Without repairs"
-msgstr "Без 'Фонд ремонти' "
+#: .\templates\house_bills\edit_house_bills.html:64
+msgid "Pay the bill:"
+msgstr "Плати сметката:"
 
 #: .\templates\houses\delete_house.html:9
 msgid "Are you sure you want to delete this house?"
@@ -804,22 +801,19 @@ msgid "with unpaid bills"
 msgstr "с неплатени сметки"
 
 #: .\templates\partials\form_buttons.html:5
+#: .\templates\partials\form_buttons_edit_bills.html:7
 msgid "Cancel"
 msgstr "Отмени"
 
-#: .\templates\partials\profile_menu.html:4
-msgid "Profile"
-msgstr "Профил"
-
-#: .\templates\partials\profile_menu.html:6
-msgid "Details"
-msgstr "Детайли"
-
-#: .\templates\partials\profile_menu.html:8
+#: .\templates\partials\profile_menu.html:15
 msgid "Administration"
 msgstr "Администрация"
 
-#: .\templates\partials\profile_menu.html:10
+#: .\templates\partials\profile_menu.html:16
+msgid "Settings"
+msgstr "Настройки"
+
+#: .\templates\partials\profile_menu.html:18
 msgid "Logout"
 msgstr "Изход"
 
@@ -852,6 +846,27 @@ msgstr "Подпис:"
 #: .\templates\partials\signature-show.html:7
 msgid "No signature"
 msgstr "Няма подпис"
+
+#~ msgid "Profile details"
+#~ msgstr "Детайли за профила"
+
+#~ msgid "My Houses"
+#~ msgstr "Моите къщи"
+
+#~ msgid "Profile"
+#~ msgstr "Профил"
+
+#~ msgid "Details"
+#~ msgstr "Детайли"
+
+#~ msgid "Payment type"
+#~ msgstr "Тип плащане"
+
+#~ msgid "Without repairs"
+#~ msgstr "Без 'Фонд ремонти' "
+
+#~ msgid "Note about the payment"
+#~ msgstr "Забележка"
 
 #~ msgid "Search"
 #~ msgstr "Търсене"

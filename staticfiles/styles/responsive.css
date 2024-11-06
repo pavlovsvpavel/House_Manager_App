@@ -3,6 +3,15 @@
         font-size: 16px;
     }
 
+    .header-elements .site-title a {
+        width: 40px;
+        height: 40px;
+    }
+
+    .site-title h1 {
+        font-size: 0.4em;
+    }
+
     .navigation ul {
         font-size: 0.8em;
     }
@@ -51,8 +60,12 @@
     }
 
     .header-elements .site-title a {
-        width: 50px;
-        height: 50px;
+        width: 35px;
+        height: 35px;
+    }
+
+    .site-title h1 {
+        font-size: 0.4em;
     }
 
     .site-header {
@@ -69,7 +82,8 @@
         width: 100%;
     }
 
-    .navigation ul a {
+    .navigation ul a,
+    .navigation .language-form-btn {
         padding: 1em 0.5em;
         font-size: 1.5em;
     }

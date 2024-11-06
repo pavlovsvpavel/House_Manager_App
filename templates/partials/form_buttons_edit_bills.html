@@ -1,0 +1,8 @@
+{% load static %}
+{% load i18n %}
+
+<div class="form-buttons">
+    <script src="{% static "scripts/editBillsSaveButton.js" %}"></script>
+    <button id="save-btn" class="btn disabled" type="submit" disabled>{% trans "Save" %}</button>
+    <button class="btn" type="button" onclick="window.history.back();">{% trans "Cancel" %}</button>
+</div>

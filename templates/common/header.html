@@ -19,15 +19,16 @@
                     </label>
                     <ul>
                         {% if request.user.is_authenticated %}
-                            <li><a href="{% url "dashboard" %}">{% trans "My Houses" %}</a></li>
-                            <li><a href="{% url "create_house" %}">{% trans "Create House" %}</a></li>
-                            {% include "partials/profile_menu.html" %}
+                            <li><a href="{% url "dashboard" %}">{% trans "Dashboard" %}</a></li>
                         {% else %}
                             <li><a href="{% url "login_user" %}">{% trans "Login" %}</a></li>
                         {% endif %}
-                            <li><a href="{% url "about" %}">{% trans "About" %}</a></li>
-                    </ul>
-                    <ul>
+
+                        <li><a href="{% url "about" %}">{% trans "About" %}</a></li>
+
+                        {% if request.user.is_authenticated %}
+                            {% include "partials/profile_menu.html" %}
+                        {% endif %}
                         <li>
                             <form class="language-form" action="{% url 'set_language' %}" method="post">
                                 {% csrf_token %}
