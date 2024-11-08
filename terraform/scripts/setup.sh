@@ -28,11 +28,11 @@ else
   cd House_Manager_App
 fi
 
-# Move the env file to repository root folder
+# Move the env file to repository envs folder
 if [ -f "/home/ubuntu/app/envs/.env.cloud" ]; then
-    mv /home/ubuntu/app/envs/.env.cloud ./terraform
+    mv /home/ubuntu/app/envs/.env.cloud ./envs
 else
-    echo "No .env.aws file found."
+    echo "No .env.cloud file found."
 fi
 
 # Build images and run containers
