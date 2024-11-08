@@ -101,7 +101,7 @@ resource "aws_instance" "app_instance_creation" {
   }
 
   provisioner "file" {
-    source      = "../envs/.env.cloud"
+    source      = "${path.module}/../envs/.env.cloud"
     destination = "/home/ubuntu/app/envs/.env.cloud"
   }
 

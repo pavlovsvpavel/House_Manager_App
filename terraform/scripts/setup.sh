@@ -1,12 +1,10 @@
 #!/bin/bash
 
 # Update and upgrade the system
-sudo apt update -y
-sudo apt upgrade -y
+sudo apt-get update -y && sudo apt-get upgrade -y
 
-# Install Docker using snap
-sudo apt install -y docker.io
-sudo apt install -y docker-compose 
+# Install Docker/Docker compose
+sudo snap install docker
 
 # Add the docker group and user to the docker group
 sudo groupadd docker || true  # Skip if the group already exists
@@ -30,7 +28,8 @@ fi
 
 # Move the env file to repository envs folder
 if [ -f "/home/ubuntu/app/envs/.env.cloud" ]; then
-    mv /home/ubuntu/app/envs/.env.cloud ./envs
+    mkdir -p ./envs
+    cp /home/ubuntu/app/envs/.env.cloud ./envs
 else
     echo "No .env.cloud file found."
 fi
