@@ -1,6 +1,6 @@
 services:
   web:
-    image: ppavlovp/house_manager:latest
+    image: ppavlovp/house_manager:local
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,7 +8,7 @@ services:
     ports:
       - "8000:8000"
     env_file:
-      - ./terraform/.env.aws
+      - envs/.env.local
     volumes:
       - ./staticfiles:/tmp/house_manager/static_files
       - ./mediafiles:/tmp/house_manager/mediafiles
@@ -23,25 +23,19 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - ./terraform/.env.aws
+      - envs/.env.local
     volumes:
       - ./postgresql:/var/lib/postgresql/data
   nginx:
     image: nginx
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
+      - "81:80"
     volumes:
       - ./staticfiles:/home/app/web/static_files
       - ./mediafiles:/home/app/web/mediafiles
       - ./locale:/home/app/web/locale
-      - ./nginx/aws/conf.d:/etc/nginx/conf.d
-      - ./nginx/aws/logs:/var/log/nginx
-      - ./certbot/www:/var/www/certbot/:ro
-      - ./certbot/conf/:/etc/nginx/ssl/:ro
+      - ./nginx/local/conf.d:/etc/nginx/conf.d
+      - ./nginx/local/logs:/var/log/nginx
     depends_on:
       - web
-
-
-

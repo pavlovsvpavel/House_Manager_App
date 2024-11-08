@@ -1,6 +1,6 @@
 services:
   web:
-    image: ppavlovp/house_manager:dev
+    image: ppavlovp/house_manager:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,7 +8,7 @@ services:
     ports:
       - "8000:8000"
     env_file:
-      - .env.dev
+      - envs/.env.cloud
     volumes:
       - ./staticfiles:/tmp/house_manager/static_files
       - ./mediafiles:/tmp/house_manager/mediafiles
@@ -23,19 +23,25 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - .env.dev
+      - envs/.env.cloud
     volumes:
       - ./postgresql:/var/lib/postgresql/data
   nginx:
     image: nginx
     restart: always
     ports:
-      - "81:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./staticfiles:/home/app/web/static_files
       - ./mediafiles:/home/app/web/mediafiles
       - ./locale:/home/app/web/locale
-      - ./nginx/dev/conf.d:/etc/nginx/conf.d
-      - ./nginx/dev/logs:/var/log/nginx
+      - ./nginx/cloud/conf.d:/etc/nginx/conf.d
+      - ./nginx/cloud/logs:/var/log/nginx
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
     depends_on:
       - web
+
+
+

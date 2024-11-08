@@ -8,12 +8,6 @@ variable "aws_new_key_pair" {
   description = "The name of the key pair"
 }
 
-variable "aws_existing_key_pair" {
-  type        = string
-  description = "The name of the key pair"
-}
-
-
 variable "aws_security_group" {
   type        = string
   description = "The name of the security group"
@@ -52,11 +46,6 @@ variable "existing_eip_allocation_id" {
 variable "connection_user" {
   description = "The user for ssh connection"
   type        = string
-}
-
-variable "s3_bucket_name" {
-  type        = string
-  description = "The name of the S3 bucket."
 }
 
 variable "private_key_path" {

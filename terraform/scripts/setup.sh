@@ -29,13 +29,13 @@ else
 fi
 
 # Move the env file to repository root folder
-if [ -f "/home/ubuntu/app/envs/.env.aws" ]; then
-    mv /home/ubuntu/app/envs/.env.aws ./terraform
+if [ -f "/home/ubuntu/app/envs/.env.cloud" ]; then
+    mv /home/ubuntu/app/envs/.env.cloud ./terraform
 else
     echo "No .env.aws file found."
 fi
 
 # Build images and run containers
-sudo docker-compose -f docker-compose.aws.yml up -d --build
+sudo docker-compose -f docker-compose.cloud.yml up -d --build
 
 EOF

@@ -17,35 +17,24 @@ provider "aws" {
 }
 
 ## Creation of new key pair for local deploy
-# resource "tls_private_key" "tlspk" {
-#   algorithm = "RSA"
-#   rsa_bits  = 2048 # Specify the number of bits for the RSA key
-# }
-
-# resource "aws_key_pair" "akp" {
-#   key_name   = var.aws_new_key_pair
-#   public_key = tls_private_key.tlspk.public_key_openssh
-# }
-
-# resource "local_file" "private_key" {
-#   filename = "${path.module}/house-manager-terraform-key.pem" # Specify the path and filename to save the private key
-#   content  = tls_private_key.tlspk.private_key_pem            # Use the private key content from the TLS resource
-#
-#   # Set permissions if desired
-#   file_permission = "0400" # Set the file to read-only for the owner
-# }
-
-# output "private_key" {
-#   value     = tls_private_key.tlspk.private_key_pem
-#   sensitive = true # Mark the output as sensitive to avoid displaying it in the console
-# }
-
-# Reference an already existing key pair in AWS
-data "aws_key_pair" "existing_key" {
-  key_name = var.aws_existing_key_pair # Replace this with the name of your existing key pair
+resource "tls_private_key" "app_private_key_creation" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
 }
 
-resource "aws_security_group" "asg" {
+resource "aws_key_pair" "app_key_pair" {
+  key_name   = var.aws_new_key_pair
+  public_key = tls_private_key.app_private_key_creation.public_key_openssh
+}
+
+resource "local_file" "private_key_path" {
+  filename = var.private_key_path
+  content  = tls_private_key.app_private_key_creation.private_key_pem
+
+  file_permission = "0400"
+}
+
+resource "aws_security_group" "app_security_group" {
   name_prefix = var.aws_security_group
   description = "Allow SSH and HTTP/HTTPS"
 
@@ -82,12 +71,11 @@ resource "aws_security_group" "asg" {
   }
 }
 
-resource "aws_instance" "awsi" {
+resource "aws_instance" "app_instance_creation" {
   ami                    = var.instance_image_id
   instance_type          = var.instance_type
-  vpc_security_group_ids = [aws_security_group.asg.id]
-  # key_name               = aws_key_pair.akp.key_name
-  key_name = data.aws_key_pair.existing_key.key_name
+  vpc_security_group_ids = [aws_security_group.app_security_group.id]
+  key_name               = aws_key_pair.app_key_pair.key_name
 
   root_block_device {
     volume_size = var.ebs_volume_size
@@ -99,14 +87,10 @@ resource "aws_instance" "awsi" {
   }
 
   connection {
-    type = "ssh"
-    host = aws_instance.awsi.public_ip
-    user = var.connection_user
-    ## If new key pair was created locally
-    # private_key = local_file.private_key.content # Path to your SSH private key
-
-    ## If the key pair is already created in AWS
-    private_key = file("${path.module}/../${var.aws_existing_key_pair}.pem")
+    type        = "ssh"
+    host        = aws_instance.app_instance_creation.public_ip
+    user        = var.connection_user
+    private_key = local_file.private_key_path.content
   }
 
   provisioner "remote-exec" {
@@ -116,85 +100,53 @@ resource "aws_instance" "awsi" {
     ]
   }
 
-  # provisioner "file" {
-  #   source      = "${path.module}/.env.aws"        # Path to your local .env file
-  #   destination = "/home/ubuntu/app/envs/.env.aws" # Destination path on the EC2 instance
-  # }
+  provisioner "file" {
+    source      = "${path.module}/../envs/.env.cloud"
+    destination = "/home/ubuntu/app/envs/.env.cloud"
+  }
 
-  #   provisioner "file" {
-  #     source      = "${path.module}/scripts/setup.sh"
-  #     destination = "/home/ubuntu/app/scripts/setup.sh"
-  #   }
-  #
-  #   provisioner "file" {
-  #     source      = "${path.module}/scripts/setup-web-container.sh"
-  #     destination = "/home/ubuntu/app/scripts/setup-web-container.sh"
-  #   }
-  #
-  #   provisioner "remote-exec" {
-  #     inline = [
-  #       "chmod +x /home/ubuntu/app/scripts/setup.sh",
-  #       "sleep 5",
-  #       "sudo /home/ubuntu/app/scripts/setup.sh",
-  #       "chmod +x /home/ubuntu/app/scripts/setup-web-container.sh",
-  #       "sleep 5",
-  #       "sudo /home/ubuntu/app/scripts/setup-web-container.sh"
-  #     ]
-  #   }
+  provisioner "file" {
+    source      = "${path.module}/scripts/setup.sh"
+    destination = "/home/ubuntu/app/scripts/setup.sh"
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/scripts/setup-web-container.sh"
+    destination = "/home/ubuntu/app/scripts/setup-web-container.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /home/ubuntu/app/scripts/setup.sh",
+      "sleep 5",
+      "sudo /home/ubuntu/app/scripts/setup.sh",
+      "chmod +x /home/ubuntu/app/scripts/setup-web-container.sh",
+      "sleep 5",
+      "sudo /home/ubuntu/app/scripts/setup-web-container.sh"
+    ]
+  }
 }
 
-# resource "aws_eip_association" "aeipa" {
-#   instance_id   = aws_instance.awsi.id
+## Use this resource, if you don't have elastic IP
+resource "aws_eip" "elastic_ip_creation" {
+  instance = aws_instance.app_instance_creation.id
+  domain   = "vpc"
+}
+
+## Use this resource, if you already have elastic IP
+# resource "aws_eip_association" "existing_ip_association" {
+#   instance_id   = aws_instance.app_instance_creation.id
 #   allocation_id = var.existing_eip_allocation_id
 # }
 
 output "private_ip" {
-  value = aws_instance.awsi.private_ip
+  value = aws_instance.app_instance_creation.private_ip
 }
 
 output "instance_id" {
-  value = aws_instance.awsi.id
+  value = aws_instance.app_instance_creation.id
 }
 
-output "public_dns" {
-  value = aws_instance.awsi.public_dns
+output "elastic_ip" {
+  value = aws_eip.elastic_ip_creation.public_ip
 }
-
-output "key_pair_name" {
-  value = data.aws_key_pair.existing_key.key_name
-}
-
-## Use this resource after initial deploy for future scripts execution
-# resource "null_resource" "run_setup_script" {
-#   # Add a trigger to force rerun when needed
-#   triggers = {
-#     always_run = timestamp()
-#   }
-#
-#   connection {
-#       type        = "ssh"
-#       host        = aws_instance.awsi.public_ip
-#       user        = var.connection_user
-#       private_key = local_file.private_key.content
-#     }
-#
-#   provisioner "remote-exec" {
-#     inline = [
-#       "sleep 5",
-#       "chmod +x /home/ubuntu/app/scripts/setup.sh",
-#       "sudo /home/ubuntu/app/scripts/setup.sh",
-#       "chmod +x /home/ubuntu/app/scripts/setup-web-container.sh",
-#       "sleep 5",
-#       "sudo /home/ubuntu/app/scripts/setup-web-container.sh"
-#     ]
-#   }
-# }
-
-## Use this resource, if you don't have elastic IP
-# resource "aws_eip" "aeip" {
-#   allocation_id = var.existing_eip_allocation_id
-# }
-
-
-
-

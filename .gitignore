@@ -121,10 +121,10 @@ celerybeat.pid
 
 # Environments
 envs/
-.env
-.env.prod
-.env.dev
-.env.aws
+envs/.env
+envs/.env.prod
+envs/.env.local
+envs/.env.cloud
 .venv
 env/
 venv/
