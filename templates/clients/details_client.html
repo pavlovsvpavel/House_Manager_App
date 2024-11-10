@@ -6,6 +6,7 @@
     <section class="site-section details-client">
         <div class="container">
             <div class="wrapper">
+                <h3 class="section-title">{% trans 'Client details' %}</h3>
                 <div class="client-card">
                     <div class="card-column">
                         <p class="column-name">{% trans "Family Name" %}</p>
@@ -25,19 +26,19 @@
                     </div>
                     <div class="card-column">
                         <p class="column-name">{% trans "Using lift" %}</p>
-                        <p class="column-data">{{ object.is_using_lift|yesno:"Yes,No" }}</p>
+                        <p class="column-data">{{ object.is_using_lift|yesno:_("Yes,No") }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">{% trans "Occupied" %}</p>
-                        <p class="column-data">{{ object.is_occupied|yesno:"Yes,No" }}</p>
+                        <p class="column-data">{{ object.is_occupied|yesno:_("Yes,No") }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">{% trans "Inhabitable" %}</p>
-                        <p class="column-data">{{ object.is_inhabitable|yesno:"Yes,No" }}</p>
+                        <p class="column-data">{{ object.is_inhabitable|yesno:_("Yes,No") }}</p>
                     </div>
                     <div class="client-card-btns">
                         <a href="{% url "edit_client" pk=object.pk %}">{% trans "Edit" %}</a>
-                        <a href="{% url "delete_client" pk=object.pk %}">{% trans "Delete" %}</a>
+                        {#                        <a href="{% url "delete_client" pk=object.pk %}">{% trans "Delete" %}</a>#}
                     </div>
                 </div>
                 <div class="bills-client-card-btns">

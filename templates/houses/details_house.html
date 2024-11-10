@@ -5,56 +5,74 @@
 
     <section class="site-section details-house">
         <div class="container">
-            <div class="details-house-elements">
-                <div class="buttons">
-                    <ul>
-                        <li><a class="create-client" href="{% url "create_client" %}">{% trans "Create client" %}</a></li>
-                        <li><a class="details-house-list-clients" onclick="redirectToHouseClients({{ object.pk }},'{% url "house_clients_list" pk=0 %}')">{% trans "House's clients details" %}</a></li>
-                        <li><a class="create-house-bill" href="{% url "create_house_bills" %}">{% trans "Create regular bill" %}</a></li>
-                        <li><a class="list-house-bills" href="{% url "list_house_bills" pk=object.pk %}">{% trans "Regular bills details" %}</a></li>
-                        <li><a class="report" href="{% url "reports_bills" pk=object.pk %}">{% trans "Reports regular bills" %}</a></li>
-                        <li><a class="create-other-bill" href="{% url "create_other_bill" %}">{% trans "Create other bill" %}</a></li>
-                        <li><a class="list-other-bills" href="{% url "list_other_house_bills" pk=object.pk %}">{% trans "Other bills details" %}</a></li>
-                        <li><a class="report" href="{% url "reports_other_bills" pk=object.pk %}">{% trans "Reports other bills" %}</a></li>
-                    </ul>
-                </div>
+            <div class="wrapper">
+                <h3 class="section-title">{% trans 'House details' %}</h3>
+                <div class="details-house-elements">
+                    <div class="buttons">
+                        <ul>
+                            <li><a class="create-client"
+                                   href="{% url "create_client" %}">{% trans "Create client" %}</a>
+                            </li>
+                            <li><a class="details-house-list-clients"
+                                   onclick="redirectToHouseClients({{ object.pk }},'{% url "house_clients_list" pk=0 %}')">{% trans "House's clients details" %}</a>
+                            </li>
+                            <li><a class="create-house-bill"
+                                   href="{% url "create_house_bills" %}">{% trans "Create regular bill" %}</a></li>
+                            <li><a class="list-house-bills"
+                                   href="{% url "list_house_bills" pk=object.pk %}">{% trans "Regular bills details" %}</a>
+                            </li>
+                            <li><a class="report"
+                                   href="{% url "reports_bills" pk=object.pk %}">{% trans "Reports regular bills" %}</a>
+                            </li>
+                            <li><a class="create-other-bill"
+                                   href="{% url "create_other_bill" %}">{% trans "Create other bill" %}</a></li>
+                            <li><a class="list-other-bills"
+                                   href="{% url "list_other_house_bills" pk=object.pk %}">{% trans "Other bills details" %}</a>
+                            </li>
+                            <li><a class="report"
+                                   href="{% url "reports_other_bills" pk=object.pk %}">{% trans "Reports other bills" %}</a>
+                            </li>
+                        </ul>
+                    </div>
 
-                <div class="house-card">
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Town" %}</p>
-                        <p class="column-data">{{ object.town }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Address" %}</p>
-                        <p class="column-data">{{ object.address }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Building number" %}</p>
-                        <p class="column-data">{{ object.building_number }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Entrance" %}</p>
-                        <p class="column-data">{{ object.entrance }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Total apartments" %}</p>
-                        <p class="column-data">{{ total_apartments }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Total people" %}</p>
-                        <p class="column-data">{{ total_people }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Total people using lift" %}</p>
-                        <p class="column-data">{{ total_people_using_lift }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Current Balance" %}</p>
-                        <p class="column-data">{{ object.money_balance }} {% trans "BGN" %}</p>
-                    </div>
-                    <div class="client-card-btns">
-                        <a href="{% url "edit_house" pk=object.pk %}">{% trans "Edit" %}</a>
-                        <a href="{% url "delete_house" pk=object.pk %}">{% trans "Delete" %}</a>
+                    <div class="house-card">
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Town" %}</p>
+                            <p class="column-data">{{ object.town }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Address" %}</p>
+                            <p class="column-data">{{ object.address }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Building number" %}</p>
+                            <p class="column-data">{{ object.building_number }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Entrance" %}</p>
+                            <p class="column-data">{{ object.entrance }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Total apartments" %}</p>
+                            <p class="column-data">{{ total_apartments }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Total people" %}</p>
+                            <p class="column-data">{{ total_people }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Total people using lift" %}</p>
+                            <p class="column-data">{{ total_people_using_lift }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Current Balance" %}</p>
+                            <p class="column-data">{{ object.money_balance }} {% trans "BGN" %}</p>
+                        </div>
+                        <div class="client-card-btns">
+                            <a href="{% url "edit_house" pk=object.pk %}">{% trans "Edit" %}</a>
+                            {#                        <a href="{% url "delete_house" pk=object.pk %}">{% trans "Delete" %}</a>#}
+                            {#                    </div>#}
+                        </div>
                     </div>
                 </div>
             </div>
