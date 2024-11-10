@@ -37,6 +37,8 @@
 }
 
 .headings {
+    display: flex;
+    flex-direction: column;
     max-width: 800px;
     padding: 1em;
     margin: 0 2em;
@@ -51,8 +53,27 @@
     font-size: 0.8em;
 }
 
+.headings a {
+    text-shadow: none;
+    text-decoration: none;
+    background-color: var(--card-bgnd-hover);
+    color: var(--card-text-color);
+    padding: 0.5em 2em;
+    border-radius: 0.5em;
+    align-self: flex-start;
+    margin-top: 1em;
+    font-weight: 900;
+    font-size: 1.5em;
+    transition: 0.3s ease-in-out;
+}
+
+.headings a:hover {
+    background-color: var(--card-bgnd);
+    transition: 0.3s ease-in-out;
+}
+
 .site-section {
-    padding: 4em 0;
+    padding: 2em 0;
 }
 
 .site-footer {

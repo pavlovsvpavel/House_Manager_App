@@ -1,11 +1,13 @@
 import os
+from os import environ
 from pathlib import Path
-from decouple import config, Csv
+from decouple import config, Csv, AutoConfig
 from django.urls import reverse_lazy
 
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+config = AutoConfig('envs')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 

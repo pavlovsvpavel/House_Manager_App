@@ -20,7 +20,7 @@
 .dashboard .house-card:hover {
     cursor: pointer;
     background-color: var(--card-bgnd-hover);
-    box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);
+    /*box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);*/
     transition: 0.3s ease-in-out;
 }
 
@@ -52,30 +52,35 @@
 .list-house-bills .client-card-not-paid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
     background-color: var(--card-bgnd-paid);
     border-radius: 0.5em;
-    padding: 0.5em;
+    padding: 0.5em 2em;
     align-items: center;
     transition: 0.3s ease-in-out;
 }
 
 .list-house-bills .client-card-not-paid,
 .list-house-bills .client-card {
-    display: flex;
+    /*display: flex;*/
     flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: center;
+    /*justify-content: space-around;*/
+    /*align-items: center;*/
 }
 
 .list-house-bills .client-card .card-column:nth-of-type(3),
 .list-house-bills .client-card-not-paid .card-column:nth-of-type(3) {
+    /*flex: 0 1 30%;*/
+}
+
+.list-house-bills .client-card .card-column,
+.list-house-bills .client-card-not-paid .card-column {
     flex: 0 1 30%;
 }
 
 .list-house-bills .client-card .card-column,
 .list-house-bills .client-card-not-paid .card-column {
-    flex: 1 1 auto;
+    /*flex: 1 1 auto;*/
 }
 
 .list-clients .client-card {
@@ -94,7 +99,7 @@
 .list-house-bills .client-card-not-paid:hover {
     cursor: pointer;
     background-color: var(--card-bgnd-paid-hover);
-    box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);
+    /*box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);*/
     transition: 0.3s ease-in-out;
 }
 

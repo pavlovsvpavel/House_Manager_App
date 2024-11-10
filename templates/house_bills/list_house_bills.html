@@ -6,7 +6,8 @@
     <section class="site-section list-house-bills">
         <div class="container">
             <div class="wrapper">
-            {% include "partials/filter_buttons.html" %}
+                <h3 class="section-title">{% trans 'House bills' %}</h3>
+                {% include "partials/filter_buttons.html" %}
                 <div class="clients-cards">
                     {% if house_bills %}
                         {% for bill in house_bills %}
@@ -31,7 +32,8 @@
                     {% endif %}
                 </div>
                 <div class="back-button">
-                    <a href="{% url "details_house" pk=object.pk %}"><i class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
+                    <a href="{% url "details_house" pk=object.pk %}"><i
+                            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                 </div>
             </div>
         </div>

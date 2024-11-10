@@ -6,7 +6,8 @@
     <section class="site-section list-clients">
         <div class="container">
             <div class="wrapper">
-            {% include "partials/filter_buttons_clients.html" %}
+                <h3>{% trans 'Clients' %}</h3>
+                {% include "partials/filter_buttons_clients.html" %}
                 <div class="clients-cards">
                     {% if clients %}
                         {% for client in clients %}
@@ -27,6 +28,10 @@
                                 <div class="card-column">
                                     <p class="column-name">{% trans "People" %}</p>
                                     <p class="column-data">{{ client.number_of_people }}</p>
+                                </div>
+                            <div class="card-column">
+                                    <p class="column-name">{% trans "Using lift" %}</p>
+                                    <p class="column-data">{{ client.is_using_lift|yesno:_("Yes,No") }}</p>
                                 </div>
                             </div>
                         {% endfor %}

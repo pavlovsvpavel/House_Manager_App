@@ -5,10 +5,11 @@
 {% block main_content %}
     <script src="{% static "scripts/jquery.js" %}"></script>
     <script src="{% static "scripts/jSignature.js" %}"></script>
-    
+
     <section class="site-section details-client-bill">
         <div class="container">
             <div class="wrapper">
+                <h3 class="section-title">{% trans 'Bill details' %}</h3>
                 <div class="client-card">
                     <div class="card-column">
                         <p class="column-name">{% trans "Family name" %}</p>
@@ -66,7 +67,7 @@
                 <form class="is-paid-form" method="post" action="{% url "edit_client_bill" pk=object.pk %}">
                     {{ form }}
                     {% csrf_token %}
-                    
+
                     {% if form.instance.is_paid %}
                         <script src="{% static "scripts/signatureShow.js" %}"></script>
                         <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
