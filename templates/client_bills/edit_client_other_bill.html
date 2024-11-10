@@ -33,11 +33,17 @@
                     </div>
                 </div>
                 <form class="is-paid-form" method="post" action="{% url "edit_client_other_bill" pk=object.pk %}">
-                    {{ form }}
                     {% csrf_token %}
+                    <div>
+                        <label for="id_is_paid">{% trans "Pay the bill:" %}</label>
+                        {{ form.is_paid }}
+                    </div>
                     {% if form.instance.is_paid %}
                         <script src="{% static "scripts/signatureShow.js" %}"></script>
                         <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
+                        <script>
+                            document.querySelector('label[for="id_is_paid"]').textContent = "{% trans 'Paid' %}";
+                        </script>
                         {% include "partials/signature-show.html" %}
                         {% include "partials/back_button.html" %}
                     {% else %}
