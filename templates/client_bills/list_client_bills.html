@@ -6,6 +6,10 @@
     <section class="site-section list-client-bills">
         <div class="container">
             <div class="wrapper">
+                <div class="details">
+                    <p>{% trans 'Client bills' %}:</p>
+                    <p class="family-name">{{ object.family_name }}</p>
+                </div>
                 {% include "partials/filter_buttons.html" %}
                 <div class="clients-cards">
                     {% if client_bills %}

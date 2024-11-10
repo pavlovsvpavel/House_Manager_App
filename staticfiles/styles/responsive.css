@@ -21,7 +21,7 @@
     }
 
     .wrapper {
-        flex: 0 1 80%;
+        flex: 0 1 100%;
     }
 
     .form-container {
@@ -235,11 +235,11 @@
     }
 
     .what-we-offer-cards .card {
-        flex:0 1 100%
+        flex: 0 1 100%
     }
 
     .site-footer .footer-wrapper {
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 
     .reports-wrapper .buttons {
@@ -262,5 +262,13 @@
 
     #displaySignature img {
         width: 100%;
+    }
+
+    .list-clients .client-card,
+    .list-house-bills .client-card,
+    .list-client-bills .client-card,
+    .list-client-bills .client-card-not-paid,
+    .list-house-bills .client-card-not-paid {
+        padding: 0.5em;
     }
 }

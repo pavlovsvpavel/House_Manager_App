@@ -35,7 +35,7 @@
 .details-house-elements .buttons ul li a:hover {
     cursor: pointer;
     background-color: #D5B4B4;
-    box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);
+    /*box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);*/
     transition: 0.3s ease-in-out;
 }
 
