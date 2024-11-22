@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-10 18:43+0200\n"
+"POT-Creation-Date: 2024-11-22 20:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -289,6 +289,8 @@ msgid "Total BGN"
 msgstr "Общо сума, ЛВ."
 
 #: .\house_manager\common\mixins.py:197 .\house_manager\common\mixins.py:253
+#: .\templates\client_bills\edit_client_bill.html:78
+#: .\templates\client_bills\edit_client_other_bill.html:45
 #: .\templates\house_bills\edit_house_bills.html:71
 #: .\templates\house_bills\edit_other_house_bills.html:35
 msgid "Paid"
@@ -399,14 +401,12 @@ msgstr "Сигурни ли сте, че искате да изтриете то
 
 #: .\templates\accounts\delete_profile.html:12
 #: .\templates\clients\delete_client.html:12
-#: .\templates\clients\details_client.html:29
 #: .\templates\houses\delete_house.html:12
 msgid "Yes"
 msgstr "Да"
 
 #: .\templates\accounts\delete_profile.html:13
 #: .\templates\clients\delete_client.html:13
-#: .\templates\clients\details_client.html:29
 #: .\templates\houses\delete_house.html:13
 msgid "No"
 msgstr "Не"
@@ -473,8 +473,14 @@ msgstr "Сметка - детайли"
 msgid "Family name"
 msgstr "Фамилия"
 
-#: .\templates\client_bills\edit_client_bill.html:73
-#: .\templates\client_bills\edit_client_other_bill.html:40
+#: .\templates\client_bills\edit_client_bill.html:70
+#: .\templates\client_bills\edit_client_other_bill.html:38
+#: .\templates\house_bills\edit_house_bills.html:65
+msgid "Pay the bill:"
+msgstr "Плати сметката:"
+
+#: .\templates\client_bills\edit_client_bill.html:76
+#: .\templates\client_bills\edit_client_other_bill.html:43
 #: .\templates\house_bills\edit_house_bills.html:69
 #: .\templates\house_bills\edit_other_house_bills.html:39
 #: .\templates\partials\form_buttons.html:4
@@ -517,6 +523,13 @@ msgstr "Клиент - детайли"
 #: .\templates\houses\house_clients_list.html:29
 msgid "People"
 msgstr "Живущи"
+
+#: .\templates\clients\details_client.html:29
+#: .\templates\clients\details_client.html:33
+#: .\templates\clients\details_client.html:37
+#: .\templates\houses\house_clients_list.html:34
+msgid "Yes,No"
+msgstr "Да, Не"
 
 #: .\templates\clients\details_client.html:46
 msgid "Bills"
@@ -752,10 +765,6 @@ msgstr "Първо добавете клиенти"
 msgid "The payment is without 'Repairs'"
 msgstr "Плащането е без 'Фонд ремонти'"
 
-#: .\templates\house_bills\edit_house_bills.html:65
-msgid "Pay the bill:"
-msgstr "Плати сметката:"
-
 #: .\templates\house_bills\list_house_bills.html:9
 msgid "House bills"
 msgstr "Стандартни сметки"
@@ -819,10 +828,6 @@ msgstr "Общо живущи ползващи асансьор"
 #: .\templates\houses\house_clients_list.html:9
 msgid "Clients"
 msgstr "Клиенти"
-
-#: .\templates\houses\house_clients_list.html:34
-msgid "Yes,No"
-msgstr "Да, Не"
 
 #: .\templates\houses\house_clients_list.html:39
 msgid "No clients"

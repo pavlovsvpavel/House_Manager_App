@@ -1,12 +1,12 @@
 name: Update Django app
 
 on:
-#  push:
-#    branches:
-#      - main
-  pull_request:
+  push:
     branches:
       - main
+#  pull_request:
+#    branches:
+#      - main
 
 jobs:
   update_django_app:
