@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-27 10:09+0200\n"
+"POT-Creation-Date: 2024-11-27 15:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -123,8 +123,8 @@ msgid "Client with this apartment already exist"
 msgstr "Клиент с този апартамент вече съществува."
 
 #: .\house_manager\clients\views.py:45
-msgid "Create Client"
-msgstr "Създай клиент"
+msgid "Add Client"
+msgstr "Добави клиент"
 
 #: .\house_manager\clients\views.py:105
 msgid "Edit Client"
@@ -337,17 +337,23 @@ msgstr "Тип сметка"
 msgid "Bill for all clients with those month and year already exists."
 msgstr "Сметка за всички клиенти с тези месец и година вече съществува."
 
-#: .\house_manager\house_bills\views.py:39
-msgid "Create Bill"
-msgstr "Създай сметка"
+#: .\house_manager\house_bills\views.py:50
+#: .\templates\houses\details_house.html:20
+msgid "Add monthly bill"
+msgstr "Добави месечна сметка"
 
-#: .\house_manager\house_bills\views.py:62
-#: .\house_manager\house_bills\views.py:92
+#: .\house_manager\house_bills\views.py:64
+#: .\house_manager\house_bills\views.py:95
 msgid "Bill with those month and year already exists."
 msgstr "Сметка с тези месец и година вече съществува."
 
-#: .\house_manager\house_bills\views.py:114
-#: .\house_manager\house_bills\views.py:162
+#: .\house_manager\house_bills\views.py:75
+#: .\templates\houses\details_house.html:28
+msgid "Add other bill"
+msgstr "Добави друга сметка"
+
+#: .\house_manager\house_bills\views.py:117
+#: .\house_manager\house_bills\views.py:165
 msgid "Bills not found in selected house."
 msgstr "Не са намерени сметки на съответната къща."
 
@@ -529,7 +535,7 @@ msgstr "Живущи"
 #: .\templates\clients\details_client.html:37
 #: .\templates\houses\house_clients_list.html:34
 msgid "Yes,No"
-msgstr "Да, Не"
+msgstr "Да,Не"
 
 #: .\templates\clients\details_client.html:46
 msgid "Bills"
@@ -722,8 +728,9 @@ msgstr ""
 "и да издигнете финансовото управление на вашата сграда на следващо ниво."
 
 #: .\templates\common\reports_bills.html:9
-msgid "Bills reports"
-msgstr "Справки стандартни сметки"
+#: .\templates\houses\details_house.html:25
+msgid "Monthly bills - reports"
+msgstr "Месечни сметки - справки"
 
 #: .\templates\common\reports_bills.html:26
 msgid "Amount for collection"
@@ -743,8 +750,9 @@ msgid "Current Balance"
 msgstr "Настоящо салдо"
 
 #: .\templates\common\reports_other_bills.html:9
-msgid "Other bills reports"
-msgstr "Справки други сметки"
+#: .\templates\houses\details_house.html:33
+msgid "Other bills - reports"
+msgstr "Други сметки - справки"
 
 #: .\templates\common\reports_other_bills.html:27
 msgid "Full name"
@@ -766,11 +774,11 @@ msgid "The payment is without 'Repairs fund'"
 msgstr "Плащането е без 'Фонд ремонти'"
 
 #: .\templates\house_bills\list_house_bills.html:9
-msgid "House bills"
-msgstr "Стандартни сметки"
+msgid "Monthly bills"
+msgstr "Месечни сметки"
 
 #: .\templates\house_bills\list_other_house_bills.html:9
-msgid "House other bills"
+msgid "Other bills"
 msgstr "Други сметки"
 
 #: .\templates\houses\delete_house.html:9
@@ -782,36 +790,20 @@ msgid "House details"
 msgstr "Обект - детайли"
 
 #: .\templates\houses\details_house.html:14
-msgid "Create client"
-msgstr "Създай клиент"
+msgid "Add client"
+msgstr "Добави клиент"
 
 #: .\templates\houses\details_house.html:17
-msgid "House's clients details"
+msgid "Clients - details"
 msgstr "Клиенти - детайли"
 
-#: .\templates\houses\details_house.html:20
-msgid "Create regular bill"
-msgstr "Създай стандартна сметка"
-
 #: .\templates\houses\details_house.html:22
-msgid "Regular bills details"
-msgstr "Стандартни сметки - детайли"
-
-#: .\templates\houses\details_house.html:25
-msgid "Reports regular bills"
-msgstr "Справки стандартни сметки"
-
-#: .\templates\houses\details_house.html:28
-msgid "Create other bill"
-msgstr "Създай друга сметка"
+msgid "Monthly bills - details"
+msgstr "Месечни сметки - детайли"
 
 #: .\templates\houses\details_house.html:30
-msgid "Other bills details"
+msgid "Other bills - details"
 msgstr "Други сметки - детайли"
-
-#: .\templates\houses\details_house.html:33
-msgid "Reports other bills"
-msgstr "Справки други сметки"
 
 #: .\templates\houses\details_house.html:56
 msgid "Total apartments"
@@ -899,6 +891,18 @@ msgstr "Подпис:"
 msgid "No signature"
 msgstr "Няма подпис"
 
+#~ msgid "House other bills"
+#~ msgstr "Други сметки"
+
+#~ msgid "Bills reports"
+#~ msgstr "Справки стандартни сметки"
+
+#~ msgid "Other bills reports"
+#~ msgstr "Справки други сметки"
+
+#~ msgid "House bills"
+#~ msgstr "Стандартни сметки"
+
 #~ msgid "Pricing Plans"
 #~ msgstr "Абонаментни планове"
 
@@ -915,4 +919,4 @@ msgstr "Няма подпис"
 #~ msgstr "месечен период"
 
 #~ msgid "Unlimited houses"
-#~ msgstr "Неограничен брой къщи"
+#~ msgstr "Неограничен брой обекти"
