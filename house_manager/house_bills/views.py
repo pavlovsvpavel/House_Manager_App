@@ -23,6 +23,7 @@ class HouseBaseBillCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, v
     template_name = None
     form_class = None
     action_url = None
+    title = None
 
     def get_success_url(self):
         selected_house_id = self.request.session.get("selected_house")
@@ -36,7 +37,7 @@ class HouseBaseBillCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, v
         context['house_id'] = selected_house_id
         context['clients'] = Client.objects.filter(house=selected_house_id)
         context['action_url'] = self.action_url
-        context["title"] = _("Create Bill")
+        context["title"] = self.title
 
         return context
 
@@ -46,6 +47,7 @@ class HouseMonthlyBillCreateView(HouseBaseBillCreateView):
     template_name = "house_bills/create_house_bills.html"
     form_class = HouseMonthlyBillForm
     action_url = reverse_lazy("create_house_bills")
+    title = _("Add monthly bill")
 
     def form_valid(self, form):
         try:
@@ -70,6 +72,7 @@ class HouseOtherBillCreateView(HouseBaseBillCreateView):
     template_name = "house_bills/create_other_bill.html"
     form_class = HouseOtherBillForm
     action_url = reverse_lazy("create_other_bill")
+    title = _("Add other bill")
 
     def form_valid(self, form):
         try:

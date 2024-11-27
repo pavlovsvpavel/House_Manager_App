@@ -42,7 +42,7 @@ class ClientCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.Cr
         context = super().get_context_data(**kwargs)
 
         context["action_url"] = reverse_lazy("create_client")
-        context["title"] = _("Create Client")
+        context["title"] = _("Add Client")
 
         return context
 

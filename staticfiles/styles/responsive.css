@@ -209,6 +209,7 @@
     .details-house-elements .buttons ul {
         flex-direction: column;
         gap: 1em;
+        min-width: 250px;
     }
 
     .details-house-elements .house-card .card-column {
