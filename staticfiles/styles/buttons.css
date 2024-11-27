@@ -67,6 +67,7 @@
     justify-content: space-between;
     padding-top: 0.5em;
     align-items: center;
+    align-self: flex-end;
 }
 
 .filter-buttons,
@@ -80,11 +81,12 @@
 .filter-buttons a,
 .details-house-elements .house-card .client-card-btns a,
 .wrapper .back-button a,
-.wrapper .bills-button a {
+.wrapper .bills-button a,
+.details-client .client-card a {
     text-decoration: none;
     color: #fff;
     padding: 0.5em;
-    flex: 0 1 100px;
+    min-width: 100px;
     text-align: center;
     border-radius: 1.5em;
     border-color: transparent;

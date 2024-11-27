@@ -164,18 +164,18 @@
     padding-top: 0.5em;
 }
 
-.details-client .client-card a {
-    text-decoration: none;
-    color: #fff;
-    padding: 0.3em;
-    flex: 0 1 100px;
-    text-align: center;
-    border-radius: 1.5em;
-    border-color: transparent;
-    background-color: var(--form-btn-color);
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-}
+/*.details-client .client-card a {*/
+/*    text-decoration: none;*/
+/*    color: #fff;*/
+/*    padding: 0.5em;*/
+/*    flex: 0 1 100px;*/
+/*    text-align: center;*/
+/*    border-radius: 1.5em;*/
+/*    border-color: transparent;*/
+/*    background-color: var(--form-btn-color);*/
+/*    cursor: pointer;*/
+/*    transition: 0.3s ease-in-out;*/
+/*}*/
 
 .details-client .client-card a:hover {
     background-color: var(--form-btn-color-hover);

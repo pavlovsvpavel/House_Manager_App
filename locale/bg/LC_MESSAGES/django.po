@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-22 20:58+0200\n"
+"POT-Creation-Date: 2024-11-27 10:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -762,7 +762,7 @@ msgid "Add clients first"
 msgstr "Първо добавете клиенти"
 
 #: .\templates\house_bills\edit_house_bills.html:59
-msgid "The payment is without 'Repairs'"
+msgid "The payment is without 'Repairs fund'"
 msgstr "Плащането е без 'Фонд ремонти'"
 
 #: .\templates\house_bills\list_house_bills.html:9
