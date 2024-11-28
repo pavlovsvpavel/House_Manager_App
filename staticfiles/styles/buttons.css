@@ -35,7 +35,6 @@
 .details-house-elements .buttons ul li a:hover {
     cursor: pointer;
     background-color: #D5B4B4;
-    /*box-shadow: 0 0 10px 1px rgb(0, 0, 0, 0.5);*/
     transition: 0.3s ease-in-out;
 }
 
@@ -98,6 +97,7 @@
 
 .wrapper .back-button a {
     background-color: #FF8080;
+    min-width: auto;
 }
 
 .filter-buttons a {
@@ -106,7 +106,7 @@
 }
 
 .wrapper .bills-button a {
-    width: 150px;
+    min-width: 100px;
 }
 
 .filter-buttons a:hover,
@@ -153,6 +153,7 @@
     cursor: pointer;
     transition: 0.3s ease-in-out;
     background-color: #FF8080;
+    border: none;
 }
 
 .back-btn i {
@@ -173,9 +174,7 @@
     display: inline-block;
     background-color: var(--form-btn-color);
     border-radius: 1.5em;
-    margin-right: 0.3em;
     width: auto;
-    margin-bottom: 0.3em;
 }
 
 #month,
@@ -186,8 +185,7 @@
     cursor: pointer;
     color: #fff;
     display: inline-block;
-    width: auto;
-    /*text-align: center;*/
+    text-align: center;
     padding: 0.5em;
 }
 
@@ -220,4 +218,32 @@
     pointer-events: none;
     text-decoration: none;
     cursor: not-allowed;
+}
+
+/*Back to top button*/
+.scrollToTopBtn {
+    background-color: var(--form-btn-color-hover);
+    border: none;
+    border-radius: 50%;
+    color: var(--form-bgnd);
+    cursor: pointer;
+    font-size: 30px;
+    line-height: 48px;
+    width: 48px;
+    position: fixed;
+    bottom: calc(10% + -40px);
+    right: calc(10% + -20px);
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all .5s ease;
+}
+
+.showBtn {
+    opacity: 50%;
+    transform: translateY(0)
+}
+
+.scrollToTopBtn:hover {
+    opacity: 1;
 }

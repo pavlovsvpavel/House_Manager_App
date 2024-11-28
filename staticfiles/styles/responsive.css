@@ -20,10 +20,6 @@
         flex: 0 1 80%;
     }
 
-    .wrapper {
-        flex: 0 1 100%;
-    }
-
     .form-container {
         padding: 1em 0;
     }
@@ -51,6 +47,12 @@
 
     th, td {
         font-size: 0.8em;
+    }
+
+    .what-we-offer-cards {
+        flex-direction: column;
+        padding: 0;
+        gap: 1em;
     }
 }
 
@@ -123,10 +125,6 @@
         z-index: 9;
     }
 
-    .container .wrapper {
-        flex: 0 1 100%;
-    }
-
     .headings {
         font-size: 0.7em;
         line-height: 1.2;
@@ -165,7 +163,8 @@
     }
 
     .list-clients .card-column,
-    .list-house-bills .card-column {
+    .list-house-bills .card-column,
+    .list-client-bills .card-column {
         flex-direction: row;
         justify-content: space-between;
     }
@@ -176,12 +175,13 @@
         text-align: right;
     }
 
-    .create-form {
-        flex: 0 1 100%;
+    .list-clients .card-column .column-name,
+    .list-house-bills .card-column .column-name {
+        text-align: left;
     }
 
-    .form-buttons {
-        /*flex-direction: column;*/
+    .create-form {
+        flex: 0 1 100%;
     }
 
     .create-form div:nth-of-type(5),
@@ -271,5 +271,17 @@
     .list-client-bills .client-card-not-paid,
     .list-house-bills .client-card-not-paid {
         padding: 0.5em;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-buttons,
+    .details-client .bills-client-card-btns {
+        flex-direction: column;
+        gap: 1em;
+        align-items: stretch;
+    }
+    .filter-buttons a {
+        flex: 0 1 100%;
     }
 }

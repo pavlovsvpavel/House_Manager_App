@@ -9,7 +9,10 @@
     <section class="site-section details-client-bill">
         <div class="container">
             <div class="wrapper">
-                <h3 class="section-title">{% trans 'Bill details' %}</h3>
+                <div class="title-back-btn">
+                    <h3>{% trans 'Bill details' %}</h3>
+                    {% include "partials/back_button.html" %}
+                </div>
                 <div class="client-card">
                     <div class="card-column">
                         <p class="column-name">{% trans "Family name" %}</p>
@@ -78,8 +81,6 @@
                             document.querySelector('label[for="id_is_paid"]').textContent = "{% trans 'Paid' %}";
                         </script>
                         {% include "partials/signature-show.html" %}
-                        {% include "partials/back_button.html" %}
-
                     {% else %}
                         <script src="{% static "scripts/signaturePad.js" %}"></script>
                         {% include "partials/signature-pad.html" %}

@@ -6,7 +6,13 @@
     <section class="site-section details-client">
         <div class="container">
             <div class="wrapper">
-                <h3 class="section-title">{% trans 'Client details' %}</h3>
+                <div class="title-back-btn">
+                    <h3>{% trans 'Client details' %}</h3>
+                    <div class="back-button">
+                        <a href="{% url "house_clients_list" pk=house.pk %}"><i
+                            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
+                    </div>
+                </div>
                 <div class="client-card">
                     <div class="card-column">
                         <p class="column-name">{% trans "Family Name" %}</p>
@@ -48,10 +54,6 @@
                     <div class="bills-button">
                         <a href="{% url "list_other_client_bills" pk=object.pk %}">{% trans "Other Bills" %}</a>
                     </div>
-                </div>
-                <div class="back-button">
-                    <a href="{% url "house_clients_list" pk=house.pk %}"><i
-                            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                 </div>
             </div>
         </div>

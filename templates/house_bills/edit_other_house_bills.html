@@ -6,7 +6,10 @@
     <section class="site-section details-house-bill">
         <div class="container">
             <div class="wrapper">
-                <h3 class="section-title">{% trans 'Bill details' %}</h3>
+                <div class="title-back-btn">
+                    <h3>{% trans 'Bill details' %}</h3>
+                    {% include "partials/back_button.html" %}
+                </div>
                 <div class="client-card">
                     <div class="card-column">
                         <p class="column-name">{% trans "Year" %}</p>
@@ -32,12 +35,14 @@
                 <form class="is-paid-form" method="post" action="{% url "edit_other_house_bills" pk=object.pk %}">
                     {% csrf_token %}
                     <div>
-                        <label for="id_is_paid">{% trans "Paid" %}</label>
+                        <label for="id_is_paid">{% trans "Pay the bill:" %}</label>
                         {{ form.is_paid }}
                     </div>
                     {% if form.instance.is_paid %}
                         <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
-                        {% include "partials/back_button.html" %}
+                        <script>
+                            document.querySelector('label[for="id_is_paid"]').textContent = "{% trans 'Paid' %}";
+                        </script>
                     {% else %}
                         {% include "partials/form_buttons_edit_bills.html" %}
                     {% endif %}

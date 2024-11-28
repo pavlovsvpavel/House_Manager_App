@@ -1,6 +1,5 @@
 from decimal import Decimal
-
-from django.db.models import Sum, Value, Q
+from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -8,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views import generic as views
 from django.shortcuts import render
 
+from house_manager.common.helpers.filtering_unpaid_clients_bills import filtering_unpaid_clients_bills
 from house_manager.common.mixins import MonthChoices, YearChoices
 from house_manager.house_bills.models import TypeOfBillChoices
 from house_manager.houses.decorators import get_current_house_id
@@ -72,24 +72,7 @@ class ReportMonthlyBillView(views.DetailView):
 
         context["clients_bills_total_amount"] = clients_bills_total_amount
 
-        # Calculate unpaid bills from previous months for each client
-        unpaid_bills = {}
-        for client_bill in clients_bills:
-            client = client_bill.client
-            total_unpaid = (current_house.client_house_monthly_bills
-            .filter(
-                client=client,
-                is_paid=False
-            )
-            .exclude(
-                Q(year=selected_year, month__gte=selected_month) |
-                Q(year__gt=selected_year)
-            )
-
-            .aggregate(total_unpaid=Coalesce(Sum("total_amount"),
-                                             Value(Decimal("0.00"))))["total_unpaid"]
-            )
-            unpaid_bills[client.id] = total_unpaid
+        unpaid_bills = filtering_unpaid_clients_bills(current_house, clients_bills, selected_year, selected_month)
 
         context["unpaid_bills"] = unpaid_bills
 

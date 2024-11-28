@@ -6,10 +6,17 @@
     <section class="site-section list-client-bills">
         <div class="container">
             <div class="wrapper">
-                <div class="details">
-                    <p>{% trans 'Client bills' %}:</p>
-                    <p class="family-name">{{ object.family_name }}</p>
+                <div class="title-back-btn">
+                    <div class="details">
+                        <p>{% trans 'Client bills' %}:</p>
+                        <p class="family-name">{{ object.family_name }}</p>
+                    </div>
+                    <div class="back-button">
+                        <a href="{% url "details_client" pk=object.pk %}"><i
+                                class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
+                    </div>
                 </div>
+
                 {% include "partials/filter_buttons.html" %}
                 <div class="clients-cards">
                     {% if client_bills %}
@@ -23,10 +30,6 @@
                     {% else %}
                         <h3>{% trans "No bills" %}</h3>
                     {% endif %}
-                </div>
-                <div class="back-button">
-                    <a href="{% url "details_client" pk=object.pk %}"><i
-                            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                 </div>
             </div>
         </div>

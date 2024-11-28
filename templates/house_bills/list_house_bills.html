@@ -6,7 +6,13 @@
     <section class="site-section list-house-bills">
         <div class="container">
             <div class="wrapper">
-                <h3 class="section-title">{% trans 'Monthly bills' %}</h3>
+                <div class="title-back-btn">
+                    <h3>{% trans 'Monthly bills' %}</h3>
+                    <div class="back-button">
+                        <a href="{% url "details_house" pk=object.pk %}"><i
+                            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
+                    </div>
+                </div>
                 {% include "partials/filter_buttons.html" %}
                 <div class="clients-cards">
                     {% if house_bills %}
@@ -30,10 +36,6 @@
                     {% else %}
                         <h3>{% trans "No bills" %}</h3>
                     {% endif %}
-                </div>
-                <div class="back-button">
-                    <a href="{% url "details_house" pk=object.pk %}"><i
-                            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                 </div>
             </div>
         </div>
