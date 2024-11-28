@@ -192,10 +192,6 @@
     padding: 0;
 }
 
-.site-section.about article {
-    /*min-height: 300px;*/
-}
-
 .site-section.about h3:after {
     content: "";
     display: block;
@@ -342,4 +338,10 @@
 .form-buttons {
     display: flex;
     justify-content: space-between;
+}
+
+.title-back-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

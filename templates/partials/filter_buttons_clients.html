@@ -16,9 +16,9 @@
 
         <a href="?is_paid=True&month={{ request.GET.month }}"
                 {% if request.GET.month == "" or not request.GET.dict %} class="disabled"
-           onclick="return false;"{% endif %}> {% trans "Paid bills" %}</a>
+           onclick="return false;"{% endif %}> {% trans "Without debts" %}</a>
         <a href="?is_paid=False&month={{ request.GET.month }}"
                 {% if request.GET.month == "" or not request.GET.dict %} class="disabled"
-           onclick="return false;"{% endif %}> {% trans "Unpaid bills" %}</a>
+           onclick="return false;"{% endif %}> {% trans "With debts" %}</a>
     </div>
 </form>
