@@ -5,6 +5,10 @@
     gap: 1em;
 }
 
+.dashboard .wrapper {
+    flex: 0 1 60%;
+}
+
 .wrapper .details {
     display: flex;
     gap: 1em;
