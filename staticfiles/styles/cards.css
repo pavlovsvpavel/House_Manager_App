@@ -9,7 +9,6 @@
 
 .dashboard .house-card {
     justify-content: space-between;
-    background-image: url("../images/house-solid.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -165,6 +164,7 @@
 
 .house-card .card-column {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     border-bottom: 1px solid #000;
     align-items: center;
@@ -172,6 +172,7 @@
 
 .house-card .card-column p:last-of-type {
     font-weight: bold;
+    text-align: right;
 }
 
 .delete-card {

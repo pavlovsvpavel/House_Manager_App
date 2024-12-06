@@ -281,7 +281,12 @@
         gap: 1em;
         align-items: stretch;
     }
+
     .filter-buttons a {
+        flex: 0 1 100%;
+    }
+
+    .dashboard .wrapper {
         flex: 0 1 100%;
     }
 }
