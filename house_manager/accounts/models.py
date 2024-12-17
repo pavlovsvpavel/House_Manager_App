@@ -29,7 +29,14 @@ class HouseManagerUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixi
         default=True,
     )
 
-    date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
+    date_joined = models.DateTimeField(
+        _("date joined"),
+        default=timezone.now
+    )
+
+    has_set_password = models.BooleanField(
+        default=False
+    )
 
     USERNAME_FIELD = "email"
 

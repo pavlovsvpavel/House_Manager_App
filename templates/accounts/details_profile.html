@@ -17,7 +17,7 @@
                     {% if object.full_name %}
                         <p>{% trans "Name" %}: <strong>{{ object.full_name }}</strong></p>
                     {% endif %}
-                    {% if  object.phone_number %}
+                    {% if object.phone_number %}
                         <p>{% trans "Phone number" %}: <strong>{{ object.phone_number }}</strong></p>
                     {% endif %}
                 </div>
@@ -25,7 +25,12 @@
                     <ul>
                         <li><a href="{% url "edit_profile" pk=object.pk %}">{% trans "Edit" %}</a></li>
                         <li><a href="{% url "delete_profile" pk=object.pk %}">{% trans "Delete" %}</a></li>
-                        <li><a href="{% url "change_password" pk=object.pk %}">{% trans "Change password" %}</a></li>
+                        {% if user.has_set_password %}
+                            <li><a href="{% url "change_password" pk=object.pk %}">{% trans "Change password" %}</a>
+                            </li>
+                        {% else %}
+                            <li><a href="{% url "set_password" pk=object.pk %}">{% trans "Set password" %}</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

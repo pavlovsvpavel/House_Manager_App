@@ -3,6 +3,7 @@
 {% load static %}
 {% block main_content %}
 
+    <script src="{% static 'scripts/showHidePassword.js' %}" defer></script>
     <section class="site-section login-register-user">
         <div class="container">
             <div class="form-container">
@@ -21,15 +22,30 @@
                 </div>
                 <div class="forms">
                     <div class="form-content">
-                        
                         <div class="login-form">
                             <div class="create-form-heading">{% trans "Login" %}</div>
                             <form class="create-form" action="{% url "login_user" %}?next={{ next }}" method="post">
-                                {{ login_form }}
+{#                                {{ login_form }}#}
                                 {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="{{ login_form.username.id_for_label }}">{% trans "Email:" %}</label>
+                                    {{ login_form.username }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ login_form.password.id_for_label }}">{% trans "Password:" %}</label>
+                                    <div class="password-container">
+                                        {{ login_form.password }}
+                                        <button type="button" id="togglePassword" class="toggle-btn">
+                                            <i id="toggleIcon" class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
                                 <input class="btn" type="submit" value="{% trans "Login" %}">
                                 <div class="text sign-up-text">{% trans "Don't have an account?" %}
                                     <label for="flip" id="register_now">{% trans "Register now" %}</label>
+                                </div>
+                                <div class="google-login">
+                                    {% include "partials/google_button.html" %}
                                 </div>
                             </form>
                         </div>
@@ -41,6 +57,9 @@
                                 <input class="btn" type="submit" value="{% trans "Register" %}">
                                 <div class="text sign-up-text">{% trans "Already have an account?" %}
                                     <label for="flip" id="login_now">{% trans "Login now" %}</label>
+                                </div>
+                                <div class="google-login">
+                                    {% include "partials/google_button.html" %}
                                 </div>
                             </form>
                         </div>

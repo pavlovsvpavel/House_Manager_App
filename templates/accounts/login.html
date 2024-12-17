@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% load socialaccount %}
 {% load i18n %}
 {% load static %}
 {% block main_content %}
 
+    <script src="{% static 'scripts/showHidePassword.js' %}" defer></script>
     <section class="site-section login-register-user">
         <div class="container">
             <div class="form-container">
@@ -24,11 +26,36 @@
                         <div class="login-form">
                             <div class="create-form-heading">{% trans "Login" %}</div>
                             <form class="create-form" action="{% url "login_user" %}?next={{ next }}" method="post">
-                                {{ form }}
+                                {% if messages %}
+                                    <ul class="errorlist" style="list-style: none;">
+                                        {% for message in messages %}
+                                            <li{% if message.tags %}
+                                                class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+
+{#                                {{ form }}#}
                                 {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="{{ form.username.id_for_label }}">{% trans "Email:" %}</label>
+                                    {{ form.username }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.password.id_for_label }}">{% trans "Password:" %}</label>
+                                    <div class="password-container">
+                                        {{ form.password }}
+                                        <button type="button" id="togglePassword" class="toggle-btn">
+                                            <i id="toggleIcon" class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
                                 <input class="btn" type="submit" value="{% trans "Login" %}">
                                 <div class="text sign-up-text">{% trans "Don't have an account?" %}
                                     <label for="flip" id="register_now">{% trans "Register now" %}</label>
+                                </div>
+                                <div class="google-login">
+                                    {% include "partials/google_button.html" %}
                                 </div>
                             </form>
                         </div>
@@ -40,6 +67,9 @@
                                 <input class="btn" type="submit" value="{% trans "Register" %}">
                                 <div class="text sign-up-text">{% trans "Already have an account?" %}
                                     <label for="flip" id="login_now">{% trans "Login now" %}</label>
+                                </div>
+                                <div class="google-login">
+                                    {% include "partials/google_button.html" %}
                                 </div>
                             </form>
                         </div>

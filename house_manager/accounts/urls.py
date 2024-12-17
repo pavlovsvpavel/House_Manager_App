@@ -3,7 +3,7 @@ from django.urls import path
 from house_manager.accounts.views import (
     LogInUserView, RegisterUserView,
     logout_user, ProfileDetailsView,
-    ProfileUpdateView, ProfileDeleteView, ProfilePasswordChange
+    ProfileUpdateView, ProfileDeleteView, ProfilePasswordChange, ProfilePasswordSet
 )
 
 urlpatterns = (
@@ -13,5 +13,6 @@ urlpatterns = (
     path("profile/<int:pk>/details/", ProfileDetailsView.as_view(), name="details_profile"),
     path("profile/<int:pk>/edit/", ProfileUpdateView.as_view(), name="edit_profile"),
     path("profile/<int:pk>/delete/", ProfileDeleteView.as_view(), name="delete_profile"),
-    path("profile/<int:pk>/password-change/", ProfilePasswordChange.as_view(), name="change_password")
+    path("profile/<int:pk>/password-change/", ProfilePasswordChange.as_view(), name="change_password"),
+    path("profile/<int:pk>/password-set/", ProfilePasswordSet.as_view(), name="set_password"),
 )
