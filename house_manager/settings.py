@@ -25,7 +25,7 @@ if DEBUG:
     CSRF_TRUSTED_ORIGINS = ['http://localhost:81']
 
 # Allauth configs
-SITE_ID = 2
+SITE_ID = config('SITE_ID', cast=int)
 AUTH_USER_MODEL = "house_manager.accounts.HouseManagerUser"
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -185,7 +185,8 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         }
-    }}
+    }
+}
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",

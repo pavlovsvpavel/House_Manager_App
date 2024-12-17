@@ -14,7 +14,7 @@ class AppUserAdmin(auth_admin.UserAdmin):
     add_form = HouseManagerUserCreationForm
     form = HouseManagerUserChangeForm
 
-    list_display = ("email", "is_superuser", "is_staff", "full_name", "phone_number", "id",)
+    list_display = ("email", "is_superuser", "is_staff", "full_name", "phone_number", "id", "has_set_password")
 
     search_fields = ("email",)
     search_help_text = "Search by user's email"
@@ -25,6 +25,7 @@ class AppUserAdmin(auth_admin.UserAdmin):
         (None, {"fields": ("email", "password")}),
         ("Permissions", {"fields": ("is_active", "is_staff", "groups", "user_permissions")}),
         ("Important dates", {"fields": ("last_login",)}),
+        ("Has Set Password", {"fields": ("has_set_password",)}),
     )
 
     add_fieldsets = (
