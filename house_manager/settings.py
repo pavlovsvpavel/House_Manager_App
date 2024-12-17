@@ -24,6 +24,16 @@ CSRF_TRUSTED_ORIGINS = [f'https://{x}' for x in ALLOWED_HOSTS]
 if DEBUG:
     CSRF_TRUSTED_ORIGINS = ['http://localhost:81']
 
+# Allauth configs
+SITE_ID = 2
+AUTH_USER_MODEL = "house_manager.accounts.HouseManagerUser"
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_ADAPTER = 'house_manager.accounts.adapters.CustomSocialAccountAdapter'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,7 +48,12 @@ INSTALLED_APPS = [
     "house_manager.houses.apps.HousesConfig",
     "house_manager.clients.apps.ClientsConfig",
     "house_manager.house_bills.apps.HouseBillsConfig",
-    "house_manager.client_bills.apps.ClientBillsConfig"
+    "house_manager.client_bills.apps.ClientBillsConfig",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google"
 ]
 
 MIDDLEWARE = [
@@ -50,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "allauth.account.middleware.AccountMiddleware"
 ]
 
 ROOT_URLCONF = 'house_manager.urls'
@@ -136,7 +152,7 @@ AUTH_USER_MODEL = "accounts.HouseManagerUser"
 
 LOGIN_REDIRECT_URL = reverse_lazy("index")
 
-LOGIN_URL = reverse_lazy("login_user")
+LOGIN_URL = reverse_lazy("account_login")
 
 LOGOUT_REDIRECT_URL = reverse_lazy("index")
 
@@ -159,3 +175,22 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS")
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }}
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+
+

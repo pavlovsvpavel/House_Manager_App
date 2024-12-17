@@ -27,6 +27,7 @@
                         <li><a href="{% url "about" %}">{% trans "About" %}</a></li>
 
                         {% if request.user.is_authenticated %}
+                            <script src="{% static "scripts/profileMenuReset.js" %}" defer></script>
                             {% include "partials/profile_menu.html" %}
                         {% endif %}
                         <li>
