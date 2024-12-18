@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import admin as auth_admin, get_user_model
-
+from django.contrib.sites.models import Site
 from house_manager.accounts.forms import (
     HouseManagerUserCreationForm,
     HouseManagerUserChangeForm)
@@ -51,3 +51,11 @@ class AppUserAdmin(auth_admin.UserAdmin):
     @staticmethod
     def phone_number(obj):
         return obj.profile.phone_number
+
+
+admin.site.unregister(Site)
+
+
+@admin.register(Site)
+class SiteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'domain', 'name')

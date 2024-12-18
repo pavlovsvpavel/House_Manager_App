@@ -3,7 +3,7 @@
 {% load static %}
 {% block main_content %}
 
-    <script src="{% static 'scripts/showHidePassword.js' %}" defer></script>
+    <script src="{% static 'scripts/showHidePassword.js' %}"></script>
     <section class="site-section login-register-user">
         <div class="container">
             <div class="form-container">
@@ -25,21 +25,12 @@
                         <div class="login-form">
                             <div class="create-form-heading">{% trans "Login" %}</div>
                             <form class="create-form" action="{% url "login_user" %}?next={{ next }}" method="post">
-{#                                {{ login_form }}#}
+                                {{ login_form }}
                                 {% csrf_token %}
-                                <div class="form-group">
-                                    <label for="{{ login_form.username.id_for_label }}">{% trans "Email:" %}</label>
-                                    {{ login_form.username }}
-                                </div>
-                                <div class="form-group">
-                                    <label for="{{ login_form.password.id_for_label }}">{% trans "Password:" %}</label>
-                                    <div class="password-container">
-                                        {{ login_form.password }}
-                                        <button type="button" id="togglePassword" class="toggle-btn">
-                                            <i id="toggleIcon" class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                                <button type="button" id="togglePassword" class="toggle-btn"
+                                        data-password-id="{{ login_form.password.id_for_label }}">
+                                    <i id="toggleIcon" class="fas fa-eye"></i>
+                                </button>
                                 <input class="btn" type="submit" value="{% trans "Login" %}">
                                 <div class="text sign-up-text">{% trans "Don't have an account?" %}
                                     <label for="flip" id="register_now">{% trans "Register now" %}</label>
