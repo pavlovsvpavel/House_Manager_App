@@ -1,4 +1,7 @@
 .errorlist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
     list-style: none outside;
     color:red;
 }

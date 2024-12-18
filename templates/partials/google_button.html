@@ -2,7 +2,7 @@
 {% load static %}
 {% load socialaccount %}
 
-<a href="{% provider_login_url 'google' %}?next={{ next|default:'/' }}"
+<a href="{% provider_login_url 'google' %}?next={{ next }}"
    class="google-button">
     <div class="google-button-content-wrapper">
         <div class="google-button-icon">

@@ -90,17 +90,25 @@
         font-size: 1.5em;
     }
 
+    .profile-menu a .profile-text {
+        display: block;
+    }
+
+    /*.profile-menu a .profile-icon {*/
+    /*    margin-right: 0; !* Remove margin when text is hidden *!*/
+    /*}*/
+
     .links-container {
         flex-direction: column;
         align-items: flex-start;
         position: fixed;
         top: 0;
-        right: -200%;
+        right: -100%;
         z-index: 10;
-        background-color: #35587D;
-        opacity: 95%;
-        box-shadow: -5px 0 5px rgba(0, 0, 0, 0.25);
-        transition: 0.8s ease-out;
+        background-color: var(--form-input-border);
+        opacity: 100%;
+        /*box-shadow: -5px 0 5px rgba(0, 0, 0, 0.25);*/
+        transition: 0.5s ease-out;
     }
 
     .open-sidebar-button {
@@ -108,12 +116,12 @@
     }
 
     .close-sidebar-button {
-        padding: 1em;
+        padding: 0.5em;
         display: block;
     }
 
     #sidebar-active:checked ~ .links-container {
-        right: 0;
+        right: -30%;
     }
 
     #sidebar-active:checked ~ #overlay {
@@ -123,6 +131,7 @@
         top: 0;
         left: 0;
         z-index: 9;
+        background-color: rgba(0, 0, 0, 0.8);
     }
 
     .headings {

@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+
 config = AutoConfig('envs')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,15 +43,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "django.contrib.sites",
+
     'cloudinary_storage',
     'cloudinary',
+
     "house_manager.accounts.apps.AccountsConfig",
     "house_manager.common.apps.CommonConfig",
     "house_manager.houses.apps.HousesConfig",
     "house_manager.clients.apps.ClientsConfig",
     "house_manager.house_bills.apps.HouseBillsConfig",
     "house_manager.client_bills.apps.ClientBillsConfig",
-    "django.contrib.sites",
+
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -196,6 +200,3 @@ AUTHENTICATION_BACKENDS = (
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
-
-
-

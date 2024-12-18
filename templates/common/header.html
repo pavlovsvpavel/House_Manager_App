@@ -35,11 +35,14 @@
                                 {% csrf_token %}
                                 <input name="next" type="hidden" value="{{ redirect_to }}"/>
                                 {% if LANGUAGE_CODE == "bg" %}
+
                                     <button class="language-form-btn" type="submit" name="language" value="en">
+                                        <span class="language-form-btn-text">EN</span>
                                         <img src="{% static "images/uk_flag.avif" %}" alt="English Flag">
                                     </button>
                                 {% else %}
                                     <button class="language-form-btn" type="submit" name="language" value="bg">
+                                        <span class="language-form-btn-text">BG</span>
                                         <img src="{% static "images/bg_flag.avif" %}" alt="Bulgarian Flag">
                                     </button>
                                 {% endif %}

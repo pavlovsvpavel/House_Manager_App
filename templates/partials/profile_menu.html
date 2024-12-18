@@ -2,7 +2,12 @@
 {% load i18n %}
 
 <li class="profile-menu">
-    <a href="javascript:void(0);">{% trans "Profile" %}</a>
+    <a href="javascript:void(0);">
+        <div class="profile">
+            <i class="fa-solid fa-circle-user"></i>
+            <p class="profile-text">{% trans "Profile" %}</p>
+        </div>
+    </a>
     <ul class="menu-links">
         {% if request.user.is_staff %}
             <li><a href="{% url "create_house" %}">{% trans "Create House" %}</a></li>
