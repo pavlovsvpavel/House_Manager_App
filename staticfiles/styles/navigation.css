@@ -89,6 +89,16 @@
 }
 
 /*Start Profile menu*/
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.profile i {
+    font-size: 1.3em;
+}
+
 .navigation .profile-menu .menu-links {
     display: flex;
     flex-direction: column;
@@ -98,7 +108,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    padding-top: 0.5em;
+    padding-top: 2em;
     background-color: var(--form-input-border);
     border-radius: 0.5em;
     opacity: 0;
@@ -111,6 +121,7 @@
     opacity: 1;
     visibility: visible;
     transition: opacity 0.3s, visibility 0s;
+    gap: 1em;
 }
 
 .navigation .menu-links li {

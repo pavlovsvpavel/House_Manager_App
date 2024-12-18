@@ -90,6 +90,14 @@
         font-size: 1.5em;
     }
 
+    .profile-menu a .profile-text {
+        display: block;
+    }
+
+    /*.profile-menu a .profile-icon {*/
+    /*    margin-right: 0; !* Remove margin when text is hidden *!*/
+    /*}*/
+
     .links-container {
         flex-direction: column;
         align-items: flex-start;
