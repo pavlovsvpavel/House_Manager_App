@@ -1,5 +1,4 @@
 import os
-from os import environ
 from pathlib import Path
 from decouple import config, Csv, AutoConfig
 from django.urls import reverse_lazy
@@ -21,9 +20,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 # Production
 CSRF_TRUSTED_ORIGINS = [f'https://{x}' for x in ALLOWED_HOSTS]
 
-# Development
-if DEBUG:
-    CSRF_TRUSTED_ORIGINS = ['http://localhost:81']
+
 
 # Allauth configs
 SITE_ID = config('SITE_ID', cast=int)
@@ -34,7 +31,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_ADAPTER = 'house_manager.accounts.adapters.CustomSocialAccountAdapter'
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = config('SECURE_PROXY_SSL_HEADER', cast=Csv())
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -121,7 +118,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Development
 if DEBUG:
+    CSRF_TRUSTED_ORIGINS = ['http://localhost:81']
     AUTH_PASSWORD_VALIDATORS = ()
 
 LANGUAGE_CODE = 'en-us'

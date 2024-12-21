@@ -1,12 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
 {% block main_content %}
-    <section class="site-section about">
+    <script src="{% static 'scripts/articlesAnimation.js' %}"></script>
+    <section class="site-section about" id="articles-section">
         <article class="heading">
             <div class="container">
                 <div class="wrapper">
-                    <h3>{% trans "Welcome to House Manager" %}</h3>
+                    <h4>{% trans "Welcome to House Manager" %}</h4>
                     <h5>{% trans "Your ultimate solution for efficient expenses management tailored specifically for building cashiers." %}</h5>
                     <p>{% trans "We understand the challenges faced by building cashiers in managing expenses effectively. From tracking receipts to balancing budgets, our platform is designed to simplify every aspect of the process, allowing you to focus on what matters most – ensuring financial integrity and smooth operations within your building." %}</p>
                 </div>
@@ -16,7 +18,7 @@
         <article class="mission">
             <div class="container">
                 <div class="wrapper">
-                    <h3>{% trans "Our Mission" %}</h3>
+                    <h4>{% trans "Our Mission" %}</h4>
                     <p>{% trans "Our mission is to empower building cashiers with a comprehensive and user-friendly tool to streamline expense management tasks. We strive to revolutionize the way expenses are handled, providing innovative solutions that save time, reduce errors, and enhance overall efficiency." %}</p>
                 </div>
             </div>
@@ -25,16 +27,16 @@
         <article class="choose-us">
             <div class="container">
                 <div class="wrapper">
-                    <h3>{% trans "Why Choose Us" %}</h3>
+                    <h4>{% trans "Why Choose Us" %}</h4>
                     <div class="choose-us-cards">
-                        <div class="card">
+                        <article class="card">
                             <h5>{% trans "User-Friendly Interface" %}</h5>
                             <p>{% trans "Our platform is designed with simplicity and ease of use in mind, ensuring a seamless user experience for building cashiers of all levels." %}</p>
-                        </div>
-                        <div class="card">
+                        </article>
+                        <article class="card">
                             <h5>{% trans "Security and Privacy" %}</h5>
                             <p>{% trans "We prioritize the security and privacy of your financial data, employing industry-leading measures to safeguard sensitive information." %}</p>
-                        </div>
+                        </article>
                     </div>
                 </div>
             </div>

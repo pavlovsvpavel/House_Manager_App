@@ -1,55 +1,56 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
 {% block main_content %}
-
-    <section class="site-section hero-section">
+    <script src="{% static 'scripts/articlesAnimation.js' %}"></script>
+    <section class="site-section hero-section" id="articles-section">
         <div class="container">
-            <div class="headings">
+            <article class="headings">
                 <h1>{% trans "Managing House Expenses." %}</h1>
                 <h1>{% trans "Your All-in-One Solution." %}</h1>
                 <a href="{% url "register_user" %}">{% trans "Register" %}</a>
-            </div>
+            </article>
         </div>
     </section>
-    <section class="what-we-offer">
+    <section class="what-we-offer" id="articles-section">
         <div class="container">
-            <div class="what-we-offer-wrapper">
+            <article class="what-we-offer-wrapper">
                 <div class="what-we-offer-heading">
                     <h4>{% trans "What We Offer" %}</h4>
                     <p>{% trans "Access to a range of powerful features tailored to meet the unique needs of building cashiers" %}</p>
                 </div>
                 <div class="what-we-offer-cards">
-                    <div class="card">
+                    <article class="card">
                         <h5>{% trans "Expense Tracking" %}</h5>
                         <p>{% trans "Easily monitor and track all expenses incurred within your building, ensuring transparency and accountability at every step." %}</p>
-                    </div>
-                    <div class="card">
+                    </article>
+                    <article class="card">
                         <h5>{% trans "Budget Management" %}</h5>
                         <p>{% trans "Take control of your building's finances with our intuitive budget management tools, allowing you to set, track, and adjust budgets as needed." %}</p>
-                    </div>
-                    <div class="card">
+                    </article>
+                    <article class="card">
                         <h5>{% trans "Receipt Management" %}</h5>
                         <p>{% trans "Say goodbye to manual receipt sorting and filing." %}</p>
                         <p>{% trans "Our platform offers seamless receipt management, allowing you to digitize and organize receipts effortlessly." %}</p>
-                    </div>
+                    </article>
                 </div>
-            </div>
+            </article>
         </div>
     </section>
-    <section class="get-started">
+    <section class="get-started" id="articles-section">
         <div class="container">
-            <div class="get-started-wrapper">
-                <h3>{% trans "Get Started Today" %}</h3>
+            <article class="get-started-wrapper">
+                <h4>{% trans "Get Started Today" %}</h4>
                 <p>{% trans "Join countless building cashiers who have already made the switch to our app and experience the difference firsthand." %}</p>
                 <p>{% trans "Register now to streamline your expenses management process and take your building's financial management to the next level." %}</p>
                 <a href="{% url "register_user" %}">{% trans "Register" %}</a>
-            </div>
+            </article>
         </div>
     </section>
 {#    <section class="site-section pricing-section">#}
 {#        <div class="container">#}
-{#            <div class="pricing-wrapper">#}
+{#            <article class="pricing-wrapper">#}
 {#                <div class="pricing-plans">#}
 {#                    <h3>{% trans "Pricing Plans" %}</h3>#}
 {#                    <p>{% trans "Choose your plan and start using our app." %}</p>#}
@@ -68,7 +69,7 @@
 {#                    <p>12 {% trans "months period" %}</p>#}
 {#                    <div><a href="{% url "register_user" %}">{% trans "Register" %}</a></div>#}
 {#                </div>#}
-{#            </div>#}
+{#            </article>#}
 {#        </div>#}
 {#    </section>#}
 
