@@ -1,6 +1,6 @@
 services:
   web:
-    image: ppavlovp/house_manager:cloud-demo
+    image: house_manager:cloud
     build:
       context: .
       dockerfile: Dockerfile
