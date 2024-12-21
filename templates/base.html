@@ -7,24 +7,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:image" content="{% static "images/site_logo.avif" %}"/>
-    <meta name="description" content="Your ultimate solution for efficient expenses management tailored specifically for building cashiers.">
+    <meta name="description"
+          content="Your ultimate solution for efficient expenses management tailored specifically for building cashiers.">
     <title>House Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static "styles/styles.css" %}">
     <link href="{% static "images/favicon.ico" %}" rel="icon" type="image/x-icon">
     <script src={% static "scripts/redirects.js" %}></script>
     <script src={% static "scripts/backToTop.js" %}></script>
 </head>
 <body>
-    <div class="site">
-        {% include "common/header.html" %}
-        <main class="site-main">
-            {% block main_content %}
-            
-            {% endblock %}
-        </main>
-        {% include "partials/back_to_top_button.html" %}
-        {% include "common/footer.html" %}
-        {% include "common/cookies-banner.html" %}
-    </div>
+<div class="site">
+    {% include "common/header.html" %}
+    <main class="site-main">
+        {% block main_content %}
+
+        {% endblock %}
+    </main>
+    {% include "partials/back_to_top_button.html" %}
+    {% include "common/footer.html" %}
+    {% include "common/cookies-banner.html" %}
+</div>
 </body>
 </html>

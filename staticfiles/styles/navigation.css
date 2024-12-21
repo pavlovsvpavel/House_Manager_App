@@ -48,7 +48,7 @@
     text-decoration: none;
     text-transform: uppercase;
     font-weight: bold;
-    padding: 0.3em 0.5em;
+    padding: 0.5em;
     border-radius: 0.5em;
     transition: 0.3s ease-in-out;
     display: block;
@@ -62,7 +62,7 @@
     content: "";
     position: absolute;
     width: 0;
-    height: 3px;
+    height: 2px;
     background-color: var(--site-bgnd);
     transition: all 0.5s ease-in-out;
 }

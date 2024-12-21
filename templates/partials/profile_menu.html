@@ -1,8 +1,17 @@
 {% load cloudinary %}
 {% load i18n %}
 
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const profileLink = document.querySelector(".profile-link");
+
+        profileLink.addEventListener("click", (event) => {
+            event.preventDefault();
+        });
+    });
+</script>
 <li class="profile-menu">
-    <a href="javascript:void(0);">
+    <a href="#" class="profile-link">
         <div class="profile">
             <i class="fa-solid fa-circle-user"></i>
             <p class="profile-text">{% trans "Profile" %}</p>
