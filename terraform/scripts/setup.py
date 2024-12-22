@@ -36,10 +36,11 @@ try:
     repo_path = os.path.join(app_path, "House_Manager_App")
     if os.path.isdir(os.path.join(repo_path, ".git")):
         os.chdir(repo_path)
-        run_command("git pull origin development")
+        run_command("git pull origin development", sudo=True)
     else:
         run_command("git clone https://$GH_PAT@github.com/pavlovsvpavel/House_Manager_App.git")
         os.chdir(repo_path)
+        run_command("git checkout development", sudo=True)
 
     # Move the env file to repository envs folder
     env_file = "/home/ubuntu/app/envs/.env.dev"
