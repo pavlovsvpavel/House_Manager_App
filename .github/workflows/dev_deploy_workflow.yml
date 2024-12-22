@@ -1,0 +1,32 @@
+name: Update Django app
+
+on:
+  workflow_dispatch:
+#  push:
+#    branches:
+#      - development
+
+jobs:
+  update_django_app:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_INSTANCE_IP }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+                cd /home/ubuntu/app/House_Manager_App
+                git pull origin development
+                sudo docker-compose -f docker-compose.dev.yml build
+                docker-compose -f docker-compose.dev.yml up -d
+                sudo docker-compose -f docker-compose.dev.yml exec -T web python manage.py migrate
+                sudo docker-compose -f docker-compose.dev.yml exec -T web python manage.py collectstatic --noinput
+                sudo docker-compose -f docker-compose.dev.yml exec -T web python manage.py makemessages -l bg
+                sudo docker-compose -f docker-compose.dev.yml exec -T web python manage.py compilemessages
+                docker restart $(docker ps -q)
+                sleep 10
+                docker image prune -a --force
+                docker builder prune --force
