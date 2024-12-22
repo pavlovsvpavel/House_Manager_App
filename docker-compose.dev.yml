@@ -1,5 +1,6 @@
 services:
   web:
+    container_name: house_manager_app_web_dev
     image: house_manager:dev
     build:
       context: .
@@ -20,6 +21,7 @@ services:
     depends_on:
       - postgres
   postgres:
+    container_name: house_manager_app_postgres_dev
     image: postgres:16
     restart: always
     ports:
@@ -29,6 +31,7 @@ services:
     volumes:
       - ./postgresql_dev:/var/lib/postgresql/data
   nginx:
+    container_name: house_manager_app_nginx_dev
     image: nginx
     restart: always
     ports:

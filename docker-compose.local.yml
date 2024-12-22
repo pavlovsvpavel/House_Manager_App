@@ -1,6 +1,7 @@
 services:
   web:
-    image: ppavlovp/house_manager:local
+    container_name: house_manager_app_web_local
+    image: house_manager:local
     build:
       context: .
       dockerfile: Dockerfile
@@ -20,6 +21,7 @@ services:
     depends_on:
       - postgres
   postgres:
+    container_name: house_manager_app_postgres
     image: postgres:16
     restart: always
     ports:
@@ -29,6 +31,7 @@ services:
     volumes:
       - ./postgresql:/var/lib/postgresql/data
   nginx:
+    container_name: house_manager_app_nginx
     image: nginx
     restart: always
     ports:
