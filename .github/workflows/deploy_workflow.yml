@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-#  pull_request:
-#    branches:
-#      - main
 
 jobs:
   update_django_app:
@@ -21,15 +18,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
                 cd /home/ubuntu/app/House_Manager_App
-                sudo git checkout origin main
-                sudo git pull origin main
-                sudo docker-compose -f docker-compose.prod.yml -p production build
-                docker-compose -f docker-compose.prod.yml -p production up -d
+                sudo git pull
+                sudo docker-compose -f docker-compose.prod.yml -p production up -d --build
                 sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py migrate
                 sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py collectstatic --noinput
                 sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py makemessages -l bg
                 sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py compilemessages
-                docker restart $(docker ps -q)
-                sleep 10
-                docker image prune -a --force
-                docker builder prune --force
+                docker restart $(docker ps -q --filter "name=prod")
