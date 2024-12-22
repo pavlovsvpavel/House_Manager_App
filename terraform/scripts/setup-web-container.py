@@ -23,6 +23,7 @@ os.chdir(app_path)
 
 # Run Django management commands inside the web container
 docker_compose_file = "docker-compose.dev.yml"
+docker_project_name = "development"
 management_commands = [
     "python manage.py migrate",
     "python manage.py collectstatic --noinput",
@@ -31,7 +32,7 @@ management_commands = [
 ]
 
 for command in management_commands:
-    full_command = f"docker-compose -f {docker_compose_file} exec -T web {command}"
+    full_command = f"docker-compose -f {docker_compose_file} -p {docker_project_name} exec -T web {command}"
     run_command(full_command, sudo=True)
 
 # Restart all containers

@@ -1,4 +1,4 @@
-name: Update Django app
+name: Update Django app to production
 
 on:
   push:
@@ -21,13 +21,14 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
                 cd /home/ubuntu/app/House_Manager_App
-                git pull origin main
-                sudo docker-compose -f docker-compose.prod.yml build
-                docker-compose -f docker-compose.prod.yml up -d
-                sudo docker-compose -f docker-compose.prod.yml exec -T web python manage.py migrate
-                sudo docker-compose -f docker-compose.prod.yml exec -T web python manage.py collectstatic --noinput
-                sudo docker-compose -f docker-compose.prod.yml exec -T web python manage.py makemessages -l bg
-                sudo docker-compose -f docker-compose.prod.yml exec -T web python manage.py compilemessages
+                sudo git checkout origin main
+                sudo git pull origin main
+                sudo docker-compose -f docker-compose.prod.yml -p production build
+                docker-compose -f docker-compose.prod.yml -p production up -d
+                sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py migrate
+                sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py collectstatic --noinput
+                sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py makemessages -l bg
+                sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py compilemessages
                 docker restart $(docker ps -q)
                 sleep 10
                 docker image prune -a --force
