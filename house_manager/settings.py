@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from decouple import config, Csv, AutoConfig
+from decouple import config, Csv, AutoConfig, Choices
 from django.urls import reverse_lazy
 
 import cloudinary
@@ -31,10 +31,8 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_ADAPTER = 'house_manager.accounts.adapters.CustomSocialAccountAdapter'
-SECURE_PROXY_SSL_HEADER = (
-    os.getenv('SECURE_PROXY_SSL_HEADER', 'HTTP_X_FORWARDED_PROTO'),
-    os.getenv('SECURE_PROXY_SSL_PROTOCOL', 'https'),
-)
+SECURE_PROXY_SSL_HEADER_STR = config('SECURE_PROXY_SSL_HEADER')
+SECURE_PROXY_SSL_HEADER = tuple(SECURE_PROXY_SSL_HEADER_STR.split(','))
 
 INSTALLED_APPS = [
     'django.contrib.admin',

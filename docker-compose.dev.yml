@@ -1,17 +1,17 @@
 services:
   web:
-    container_name: house_manager_app_web_prod
-    image: ppavlovp/house_manager:latest
+    container_name: house_manager_app_web_dev
+    image: house_manager:dev
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_dev
       args:
         DOCKER_BUILDKIT: 1
     restart: always
     ports:
       - "8000:8000"
     env_file:
-      - ./envs/.env.prod
+      - ./envs/.env.dev
     volumes:
       - ./staticfiles:/tmp/house_manager/static_files
       - ./mediafiles:/tmp/house_manager/mediafiles
@@ -21,17 +21,17 @@ services:
     depends_on:
       - postgres
   postgres:
-    container_name: house_manager_app_postgres_prod
+    container_name: house_manager_app_postgres_dev
     image: postgres:16
     restart: always
     ports:
       - "5432:5432"
     env_file:
-      - ./envs/.env.prod
+      - ./envs/.env.dev
     volumes:
-      - ./postgresql:/var/lib/postgresql/data
+      - ./postgresql_dev:/var/lib/postgresql/data
   nginx:
-    container_name: house_manager_app_nginx_prod
+    container_name: house_manager_app_nginx_dev
     image: nginx
     restart: always
     ports:
@@ -41,8 +41,8 @@ services:
       - ./staticfiles:/home/app/web/static_files
       - ./mediafiles:/home/app/web/mediafiles
       - ./locale:/home/app/web/locale
-      - ./nginx/prod/conf.d:/etc/nginx/conf.d
-      - ./nginx/prod/logs:/var/log/nginx
+      - ./nginx/cloud/conf.d:/etc/nginx/conf.d
+      - ./nginx/cloud/logs:/var/log/nginx
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
     depends_on:
