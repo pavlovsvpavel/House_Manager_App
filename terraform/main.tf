@@ -54,6 +54,13 @@ resource "aws_security_group" "app_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 88
+    to_port     = 88
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Allow HTTPS
   ingress {
     from_port   = 443
@@ -106,27 +113,30 @@ resource "aws_instance" "app_instance_creation" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/scripts/setup.py"
-    destination = "/home/ubuntu/app/scripts/setup.py"
+    source      = "${path.module}/scripts/setup.sh"
+    destination = "/home/ubuntu/app/scripts/setup.sh"
   }
 
   provisioner "file" {
-    source      = "${path.module}/scripts/setup-web-container.py"
-    destination = "/home/ubuntu/app/scripts/setup-web-container.py"
+    source      = "${path.module}/scripts/setup-web-container.sh"
+    destination = "/home/ubuntu/app/scripts/setup-web-container.sh"
   }
 
   provisioner "remote-exec" {
     inline = [
       "echo 'Changing permissions of setup.py script...'",
-      "chmod +x /home/ubuntu/app/scripts/setup.py",
+      "chmod +x /home/ubuntu/app/scripts/setup.sh",
       "sleep 5",
+
       "echo 'Executing setup.py script...'",
-      "sudo python3 /home/ubuntu/app/scripts/setup.py",
+      "sudo /home/ubuntu/app/scripts/setup.sh",
+
       "echo 'Changing permissions of setup-web-container.py script...'",
-      "chmod +x /home/ubuntu/app/scripts/setup-web-container.py",
+      "chmod +x /home/ubuntu/app/scripts/setup-web-container.sh",
       "sleep 5",
+
       "echo 'Executing setup-web-container.py script...'",
-      "sudo python3 /home/ubuntu/app/scripts/setup-web-container.py"
+      "sudo /home/ubuntu/app/scripts/setup-web-container.sh"
     ]
   }
 }

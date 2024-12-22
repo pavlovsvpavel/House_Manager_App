@@ -1,6 +1,6 @@
 services:
   web:
-    container_name: house_manager_app_web_development
+    container_name: house_manager_app_web_dev
     image: house_manager:dev
     build:
       context: .
