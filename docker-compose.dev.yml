@@ -23,9 +23,6 @@ services:
   postgres:
     container_name: house_manager_app_postgres_dev
     image: postgres_dev
-    build:
-      context: .
-      dockerfile: Dockerfile_dev
     restart: always
     ports:
       - "5433:5432"
@@ -35,10 +32,7 @@ services:
       - ./postgresql_dev:/var/lib/postgresql/data
   nginx:
     container_name: house_manager_app_nginx_dev
-    image: nginx_dev
-    build:
-      context: .
-      dockerfile: Dockerfile_dev
+    image: nginx
     restart: always
     ports:
       - "88:80"
