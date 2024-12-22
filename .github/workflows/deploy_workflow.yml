@@ -1,12 +1,10 @@
-name: Update Django app to production
+name: Update to production
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-  update_django_app:
+  update_app_to_prod_environment:
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -24,4 +22,4 @@ jobs:
                 sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py collectstatic --noinput
                 sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py makemessages -l bg
                 sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py compilemessages
-                sudo docker restart $(docker ps -q --filter "name=prod")
+                sudo docker restart $(sudo docker ps -q --filter "name=prod")
