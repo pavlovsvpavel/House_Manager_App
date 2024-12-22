@@ -20,8 +20,7 @@ jobs:
           script: |
                 cd /home/ubuntu/app/House_Manager_App
                 sudo git checkout development
-                sudo git pull 
-            development
+                sudo git pull development
                 sudo docker-compose -f docker-compose.dev.yml -p development build
                 docker-compose -f docker-compose.dev.yml -p development up -d
                 sudo docker-compose -f docker-compose.dev.yml -p development exec -T web python manage.py migrate
