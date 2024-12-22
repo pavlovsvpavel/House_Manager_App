@@ -1,7 +1,7 @@
 services:
   web:
     container_name: house_manager_app_web_prod
-    image: ppavlovp/house_manager:latest
+    image: house_manager:prod
     build:
       context: .
       dockerfile: Dockerfile
