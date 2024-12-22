@@ -19,15 +19,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
                 cd /home/ubuntu/app/House_Manager_App
-                sudo git checkout origin development
-                sudo git pull origin development
+                sudo git checkout development
+                sudo git pull 
+            development
                 sudo docker-compose -f docker-compose.dev.yml -p development build
                 docker-compose -f docker-compose.dev.yml -p development up -d
                 sudo docker-compose -f docker-compose.dev.yml -p development exec -T web python manage.py migrate
                 sudo docker-compose -f docker-compose.dev.yml -p development exec -T web python manage.py collectstatic --noinput
                 sudo docker-compose -f docker-compose.dev.yml -p development exec -T web python manage.py makemessages -l bg
                 sudo docker-compose -f docker-compose.dev.yml -p development exec -T web python manage.py compilemessages
-                docker restart $(docker ps -q)
-                sleep 10
-                docker image prune -a --force
-                docker builder prune --force
+                docker restart $(docker ps -q --filter "name=dev")
