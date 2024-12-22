@@ -113,27 +113,30 @@ resource "aws_instance" "app_instance_creation" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/scripts/setup.py"
-    destination = "/home/ubuntu/app/scripts/setup.py"
+    source      = "${path.module}/scripts/setup.sh"
+    destination = "/home/ubuntu/app/scripts/setup.sh"
   }
 
   provisioner "file" {
-    source      = "${path.module}/scripts/setup-web-container.py"
-    destination = "/home/ubuntu/app/scripts/setup-web-container.py"
+    source      = "${path.module}/scripts/setup-web-container.sh"
+    destination = "/home/ubuntu/app/scripts/setup-web-container.sh"
   }
 
   provisioner "remote-exec" {
     inline = [
       "echo 'Changing permissions of setup.py script...'",
-      "chmod +x /home/ubuntu/app/scripts/setup.py",
+      "chmod +x /home/ubuntu/app/scripts/setup.sh",
       "sleep 5",
+
       "echo 'Executing setup.py script...'",
-      "sudo python3 /home/ubuntu/app/scripts/setup.py",
+      "sudo /home/ubuntu/app/scripts/setup.sh",
+
       "echo 'Changing permissions of setup-web-container.py script...'",
-      "chmod +x /home/ubuntu/app/scripts/setup-web-container.py",
+      "chmod +x /home/ubuntu/app/scripts/setup-web-container.sh",
       "sleep 5",
+
       "echo 'Executing setup-web-container.py script...'",
-      "sudo python3 /home/ubuntu/app/scripts/setup-web-container.py"
+      "sudo /home/ubuntu/app/scripts/setup-web-container.sh"
     ]
   }
 }
