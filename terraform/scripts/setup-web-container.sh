@@ -9,4 +9,4 @@ sudo docker-compose -f docker-compose.dev.yml -p development exec -T web python 
 sudo docker-compose -f docker-compose.dev.yml -p development exec -T web python manage.py compilemessages
 
 # Restart all containers
-sudo docker restart $(docker ps -q)
+sudo docker restart $(docker ps -q --filter "name=dev")

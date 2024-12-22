@@ -13,8 +13,8 @@ sudo usermod -aG docker ubuntu
 # Switch to the ubuntu user for the remaining commands
 sudo -u ubuntu -i <<'EOF'
 
-# Create directory for the application
-# mkdir -p /home/ubuntu/app
+# Ensure the new group membership takes effect
+newgrp docker <<'GRP'
 
 # Navigate to the app directory and either clone or pull
 cd /home/ubuntu/app
@@ -37,4 +37,5 @@ fi
 # Build images and run containers
 sudo docker-compose -f docker-compose.dev.yml -p development up -d --build
 
+GRP
 EOF
