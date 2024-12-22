@@ -1,10 +1,10 @@
-name: Update Django app to development
+name: Update to development
 
 on:
   workflow_dispatch:
 
 jobs:
-  update_django_app:
+  update_app_to_dev_environment:
     runs-on: ubuntu-latest
     environment: development
     steps:

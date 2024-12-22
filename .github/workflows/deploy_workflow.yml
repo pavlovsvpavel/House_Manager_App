@@ -1,12 +1,10 @@
-name: Update Django app to production
+name: Update to production
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-  update_django_app:
+  update_app_to_prod_environment:
     runs-on: ubuntu-latest
     environment: production
     steps:

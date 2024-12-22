@@ -113,6 +113,11 @@ resource "aws_instance" "app_instance_creation" {
   }
 
   provisioner "file" {
+    source      = "${path.module}/../envs/.env.prod"
+    destination = "/home/ubuntu/app/envs/.env.prod"
+  }
+
+  provisioner "file" {
     source      = "${path.module}/scripts/setup.sh"
     destination = "/home/ubuntu/app/scripts/setup.sh"
   }
@@ -160,7 +165,3 @@ output "private_ip" {
 output "instance_id" {
   value = aws_instance.app_instance_creation.id
 }
-
-# output "elastic_ip" {
-#   value = aws_eip.elastic_ip_creation.public_ip
-# }
