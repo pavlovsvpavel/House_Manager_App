@@ -52,7 +52,7 @@ try:
         print("No .env.dev file found.")
 
     # Build images and run containers
-    run_command("docker-compose -f docker-compose.dev.yml up -d --build", sudo=True)
+    run_command("docker-compose -f docker-compose.dev.yml -p development up -d --build", sudo=True)
 
 except Exception as e:
     print(f"An error occurred: {str(e)}")

@@ -101,43 +101,47 @@ resource "aws_instance" "app_instance_creation" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/../envs/.env.cloud"
-    destination = "/home/ubuntu/app/envs/.env.cloud"
+    source      = "${path.module}/../envs/.env.dev"
+    destination = "/home/ubuntu/app/envs/.env.dev"
   }
 
   provisioner "file" {
-    source      = "${path.module}/scripts/setup.sh"
-    destination = "/home/ubuntu/app/scripts/setup.sh"
+    source      = "${path.module}/scripts/setup.py"
+    destination = "/home/ubuntu/app/scripts/setup.py"
   }
 
   provisioner "file" {
-    source      = "${path.module}/scripts/setup-web-container.sh"
-    destination = "/home/ubuntu/app/scripts/setup-web-container.sh"
+    source      = "${path.module}/scripts/setup-web-container.py"
+    destination = "/home/ubuntu/app/scripts/setup-web-container.py"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /home/ubuntu/app/scripts/setup.sh",
+      "echo 'Changing permissions of setup.py script...'",
+      "chmod +x /home/ubuntu/app/scripts/setup.py",
       "sleep 5",
-      "sudo /home/ubuntu/app/scripts/setup.sh",
-      "chmod +x /home/ubuntu/app/scripts/setup-web-container.sh",
+      "echo 'Executing setup.py script...'",
+      "sudo python3 /home/ubuntu/app/scripts/setup.py",
+      "echo 'Changing permissions of setup-web-container.py script...'",
+      "chmod +x /home/ubuntu/app/scripts/setup-web-container.py",
       "sleep 5",
-      "sudo /home/ubuntu/app/scripts/setup-web-container.sh"
+      "echo 'Executing setup-web-container.py script...'",
+      "sudo python3 /home/ubuntu/app/scripts/setup-web-container.py"
     ]
   }
 }
 
 ## Use this resource, if you don't have elastic IP
-resource "aws_eip" "elastic_ip_creation" {
-  instance = aws_instance.app_instance_creation.id
-  domain   = "vpc"
-}
+# resource "aws_eip" "elastic_ip_creation" {
+#   instance = aws_instance.app_instance_creation.id
+#   domain   = "vpc"
+# }
 
 ## Use this resource, if you already have elastic IP
-# resource "aws_eip_association" "existing_ip_association" {
-#   instance_id   = aws_instance.app_instance_creation.id
-#   allocation_id = var.existing_eip_allocation_id
-# }
+resource "aws_eip_association" "existing_ip_association" {
+  instance_id   = aws_instance.app_instance_creation.id
+  allocation_id = var.existing_eip_allocation_id
+}
 
 output "private_ip" {
   value = aws_instance.app_instance_creation.private_ip
@@ -147,6 +151,6 @@ output "instance_id" {
   value = aws_instance.app_instance_creation.id
 }
 
-output "elastic_ip" {
-  value = aws_eip.elastic_ip_creation.public_ip
-}
+# output "elastic_ip" {
+#   value = aws_eip.elastic_ip_creation.public_ip
+# }
