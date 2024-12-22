@@ -1,5 +1,5 @@
 services:
-  web_dev:
+  web:
     container_name: house_manager_app_web_dev
     image: house_manager:dev
     build:
@@ -20,9 +20,12 @@ services:
     command: gunicorn house_manager.wsgi:application --bind=0.0.0.0:8000
     depends_on:
       - postgres
-  postgres_dev:
+  postgres:
     container_name: house_manager_app_postgres_dev
-    image: postgres:16
+    image: postgres_dev
+    build:
+      context: .
+      dockerfile: Dockerfile_dev
     restart: always
     ports:
       - "5433:5432"
@@ -30,9 +33,12 @@ services:
       - ./envs/.env.dev
     volumes:
       - ./postgresql_dev:/var/lib/postgresql/data
-  nginx_dev:
+  nginx:
     container_name: house_manager_app_nginx_dev
-    image: nginx
+    image: nginx_dev
+    build:
+      context: .
+      dockerfile: Dockerfile_dev
     restart: always
     ports:
       - "88:80"
