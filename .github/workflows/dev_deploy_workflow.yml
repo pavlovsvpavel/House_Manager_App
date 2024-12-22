@@ -14,12 +14,12 @@ jobs:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_INSTANCE_IP }}
+          host: ${{ secrets.EC2_INSTANCE_IP_DEV }}
           username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
           script: |
                 cd /home/ubuntu/app/House_Manager_App
-                git pull origin development
+                sudo git pull origin development
                 sudo docker-compose -f docker-compose.dev.yml build
                 docker-compose -f docker-compose.dev.yml up -d
                 sudo docker-compose -f docker-compose.dev.yml exec -T web python manage.py migrate
