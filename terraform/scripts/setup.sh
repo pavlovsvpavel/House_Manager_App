@@ -22,11 +22,13 @@ if ! sudo snap install docker; then
     exit 1
 fi
 
-# Add the docker group and user to the docker group
-echo "Adding the docker group and user to the docker group..."
-if ! sudo groupadd docker || true; then
-    echo "Error: Failed to add the docker group."
-    exit 1
+# Check if the docker group exists
+if ! getent group docker > /dev/null; then
+    echo "Adding the docker group..."
+    if ! sudo groupadd docker; then
+        echo "Error: Failed to add the docker group."
+        exit 1
+    fi
 fi
 
 if ! sudo usermod -aG docker ubuntu; then
@@ -51,7 +53,7 @@ fi
 
 # Navigate to the app directory
 echo "Navigating to the app directory..."
-cd /home/ubuntu/app || exit
+cd /home/ubuntu/app
 
 # Clone the repository
 echo "Cloning the repository..."
@@ -60,7 +62,7 @@ if ! git clone https://$GH_PAT@github.com/pavlovsvpavel/House_Manager_App.git; t
     exit 1
 fi
 
-cd House_Manager_App || exit
+cd House_Manager_App
 
 # Copy the env files to repository envs folder
 echo "Copying .env files..."

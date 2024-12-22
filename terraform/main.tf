@@ -129,18 +129,18 @@ resource "aws_instance" "app_instance_creation" {
 
   provisioner "remote-exec" {
     inline = [
-      "echo 'Changing permissions of setup.py script...'",
+      "echo 'Changing permissions of setup.sh script...'",
       "chmod +x /home/ubuntu/app/scripts/setup.sh",
       "sleep 5",
 
-      "echo 'Executing setup.py script...'",
+      "echo 'Executing setup.sh script...'",
       "sudo /home/ubuntu/app/scripts/setup.sh",
 
-      "echo 'Changing permissions of setup-web-container.py script...'",
+      "echo 'Changing permissions of setup-web-container.sh script...'",
       "chmod +x /home/ubuntu/app/scripts/setup-web-container.sh",
       "sleep 5",
 
-      "echo 'Executing setup-web-container.py script...'",
+      "echo 'Executing setup-web-container.sh script...'",
       "sudo /home/ubuntu/app/scripts/setup-web-container.sh"
     ]
   }
