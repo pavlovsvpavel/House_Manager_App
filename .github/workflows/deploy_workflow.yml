@@ -24,4 +24,4 @@ jobs:
                 sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py collectstatic --noinput
                 sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py makemessages -l bg
                 sudo docker-compose -f docker-compose.prod.yml -p production exec -T web python manage.py compilemessages
-                docker restart $(docker ps -q --filter "name=prod")
+                sudo docker restart $(docker ps -q --filter "name=prod")
