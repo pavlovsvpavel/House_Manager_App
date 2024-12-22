@@ -20,21 +20,21 @@ sudo -u ubuntu -i <<'EOF'
 cd /home/ubuntu/app
 if [ -d "House_Manager_App/.git" ]; then
   cd House_Manager_App
-  git pull origin main  # Pulls the latest changes
+  git pull origin development  # Pulls the latest changes
 else
   git clone https://$GH_PAT@github.com/pavlovsvpavel/House_Manager_App.git
   cd House_Manager_App
 fi
 
 # Move the env file to repository envs folder
-if [ -f "/home/ubuntu/app/envs/.env.cloud" ]; then
+if [ -f "/home/ubuntu/app/envs/.env.dev" ]; then
     mkdir -p ./envs
-    cp /home/ubuntu/app/envs/.env.cloud ./envs
+    cp /home/ubuntu/app/envs/.env.dev ./envs
 else
-    echo "No .env.cloud file found."
+    echo "No .env.dev file found."
 fi
 
 # Build images and run containers
-sudo docker-compose -f docker-compose.cloud.yml up -d --build
+sudo docker-compose -f docker-compose.dev.yml -p development up -d --build
 
 EOF
