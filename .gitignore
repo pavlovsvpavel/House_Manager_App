@@ -172,4 +172,4 @@ static_files
 terraform.tfstate
 terraform.tfstate.backup
 *.pem
-/postgres_db/
+postgres_db
