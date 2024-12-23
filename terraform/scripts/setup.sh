@@ -40,10 +40,6 @@ fi
 echo "Switching to the ubuntu user for further commands..."
 sudo -u ubuntu -i <<'EOF'
 
-# Ensure the new group membership takes effect
-echo "Ensuring the new group membership takes effect..."
-newgrp docker <<'GRP'
-
 # Create app directory
 echo "Creating the app directory..."
 if ! mkdir -p /home/ubuntu/app; then
@@ -89,5 +85,4 @@ if ! sudo docker-compose -f docker-compose.dev.yml -p development up -d --build;
 fi
 
 echo "Script completed successfully."
-GRP
 EOF

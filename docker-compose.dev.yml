@@ -22,14 +22,14 @@ services:
       - postgres
   postgres:
     container_name: house_manager_app_postgres_dev
-    image: postgres:16
+    image: postgres:17
     restart: always
     ports:
       - "5433:5432"
     env_file:
       - ./envs/.env.dev
     volumes:
-      - ./postgresql_dev:/var/lib/postgresql/data
+      - ./postgres_db:/var/lib/postgresql/data
   nginx:
     container_name: house_manager_app_nginx_dev
     image: nginx
