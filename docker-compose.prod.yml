@@ -22,14 +22,14 @@ services:
       - postgres
   postgres:
     container_name: house_manager_app_postgres_prod
-    image: postgres:16
+    image: postgres:17
     restart: always
     ports:
       - "5432:5432"
     env_file:
       - ./envs/.env.prod
     volumes:
-      - ./postgresql:/var/lib/postgresql/data
+      - ./postgresql_prod:/var/lib/postgresql/data
   nginx:
     container_name: house_manager_app_nginx_prod
     image: nginx

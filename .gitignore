@@ -60,6 +60,7 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+*.sql
 
 # Flask stuff:
 instance/
@@ -171,3 +172,4 @@ static_files
 terraform.tfstate
 terraform.tfstate.backup
 *.pem
+/postgres_db/

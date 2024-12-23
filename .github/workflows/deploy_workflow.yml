@@ -1,10 +1,10 @@
-name: Update to production
+name: Deploy to production
 
 on:
   workflow_dispatch:
 
 jobs:
-  update_app_to_prod_environment:
+  deploy_to_prod_environment:
     runs-on: ubuntu-latest
     environment: production
     steps:
