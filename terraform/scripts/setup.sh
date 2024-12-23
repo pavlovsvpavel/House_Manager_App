@@ -67,11 +67,6 @@ if ! mkdir -p ./envs; then
     exit 1
 fi
 
-if ! cp /home/ubuntu/app/envs/.env.dev ./envs; then
-    echo "Error: Failed to copy .env.dev file."
-    exit 1
-fi
-
 if ! cp /home/ubuntu/app/envs/.env.prod ./envs; then
     echo "Error: Failed to copy .env.prod file."
     exit 1
@@ -79,7 +74,7 @@ fi
 
 # Build images and run containers
 echo "Building images and running containers..."
-if ! sudo docker-compose -f docker-compose.dev.yml -p development up -d --build; then
+if ! sudo docker-compose -f docker-compose.prod.yml -p production up -d --build; then
     echo "Error: Failed to build and run Docker containers."
     exit 1
 fi

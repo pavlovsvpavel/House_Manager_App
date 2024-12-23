@@ -108,11 +108,6 @@ resource "aws_instance" "app_instance_creation" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/../envs/.env.dev"
-    destination = "/home/ubuntu/app/envs/.env.dev"
-  }
-
-  provisioner "file" {
     source      = "${path.module}/../envs/.env.prod"
     destination = "/home/ubuntu/app/envs/.env.prod"
   }
