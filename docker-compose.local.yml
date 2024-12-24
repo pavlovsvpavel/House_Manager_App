@@ -35,7 +35,7 @@ services:
     image: nginx
     restart: always
     ports:
-      - "81:80"
+      - "127.0.0.1:81:80"
     volumes:
       - ./staticfiles:/home/app/web/static_files
       - ./mediafiles:/home/app/web/mediafiles

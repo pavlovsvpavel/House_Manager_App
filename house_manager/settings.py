@@ -20,11 +20,8 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 # Production
 CSRF_TRUSTED_ORIGINS = [f'https://{x}' for x in ALLOWED_HOSTS]
 
-
-
 # Allauth configs
 SITE_ID = config('SITE_ID', cast=int)
-AUTH_USER_MODEL = "house_manager.accounts.HouseManagerUser"
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -121,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Development
 if DEBUG:
-    CSRF_TRUSTED_ORIGINS = ['http://localhost:81']
+    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:81']
     AUTH_PASSWORD_VALIDATORS = ()
 
 LANGUAGE_CODE = 'en-us'

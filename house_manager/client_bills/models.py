@@ -31,6 +31,9 @@ class ClientMonthlyBill(MonthlyBill):
         on_delete=models.RESTRICT,
     )
 
+    def __str__(self):
+        return f"Client bill for '{self.client}' for {self.month} {self.year}"
+
 
 class ClientOtherBill(OtherBill):
     class Meta:
@@ -54,3 +57,6 @@ class ClientOtherBill(OtherBill):
         to=UserModel,
         on_delete=models.RESTRICT,
     )
+
+    def __str__(self):
+        return f"Client other bill for '{self.client}' for {self.month} {self.year}"

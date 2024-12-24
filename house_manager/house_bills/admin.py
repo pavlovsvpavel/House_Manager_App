@@ -6,26 +6,65 @@ from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill
 
 @admin.register(HouseMonthlyBill)
 class HouseMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAdmin):
-    list_display = ("house", "month", "year", "electricity_common",
-                    "electricity_lift", "internet", "maintenance_lift",
-                    "fee_cleaner", "fee_manager", "fee_cashier", "repairs",
-                    "others", "total_amount")
+    list_display = (
+        "house", "month", "year", "electricity_common",
+        "electricity_lift", "internet", "maintenance_lift",
+        "fee_cleaner", "fee_manager", "fee_cashier", "repairs",
+        "others", "total_amount",
+    )
 
     ordering = ("house", "-year", "month")
 
     list_filter = ("year", "month")
 
-    search_fields = ["house__town", "house__address", "house__building_number"]
+    search_fields = (
+        "house__town", "house__address",
+        "house__building_number",
+    )
     search_help_text = "Search by house details"
+
+    fieldsets = (
+        (None, {
+            'fields': (
+                "house", "month", "year",
+                "electricity_common", "electricity_lift", "internet",
+                "maintenance_lift", "fee_cleaner", "fee_manager",
+                "fee_cashier", "repairs", "others", "is_paid",
+            )
+        }),
+        ("Amount", {
+            'fields': ("total_amount",)
+        }),
+    )
+
+    readonly_fields = ("total_amount",)
 
 
 @admin.register(HouseOtherBill)
 class HouseOtherBillBillAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAdmin):
-    list_display = ("type_of_bill", "house", "month", "year", "comment", "total_amount")
+    list_display = (
+        "type_of_bill", "house", "month",
+        "year", "comment", "total_amount",
+    )
 
-    ordering = ("house", "-year", "month")
+    ordering = ("house", "-year", "month",)
 
-    list_filter = ("year", "month", "type_of_bill")
+    list_filter = ("year", "month", "type_of_bill",)
 
-    search_fields = ["house__town", "house__address", "house__building_number"]
+    search_fields = (
+        "house__town", "house__address",
+        "house__building_number",
+    )
     search_help_text = "Search by house details"
+
+    fieldsets = (
+        (None, {
+            'fields': (
+                "type_of_bill", "house", "month",
+                "year", "comment", "is_paid",
+            )
+        }),
+        ("Amount", {
+            'fields': ("total_amount",)
+        }),
+    )

@@ -85,3 +85,5 @@ class HouseOtherBill(OtherBill):
                         _("Bill for all clients with those month and year already exists.")
                     )
 
+    def __str__(self):
+        return f"Other bill for '{self.house}' for {self.month} {self.year}"
