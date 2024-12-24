@@ -1,11 +1,11 @@
 from django.contrib import admin
-
+from import_export.admin import ExportMixin
 from house_manager.accounts.mixins import CheckLoggedInUserModelInstancesMixin
 from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 
 
 @admin.register(ClientMonthlyBill)
-class ClientMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAdmin):
+class ClientMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin, admin.ModelAdmin):
     list_display = (
         "house", "client", "month", "year", "electricity_common",
         "electricity_lift", "internet", "maintenance_lift",
@@ -43,7 +43,7 @@ class ClientMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAd
 
 
 @admin.register(ClientOtherBill)
-class ClientOtherBillBillAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAdmin):
+class ClientOtherBillBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin, admin.ModelAdmin):
     list_display = (
         "house", "client", "month", "year",
         "comment", "total_amount",
