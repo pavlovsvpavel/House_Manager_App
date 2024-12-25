@@ -29,7 +29,7 @@ class HouseMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin, a
                 "house", "month", "year",
                 "electricity_common", "electricity_lift", "internet",
                 "maintenance_lift", "fee_cleaner", "fee_manager",
-                "fee_cashier", "repairs", "others", "is_paid",
+                "fee_cashier", "repairs", "others", "is_paid", "user",
             )
         }),
         ("Amount", {
@@ -61,7 +61,7 @@ class HouseOtherBillBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin,
         (None, {
             'fields': (
                 "type_of_bill", "house", "month",
-                "year", "comment", "is_paid",
+                "year", "comment", "is_paid", "user",
             )
         }),
         ("Amount", {

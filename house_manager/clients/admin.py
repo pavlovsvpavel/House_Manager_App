@@ -24,7 +24,7 @@ class ClientAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAdmin):
             'fields': (
                 "family_name", "floor", "apartment",
                 "number_of_people", "is_using_lift",
-                "is_occupied", "is_inhabitable", "house",
+                "is_occupied", "is_inhabitable", "house", "user",
             )
         }),
         ("Date", {
