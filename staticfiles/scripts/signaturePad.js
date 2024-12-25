@@ -2,11 +2,57 @@ $(document).ready(function () {
     const $signatureElement = $("#signature");
     const saveButton = document.getElementById('save-btn');
 
+     // Get the width of the #signature element
+    const signatureWidth = $signatureElement.width();
+
+    // Initialize the signature widget
+    // $signatureElement.jSignature({
+    //     width: signatureWidth,
+    //     height: 250,
+    // });
+
     // Initialize the signature widget
     $signatureElement.jSignature({
-        width: "100%",
+        width: signatureWidth,
         height: 250,
+    }).bind('signatureChange', function() {
+        //This event fires when jSignature is fully initialized and the canvas is ready
+        signatureCanvas = $signatureElement.find('canvas')[0]; // Get the underlying canvas element after initialization
+        attachTouchEventListeners(); //Attach the listeners once the canvas is ready
     });
+
+    function attachTouchEventListeners() {
+        signatureCanvas.addEventListener('touchstart', function(e) {
+            const touch = e.touches[0];
+            if (isTouchInsideCanvas(touch)) {
+                // Allow jSignature to handle the touchstart event normally
+            } else {
+                e.preventDefault();
+            }
+        });
+
+        signatureCanvas.addEventListener('touchmove', function(e) {
+            const touch = e.touches[0];
+            if (isTouchInsideCanvas(touch)) {
+                // Allow jSignature to handle the touchmove event normally
+            } else {
+                e.preventDefault();
+            }
+        });
+
+        signatureCanvas.addEventListener('touchend', function(e) {
+            // No need to check bounds here; it's the end of the touch interaction.
+        });
+    }
+
+    // Helper function to check if a touch is inside the canvas
+    function isTouchInsideCanvas(touch) {
+        const rect = signatureCanvas.getBoundingClientRect();
+        return (touch.clientX >= rect.left &&
+                touch.clientX <= rect.right &&
+                touch.clientY >= rect.top &&
+                touch.clientY <= rect.bottom);
+    }
 
     // Store the empty signature value for comparison
     const emptySignature = $signatureElement.jSignature('getData', 'svgbase64')[1];

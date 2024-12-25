@@ -301,6 +301,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+    padding: 0 0.5em;
 }
 
 .details-wrapper {
@@ -337,6 +338,25 @@
 
 .report-results table tr {
     height: 10px;
+}
+
+.report-results table td {
+    height: 30px;
+}
+
+.report-results .signature-column {
+    text-align: center
+}
+
+.report-results .signature-column div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.report-results .signature-column img {
+    max-height: 30px;
+    width: auto;
 }
 
 .report-results table th, td {

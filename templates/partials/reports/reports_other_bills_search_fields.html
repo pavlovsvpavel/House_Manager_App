@@ -30,10 +30,17 @@
     <button class="search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
 </form>
 <div class="buttons">
-    <button id="generatePdf" class="save-btn">{% trans "Save as PDF" %}</button>
+    <button id="generatePdf" class="save-btn" onclick="scrollToTop()">{% trans "Save as PDF" %}</button>
     {% include "partials/reports/reports_back_button.html" %}
 </div>
 
+<script>
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+    });
+}
+</script>
 <script>
     document.getElementById('generatePdf').addEventListener('click', function () {
         // Check if the html2pdf library is already loaded

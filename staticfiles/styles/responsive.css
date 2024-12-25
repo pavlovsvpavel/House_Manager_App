@@ -264,6 +264,11 @@
         gap: 0.5em;
     }
 
+    .details-wrapper.row-mobile {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
     .details-for-house,
     .details-for-house-bill {
         width: 100%;
@@ -300,5 +305,9 @@
 
     .dashboard .wrapper {
         flex: 0 1 100%;
+    }
+
+    .report-results {
+        padding: 0;
     }
 }

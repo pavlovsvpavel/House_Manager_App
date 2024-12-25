@@ -20,13 +20,13 @@
     <link href="{% static "images/favicon.ico" %}" rel="icon" type="image/x-icon">
     <script src={% static "scripts/redirects.js" %}></script>
     <script src={% static "scripts/backToTop.js" %}></script>
+    <script src="{% static "scripts/jquery.js" %}"></script>
 </head>
 <body>
 <div class="site">
     {% include "common/header.html" %}
     <main class="site-main">
         {% block main_content %}
-
         {% endblock %}
     </main>
     {% include "partials/back_to_top_button.html" %}

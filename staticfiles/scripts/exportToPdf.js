@@ -11,7 +11,7 @@ function saveAsPDF() {
             filename: 'report.pdf',
             image: {type: 'jpeg', quality: 0.98},
             html2canvas: {scale: 2},
-            jsPDF: {unit: 'cm', format: 'letter', orientation: 'portrait'}
+            jsPDF: {unit: 'cm', format: 'a4', orientation: 'portrait'}
         };
 
         // Generate PDF from HTML element
