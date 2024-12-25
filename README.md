@@ -1,90 +1,105 @@
 ## Personal project for Python Web course part of [SoftUni's](https://softuni.bg/) software engineering program.
-## Technologies used:&nbsp;&nbsp;&nbsp;[![Technologies](https://skillicons.dev/icons?i=python,django,postgres)](https://skillicons.dev)
+## Technologies used:&nbsp;&nbsp;&nbsp;[![Technologies](https://skillicons.dev/icons?i=python,django,postgres,html,css,js,aws,docker,terraform)](https://skillicons.dev)
 
-## [House Manager App](https://housemanager.fr.to/)
+## :link:[House Manager App](https://house-manager.eu)
 
 **House Manager** is an application for efficient expenses management tailored specifically for building cashiers.
 It is designed to simplify every aspect of the process, allowing you to focus on what matters most – ensuring financial integrity and smooth operations within your building.
 
-The application has responsive design and bilingual support (English and Bulgarian).
+:arrow_forward: Suitable for desktop and mobile devices.
+
+:arrow_forward: Languages: English, Bulgarian
 
 ---
-**Home page**
+:arrow_forward: **Home page**
 
-![home_page](https://github.com/user-attachments/assets/f73509c7-0bf5-46c5-a171-eccc4c6ae630)
-
----
-**Registered users** have access to their dashboard, profile details (profile picture, names, phone number and password change) and administration (Django default administartion panel with added custom searches and filters).
-
-![loggedin_user_nav](https://github.com/user-attachments/assets/f5cbfcc4-6562-4477-b2db-aa139fb62575)
+![home_page](https://github.com/user-attachments/assets/490e0157-ab56-48b4-a361-6ca2335c7670)
 
 ---
-**Dashboard page**
+:arrow_forward: **Login/Registration pages**
 
-List of all user's houses
-
-![Dashboard](https://github.com/user-attachments/assets/1367fe93-e7c6-49ab-af47-47d150264a0c)
-
----
-**House details page**
-
-On this page registered users have the ability to:
-- Add clients
-- Check clients status - client details, client bills (paid or unpaid)
-- Add house bills
-- Check bills status - paid or unpaid
-- Generate reports in pdf format based on selected month and year
-
-![house_details](https://github.com/user-attachments/assets/d91f3adf-8a0e-4169-b657-8c6409e1835e)
+| ![login_page](https://github.com/user-attachments/assets/cab82b87-ae50-4be9-a4c6-dc46dd81a2aa) | ![register_page](https://github.com/user-attachments/assets/0056a541-8901-4b59-a3fc-e1102b1b5b8e) |
+|-------------------------|-------------------------|
 
 ---
-**Clients list page**
+:arrow_forward: **Registered users**
 
-List of all house's clients.
-Filtering based on bills payment status.
+&nbsp;&nbsp;&nbsp; :arrow_right: Access to their dashboard, profile details (profile picture, names, phone number and password change).
 
-![clients_list](https://github.com/user-attachments/assets/69807ca8-b970-4031-8173-7d28a3b828b8)
+&nbsp;&nbsp;&nbsp; :arrow_right: Administration panel - Django default administartion panel with added custom searches, filters and exports.
 
----
-**Client details page**
-
-On this page the users can edit client details.
-Choosing the bill type in order to making payments or to check payment status.
-
-![client_details](https://github.com/user-attachments/assets/b541cea1-9d47-42ff-9e82-cc62d49c7211)
+![loggedin_user_nav](https://github.com/user-attachments/assets/0e8b4251-4481-4fc4-9749-d3bf28e44303)
 
 ---
-**Client bills status**
+:arrow_forward: **Dashboard page**
 
-On this page you can filter the bills:
+&nbsp;&nbsp;&nbsp; :arrow_right: List of all user's houses
 
-- green color are paid.
-
-- red color are unpaid.
-
-![client_bills](https://github.com/user-attachments/assets/9b2cbff6-3509-4675-a441-ab7a7c644d71)
+![Dashboard](https://github.com/user-attachments/assets/dc4bd88e-c24e-4d6e-acaf-7067336d106d)
 
 ---
-**Payment forms**
+:arrow_forward: **House details page**
 
-Unpaid bills.
-Signature required in order to mark the bill as paid.
+&nbsp;&nbsp;&nbsp; :arrow_right: Add clients
 
-![payment_form](https://github.com/user-attachments/assets/0992b36e-a551-4789-b1ab-039f20fe51da)
+&nbsp;&nbsp;&nbsp; :arrow_right: Check clients status - client details, client bills (paid or unpaid)
 
-Paid bills.
-The signature is visualized.
+&nbsp;&nbsp;&nbsp; :arrow_right: Add house bills
 
-![payment_form_paid](https://github.com/user-attachments/assets/5b468767-8c55-42f4-b44d-46034587e67e)
+&nbsp;&nbsp;&nbsp; :arrow_right: Check bills status - paid or unpaid
 
----
-**Reports pages**
-
-The user can filter bills and can generate reports in pdf.
-
-![report_page](https://github.com/user-attachments/assets/ef02aa25-abe0-4865-a7e3-3b846a6e6c16)
+&nbsp;&nbsp;&nbsp; :arrow_right: Generate reports in pdf format based on selected month and year
+  
+![house_details](https://github.com/user-attachments/assets/1a2fb137-ecf4-4fe3-b997-b5d6d82cfb88)
 
 ---
-**About page**
+:arrow_forward: **Clients page**
 
-![about_page](https://github.com/user-attachments/assets/2bb2a7ad-7898-4d5d-9d66-2e6db3d4d481)
+&nbsp;&nbsp;&nbsp; :arrow_right: List of all house's clients.
+
+&nbsp;&nbsp;&nbsp; :arrow_right: Filtering based on bills payment status and month.
+
+![clients_list](https://github.com/user-attachments/assets/a989b35b-cf47-44dc-9ed5-d2aad28478a1)
+
+---
+:arrow_forward: **Client details page**
+
+&nbsp;&nbsp;&nbsp; :arrow_right: Edit client details.
+
+&nbsp;&nbsp;&nbsp; :arrow_right: Select bill type in order to make a payment or to check payment status.
+
+![client_details](https://github.com/user-attachments/assets/faa1150e-4548-45e5-b4ec-74fcd814cf32)
+
+---
+:arrow_forward: **Client's bills status**
+
+&nbsp;&nbsp;&nbsp; :arrow_right: Filtering by payment status and month.
+
+![client_bills](https://github.com/user-attachments/assets/888285fd-967a-4dab-b47a-44b039c28295)
+
+---
+:arrow_forward: **Payment forms**
+
+&nbsp;&nbsp;&nbsp; :arrow_right: Unpaid bills
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :arrow_right: Signature required in order to mark the bill as paid.
+
+![payment_form](https://github.com/user-attachments/assets/ef84a2bf-b3d6-487b-893d-1901b4746c30)
+
+&nbsp;&nbsp;&nbsp; :arrow_right: Paid bills
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :arrow_right: The signature is visualized.
+
+![payment_form_paid](https://github.com/user-attachments/assets/d01efa2e-82a6-4322-a397-28c35aeee560)
+
+---
+:arrow_forward: **Reports pages**
+
+&nbsp;&nbsp;&nbsp; :arrow_right: Filtering by month and year, and reports generation in pdf.
+
+![report_page](https://github.com/user-attachments/assets/0c5cf8c1-5ac0-4965-b500-6ff8a5b9480b)
+
+---
+:arrow_forward: **About page**
+
+![about_page](https://github.com/user-attachments/assets/e2751432-e10d-4404-beb2-a1914faeb4cd)
