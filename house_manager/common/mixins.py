@@ -1,8 +1,7 @@
-import datetime
-
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import F
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
@@ -37,7 +36,7 @@ class MonthChoices(models.TextChoices):
 class YearChoices(models.TextChoices):
     @classmethod
     def previous_and_next_years(cls):
-        current_year = datetime.date.today().year
+        current_year = timezone.now().year
         period = 2
         years = [(str(year), str(year)) for year in range(current_year - 1, current_year + period)]
 
