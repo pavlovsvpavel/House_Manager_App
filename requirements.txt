@@ -3,9 +3,9 @@ certifi==2024.12.14
 cffi==1.17.1
 charset-normalizer==3.4.0
 cloudinary==1.41.0
-cryptography==44.0.0
+cryptography==44.0.2
 diff-match-patch==20241021
-Django==5.1.4
+Django==5.1.6
 django-allauth==65.3.0
 django-cloudinary-storage==0.3.0
 django-import-export==4.3.3

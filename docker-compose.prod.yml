@@ -17,7 +17,7 @@ services:
       - ./mediafiles:/tmp/house_manager/mediafiles
       - ./locale:/tmp/house_manager/locale
     platform: linux/amd64
-    command: gunicorn house_manager.wsgi:application --bind=0.0.0.0:8000
+    command: bash -c "gunicorn house_manager.wsgi:application --bind=0.0.0.0:8000 --workers=$((2 * $(nproc) + 1)) --timeout=120"
     depends_on:
       - postgres
   postgres:
