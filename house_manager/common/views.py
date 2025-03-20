@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views import generic as views
 from django.shortcuts import render
 
-from house_manager.common.helpers.filtering_unpaid_clients_bills import filtering_unpaid_clients_bills
+from house_manager.common.helpers.filtering_unpaid_client_bills import filtering_unpaid_client_bills
 from house_manager.common.mixins import MonthChoices, YearChoices
 from house_manager.house_bills.models import TypeOfBillChoices
 from house_manager.houses.decorators import get_current_house_id
@@ -72,14 +72,16 @@ class ReportMonthlyBillView(views.DetailView):
 
         context["clients_bills_total_amount"] = clients_bills_total_amount
 
-        unpaid_bills = filtering_unpaid_clients_bills(current_house, clients_bills, selected_year, selected_month)
+        unpaid_bills = (
+            current_house.client_house_monthly_bills
+            .filter(month=selected_month, year=selected_year)
+            .aggregate(amount_old_debts=Coalesce(Sum("amount_old_debts"), Value(Decimal("0.00"))))["amount_old_debts"]
+        )
 
         context["unpaid_bills"] = unpaid_bills
 
-        unpaid_bills_total_amount = sum(unpaid_bills.values())
-
         # Calculate total amount of current month bills and unpaid bills from previous months
-        context["amount_for_collection"] = clients_bills_total_amount + unpaid_bills_total_amount
+        context["amount_for_collection"] = clients_bills_total_amount + unpaid_bills
 
         return context
 

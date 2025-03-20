@@ -10,7 +10,7 @@ class ClientMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin, 
         "house", "client", "month", "year", "electricity_common",
         "electricity_lift", "internet", "maintenance_lift",
         "fee_cleaner", "fee_manager", "fee_cashier", "repairs",
-        "others", "total_amount",
+        "others", "total_amount", "amount_old_debts",
     )
 
     ordering = (
@@ -34,12 +34,15 @@ class ClientMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin, 
                 "fee_cashier", "repairs", "others", "is_paid", "user",
             )
         }),
-        ("Amount", {
+        ("Amount without old debts", {
             "fields": ("total_amount",)
+        }),
+        ("Old debts", {
+            "fields": ("amount_old_debts",)
         }),
     )
 
-    readonly_fields = ("total_amount",)
+    readonly_fields = ("total_amount", "house", "client", "month", "year",)
 
 
 @admin.register(ClientOtherBill)
@@ -73,4 +76,4 @@ class ClientOtherBillBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin
         }),
     )
 
-    readonly_fields = ("total_amount",)
+    readonly_fields = ("total_amount", "house", "client", "month", "year",)

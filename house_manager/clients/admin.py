@@ -34,4 +34,4 @@ class ClientAdmin(CheckLoggedInUserModelInstancesMixin, admin.ModelAdmin):
         }),
     )
 
-    readonly_fields = ("created_on", "updated_on",)
+    readonly_fields = ("created_on", "updated_on", "house",)

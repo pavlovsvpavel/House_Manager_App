@@ -1,6 +1,7 @@
 from house_manager.client_bills.helpers.round_up_second_decimal import round_up_second_decimal
 from house_manager.client_bills.models import ClientMonthlyBill
 from house_manager.clients.models import Client
+from house_manager.common.helpers.filtering_unpaid_client_bills import filtering_unpaid_client_bills
 from house_manager.house_bills.models import HouseMonthlyBill
 from house_manager.houses.models import House
 
@@ -76,7 +77,11 @@ def calculate_fees(house_id, year, month, user_id):
 
                 calculated_values[field.name] = 0
 
+        # Calculate unpaid bills from previous months
+        unpaid_bills = filtering_unpaid_client_bills(client, year, month)
+
         ClientMonthlyBill.objects.create(house_id=house_id,
                                          client_id=client.pk,
                                          user_id=user_id,
+                                         amount_old_debts=unpaid_bills,
                                          **calculated_values)

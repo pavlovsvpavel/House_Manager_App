@@ -37,7 +37,7 @@ class HouseMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin, a
         }),
     )
 
-    readonly_fields = ("total_amount",)
+    readonly_fields = ("total_amount","house", "month", "year")
 
 
 @admin.register(HouseOtherBill)
@@ -68,3 +68,5 @@ class HouseOtherBillBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin,
             'fields': ("total_amount",)
         }),
     )
+
+    readonly_fields = ("total_amount", "house", "month", "year", "type_of_bill",)

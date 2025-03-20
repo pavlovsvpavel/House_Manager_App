@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from django.utils.translation import gettext_lazy as _
 from house_manager.clients.models import Client
 from house_manager.common.mixins import MonthlyBill, OtherBill
 from house_manager.houses.models import House
@@ -9,6 +10,9 @@ UserModel = get_user_model()
 
 
 class ClientMonthlyBill(MonthlyBill):
+    MAX_DECIMAL_DIGITS = 10
+    MAX_DECIMAL_PLACES = 2
+
     class Meta:
         ordering = ("is_paid", "-year", "month")
 
@@ -29,6 +33,15 @@ class ClientMonthlyBill(MonthlyBill):
     user = models.ForeignKey(
         to=UserModel,
         on_delete=models.RESTRICT,
+    )
+
+    amount_old_debts = models.DecimalField(
+        max_digits=MAX_DECIMAL_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=0,
+        blank=False,
+        null=False,
+        verbose_name=_("Unpaid bills, BGN"),
     )
 
     def __str__(self):
