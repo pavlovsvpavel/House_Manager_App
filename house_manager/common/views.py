@@ -7,7 +7,6 @@ from django.utils.decorators import method_decorator
 from django.views import generic as views
 from django.shortcuts import render
 
-from house_manager.common.helpers.filtering_unpaid_client_bills import filtering_unpaid_client_bills
 from house_manager.common.mixins import MonthChoices, YearChoices
 from house_manager.house_bills.models import TypeOfBillChoices
 from house_manager.houses.decorators import get_current_house_id

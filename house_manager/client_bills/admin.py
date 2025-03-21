@@ -40,6 +40,9 @@ class ClientMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin, 
         ("Old debts", {
             "fields": ("amount_old_debts",)
         }),
+        ("Signature", {
+            "fields": ("signature",)
+        }),
     )
 
     readonly_fields = ("total_amount", "house", "client", "month", "year",)
@@ -73,6 +76,9 @@ class ClientOtherBillBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin
         }),
         ("Amount", {
             "fields": ("total_amount",)
+        }),
+        ("Signature", {
+            "fields": ("signature",)
         }),
     )
 

@@ -198,6 +198,8 @@ class MonthlyBill(models.Model):
 
     signature = models.TextField(
         default="",
+        blank=True,
+        null=True,
     )
 
     def get_month_name(self):
@@ -254,8 +256,8 @@ class OtherBill(models.Model):
 
     signature = models.TextField(
         default="",
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
     )
 
     def get_month_name(self):

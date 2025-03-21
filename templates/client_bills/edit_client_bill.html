@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+{% load custom_filters %}
 
 {% block main_content %}
     <script src="{% static "scripts/jSignature.js" %}"></script>
@@ -62,8 +63,16 @@
                         <p class="column-data">{{ object.others }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">{% trans "Total BGN" %}</p>
+                        <p class="column-name">{% trans "Monthly bill, BGN" %}</p>
                         <p class="column-data">{{ object.total_amount }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">{% trans "Unpaid bills, BGN" %}</p>
+                        <p class="column-data">{{ object.amount_old_debts }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">{% trans "Total, BGN" %}</p>
+                        <p class="column-data">{{ object.amount_old_debts|add:object.total_amount }}</p>
                     </div>
                 </div>
                 <form class="is-paid-form" method="post" action="{% url "edit_client_bill" pk=object.pk %}">
