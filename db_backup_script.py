@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 # Configuration
-CONTAINER_NAME = "house_manager_app_postgres"
+CONTAINER_NAME = "house_manager_app_postgres_prod"
 POSTGRES_USER = "postgres"
 BACKUP_DIR = Path(__file__).parent / "postgres_backups"
 

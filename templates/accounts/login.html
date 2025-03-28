@@ -3,7 +3,6 @@
 {% load i18n %}
 {% load static %}
 {% block main_content %}
-
     <script src="{% static 'scripts/showHidePassword.js' %}"></script>
     <section class="site-section login-register-user">
         <div class="container">
@@ -34,8 +33,8 @@
                                         {% endfor %}
                                     </ul>
                                 {% endif %}
-                                {{ form }}
                                 {% csrf_token %}
+                                {{ form }}
                                 <button type="button" id="togglePassword" class="toggle-btn"
                                         data-password-id="{{ form.password.id_for_label }}">
                                     <i id="toggleIcon" class="fas fa-eye"></i>
@@ -52,8 +51,8 @@
                         <div class="register-form">
                             <div class="create-form-heading">{% trans "Register" %}</div>
                             <form class="create-form" action="{% url "register_user" %}" method="post">
-                                {{ register_form }}
                                 {% csrf_token %}
+                                {% include "partials/register_form.html" %}
                                 <input class="btn" type="submit" value="{% trans "Register" %}">
                                 <div class="text sign-up-text">{% trans "Already have an account?" %}
                                     <label for="flip" id="login_now">{% trans "Login now" %}</label>
@@ -68,5 +67,4 @@
             </div>
         </div>
     </section>
-
 {% endblock %}

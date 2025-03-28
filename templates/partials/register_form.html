@@ -1,0 +1,24 @@
+{% load static %}
+
+<div class="form-group">
+    {{ register_form.email.label_tag }}
+    {{ register_form.email }}
+    {{ register_form.email.errors }}
+</div>
+<div class="form-group">
+    {{ register_form.password1.label_tag }}
+    {{ register_form.password1 }}
+    {{ register_form.password1.errors }}
+</div>
+<div class="form-group">
+    {{ register_form.password2.label_tag }}
+    {{ register_form.password2 }}
+    {{ register_form.password2.errors }}
+</div>
+<div class="form-group recaptcha-container">
+    {{ register_form.recaptcha }}
+    {{ register_form.recaptcha.errors }}
+</div>
+
+<script src="https://www.google.com/recaptcha/api.js?render={{ RECAPTCHA_PUBLIC_KEY }}&hl={{ LANGUAGE_CODE }}"></script>
+<script src="{% static 'scripts/reCaptchaResize.js' %}" defer></script>

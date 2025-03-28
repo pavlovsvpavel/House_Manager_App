@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
 
     "import_export",
+    "django_recaptcha",
+    "axes",
 ]
 
 MIDDLEWARE = [
@@ -67,7 +69,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "allauth.account.middleware.AccountMiddleware"
+    "allauth.account.middleware.AccountMiddleware",
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = 'house_manager.urls'
@@ -193,9 +196,23 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 AUTHENTICATION_BACKENDS = (
+    "axes.backends.AxesStandaloneBackend",
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+
+RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY', cast=str, default='')
+RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY', cast=str, default='')
+
+
+AXES_FAILURE_LIMIT = 3  # Lock after 3 attempts
+AXES_COOLOFF_TIME = 0.5  # 30 minutes lockout
+AXES_LOCKOUT_PARAMETERS = ["ip_address", ["username", "user_agent"]]
+AXES_DISABLE_ACCESS_LOG = True
+AXES_HTTP_RESPONSE_CODE = 403
+AXES_RESET_ON_SUCCESS = True
+AXES_ENABLE_ACCESS_FAILURE_LOG = True
+AXES_ACCESS_FAILURE_LOG_PER_USER_LIMIT = 100

@@ -7,8 +7,10 @@ cryptography==44.0.2
 diff-match-patch==20241021
 Django==5.1.7
 django-allauth==65.3.0
+django-axes==7.0.2
 django-cloudinary-storage==0.3.0
 django-import-export==4.3.7
+django-recaptcha==4.1.0
 et_xmlfile==2.0.0
 gunicorn==23.0.0
 idna==3.10

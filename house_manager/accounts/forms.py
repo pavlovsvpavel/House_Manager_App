@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import forms as auth_forms, get_user_model
 from django.contrib.auth.forms import SetPasswordForm
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
 
 UserModel = get_user_model()
 
@@ -12,6 +14,8 @@ class HouseManagerUserCreationForm(auth_forms.UserCreationForm):
     class Meta(auth_forms.UserCreationForm.Meta):
         model = UserModel
         fields = ('email',)
+
+    recaptcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
 
 
 class HouseManagerUserChangeForm(auth_forms.UserChangeForm):

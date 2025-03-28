@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import views as auth_views, logout, login, get_user_model, update_session_auth_hash, \
     get_backends
@@ -34,7 +35,10 @@ class RegisterUserView(views.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['login_form'] = auth_forms.AuthenticationForm()
+        context['register_form'] = context.pop('form')
+        context['login_form'] = auth_forms.AuthenticationForm
+        context['RECAPTCHA_PUBLIC_KEY'] = settings.RECAPTCHA_PUBLIC_KEY
+
         return context
 
     def form_valid(self, form):
