@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static "images/favicon.ico" %}" rel="icon" type="image/x-icon">
+    <title>Too Many Requests</title>
+    <link rel="stylesheet" href="{% static "styles/styles.css" %}">
+</head>
+ <body>
+ <div class="container">
+        <div class="text-wrapper">
+            <div class="title" data-content="429">
+                <h1>Too Many Requests</h1>
+                <p>You have made too many login attempts. Please try again later.</p>
+            </div>
+            <a class="button" href="{% url "index" %}">Go to homepage</a>
+        </div>
+    </div>
+ </body>
+</html>

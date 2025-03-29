@@ -196,7 +196,7 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 AUTHENTICATION_BACKENDS = (
-    "axes.backends.AxesStandaloneBackend",
+    "axes.backends.AxesBackend",
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
@@ -204,15 +204,17 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
-RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY', cast=str, default='')
-RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY', cast=str, default='')
-
+RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
+RECAPTCHA_USE_SSL = True
 
 AXES_FAILURE_LIMIT = 3  # Lock after 3 attempts
 AXES_COOLOFF_TIME = 0.5  # 30 minutes lockout
-AXES_LOCKOUT_PARAMETERS = ["ip_address", ["username", "user_agent"]]
+AXES_LOCKOUT_PARAMETERS = [["username"]]
 AXES_DISABLE_ACCESS_LOG = True
-AXES_HTTP_RESPONSE_CODE = 403
 AXES_RESET_ON_SUCCESS = True
+AXES_USERNAME_FORM_FIELD = "username"
 AXES_ENABLE_ACCESS_FAILURE_LOG = True
-AXES_ACCESS_FAILURE_LOG_PER_USER_LIMIT = 100
+AXES_LOCKOUT_TEMPLATE = 'common/429_template.html'
+
+

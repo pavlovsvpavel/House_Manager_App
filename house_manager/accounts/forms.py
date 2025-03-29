@@ -15,7 +15,7 @@ class HouseManagerUserCreationForm(auth_forms.UserCreationForm):
         model = UserModel
         fields = ('email',)
 
-    recaptcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+    recaptcha = ReCaptchaField(widget=ReCaptchaV2Checkbox, required=True)
 
 
 class HouseManagerUserChangeForm(auth_forms.UserChangeForm):
