@@ -2,10 +2,10 @@ asgiref==3.8.1
 certifi==2025.1.31
 cffi==1.17.1
 charset-normalizer==3.4.1
-cloudinary==1.43.0
+cloudinary==1.44.0
 cryptography==44.0.2
 diff-match-patch==20241021
-Django==5.1.8
+Django==5.2
 django-allauth==65.3.0
 django-axes==7.0.2
 django-cloudinary-storage==0.3.0
@@ -16,8 +16,8 @@ gunicorn==23.0.0
 idna==3.10
 oauthlib==3.2.2
 openpyxl==3.1.5
-packaging==24.2
-pillow==11.2.0
+packaging==25.0
+pillow==11.2.1
 psycopg2==2.9.10
 pycparser==2.22
 PyJWT==2.10.1
@@ -28,4 +28,4 @@ six==1.17.0
 sqlparse==0.5.3
 tablib==3.8.0
 tzdata==2025.2
-urllib3==2.3.0
+urllib3==2.4.0
