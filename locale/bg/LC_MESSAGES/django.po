@@ -455,7 +455,7 @@ msgstr "Все още нямате профил?"
 
 #: templates/accounts/login.html:44 templates/accounts/register.html:35
 msgid "Register now"
-msgstr "Регистрирай се сега"
+msgstr "Регистрация"
 
 #: templates/accounts/login.html:52 templates/accounts/login.html:56
 #: templates/accounts/register.html:43 templates/accounts/register.html:47
@@ -465,7 +465,7 @@ msgstr "Регистрация"
 
 #: templates/accounts/login.html:57 templates/accounts/register.html:48
 msgid "Already have an account?"
-msgstr "Вече имате регистрация?"
+msgstr "Вече имате профил?"
 
 #: templates/accounts/login.html:58 templates/accounts/register.html:49
 msgid "Login now"

@@ -9,7 +9,7 @@
 }
 
 .site-header {
-    background-color: var(--form-input-border);
+    background-color: var(--menu-bgnd);
 }
 
 .container {
@@ -80,7 +80,7 @@
     margin-top: auto;
     padding: 1em 0;
     text-align: center;
-    background-color: var(--form-input-border);
+    background-color: var(--menu-bgnd);
     color: var(--site-bgnd);
 }
 

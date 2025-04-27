@@ -14,6 +14,7 @@
 
     .hero-section {
         background-image: url("../images/hero-bg-mobile.avif");
+        height: 400px;
     }
 
     .navigation ul {
@@ -82,6 +83,7 @@
 
     .hero-section {
         background-image: url("../images/hero-bg-mobile.avif");
+        height: 300px;
     }
 
     .navigation ul {
@@ -109,7 +111,7 @@
         top: 0;
         right: -100%;
         z-index: 10;
-        background-color: var(--form-input-border);
+        background-color: var(--menu-bgnd);
         opacity: 100%;
         transition: 0.5s ease-out;
     }

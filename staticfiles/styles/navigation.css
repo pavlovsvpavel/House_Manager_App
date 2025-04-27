@@ -109,7 +109,7 @@
     top: 100%;
     left: 0;
     padding-top: 2em;
-    background-color: var(--form-input-border);
+    background-color: var(--menu-bgnd);
     border-radius: 0.5em;
     opacity: 0;
     visibility: hidden;
@@ -134,7 +134,7 @@
 }
 
 .navigation .menu-links a:hover {
-    background-color: #608AB8;
+    background-color: #4e4e53;
     border-radius: 0.5em;
 }
 

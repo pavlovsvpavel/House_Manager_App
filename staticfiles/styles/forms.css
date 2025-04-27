@@ -50,6 +50,7 @@
     transition: 0.3s ease-in-out;
     align-self: center;
     width: 100px;
+    margin-top: 1em;
 }
 
 .create-form .btn:hover {
@@ -57,7 +58,9 @@
     transition: 0.3s ease-in-out;
 }
 
-.register-form .btn {
+.register-login-user .create-form .btn,
+.login-register-user .create-form .btn {
+    align-self: normal;
     width: auto;
 }
 

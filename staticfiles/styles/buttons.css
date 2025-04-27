@@ -222,10 +222,10 @@
 
 /*Back to top button*/
 .scrollToTopBtn {
-    background-color: var(--form-btn-color-hover);
+    background-color: #F6995C;
     border: none;
     border-radius: 50%;
-    color: var(--form-bgnd);
+    color: #000000;
     cursor: pointer;
     font-size: 30px;
     line-height: 48px;
