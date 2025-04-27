@@ -13,6 +13,7 @@ urlpatterns = [
     path("house-bills/", include("house_manager.house_bills.urls")),
     path("client-bills/", include("house_manager.client_bills.urls")),
     path('i18n/', include('django.conf.urls.i18n')),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]
 
 if settings.DEBUG:

@@ -33,40 +33,28 @@ class HouseCreateView(CheckForLoggedInUserMixin, views.CreateView):
 
 
 @method_decorator(get_current_house_id, name='dispatch')
-class HouseDetailView(views.DetailView):
-    queryset = House.objects.all()
+class HouseDetailView(CheckForLoggedInUserMixin, views.DetailView):
+    queryset = House.objects.select_related('user').prefetch_related('clients')
     template_name = "houses/details_house.html"
-
-    def get(self, request, *args, **kwargs):
-        selected_house_id = self.kwargs.get('pk')
-
-        selected_house = House.objects.get(id=selected_house_id)
-        request.session['selected_house'] = selected_house.pk
-
-        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        selected_house = self.kwargs.get('pk')
-
-        total_apartments = House.objects.total_apartments(selected_house)
-        total_people = House.objects.total_people(selected_house)
-        total_people_using_lift = House.objects.total_people_using_lift(selected_house)
-
-        context['total_apartments'] = total_apartments
-        context['total_people'] = total_people
-        context['total_people_using_lift'] = total_people_using_lift
-
+        selected_house_id = self.object.id
+        context.update({
+            'total_apartments': House.objects.total_apartments(selected_house_id),
+            'total_people': House.objects.total_people(selected_house_id),
+            'total_people_using_lift': House.objects.total_people_using_lift(selected_house_id),
+            'uninhabitable_apartments': House.objects.uninhabitable_apartments(selected_house_id)
+        })
         return context
 
 
 @method_decorator(get_current_house_id, name='dispatch')
 class HouseClientsDetailView(CheckForLoggedInUserMixin, views.DetailView):
-    queryset = House.objects.prefetch_related('clients')
     template_name = "houses/house_clients_list.html"
 
     def get_object(self, queryset=None):
-        return get_object_or_404(House, pk=self.kwargs['pk'])
+        return self.request.selected_house
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -83,12 +71,11 @@ class HouseClientsDetailView(CheckForLoggedInUserMixin, views.DetailView):
 
 @method_decorator(get_current_house_id, name='dispatch')
 class HouseEditView(CheckForLoggedInUserMixin, views.UpdateView):
-    queryset = House.objects.all()
     template_name = "houses/edit_house.html"
     fields = ("town", "address", "building_number", "entrance", "money_balance")
 
-    def get_success_url(self):
-        return reverse_lazy('details_house', kwargs={'pk': self.object.pk})
+    def get_object(self, queryset=None):
+        return self.request.selected_house
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -97,6 +84,9 @@ class HouseEditView(CheckForLoggedInUserMixin, views.UpdateView):
         context["form_title"] = _("Edit House")
 
         return context
+
+    def get_success_url(self):
+        return reverse_lazy('details_house', kwargs={'pk': self.object.pk})
 
 
 @method_decorator(get_current_house_id, name='dispatch')

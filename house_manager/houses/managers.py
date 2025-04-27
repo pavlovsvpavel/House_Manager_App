@@ -1,52 +1,43 @@
 from django.db import models
-from django.db.models import Q, Sum, Count
+from django.db.models import Sum, Count
+from django.db.models.functions import Coalesce
 
 
 class SingleHouseManager(models.Manager):
+    def _base_house_query(self, house_id):
+        return self.get_queryset().filter(id=house_id)
 
     def total_people(self, house_id):
-        query = Q(id=house_id)
-
-        people = (
-            self.get_queryset()
-            .prefetch_related('clients')
-            .filter(query)
-            .aggregate(total_people=Sum('clients__number_of_people'))
+        return (
+            self._base_house_query(house_id)
+            .aggregate(total_people=Coalesce(
+                Sum('clients__number_of_people'), 0))
+            ['total_people']
         )
-
-        return people['total_people'] or 0
 
     def total_people_using_lift(self, house_id):
-        query = Q(id=house_id) & Q(clients__is_using_lift=True)
-
-        people = (
-            self.get_queryset()
-            .prefetch_related('clients')
-            .filter(query)
-            .aggregate(total_people=Sum('clients__number_of_people'))
+        return (
+            self._base_house_query(house_id)
+            .filter(clients__is_using_lift=True)
+            .aggregate(total_people=Coalesce(
+                Sum('clients__number_of_people'), 0))
+            ['total_people']
         )
-
-        return people['total_people'] or 0
 
     def total_apartments(self, house_id):
-        query = Q(id=house_id)
-
-        apartments = (
-            self.get_queryset()
-            .filter(query)
-            .aggregate(total_apartments=Count('clients__apartment'))
+        return (
+            self._base_house_query(house_id)
+            .aggregate(total_apartments=Coalesce(
+                Count('clients__apartment', distinct=True), 0))
+            ['total_apartments']
         )
-
-        return apartments['total_apartments'] or 0
 
     def uninhabitable_apartments(self, house_id):
-        query = Q(id=house_id)
-
-        uninhabitable_apartments = (
-            self.get_queryset()
-            .filter(query)
+        return (
+            self._base_house_query(house_id)
             .filter(clients__is_inhabitable=False)
-            .aggregate(uninhabitable_apartments=Count('clients__apartment'))
+            .aggregate(uninhabitable_apartments=Coalesce(
+                Count('clients__apartment', distinct=True), 0))
+            ['uninhabitable_apartments']
         )
 
-        return uninhabitable_apartments['uninhabitable_apartments'] or 0

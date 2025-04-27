@@ -23,11 +23,6 @@ class ClientCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.Cr
     template_name = "clients/create_client.html"
     form_class = ClientCreateForm
 
-    def get_success_url(self):
-        selected_house_id = self.request.session.get("selected_house")
-
-        return reverse_lazy('details_house', kwargs={'pk': selected_house_id})
-
     def form_valid(self, form):
         try:
             return super().form_valid(form)
@@ -46,23 +41,20 @@ class ClientCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.Cr
 
         return context
 
+    def get_success_url(self):
+        selected_house_id = self.request.session.get("selected_house")
+
+        return reverse_lazy('details_house', kwargs={'pk': selected_house_id})
+
 
 @method_decorator(get_current_client_id, name='dispatch')
 class ClientDetailView(CheckForLoggedInUserMixin, views.DetailView):
-    queryset = Client.objects.all()
     template_name = "clients/details_client.html"
 
-    def get(self, request, *args, **kwargs):
-        selected_client_id = self.kwargs.get('pk')
-
-        selected_client = Client.objects.get(id=selected_client_id)
-        request.session['selected_client'] = selected_client.pk
-
-        return super().get(request, *args, **kwargs)
-
     def get_object(self, queryset=None):
-        client = super().get_object(queryset)
+        client = self.request.selected_client
         selected_house_id = self.request.session.get("selected_house")
+
         if selected_house_id and client.house_id != selected_house_id:
             raise PermissionDenied("Client not found for current house.")
         return client
@@ -70,54 +62,53 @@ class ClientDetailView(CheckForLoggedInUserMixin, views.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         selected_house_id = self.request.session.get("selected_house")
-        client = self.get_object()
+
         if selected_house_id:
             context["house"] = House.objects.get(pk=selected_house_id)
         else:
             raise Http404("House not found")
 
-        context["clients_bills"] = ClientMonthlyBill.objects.filter(client_id=client.pk)
-        context["client_other_bills"] = ClientOtherBill.objects.filter(client_id=client.pk)
+        context["clients_bills"] = ClientMonthlyBill.objects.filter(client_id=self.object.id)
+        context["client_other_bills"] = ClientOtherBill.objects.filter(client_id=self.object.id)
 
         return context
 
 
 @method_decorator(get_current_client_id, name='dispatch')
 class ClientEditView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.UpdateView):
-    queryset = Client.objects.prefetch_related("house")
     template_name = "clients/edit_client.html"
     fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied", "is_inhabitable")
 
-    def get_success_url(self):
-        return reverse_lazy("house_clients_list", kwargs={"pk": self.object.house.pk})
-
     def get_object(self, queryset=None):
-        client = super().get_object(queryset)
-        house_id = self.request.session.get("selected_house")
-        if house_id and client.house_id != house_id:
+        client = self.request.selected_client
+        selected_house_id = self.request.session.get("selected_house")
+
+        if selected_house_id and client.house_id != selected_house_id:
             raise PermissionDenied("Client not found for current house.")
         return client
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         context["action_url"] = reverse_lazy("edit_client", kwargs={'pk': self.object.pk})
         context["form_title"] = _("Edit Client")
 
         return context
 
-
-@method_decorator(get_current_client_id, name='dispatch')
-class ClientDeleteView(CheckForLoggedInUserMixin, views.DeleteView):
-    queryset = Client.objects.prefetch_related("house")
-    template_name = "clients/delete_client.html"
-
     def get_success_url(self):
         return reverse_lazy("house_clients_list", kwargs={"pk": self.object.house.pk})
 
+
+@method_decorator(get_current_client_id, name='dispatch')
+class ClientDeleteView(CheckForLoggedInUserMixin, views.DeleteView):
+    template_name = "clients/delete_client.html"
+
     def get_object(self, queryset=None):
-        client = super().get_object(queryset)
-        house_id = self.request.session.get("selected_house")
-        if house_id and client.house_id != house_id:
+        client = self.request.selected_client
+        selected_house_id = self.request.session.get("selected_house")
+
+        if selected_house_id and client.house_id != selected_house_id:
             raise PermissionDenied("Client not found for current house.")
         return client
+
+    def get_success_url(self):
+        return reverse_lazy("house_clients_list", kwargs={"pk": self.object.house.pk})

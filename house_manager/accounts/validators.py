@@ -8,6 +8,7 @@ MAX_SIZE = 3 * 1024 * 1024
 def check_for_cloudinary_field(value):
     if isinstance(value, CloudinaryResource):
         return True
+    return None
 
 
 def validate_profile_picture_size(value):
