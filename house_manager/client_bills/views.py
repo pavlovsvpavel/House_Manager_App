@@ -49,14 +49,14 @@ class ClientMonthlyBillsDetailView(ClientBaseBillsDetailView):
     template_name = "client_bills/list_client_bills.html"
 
     def get_type_of_client_bills(self):
-        return self.object.client_monthly_bills.all()
+        return self.object.client_monthly_bills.order_by("is_paid", "-year", "-month").all()
 
 
 class ClientOtherBillsDetailView(ClientBaseBillsDetailView):
     template_name = "client_bills/list_other_client_bills.html"
 
     def get_type_of_client_bills(self):
-        return self.object.client_other_bills.all()
+        return self.object.client_other_bills.order_by("is_paid", "-year", "-month").all()
 
 
 class CurrentClientBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):

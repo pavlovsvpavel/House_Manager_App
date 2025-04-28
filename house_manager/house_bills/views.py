@@ -140,14 +140,14 @@ class CurrentHouseMonthlyBillDetailView(CurrentHouseBaseBillDetailView):
     template_name = "house_bills/list_house_bills.html"
 
     def get_type_of_house_bills(self):
-        return self.object.house_monthly_bills.all()
+        return self.object.house_monthly_bills.order_by("is_paid", "-year", "-month").all()
 
 
 class CurrentHouseOtherBillDetailView(CurrentHouseBaseBillDetailView):
     template_name = "house_bills/list_other_house_bills.html"
 
     def get_type_of_house_bills(self):
-        return self.object.house_other_bills.all()
+        return self.object.house_other_bills.order_by("is_paid", "-year", "-month").all()
 
 
 class HouseBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):

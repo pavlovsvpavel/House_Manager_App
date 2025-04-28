@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic as views
@@ -34,8 +33,10 @@ class HouseCreateView(CheckForLoggedInUserMixin, views.CreateView):
 
 @method_decorator(get_current_house_id, name='dispatch')
 class HouseDetailView(CheckForLoggedInUserMixin, views.DetailView):
-    queryset = House.objects.select_related('user').prefetch_related('clients')
     template_name = "houses/details_house.html"
+
+    def get_object(self, queryset=None):
+        return self.request.selected_house
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

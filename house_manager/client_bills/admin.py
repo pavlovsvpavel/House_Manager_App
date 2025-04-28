@@ -7,7 +7,7 @@ from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 @admin.register(ClientMonthlyBill)
 class ClientMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin, admin.ModelAdmin):
     list_display = (
-        "house", "client", "month", "year", "electricity_common",
+        "house", "client", "client__apartment", "month", "year", "electricity_common",
         "electricity_lift", "internet", "maintenance_lift",
         "fee_cleaner", "fee_manager", "fee_cashier", "repairs",
         "others", "total_amount", "amount_old_debts",
@@ -51,7 +51,7 @@ class ClientMonthlyBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin, 
 @admin.register(ClientOtherBill)
 class ClientOtherBillBillAdmin(CheckLoggedInUserModelInstancesMixin, ExportMixin, admin.ModelAdmin):
     list_display = (
-        "house", "client", "month", "year",
+        "house", "client", "client__apartment", "month", "year",
         "comment", "total_amount",
     )
 
