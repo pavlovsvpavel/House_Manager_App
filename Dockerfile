@@ -6,7 +6,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install system dependencies
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
-        gettext \
         curl \
         ca-certificates && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -43,7 +42,9 @@ ENV APP_HOME=/home/app/web
 
 # Install runtime dependencies only (libpq5 for psycopg2)
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends libpq5 && \
+    apt-get install -y --no-install-recommends \
+    libpq5 \
+    gettext && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy virtual environment from builder
@@ -52,6 +53,9 @@ COPY --from=builder /opt/venv /opt/venv
 # Create non-root user and app directory
 RUN useradd -m ubuntu
 WORKDIR $APP_HOME
+
+# Change ownership of the WORKDIR itself so the 'ubuntu' user can write to it
+RUN chown ubuntu:ubuntu $APP_HOME
 
 # Copy application code with proper ownership
 COPY --chown=ubuntu:ubuntu . .
