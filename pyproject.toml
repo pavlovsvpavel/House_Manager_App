@@ -25,7 +25,7 @@ dependencies = [
     "packaging==25.0",
     "pillow==11.2.1",
     "pip==25.1.1",
-    "psycopg2==2.9.10",
+    "psycopg2-binary==2.9.10",
     "pycparser==2.22",
     "pyjwt==2.10.1",
     "python-decouple==3.8",
@@ -37,5 +37,5 @@ dependencies = [
     "tablib==3.8.0",
     "tzdata==2025.2",
     "urllib3==2.4.0",
-    "wheel==0.46.1",
+    "wheel==0.45.1",
 ]

@@ -6,7 +6,7 @@ from pathlib import Path
 
 from google.cloud import storage
 
-CONTAINER_NAME = "house_manager_app_postgres_prod"
+CONTAINER_NAME = "house_manager_app_postgres"
 POSTGRES_USER = "postgres"
 BACKUP_DIR = Path(__file__).parent
 LOG_FILE = BACKUP_DIR / "backup.log"

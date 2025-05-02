@@ -5,9 +5,9 @@ import sys
 from pathlib import Path
 
 APP_DIR = Path(__file__).parent.parent
-CERTBOT_COMPOSE_FILE = "docker-compose.certbot.yml"
-DOCKER_COMPOSE_FILE = "docker-compose.prod.yml"
-CONTAINER_NAME = "house_manager_app_nginx_prod"
+CERTBOT_COMPOSE_FILE = "docker-compose-certbot.yml"
+DOCKER_COMPOSE_FILE = "docker-compose-prod.yml"
+CONTAINER_NAME = "house_manager_app_nginx"
 SSL_RENEWAL_DIR = Path(__file__).parent
 LOG_FILE = SSL_RENEWAL_DIR / "renewal.log"
 

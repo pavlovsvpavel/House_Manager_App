@@ -69,12 +69,11 @@ packaging==25.0
     # via
     #   house-manager-app (pyproject.toml)
     #   gunicorn
-    #   wheel
 pillow==11.2.1
     # via house-manager-app (pyproject.toml)
 pip==25.1.1
     # via house-manager-app (pyproject.toml)
-psycopg2==2.9.10
+psycopg2-binary==2.9.10
     # via house-manager-app (pyproject.toml)
 pycparser==2.22
     # via
@@ -113,5 +112,5 @@ urllib3==2.4.0
     #   house-manager-app (pyproject.toml)
     #   cloudinary
     #   requests
-wheel==0.46.1
+wheel==0.45.1
     # via house-manager-app (pyproject.toml)

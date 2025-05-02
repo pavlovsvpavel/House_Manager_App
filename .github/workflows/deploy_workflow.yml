@@ -18,10 +18,10 @@ jobs:
           script: |
                 cd /home/ubuntu/app/House_Manager_App
                 sudo git pull origin main
-                sudo docker compose -f docker-compose.prod.yml up -d --build
-                sudo docker compose -f docker-compose.prod.yml exec -T web python manage.py makemigrations
-                sudo docker compose -f docker-compose.prod.yml exec -T web python manage.py migrate
-                sudo docker compose -f docker-compose.prod.yml exec -T web python manage.py collectstatic --noinput
-                sudo docker compose -f docker-compose.prod.yml exec -T web python manage.py makemessages -l bg
-                sudo docker compose -f docker-compose.prod.yml exec -T web python manage.py compilemessages
+                sudo docker compose -f docker-compose-prod.yml up -d --build
+                sudo docker compose -f docker-compose-prod.yml exec -T web python manage.py makemigrations
+                sudo docker compose -f docker-compose-prod.yml exec -T web python manage.py migrate
+                sudo docker compose -f docker-compose-prod.yml exec -T web python manage.py collectstatic --noinput
+                sudo docker compose -f docker-compose-prod.yml exec -T web python manage.py makemessages -l bg
+                sudo docker compose -f docker-compose-prod.yml exec -T web python manage.py compilemessages
                 sudo docker restart $(sudo docker ps -q)
