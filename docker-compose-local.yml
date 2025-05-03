@@ -15,8 +15,8 @@ services:
       - GUNICORN_WORKERS=10
       - GUNICORN_RELOAD=true
     volumes:
-      - ./staticfiles:/tmp/house_manager/static_files
-      - ./mediafiles:/tmp/house_manager/mediafiles
+      - ./staticfiles:/tmp/house_manager/static_files/
+      - ./mediafiles:/tmp/house_manager/mediafiles/
       - ./locale:/tmp/house_manager/locale
     platform: linux/amd64
     depends_on:

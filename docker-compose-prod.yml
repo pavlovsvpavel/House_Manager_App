@@ -13,8 +13,8 @@ services:
     env_file:
       - ./envs/.env.prod
     volumes:
-      - ./staticfiles:/tmp/house_manager/static_files
-      - ./mediafiles:/tmp/house_manager/mediafiles
+      - ./staticfiles:/tmp/house_manager/static_files/
+      - ./mediafiles:/tmp/house_manager/mediafiles/
       - ./locale:/tmp/house_manager/locale
     platform: linux/amd64
     depends_on:
@@ -42,13 +42,11 @@ services:
       - ./nginx/prod/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/prod/conf.d:/etc/nginx/conf.d/:ro
       - ./nginx/prod/logs:/var/log/nginx
-      - ./staticfiles:/home/app/web/static_files/:ro
-      - ./mediafiles:/home/app/web/mediafiles/:ro
-      - ./locale:/home/app/web/locale/:ro
+      - ./staticfiles:/tmp/house_manager/static_files/:ro
+      - ./mediafiles:/tmp/house_manager/mediafiles/:ro
+      - ./locale:/tmp/house_manager/locale/:ro
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
     depends_on:
       - web
-
-
 
