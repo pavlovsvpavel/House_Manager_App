@@ -17,9 +17,9 @@ services:
       - ./mediafiles:/tmp/house_manager/mediafiles
       - ./locale:/tmp/house_manager/locale
     platform: linux/amd64
-    command: bash -c "gunicorn house_manager.wsgi:application --bind=0.0.0.0:8000 --workers=$((2 * $(nproc) + 1)) --timeout=120"
     depends_on:
       - postgres
+
   postgres:
     container_name: house_manager_app_postgres
     image: postgres:17
@@ -30,20 +30,21 @@ services:
       - ./envs/.env.prod
     volumes:
       - ./postgresql_prod:/var/lib/postgresql/data
+
   nginx:
     container_name: house_manager_app_nginx
     image: nginx
-    restart: always
+    restart: on-failure
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/prod/nginx.conf:/etc/nginx/nginx.conf
-      - ./staticfiles:/home/app/web/static_files
-      - ./mediafiles:/home/app/web/mediafiles
-      - ./locale:/home/app/web/locale
-      - ./nginx/prod/conf.d:/etc/nginx/conf.d
+      - ./nginx/prod/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/prod/conf.d:/etc/nginx/conf.d/:ro
       - ./nginx/prod/logs:/var/log/nginx
+      - ./staticfiles:/home/app/web/static_files/:ro
+      - ./mediafiles:/home/app/web/mediafiles/:ro
+      - ./locale:/home/app/web/locale/:ro
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
     depends_on:
