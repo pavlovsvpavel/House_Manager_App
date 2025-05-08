@@ -18,4 +18,4 @@ jobs:
           script: |
                 cd /home/ubuntu/app/House_Manager_App
                 sudo git pull origin main
-                sudo COMPOSE_BAKE=true docker compose -f docker-compose-prod.yml up -d --build
+                sudo DOCKER_BUILDKIT=1 COMPOSE_BAKE=true docker compose -f docker-compose-prod.yml up -d --build

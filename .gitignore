@@ -174,3 +174,4 @@ terraform.tfstate.backup
 *.pem
 postgres_db
 /uv.lock
+/terraform/values.tfvars

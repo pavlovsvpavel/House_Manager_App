@@ -4,8 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        DOCKER_BUILDKIT: 1
     restart: always
     ports:
       - "8000:8000"
@@ -15,9 +13,9 @@ services:
       - GUNICORN_WORKERS=10
       - GUNICORN_RELOAD=true
     volumes:
-      - ./staticfiles:/tmp/house_manager/static_files/
-      - ./mediafiles:/tmp/house_manager/mediafiles/
-      - ./locale:/tmp/house_manager/locale
+      - ./staticfiles:/var/www/wm_system/static_files/
+      - ./mediafiles:/var/www/wm_system/mediafiles/
+      - ./locale:/var/www/wm_system/locale/
     platform: linux/amd64
     depends_on:
       - postgres
@@ -36,15 +34,15 @@ services:
   nginx:
     container_name: house_manager_app_nginx
     image: nginx
-    restart: on-failure
+    restart: always
     ports:
       - "127.0.0.1:81:80"
     volumes:
       - ./nginx/local/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/local/conf.d:/etc/nginx/conf.d/:ro
       - ./nginx/local/logs:/var/log/nginx
-      - ./staticfiles:/tmp/house_manager/static_files/:ro
-      - ./mediafiles:/tmp/house_manager/mediafiles/:ro
-      - ./locale:/tmp/house_manager/locale/:ro
+      - ./staticfiles:/var/www/wm_system/static_files/:ro
+      - ./mediafiles:/var/www/wm_system/mediafiles/:ro
+      - ./locale:/var/www/wm_system/locale/:ro
     depends_on:
       - web

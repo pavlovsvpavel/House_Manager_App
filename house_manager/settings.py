@@ -22,9 +22,8 @@ CSRF_TRUSTED_ORIGINS = [f'https://{x}' for x in ALLOWED_HOSTS]
 
 # Allauth configs
 SITE_ID = config('SITE_ID', cast=int)
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_LOGIN_METHODS = ['email',]
+ACCOUNT_SIGNUP_FIELDS = ['email*',]
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_ADAPTER = 'house_manager.accounts.adapters.CustomSocialAccountAdapter'
