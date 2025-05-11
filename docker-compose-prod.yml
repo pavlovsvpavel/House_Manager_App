@@ -11,9 +11,9 @@ services:
     env_file:
       - ./envs/.env.prod
     volumes:
-      - ./staticfiles:/var/www/wm_system/static_files/
-      - ./mediafiles:/var/www/wm_system/mediafiles/
-      - ./locale:/var/www/wm_system/locale/
+      - ./staticfiles:/var/www/house_manager/static_files/
+      - ./mediafiles:/var/www/house_manager/mediafiles/
+      - ./locale:/var/www/house_manager/locale/
     platform: linux/amd64
     depends_on:
       - postgres
@@ -38,11 +38,12 @@ services:
       - "443:443"
     volumes:
       - ./nginx/prod/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/prod/custom_pages/50x.html:/usr/share/nginx/html/50x.html:ro
       - ./nginx/prod/conf.d:/etc/nginx/conf.d/:ro
       - ./nginx/prod/logs:/var/log/nginx
-      - ./staticfiles:/var/www/wm_system/static_files/:ro
-      - ./mediafiles:/var/www/wm_system/mediafiles/:ro
-      - ./locale:/var/www/wm_system/locale/:ro
+      - ./staticfiles:/var/www/house_manager/static_files/:ro
+      - ./mediafiles:/var/www/house_manager/mediafiles/:ro
+      - ./locale:/var/www/house_manager/locale/:ro
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
     depends_on:

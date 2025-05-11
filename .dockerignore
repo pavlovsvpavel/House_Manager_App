@@ -63,6 +63,5 @@ uv.lock
 ssl_renewal/
 nginx/
 certbot/
-static_files/
 terraform/
 tests/
