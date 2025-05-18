@@ -15,7 +15,9 @@ jobs:
           username: ${{ secrets.GCP_USER }}
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.GCP_PASSPHRASE }}
+          command_timeout: "20m"
           script: |
                 cd /home/ubuntu/app/House_Manager_App
                 sudo git pull origin main
+                docker stop $(docker ps -aq)
                 sudo DOCKER_BUILDKIT=1 COMPOSE_BAKE=true docker compose -f docker-compose-prod.yml up -d --build
