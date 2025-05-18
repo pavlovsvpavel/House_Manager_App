@@ -23,7 +23,7 @@ cloudinary==1.44.0
     # via
     #   house-manager-app (pyproject.toml)
     #   django-cloudinary-storage
-cryptography==44.0.3
+cryptography==45.0.2
     # via house-manager-app (pyproject.toml)
 diff-match-patch==20241021
     # via
@@ -37,9 +37,9 @@ django==5.2.1
     #   django-debug-toolbar
     #   django-import-export
     #   django-recaptcha
-django-allauth==65.7.0
+django-allauth==65.8.0
     # via house-manager-app (pyproject.toml)
-django-axes==7.1.0
+django-axes==8.0.0
     # via house-manager-app (pyproject.toml)
 django-cloudinary-storage==0.3.0
     # via house-manager-app (pyproject.toml)
@@ -73,8 +73,12 @@ pillow==11.2.1
     # via house-manager-app (pyproject.toml)
 pip==25.1.1
     # via house-manager-app (pyproject.toml)
-psycopg2-binary==2.9.10
+psycopg==3.2.9
     # via house-manager-app (pyproject.toml)
+psycopg-binary==3.2.9
+    # via psycopg
+psycopg-c==3.2.9
+    # via psycopg
 pycparser==2.22
     # via
     #   house-manager-app (pyproject.toml)
@@ -90,7 +94,7 @@ requests==2.32.3
     #   requests-oauthlib
 requests-oauthlib==2.0.0
     # via house-manager-app (pyproject.toml)
-setuptools==80.3.1
+setuptools==80.7.1
     # via house-manager-app (pyproject.toml)
 six==1.17.0
     # via
@@ -105,6 +109,8 @@ tablib==3.8.0
     # via
     #   house-manager-app (pyproject.toml)
     #   django-import-export
+typing-extensions==4.13.2
+    # via psycopg
 tzdata==2025.2
     # via house-manager-app (pyproject.toml)
 urllib3==2.4.0
