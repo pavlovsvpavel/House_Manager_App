@@ -3,7 +3,7 @@ set -e
 
 # Configurable defaults
 WORKERS=${GUNICORN_WORKERS:-$((2 * $(nproc) + 1))}
-TIMEOUT=${GUNICORN_TIMEOUT:-120}
+TIMEOUT=${GUNICORN_TIMEOUT:-30}
 
 # Skip if flag exists
 if [ -n "$SKIP_ENTRYPOINT" ]; then

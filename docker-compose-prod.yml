@@ -1,17 +1,19 @@
 services:
   web:
     container_name: house_manager_app_web
-    image: house_manager:prod
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ppavlovp/private_images:house_manager_prod
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
     restart: always
     ports:
       - "8000:8000"
     env_file:
       - ./envs/.env.prod
+    environment:
+      - GUNICORN_WORKERS=2
     volumes:
-      - ./staticfiles:/var/www/house_manager/static_files/
+      - ./static_files:/var/www/house_manager/static_files/
       - ./mediafiles:/var/www/house_manager/mediafiles/
       - ./locale:/var/www/house_manager/locale/
     platform: linux/amd64
@@ -41,7 +43,7 @@ services:
       - ./nginx/prod/custom_pages/50x.html:/usr/share/nginx/html/50x.html:ro
       - ./nginx/prod/conf.d:/etc/nginx/conf.d/:ro
       - ./nginx/prod/logs:/var/log/nginx
-      - ./staticfiles:/var/www/house_manager/static_files/:ro
+      - ./static_files:/var/www/house_manager/static_files/:ro
       - ./mediafiles:/var/www/house_manager/mediafiles/:ro
       - ./locale:/var/www/house_manager/locale/:ro
       - ./certbot/www:/var/www/certbot/:ro

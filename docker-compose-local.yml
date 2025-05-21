@@ -10,13 +10,17 @@ services:
     env_file:
       - ./envs/.env.local
     environment:
-      - GUNICORN_WORKERS=10
-      - GUNICORN_RELOAD=true
+      - GUNICORN_WORKERS=2
     volumes:
       - ./static_files:/var/www/house_manager/static_files/
       - ./mediafiles:/var/www/house_manager/mediafiles/
       - ./locale:/var/www/house_manager/locale/
     platform: linux/amd64
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
     depends_on:
       - postgres
 
@@ -30,6 +34,11 @@ services:
       - ./envs/.env.local
     volumes:
       - ./postgres_db:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 384M
 
   nginx:
     container_name: house_manager_app_nginx
@@ -45,5 +54,10 @@ services:
       - ./static_files:/var/www/house_manager/static_files/:ro
       - ./mediafiles:/var/www/house_manager/mediafiles/:ro
       - ./locale:/var/www/house_manager/locale/:ro
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 100M
     depends_on:
       - web
