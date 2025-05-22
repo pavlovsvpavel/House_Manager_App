@@ -4,9 +4,10 @@ from django.test import TestCase
 from house_manager.client_bills.helpers.calculate_fees import calculate_fees
 from house_manager.clients.models import Client
 from house_manager.house_bills.models import HouseMonthlyBill
-from house_manager.houses.models import House
+from house_manager.houses.models import House, HouseCalculationsOptions
 
 UserModel = get_user_model()
+
 
 class TestClientBillCalculations(TestCase):
     def setUp(self):
@@ -68,6 +69,15 @@ class TestClientBillCalculations(TestCase):
 
         self.monthly_bill = HouseMonthlyBill.objects.create(**monthly_bill_data)
 
+        self.calculation_options, created = HouseCalculationsOptions.objects.update_or_create(
+            house_id=self.house.id,
+            user_id=self.user.id,
+            defaults={
+                "based_on_apartment": ['fee_manager', 'fee_cashier', 'repairs', 'others', 'internet'],
+                "based_on_total_people": ['electricity_common', 'electricity_lift', 'maintenance_lift', 'fee_cleaner'],
+            }
+        )
+
     def test_client_bill__when__is_inhabitable__is_false(self):
         self.test_client.is_using_lift = True
         self.test_client.is_occupied = True
@@ -76,7 +86,8 @@ class TestClientBillCalculations(TestCase):
         self.test_client.save()
         calculate_fees(self.house.id, self.monthly_bill.year, self.monthly_bill.month, self.user.id)
 
-        client_bill = self.test_client.client_monthly_bills.filter(year=self.monthly_bill.year, month=self.monthly_bill.month).first()
+        client_bill = self.test_client.client_monthly_bills.filter(year=self.monthly_bill.year,
+                                                                   month=self.monthly_bill.month).first()
 
         result = client_bill.total_amount
         expected = 0
@@ -92,7 +103,8 @@ class TestClientBillCalculations(TestCase):
         self.test_client.save()
         calculate_fees(self.house.id, self.monthly_bill.year, self.monthly_bill.month, self.user.id)
 
-        client_bill = self.test_client.client_monthly_bills.filter(year=self.monthly_bill.year, month=self.monthly_bill.month).first()
+        client_bill = self.test_client.client_monthly_bills.filter(year=self.monthly_bill.year,
+                                                                   month=self.monthly_bill.month).first()
 
         electricity_common_result = client_bill.electricity_common
         electricity_common_expected = 0.25
@@ -103,7 +115,7 @@ class TestClientBillCalculations(TestCase):
         self.assertEqual(electricity_lift_result, electricity_lift_expected)
 
         internet_result = client_bill.internet
-        internet_expected = 0.25
+        internet_expected = 0.5
         self.assertEqual(internet_result, internet_expected)
 
         maintenance_lift_result = client_bill.maintenance_lift
@@ -130,9 +142,8 @@ class TestClientBillCalculations(TestCase):
         others_expected = 0.5
         self.assertEqual(others_result, others_expected)
 
-
         total_amount_result = client_bill.total_amount
-        total_amount_expected = 3.25
+        total_amount_expected = 3.50
 
         self.assertEqual(total_amount_result, total_amount_expected)
 
@@ -144,7 +155,12 @@ class TestClientBillCalculations(TestCase):
         self.test_client.save()
         calculate_fees(self.house.id, self.monthly_bill.year, self.monthly_bill.month, self.user.id)
 
-        client_bill = self.test_client.client_monthly_bills.filter(year=self.monthly_bill.year, month=self.monthly_bill.month).first()
+        client_bill = self.test_client.client_monthly_bills.filter(year=self.monthly_bill.year,
+                                                                   month=self.monthly_bill.month).first()
+
+        internet_result = client_bill.internet
+        internet_expected = 0.5
+        self.assertEqual(internet_result, internet_expected)
 
         fee_manager_result = client_bill.fee_manager
         fee_manager_expected = 0.5
@@ -163,7 +179,7 @@ class TestClientBillCalculations(TestCase):
         self.assertEqual(others_result, others_expected)
 
         total_amount_result = client_bill.total_amount
-        total_amount_expected = 2.0
+        total_amount_expected = 2.5
         self.assertEqual(total_amount_result, total_amount_expected)
 
     def test_client_bill__when__is_using_lift__is_false(self):
@@ -175,7 +191,8 @@ class TestClientBillCalculations(TestCase):
         self.test_client.save()
         calculate_fees(self.house.id, self.monthly_bill.year, self.monthly_bill.month, self.user.id)
 
-        client_bill = self.test_client.client_monthly_bills.filter(year=self.monthly_bill.year, month=self.monthly_bill.month).first()
+        client_bill = self.test_client.client_monthly_bills.filter(year=self.monthly_bill.year,
+                                                                   month=self.monthly_bill.month).first()
 
         electricity_common_result = client_bill.electricity_common
         electricity_common_expected = 0.25
@@ -186,7 +203,7 @@ class TestClientBillCalculations(TestCase):
         self.assertEqual(electricity_lift_result, electricity_lift_expected)
 
         internet_result = client_bill.internet
-        internet_expected = 0.25
+        internet_expected = 0.5
         self.assertEqual(internet_result, internet_expected)
 
         maintenance_lift_result = client_bill.maintenance_lift
@@ -214,8 +231,6 @@ class TestClientBillCalculations(TestCase):
         self.assertEqual(others_result, others_expected)
 
         total_amount_result = client_bill.total_amount
-        total_amount_expected = 2.75
+        total_amount_expected = 3.00
 
         self.assertEqual(total_amount_result, total_amount_expected)
-
-

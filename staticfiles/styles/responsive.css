@@ -59,6 +59,10 @@
         padding: 0;
         gap: 1em;
     }
+
+    .create-form {
+        flex: 0 1 100%;
+    }
 }
 
 @media (max-width: 600px) {
@@ -192,16 +196,6 @@
     .list-clients .card-column .column-name,
     .list-house-bills .card-column .column-name {
         text-align: left;
-    }
-
-    .create-form {
-        flex: 0 1 100%;
-    }
-
-    .create-form div:nth-of-type(5),
-    .create-form div:nth-of-type(6),
-    .create-form div:nth-of-type(7) {
-        align-items: center;
     }
 
     .client-details .client-card {

@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from house_manager.houses.models import House
+from house_manager.houses.models import House, HouseCalculationsOptions
 
 
 class HouseBaseForm(forms.ModelForm):
@@ -13,7 +13,7 @@ class HouseBaseForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             verbose_name = self.Meta.model._meta.get_field(field_name).verbose_name
             field.widget.attrs["placeholder"] = verbose_name
-            field.label = False
+            field.label = ''
 
 
 class HouseCreateForm(HouseBaseForm):
@@ -30,3 +30,54 @@ class HouseCreateForm(HouseBaseForm):
 
 class HouseEditForm(HouseBaseForm):
     pass
+
+
+class HorizontalCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.attrs = {'class': 'checkbox-grid'}
+
+
+class HouseCalculationsOptionsEditForm(forms.ModelForm):
+    based_on_apartment = forms.MultipleChoiceField(
+        required=False,
+        widget=HorizontalCheckboxSelectMultiple,
+        label=_("Calculations based on apartment:")
+    )
+
+    based_on_total_people = forms.MultipleChoiceField(
+        required=False,
+        widget=HorizontalCheckboxSelectMultiple,
+        label=_("Calculations based on total people:")
+    )
+
+    class Meta:
+        model = HouseCalculationsOptions
+        fields = ['based_on_apartment', 'based_on_total_people', 'house', 'user']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'house' in self.initial:
+            self.instance.house_id = self.initial['house']
+        if 'user' in self.initial:
+            self.instance.user_id = self.initial['user']
+
+        choices = HouseCalculationsOptions.get_monthly_bill_field_choices()
+
+        self.fields['based_on_apartment'].choices = choices
+        self.fields['based_on_total_people'].choices = choices
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        apartment_selected = set(cleaned_data.get('based_on_apartment', []))
+        people_selected = set(cleaned_data.get('based_on_total_people', []))
+
+        conflicts = apartment_selected & people_selected
+
+        if conflicts:
+            raise forms.ValidationError(
+                f"These fields cannot be in both categories: {', '.join(conflicts)}"
+            )
+
+        return cleaned_data

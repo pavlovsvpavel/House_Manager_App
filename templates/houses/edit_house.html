@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block main_content %}
+    <script src="{% static "scripts/handleBillsOptionsCheckBoxes.js" %}" defer></script>
 
     <section class="site-section edit-house">
         <div class="container">
@@ -9,3 +11,4 @@
     </section>
 
 {% endblock %}
+

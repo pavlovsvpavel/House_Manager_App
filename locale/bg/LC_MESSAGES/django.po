@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-24 09:14+0000\n"
+"POT-Creation-Date: 2025-05-22 15:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -49,16 +49,16 @@ msgstr "Телефонен номер"
 msgid "Profile picture"
 msgstr "Профилна снимка"
 
-#: house_manager/accounts/validators.py:17
+#: house_manager/accounts/validators.py:18
 msgid "The maximum file size should not exceed 3MB"
 msgstr "Размерът на снимката не трябва да надвишава 3MB"
 
-#: house_manager/accounts/validators.py:24
+#: house_manager/accounts/validators.py:25
 msgid ""
 "Unsupported file type. Please upload an image file (.jpg, .jpeg, .png, .gif)"
 msgstr ""
-"Неподдържан файлов формат. Моля, качете файл с разширение "
-"(.jpg, .jpeg, .png, .gif)."
+"Неподдържан файлов формат. Моля, качете файл с разширение (.jpg, .jpeg, ."
+"png, .gif)."
 
 #: house_manager/accounts/views.py:89
 msgid "Edit Profile"
@@ -122,15 +122,15 @@ msgstr "Зает"
 msgid "Inhabitable"
 msgstr "Обитаем"
 
-#: house_manager/clients/views.py:36
+#: house_manager/clients/views.py:31
 msgid "Client with this apartment already exist"
 msgstr "Клиент с този апартамент вече съществува."
 
-#: house_manager/clients/views.py:45
+#: house_manager/clients/views.py:40
 msgid "Add Client"
 msgstr "Добави клиент"
 
-#: house_manager/clients/views.py:105
+#: house_manager/clients/views.py:93
 msgid "Edit Client"
 msgstr "Промяна клиент"
 
@@ -221,7 +221,7 @@ msgstr "Година"
 #: house_manager/common/mixins.py:122 house_manager/common/mixins.py:133
 #: house_manager/common/mixins.py:144 house_manager/common/mixins.py:155
 #: house_manager/common/mixins.py:166 house_manager/common/mixins.py:177
-#: house_manager/common/mixins.py:247 house_manager/houses/models.py:56
+#: house_manager/common/mixins.py:247 house_manager/houses/models.py:57
 msgid "Please enter a value greater than zero"
 msgstr "Моля въведете число по-голямо от нула"
 
@@ -340,20 +340,27 @@ msgstr "Тип сметка"
 msgid "Bill for all clients with those month and year already exists."
 msgstr "Сметка за всички клиенти с тези месец и година вече съществува."
 
-#: house_manager/house_bills/views.py:50 templates/houses/details_house.html:20
+#: house_manager/house_bills/views.py:56 templates/houses/details_house.html:20
 msgid "Add monthly bill"
 msgstr "Добави месечна сметка"
 
-#: house_manager/house_bills/views.py:64 house_manager/house_bills/views.py:95
+#: house_manager/house_bills/views.py:73
+msgid ""
+"Calculation settings are missing. Please configure them on house edit page."
+msgstr ""
+"Липсват настройки за изчисления. Моля, конфигурирайте ги на страницата за "
+"редактиране на обекта."
+
+#: house_manager/house_bills/views.py:79 house_manager/house_bills/views.py:115
 msgid "Bill with those month and year already exists."
 msgstr "Сметка с тези месец и година вече съществува."
 
-#: house_manager/house_bills/views.py:75 templates/houses/details_house.html:28
+#: house_manager/house_bills/views.py:95 templates/houses/details_house.html:28
 msgid "Add other bill"
 msgstr "Добави друга сметка"
 
-#: house_manager/house_bills/views.py:117
-#: house_manager/house_bills/views.py:165
+#: house_manager/house_bills/views.py:138
+#: house_manager/house_bills/views.py:183
 msgid "Bills not found in selected house."
 msgstr "Не са намерени сметки на съответния обект."
 
@@ -365,39 +372,63 @@ msgstr "Начално салдо, ЛВ."
 msgid "Enter house's current available amount"
 msgstr "Въведете текущата налична сума в касата"
 
-#: house_manager/houses/models.py:27 templates/common/dashboard.html:17
+#: house_manager/houses/forms.py:45
+msgid "Calculations based on apartment:"
+msgstr "Изчисления на база апартаменти:"
+
+#: house_manager/houses/forms.py:51
+msgid "Calculations based on total people:"
+msgstr "Изчисления на база живущи:"
+
+#: house_manager/houses/models.py:28 templates/common/dashboard.html:17
 #: templates/houses/details_house.html:40
 #: templates/partials/reports/reports_house_details.html:6
 msgid "Town"
 msgstr "Град"
 
-#: house_manager/houses/models.py:34 templates/common/dashboard.html:21
+#: house_manager/houses/models.py:35 templates/common/dashboard.html:21
 #: templates/houses/details_house.html:44
 #: templates/partials/reports/reports_house_details.html:10
 msgid "Address"
 msgstr "Адрес"
 
-#: house_manager/houses/models.py:40 templates/common/dashboard.html:25
+#: house_manager/houses/models.py:41 templates/common/dashboard.html:25
 #: templates/houses/details_house.html:48
 #: templates/partials/reports/reports_house_details.html:14
 msgid "Building number"
 msgstr "Блок"
 
-#: house_manager/houses/models.py:47 templates/common/dashboard.html:29
+#: house_manager/houses/models.py:48 templates/common/dashboard.html:29
 #: templates/houses/details_house.html:52
 #: templates/partials/reports/reports_house_details.html:18
 msgid "Entrance"
 msgstr "Вход"
 
-#: house_manager/houses/models.py:58
+#: house_manager/houses/models.py:59
 msgid "Current balance"
 msgstr "Настоящо салдо"
 
-#: house_manager/houses/views.py:30 templates/partials/profile_menu.html:22
+#: house_manager/houses/models.py:77
+msgid "House Calculation Option"
+msgstr "Опция за изчисление"
+
+#: house_manager/houses/models.py:78
+msgid "House Calculation Options"
+msgstr "Опции за изчисления"
+
+#: house_manager/houses/models.py:95
+msgid "Selected fields based on apartments"
+msgstr "Избрани полета на база апартаменти"
+
+#: house_manager/houses/models.py:102
+msgid "Selected fields based on total people"
+msgstr "Избрани полета на база живущи"
+
+#: house_manager/houses/views.py:30 templates/partials/profile_menu.html:26
 msgid "Create House"
 msgstr "Създай обект"
 
-#: house_manager/houses/views.py:97
+#: house_manager/houses/views.py:102
 msgid "Edit House"
 msgstr "Промяна на обект"
 
@@ -657,7 +688,7 @@ msgstr "Няма създадени обекти"
 msgid "Dashboard"
 msgstr "Табло"
 
-#: templates/common/header.html:27
+#: templates/common/header.html:32
 msgid "About"
 msgstr "За нас"
 
@@ -867,19 +898,19 @@ msgstr "Отмени"
 msgid "Continue with Google"
 msgstr "Използвай Google"
 
-#: templates/partials/profile_menu.html:17
+#: templates/partials/profile_menu.html:21
 msgid "Profile"
 msgstr "Профил"
 
-#: templates/partials/profile_menu.html:23
+#: templates/partials/profile_menu.html:27
 msgid "Administration"
 msgstr "Администрация"
 
-#: templates/partials/profile_menu.html:24
+#: templates/partials/profile_menu.html:28
 msgid "Settings"
 msgstr "Настройки"
 
-#: templates/partials/profile_menu.html:26
+#: templates/partials/profile_menu.html:30
 msgid "Logout"
 msgstr "Изход"
 

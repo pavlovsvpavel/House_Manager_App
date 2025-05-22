@@ -1,6 +1,7 @@
+import logging
 from decimal import Decimal
 from django.core.exceptions import PermissionDenied
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404
@@ -20,7 +21,7 @@ from house_manager.house_bills.helpers.subtract_amount_from_balance import subtr
 from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill, TypeOfBillChoices
 from house_manager.houses.decorators import get_current_house_id
 from house_manager.houses.mixins import GetHouseAndUserMixin
-from house_manager.houses.models import House
+from house_manager.houses.models import House, HouseCalculationsOptions
 
 
 class HouseBaseBillCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.CreateView):
@@ -56,20 +57,34 @@ class HouseMonthlyBillCreateView(HouseBaseBillCreateView):
 
     def form_valid(self, form):
         try:
-            response = super().form_valid(form)
-            current_year = form.instance.year
-            current_month = form.instance.month
-            house_id = form.instance.house_id
-            user_id = self.request.user.pk
-            calculate_fees(house_id, current_year, current_month, user_id)
+            with transaction.atomic():
+                response = super().form_valid(form)
 
-            return response
+                current_year = form.instance.year
+                current_month = form.instance.month
+                house_id = form.instance.house_id
+                user_id = self.request.user.pk
 
-        except IntegrityError as e:
+                try:
+                    calculate_fees(house_id, current_year, current_month, user_id)
+                except HouseCalculationsOptions.DoesNotExist as error:
+                    form.add_error(
+                        None,
+                        _("Calculation settings are missing. Please configure them on house edit page."))
+                    raise error
+
+                return response
+
+        except IntegrityError:
             error_message = _("Bill with those month and year already exists.")
             form.add_error(None, error_message)
-
             return self.form_invalid(form)
+
+        except HouseCalculationsOptions.DoesNotExist:
+            return self.form_invalid(form)
+
+
+logger = logging.getLogger(__name__)
 
 
 class HouseOtherBillCreateView(HouseBaseBillCreateView):
