@@ -54,6 +54,7 @@ services:
       - ./static_files:/var/www/house_manager/static_files/:ro
       - ./mediafiles:/var/www/house_manager/mediafiles/:ro
       - ./locale:/var/www/house_manager/locale/:ro
+      - ./staticfiles/robots.txt:/usr/share/nginx/seo/robots.txt:ro
     deploy:
       resources:
         limits:

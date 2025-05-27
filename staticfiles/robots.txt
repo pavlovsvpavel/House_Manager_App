@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /
+Allow: /$
+Allow: /about/
+
+Sitemap: https://house-manager.eu/sitemap.xml

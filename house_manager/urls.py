@@ -1,7 +1,15 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
+
+from house_manager.common.seo.sitemaps import StaticViewSitemap
+
+
+sitemaps = {
+    'static': StaticViewSitemap,
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,6 +22,7 @@ urlpatterns = [
     path("client-bills/", include("house_manager.client_bills.urls")),
     path('i18n/', include('django.conf.urls.i18n')),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 if settings.DEBUG:

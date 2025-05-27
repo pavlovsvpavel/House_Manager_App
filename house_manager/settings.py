@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "django.contrib.sites",
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
 
     'cloudinary_storage',
     'cloudinary',
@@ -89,6 +90,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.i18n',
+                'house_manager.common.seo.context_processors.global_settings',
             ],
         },
     },
@@ -247,3 +249,4 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.profiling.ProfilingPanel',
 ]
 
+GOOGLE_ANALYTICS_ID=config('GOOGLE_ANALYTICS_ID')

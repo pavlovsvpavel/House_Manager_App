@@ -48,6 +48,7 @@ services:
       - ./locale:/var/www/house_manager/locale/:ro
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
+      - ./staticfiles/robots.txt:/usr/share/nginx/seo/robots.txt:ro
     depends_on:
       - web
 
