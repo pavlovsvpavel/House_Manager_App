@@ -223,7 +223,8 @@ AXES_LOCKOUT_TEMPLATE = 'common/429_template.html'
 INTERNAL_IPS = ['127.0.0.1']
 
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,  # Only show if DEBUG=True
+    # 'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,  # Only show if DEBUG=True
+    'SHOW_TOOLBAR_CALLBACK': lambda request: False,  # Only show if DEBUG=True
     'RENDER_PANELS': True,
     'PRETTIFY_SQL': True,
     'SQL_WARNING_THRESHOLD': 100,

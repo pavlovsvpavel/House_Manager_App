@@ -2,7 +2,7 @@
 {% load i18n %}
 
 <form class="search_by_month_and_year" method="get">
-    <script src={% static "scripts/exportToPdf.js" %}></script>
+    <script src="{% static "scripts/exportToPdf.js" %}" defer></script>
     <label for="month">
         <select name="month" id="month">
             <option value="" selected disabled>{% trans "Month" %}</option>

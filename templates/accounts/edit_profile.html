@@ -2,13 +2,12 @@
 {% load static %}
 
 {% block main_content %}
-
+    <script src="{% static "scripts/clearProfilePicture.js" %}" defer></script>
     <section class="site-section edit-profile">
         <div class="container">
             {% include "partials/edit_form.html" %}
         </div>
     </section>
-    
-    <script src={% static "scripts/clearProfilePicture.js" %}></script>
+
 {% endblock %}
 

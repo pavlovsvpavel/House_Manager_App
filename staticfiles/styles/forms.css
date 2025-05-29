@@ -88,7 +88,7 @@
 .edit-client .create-form div:nth-of-type(6),
 .edit-client .create-form div:nth-of-type(7) {
     display: grid;
-    grid-template-columns: 1fr 200px;
+    grid-template-columns: 1fr 100px;
     align-items: center;
     gap: 1em;
     padding: 0.5em;
@@ -130,7 +130,7 @@
     overflow-wrap: break-word;
     white-space: normal;
     bottom: 2em;
-    right: 0;
+    right: -1em;
 }
 
 .is-paid-form .back-button {

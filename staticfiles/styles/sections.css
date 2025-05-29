@@ -51,6 +51,11 @@
     align-items: center;
 }
 
+.what-we-offer-heading h2,
+.get-started-wrapper h2 {
+    font-size: 1.6em;
+}
+
 .what-we-offer-heading {
     display: flex;
     flex-direction: column;
@@ -60,7 +65,7 @@
 
 .what-we-offer-cards {
     display: flex;
-    padding: 1em 3em;
+    padding: 1em;
     justify-content: space-between;
 }
 
@@ -73,11 +78,12 @@
     padding: 1em;
 }
 
-.what-we-offer-cards .card h5 {
+.what-we-offer-cards .card h3 {
+    font-size: 1.2em;
     padding-bottom: 1em;
 }
 
-.what-we-offer-cards .card h5:after {
+.what-we-offer-cards .card h3:after {
     content: "";
     display: block;
     width: 2em;
