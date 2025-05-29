@@ -48,7 +48,7 @@ class Client(TimeStampModel):
         blank=False,
         null=False,
         default=True,
-        verbose_name=_("Using lift"),
+        verbose_name=_("Lift"),
     )
 
     is_occupied = models.BooleanField(

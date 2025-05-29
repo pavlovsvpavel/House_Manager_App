@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-22 15:21+0000\n"
+"POT-Creation-Date: 2025-05-29 18:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -86,6 +86,19 @@ msgstr "Не е намерена сметка на съответния клие
 msgid "Bill not found for current client."
 msgstr "Не е намерена сметка на съответния клиент."
 
+#: house_manager/clients/forms.py:18
+msgid "Mark this option, if the residents in this apartment are using lift"
+msgstr ""
+"Маркирайте тази опция, ако жителите в този апартамент използват асансьор"
+
+#: house_manager/clients/forms.py:19
+msgid "Mark this option, if this apartment is currently occupied"
+msgstr "Маркирайте тази опция, ако този апартамент в момента е зает"
+
+#: house_manager/clients/forms.py:20
+msgid "Mark this option, if this apartment is permanently inhabitable"
+msgstr "Маркирайте тази опция, ако този апартамент е постоянно обитаем"
+
 #: house_manager/clients/models.py:26 templates/clients/details_client.html:18
 #: templates/houses/house_clients_list.html:23
 #: templates/partials/reports/table_headers.html:4
@@ -109,10 +122,9 @@ msgstr "Апартамент"
 msgid "Number of people"
 msgstr "Брой живущи"
 
-#: house_manager/clients/models.py:51 templates/clients/details_client.html:34
-#: templates/houses/house_clients_list.html:39
-msgid "Using lift"
-msgstr "Използва ли асансьор"
+#: house_manager/clients/models.py:51
+msgid "Lift"
+msgstr "Асансьор"
 
 #: house_manager/clients/models.py:58 templates/clients/details_client.html:38
 msgid "Occupied"
@@ -130,7 +142,7 @@ msgstr "Клиент с този апартамент вече съществу�
 msgid "Add Client"
 msgstr "Добави клиент"
 
-#: house_manager/clients/views.py:93
+#: house_manager/clients/views.py:95
 msgid "Edit Client"
 msgstr "Промяна клиент"
 
@@ -364,19 +376,19 @@ msgstr "Добави друга сметка"
 msgid "Bills not found in selected house."
 msgstr "Не са намерени сметки на съответния обект."
 
-#: house_manager/houses/forms.py:21
+#: house_manager/houses/forms.py:14
 msgid "Current balance, BGN"
 msgstr "Начално салдо, ЛВ."
 
-#: house_manager/houses/forms.py:25
+#: house_manager/houses/forms.py:18
 msgid "Enter house's current available amount"
 msgstr "Въведете текущата налична сума в касата"
 
-#: house_manager/houses/forms.py:45
+#: house_manager/houses/forms.py:38
 msgid "Calculations based on apartment:"
 msgstr "Изчисления на база апартаменти:"
 
-#: house_manager/houses/forms.py:51
+#: house_manager/houses/forms.py:44
 msgid "Calculations based on total people:"
 msgstr "Изчисления на база живущи:"
 
@@ -576,6 +588,11 @@ msgstr "Клиент - детайли"
 msgid "People"
 msgstr "Живущи"
 
+#: templates/clients/details_client.html:34
+#: templates/houses/house_clients_list.html:39
+msgid "Using lift"
+msgstr "Използва ли асансьор"
+
 #: templates/clients/details_client.html:35
 #: templates/clients/details_client.html:39
 #: templates/clients/details_client.html:43
@@ -592,8 +609,8 @@ msgid "Other Bills"
 msgstr "Други сметки"
 
 #: templates/common/about.html:11
-msgid "Welcome to House Manager"
-msgstr "Добре дошли в House Manager"
+msgid "Smart Spending"
+msgstr "Интелигентно харчене"
 
 #: templates/common/about.html:12
 msgid ""
@@ -931,6 +948,9 @@ msgstr "Подпис:"
 #: templates/partials/signature-show.html:7
 msgid "No signature"
 msgstr "Няма подпис"
+
+#~ msgid "Welcome to House Manager"
+#~ msgstr "Добре дошли в House Manager"
 
 #~ msgid "Email:"
 #~ msgstr "Имейл:"

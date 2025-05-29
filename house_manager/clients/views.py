@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 from house_manager.clients.decorators import get_current_client_id
-from house_manager.clients.forms import ClientCreateForm
+from house_manager.clients.forms import ClientCreateForm, ClientEditForm
 from house_manager.clients.models import Client
 from house_manager.houses.mixins import GetHouseAndUserMixin
 from house_manager.houses.models import House
@@ -77,7 +77,9 @@ class ClientDetailView(CheckForLoggedInUserMixin, views.DetailView):
 @method_decorator(get_current_client_id, name='dispatch')
 class ClientEditView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.UpdateView):
     template_name = "clients/edit_client.html"
-    fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied", "is_inhabitable")
+    form_class = ClientEditForm
+
+    # fields = ("family_name", "floor", "apartment", "number_of_people", "is_using_lift", "is_occupied", "is_inhabitable")
 
     def get_object(self, queryset=None):
         client = self.request.selected_client

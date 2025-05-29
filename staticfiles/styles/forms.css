@@ -36,7 +36,6 @@
 }
 
 .create-form label {
-    font-size: 1.2em;
     text-align: left;
 }
 
@@ -78,15 +77,60 @@
 }
 
 .create-client .create-form div:nth-of-type(5),
-.create-client .create-form div:nth-of-type(6),
-.create-client .create-form div:nth-of-type(7) {
-    display: flex;
+.edit-client .create-form div:nth-of-type(5) {
+    margin-top: 1em;
 }
 
+.create-client .create-form div:nth-of-type(5),
+.create-client .create-form div:nth-of-type(6),
+.create-client .create-form div:nth-of-type(7),
 .edit-client .create-form div:nth-of-type(5),
 .edit-client .create-form div:nth-of-type(6),
 .edit-client .create-form div:nth-of-type(7) {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    align-items: center;
+    gap: 1em;
+    padding: 0.5em;
+    background: #ffffff;
+    border-radius: 0.5em;
+    border: 1px solid var(--form-input-border);
+    position: relative;
+}
+
+.create-client .create-form input[type="checkbox"],
+.edit-client .create-form input[type="checkbox"] {
+    max-height: 1.5em;
+    aspect-ratio: 1/1;
+}
+
+.tooltip-icon {
+    cursor: help;
+    font-size: 1em;
+    position: absolute;
+    right: 0.5em;
+    z-index: 1;
+}
+
+.tooltip-icon i {
+    color: #333;
+}
+
+.tooltip-icon:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    background: #333;
+    color: #fff;
+    padding: 0.3em;
+    border-radius: 0.3em;
+    font-size: 0.8em;
+    z-index: 100;
+    max-width: 75dvw;
+    width: max-content;
+    overflow-wrap: break-word;
+    white-space: normal;
+    bottom: 2em;
+    right: 0;
 }
 
 .is-paid-form .back-button {
@@ -174,8 +218,8 @@
 
 .checkbox-grid input[type="checkbox"] {
     margin: 0 10px 0 0;
-    min-width: 18px;
     min-height: 18px;
+    aspect-ratio: 1/1;
 }
 
 .checkbox-grid label {
