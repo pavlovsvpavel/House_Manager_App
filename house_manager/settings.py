@@ -10,20 +10,15 @@ import cloudinary.api
 config = AutoConfig(search_path='envs')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = config('SECRET_KEY')
-
 DEBUG = config('DEBUG', cast=bool)
-
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
-
-# Production
 CSRF_TRUSTED_ORIGINS = [f'https://{x}' for x in ALLOWED_HOSTS]
 
 # Allauth configs
 SITE_ID = config('SITE_ID', cast=int)
-ACCOUNT_LOGIN_METHODS = ['email',]
-ACCOUNT_SIGNUP_FIELDS = ['email*',]
+ACCOUNT_LOGIN_METHODS = ['email', ]
+ACCOUNT_SIGNUP_FIELDS = ['email*', ]
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_ADAPTER = 'house_manager.accounts.adapters.CustomSocialAccountAdapter'
@@ -130,41 +125,38 @@ if DEBUG:
     AUTH_PASSWORD_VALIDATORS = ()
 
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
-
 LANGUAGES = [
     ('en-us', 'English'),
     ('bg', 'Bulgarian'),
 ]
 
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'), ]
 
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    BASE_DIR / 'staticfiles',
-)
-
+STATICFILES_DIRS = (BASE_DIR / 'staticfiles',)
 STATIC_ROOT = config('STATIC_ROOT')
 
 MEDIA_URL = '/mediafiles/'
 MEDIA_ROOT = config('MEDIA_ROOT')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 AUTH_USER_MODEL = "accounts.HouseManagerUser"
-
 LOGIN_REDIRECT_URL = reverse_lazy("index")
-
 LOGIN_URL = reverse_lazy("account_login")
-
 LOGOUT_REDIRECT_URL = reverse_lazy("index")
 
+AUTHENTICATION_BACKENDS = (
+    "axes.backends.AxesBackend",
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+# Cloudinary configs
 cloudinary.config(
     cloud_name=config("cloud_name"),
     api_key=config("api_key"),
@@ -177,6 +169,7 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": config("api_secret")
 }
 
+# Email configs
 EMAIL_BACKEND = config("EMAIL_BACKEND")
 EMAIL_HOST = config("EMAIL_HOST")
 EMAIL_PORT = config("EMAIL_PORT")
@@ -185,6 +178,7 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
+# Social accounts configs
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -197,19 +191,16 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-AUTHENTICATION_BACKENDS = (
-    "axes.backends.AxesBackend",
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
-
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+GOOGLE_ANALYTICS_ID = config('GOOGLE_ANALYTICS_ID')
 
+# ReCaptcha configs
 RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_PRIVATE_KEY')
 RECAPTCHA_USE_SSL = True
 
+# Axes configs
 AXES_FAILURE_LIMIT = 3  # Lock after 3 attempts
 AXES_COOLOFF_TIME = 0.5  # 30 minutes lockout
 AXES_LOCKOUT_PARAMETERS = [["username"]]
@@ -219,12 +210,10 @@ AXES_USERNAME_FORM_FIELD = "username"
 AXES_ENABLE_ACCESS_FAILURE_LOG = True
 AXES_LOCKOUT_TEMPLATE = 'common/429_template.html'
 
-# Django Debug Toolbar settings
+# Django Debug Toolbar configs
 INTERNAL_IPS = ['127.0.0.1']
-
 DEBUG_TOOLBAR_CONFIG = {
-    # 'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,  # Only show if DEBUG=True
-    'SHOW_TOOLBAR_CALLBACK': lambda request: False,  # Only show if DEBUG=True
+    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,  # Only show if DEBUG=True
     'RENDER_PANELS': True,
     'PRETTIFY_SQL': True,
     'SQL_WARNING_THRESHOLD': 100,
@@ -249,5 +238,3 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
     'debug_toolbar.panels.profiling.ProfilingPanel',
 ]
-
-GOOGLE_ANALYTICS_ID=config('GOOGLE_ANALYTICS_ID')
