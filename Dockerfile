@@ -1,7 +1,9 @@
 # Stage 1: Build stage
-FROM python:3.12.10-slim AS builder
+FROM python:3.12.11-slim-bookworm AS builder
 
+# Environment setup
 ENV DEBIAN_FRONTEND=noninteractive
+ENV APP_HOME=/home/app
 
 # System setup
 RUN apt-get update -y && \
@@ -24,7 +26,7 @@ ENV PATH="/root/.local/bin/:$PATH"
 RUN uv venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-WORKDIR /app
+WORKDIR $APP_HOME
 
 # Copy dependency files
 COPY pyproject.toml requirements.lock ./
@@ -33,7 +35,7 @@ COPY pyproject.toml requirements.lock ./
 RUN uv pip install -r requirements.lock
 
 # Stage 2: Runtime stage
-FROM python:3.12.10-slim
+FROM python:3.12.11-slim-bookworm
 
 # Environment setup
 ENV DEBIAN_FRONTEND=noninteractive
@@ -60,13 +62,15 @@ WORKDIR $APP_HOME
 RUN chown ubuntu:ubuntu $APP_HOME
 
 # Copy application code
-COPY --chown=ubuntu:ubuntu . .
+COPY . .
 
 # Entrypoint setup
 RUN chmod +x $APP_HOME/entrypoint.sh && \
     # Verify the script
     [ -f entrypoint.sh ] && \
     [ -x entrypoint.sh ] || exit 1
+
+USER ubuntu
 
 ENTRYPOINT ["/home/app/entrypoint.sh"]
 CMD []
