@@ -62,7 +62,7 @@ WORKDIR $APP_HOME
 RUN chown ubuntu:ubuntu $APP_HOME
 
 # Copy application code
-COPY . .
+COPY --chown=ubuntu:ubuntu . .
 
 # Entrypoint setup
 RUN chmod +x $APP_HOME/entrypoint.sh && \
