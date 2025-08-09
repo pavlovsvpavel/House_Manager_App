@@ -1,6 +1,9 @@
-## Personal project for Python Web course part of [SoftUni's](https://softuni.bg/) software engineering program.
-## Technologies used:&nbsp;&nbsp;&nbsp;[![Technologies](https://skillicons.dev/icons?i=python,django,postgres,html,css,js,aws,docker,terraform)](https://skillicons.dev)
+**Personal project for Python Web course part of [SoftUni's](https://softuni.bg/) software engineering program.**
+---
+**Technologies used:**
 
+[![Technologies](https://skillicons.dev/icons?i=python,django,postgres,html,css,js,aws,docker,terraform)](https://skillicons.dev)
+---
 ## :link:[House Manager App](https://house-manager.eu)
 
 **House Manager** is an application for efficient expenses management tailored specifically for building cashiers.
