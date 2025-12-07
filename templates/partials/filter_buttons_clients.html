@@ -2,8 +2,8 @@
 
 <form method="get">
     <div class="filter-buttons">
-        <label for="month" class="month-label">
-            <select name="month" id="month" onchange="this.form.submit();">
+        <label for="month-select" class="month-label">
+            <select name="month" id="month">
                 <option value="" disabled {% if not request.GET.month %}selected{% endif %}>{% trans "Month" %}</option>
                 <option value="" {% if request.GET.month == "" %}selected{% endif %}>{% trans "All" %}</option>
                 {% for choice in MonthChoices.choices %}
@@ -15,10 +15,29 @@
         </label>
 
         <a href="?is_paid=True&month={{ request.GET.month }}"
-                {% if request.GET.month == "" or not request.GET.dict %} class="disabled"
-           onclick="return false;"{% endif %}> {% trans "Without debts" %}</a>
+           class="{% if request.GET.month == "" or not request.GET.dict %}disabled{% endif %}">
+           {% trans "Without debts" %}
+        </a>
+
         <a href="?is_paid=False&month={{ request.GET.month }}"
-                {% if request.GET.month == "" or not request.GET.dict %} class="disabled"
-           onclick="return false;"{% endif %}> {% trans "With debts" %}</a>
+           class="{% if request.GET.month == "" or not request.GET.dict %}disabled{% endif %}">
+           {% trans "With debts" %}
+        </a>
     </div>
 </form>
+
+<script nonce="{{ csp_nonce }}">
+    document.addEventListener('DOMContentLoaded', function() {
+        const monthSelect = document.getElementById('month');
+        if (monthSelect) {
+            monthSelect.addEventListener('change', function() {
+                this.form.submit();
+            });
+        }
+        document.body.addEventListener('click', function(e) {
+            if (e.target.closest('.disabled')) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>

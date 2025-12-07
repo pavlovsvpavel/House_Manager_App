@@ -1,6 +1,11 @@
+{% load static %}
 {% load i18n %}
 
+<script src="{% static "scripts/backButton.js" %}"></script>
+
 <div class="back-button">
-    <button class="back-btn" type="button" onclick="window.history.back()"><i
-            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</button>
+    <button id="back-btn" class="back-btn" type="button">
+        <i class="fa-solid fa-arrow-right"></i>{% trans "Back" %}
+    </button>
 </div>
+

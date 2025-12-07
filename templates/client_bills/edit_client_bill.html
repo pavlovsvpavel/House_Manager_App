@@ -86,12 +86,12 @@
                     {% if form.instance.is_paid %}
                         <script src="{% static "scripts/signatureShow.js" %}" defer></script>
                         <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
-                        <script>
+                        <script nonce="{{ csp_nonce }}">
                             document.querySelector('label[for="id_is_paid"]').textContent = "{% trans 'Paid' %}";
                         </script>
                         {% include "partials/signature-show.html" %}
                     {% else %}
-                        <script src="{% static "scripts/signaturePad.js" %}" defer></script>
+                        <script nonce="{{ csp_nonce }}" src="{% static "scripts/signaturePad.js" %}" defer></script>
                         {% include "partials/signature-pad.html" %}
                         {% include "partials/form_buttons_edit_bills.html" %}
                     {% endif %}

@@ -5,37 +5,37 @@
 {% block main_content %}
     <section class="site-section dashboard">
         <div class="container">
-        <div class="wrapper">
-         <h3 class="section-title">{% trans 'Houses' %}</h3>
-            <div class="house-cards">
-            {% if houses %}
-                {% for house in houses %}
-                    <div class="house-card"
-                            onclick="selectHouseId(
-                                     {{ house.pk }},'{% url "details_house" pk=0 %}')">
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Town" %}</p>
-                            <p class="column-data">{{ house.town }}</p>
-                        </div>
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Address" %}</p>
-                            <p class="column-data">{{ house.address }}</p>
-                        </div>
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Building number" %}</p>
-                            <p class="column-data">{{ house.building_number }}</p>
-                        </div>
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Entrance" %}</p>
-                            <p class="column-data">{{ house.entrance }}</p>
-                        </div>
-                    </div>
-                {% endfor %}
-                {% else %}
-                <h1>{% trans "No houses" %}</h1>
-            {% endif %}
+            <div class="wrapper">
+                <h3 class="section-title">{% trans 'Houses' %}</h3>
+                <div class="house-cards">
+                    {% if houses %}
+                        {% for house in houses %}
+                            <div class="house-card js-redirect"
+                                 data-id="{{ house.pk }}"
+                                 data-url="{% url 'details_house' pk=0 %}">
+                                <div class="card-column">
+                                    <p class="column-name">{% trans "Town" %}</p>
+                                    <p class="column-data">{{ house.town }}</p>
+                                </div>
+                                <div class="card-column">
+                                    <p class="column-name">{% trans "Address" %}</p>
+                                    <p class="column-data">{{ house.address }}</p>
+                                </div>
+                                <div class="card-column">
+                                    <p class="column-name">{% trans "Building number" %}</p>
+                                    <p class="column-data">{{ house.building_number }}</p>
+                                </div>
+                                <div class="card-column">
+                                    <p class="column-name">{% trans "Entrance" %}</p>
+                                    <p class="column-data">{{ house.entrance }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <h1>{% trans "No houses" %}</h1>
+                    {% endif %}
+                </div>
             </div>
-        </div>
         </div>
     </section>
 

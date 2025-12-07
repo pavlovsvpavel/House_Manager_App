@@ -22,19 +22,27 @@
     <button class="search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
 </form>
 <div class="buttons">
-    <button id="generatePdf" class="save-btn" onclick="scrollToTop()">{% trans "Save as PDF" %}</button>
+    <button id="generatePdf" class="save-btn">{% trans "Save as PDF" %}</button>
     {% include "partials/reports/reports_back_button.html" %}
 </div>
 
-<script>
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-        });
-    }
+<script nonce="{{ csp_nonce }}">
+    document.addEventListener('DOMContentLoaded', function() {
+        // 1. Find the button by its ID
+        const pdfBtn = document.getElementById('generatePdf');
+
+        // 2. Attach the click event listener
+        if (pdfBtn) {
+            pdfBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                });
+            });
+        }
+    });
 </script>
 
-<script>
+<script nonce="{{ csp_nonce }}">
     document.getElementById('generatePdf').addEventListener('click', function () {
         // Check if the html2pdf library is already loaded
         if (typeof html2pdf === 'undefined') {

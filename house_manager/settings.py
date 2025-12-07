@@ -2,10 +2,12 @@ import os
 from pathlib import Path
 from decouple import AutoConfig, Csv, Choices
 from django.urls import reverse_lazy
+from django.utils.csp import CSP
 
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+
 
 config = AutoConfig(search_path='envs')
 
@@ -25,6 +27,23 @@ SOCIALACCOUNT_ADAPTER = 'house_manager.accounts.adapters.CustomSocialAccountAdap
 SECURE_PROXY_SSL_HEADER_STR = config('SECURE_PROXY_SSL_HEADER')
 SECURE_PROXY_SSL_HEADER = tuple(SECURE_PROXY_SSL_HEADER_STR.split(','))
 
+SECURE_CSP = {
+    "default-src": [CSP.SELF, CSP.NONCE],
+    "script-src": [CSP.SELF, CSP.NONCE],
+    "img-src": [CSP.SELF, "https:", "data:"],
+    "style-src": [
+        CSP.SELF,
+        CSP.UNSAFE_INLINE,
+        "https://fonts.googleapis.com",
+        "https://cdnjs.cloudflare.com",
+    ],
+    "font-src": [
+        CSP.SELF,
+        "https://fonts.gstatic.com",
+        "https://cdnjs.cloudflare.com"
+    ],
+}
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -34,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.sitemaps',
+    'django.contrib.postgres',
 
     'cloudinary_storage',
     'cloudinary',
@@ -65,9 +85,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "allauth.account.middleware.AccountMiddleware",
-    "axes.middleware.AxesMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'allauth.account.middleware.AccountMiddleware',
+    'axes.middleware.AxesMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.csp.ContentSecurityPolicyMiddleware',
 ]
 
 ROOT_URLCONF = 'house_manager.urls'
@@ -80,6 +101,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                "django.template.context_processors.csp",
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -160,14 +182,9 @@ AUTHENTICATION_BACKENDS = (
 cloudinary.config(
     cloud_name=config("cloud_name"),
     api_key=config("api_key"),
-    api_secret=config("api_secret")
+    api_secret=config("api_secret"),
+    secure = True,
 )
-
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": config("cloud_name"),
-    "API_KEY": config("api_key"),
-    "API_SECRET": config("api_secret")
-}
 
 # Email configs
 EMAIL_BACKEND = config("EMAIL_BACKEND")
@@ -231,7 +248,7 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.request.RequestPanel',
     'debug_toolbar.panels.sql.SQLPanel',
     'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    'debug_toolbar.panels.templates.TemplatesPanel',
+    # 'debug_toolbar.panels.templates.TemplatesPanel',
     'debug_toolbar.panels.alerts.AlertsPanel',
     'debug_toolbar.panels.cache.CachePanel',
     'debug_toolbar.panels.signals.SignalsPanel',

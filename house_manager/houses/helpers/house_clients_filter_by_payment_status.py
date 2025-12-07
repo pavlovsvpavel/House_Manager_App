@@ -1,7 +1,7 @@
 from django.db.models import Q
 
 
-def filter_by_payment_status(clients, is_paid, month):
+def house_clients_filter_by_payment_status(clients, is_paid, month):
     if month is not None and month != "":
         clients = clients.filter(
             Q(client_monthly_bills__month=month) |

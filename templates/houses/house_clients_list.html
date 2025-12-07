@@ -13,12 +13,13 @@
                                 class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                     </div>
                 </div>
-                {% include "partials/filter_buttons_clients.html" %}
+                {% include "partials/filter_buttons.html" %}
                 <div class="clients-cards">
                     {% if clients %}
                         {% for client in clients %}
-                            <div class="client-card"
-                                 onclick="redirectToClientDetails({{ client.pk }},'{% url "details_client" pk=0 %}')">
+                            <div class="client-card js-redirect"
+                                 data-id="{{ client.pk }}"
+                                 data-url="{% url 'details_client' pk=0 %}">
                                 <div class="card-column">
                                     <p class="column-name">{% trans "Family Name" %}</p>
                                     <p class="column-data">{{ client.family_name }}</p>

@@ -13,8 +13,10 @@
                             <li><a class="create-client"
                                    href="{% url "create_client" %}">{% trans "Add client" %}</a>
                             </li>
-                            <li><a class="details-house-list-clients"
-                                   onclick="redirectToHouseClients({{ object.pk }},'{% url "house_clients_list" pk=0 %}')">{% trans "Clients - details" %}</a>
+                            <li><a class="details-house-list-clients js-redirect"
+                                   data-id="{{ object.pk }}"
+                                   data-url="{% url 'house_clients_list' pk=0 %}">{% trans "Clients - details" %}
+                            </a>
                             </li>
                             <li><a class="create-house-bill"
                                    href="{% url "create_house_bills" %}">{% trans "Add monthly bill" %}</a></li>
@@ -70,7 +72,7 @@
                         </div>
                         <div class="client-card-btns">
                             <a href="{% url "edit_house" pk=object.pk %}">{% trans "Edit" %}</a>
-{#                            <a href="{% url "delete_house" pk=object.pk %}">{% trans "Delete" %}</a>#}
+                            {#                            <a href="{% url "delete_house" pk=object.pk %}">{% trans "Delete" %}</a>#}
                         </div>
                     </div>
                 </div>

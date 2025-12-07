@@ -19,8 +19,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static "styles/styles.css" %}">
     <link href="{% static "images/favicon.ico" %}" rel="icon" type="image/x-icon">
-    <script src="{% static "scripts/redirects.js" %}" defer></script>
-    <script src="{% static "scripts/backToTop.js" %}" defer></script>
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/redirects.js" %}" defer></script>
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/backToTop.js" %}" defer></script>
 
     {% include "common/google_tag.html" %}
 </head>

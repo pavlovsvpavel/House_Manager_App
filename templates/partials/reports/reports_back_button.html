@@ -1,7 +1,10 @@
 {% load i18n %}
 
 <div class="back-button">
-    <button class="back-btn" type="button"
-            onclick="redirectToHouseDetails({{ object.pk }},'{% url "details_house" pk=0 %}')"><i
-            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</button>
+    <button class="back-btn js-redirect" type="button"
+            data-id="{{ object.pk }}"
+            data-url="{% url 'details_house' pk=0 %}">
+        <i class="fa-solid fa-arrow-right"></i>
+        {% trans "Back" %}
+    </button>
 </div>

@@ -20,8 +20,9 @@
                 <div class="clients-cards">
                     {% if client_bills %}
                         {% for object in client_bills %}
-                            <div class="{% if object.is_paid %} client-card {% else %} client-card-not-paid {% endif %}"
-                                 onclick="redirectToClientBillDetails({{ object.pk }},'{% url "edit_client_other_bill" pk=0 %}')">
+                            <div class="{% if object.is_paid %} client-card {% else %} client-card-not-paid {% endif %} js-redirect"
+                                 data-id="{{ object.pk }}"
+                                 data-url="{% url 'edit_client_other_bill' pk=0 %}">
                                 {% include "partials/details_client_bills.html" %}
                             </div>
                         {% endfor %}

@@ -8,7 +8,7 @@ from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.common.mixins import MonthChoices
 from house_manager.houses.decorators import get_current_house_id
 from house_manager.houses.forms import HouseCreateForm, HouseCalculationsOptionsEditForm
-from house_manager.houses.helpers.house_clients_filter_by_payment_status import filter_by_payment_status
+from house_manager.houses.helpers.house_clients_filter_by_payment_status import house_clients_filter_by_payment_status
 from house_manager.houses.models import House, HouseCalculationsOptions
 
 
@@ -65,7 +65,7 @@ class HouseClientsDetailView(CheckForLoggedInUserMixin, views.DetailView):
         month = self.request.GET.get('month', None)
         clients = self.object.clients.all()
 
-        context["clients"] = filter_by_payment_status(clients, is_paid, month)
+        context["clients"] = house_clients_filter_by_payment_status(clients, is_paid, month)
         context["MonthChoices"] = MonthChoices
 
         return context
