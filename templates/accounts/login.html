@@ -24,19 +24,12 @@
                     <div class="form-content">
                         <div class="login-form">
                             <div class="create-form-heading">{% trans "Login" %}</div>
-                            <form class="create-form" action="{% url "login_user" %}?next={{ next }}" method="post">
-                                {% if messages %}
-                                    <ul class="errorlist" style="list-style: none;">
-                                        {% for message in messages %}
-                                            <li{% if message.tags %}
-                                                class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
+                            <form class="create-form" id="loginForm" action="{% url "login_user" %}?next={{ next }}"
+                                  method="post">
                                 {% csrf_token %}
-                                {{ form }}
+                                {% include "partials/login_form.html" %}
                                 <button type="button" id="togglePassword" class="toggle-btn"
-                                        data-password-id="{{ form.password.id_for_label }}">
+                                        data-password-id="{{ login_form.password.id_for_label }}">
                                     <i id="toggleIcon" class="fas fa-eye"></i>
                                 </button>
                                 <input class="btn" type="submit" value="{% trans "Login" %}">
@@ -50,7 +43,8 @@
                         </div>
                         <div class="register-form">
                             <div class="create-form-heading">{% trans "Register" %}</div>
-                            <form class="create-form" action="{% url "register_user" %}" method="post">
+                            <form class="create-form" id="registerForm" action="{% url "register_user" %}"
+                                  method="post">
                                 {% csrf_token %}
                                 {% include "partials/register_form.html" %}
                                 <input class="btn" type="submit" value="{% trans "Register" %}">
@@ -67,4 +61,8 @@
             </div>
         </div>
     </section>
+
+    <script nonce="{{ csp_nonce }}"
+            src="https://www.google.com/recaptcha/api.js?render=6LcoTSwrAAAAAI6dKKYaOU9VQ7nrKzKbOMEtYrxr&hl={{ LANGUAGE_CODE }}"></script>
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/reCaptcha.js" %}" defer></script>
 {% endblock %}

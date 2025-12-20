@@ -36,18 +36,15 @@ django==6.0
     #   django-axes
     #   django-debug-toolbar
     #   django-import-export
-    #   django-recaptcha
 django-allauth==65.13.1
     # via house-manager-app (pyproject.toml)
-django-axes==8.0.0
+django-axes==8.1.0
     # via house-manager-app (pyproject.toml)
 django-cloudinary-storage==0.3.0
     # via house-manager-app (pyproject.toml)
 django-debug-toolbar==6.1.0
     # via house-manager-app (pyproject.toml)
 django-import-export==4.3.14
-    # via house-manager-app (pyproject.toml)
-django-recaptcha==4.1.0
     # via house-manager-app (pyproject.toml)
 et-xmlfile==2.0.0
     # via
@@ -100,7 +97,7 @@ six==1.17.0
     # via
     #   house-manager-app (pyproject.toml)
     #   cloudinary
-sqlparse==0.5.4
+sqlparse==0.5.5
     # via
     #   house-manager-app (pyproject.toml)
     #   django
@@ -113,9 +110,9 @@ typing-extensions==4.15.0
     # via
     #   house-manager-app (pyproject.toml)
     #   psycopg
-tzdata==2025.2
+tzdata==2025.3
     # via house-manager-app (pyproject.toml)
-urllib3==2.6.0
+urllib3==2.6.2
     # via
     #   house-manager-app (pyproject.toml)
     #   cloudinary

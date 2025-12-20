@@ -8,7 +8,6 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-
 config = AutoConfig(search_path='envs')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,8 +28,16 @@ SECURE_PROXY_SSL_HEADER = tuple(SECURE_PROXY_SSL_HEADER_STR.split(','))
 
 SECURE_CSP = {
     "default-src": [CSP.SELF, CSP.NONCE],
-    "script-src": [CSP.SELF, CSP.NONCE],
-    "img-src": [CSP.SELF, "https:", "data:"],
+    "script-src": [
+        CSP.SELF,
+        CSP.NONCE,
+    ],
+    "img-src": [
+        CSP.SELF,
+        "https:",
+        "data:",
+        "https://www.gstatic.com"
+    ],
     "style-src": [
         CSP.SELF,
         CSP.UNSAFE_INLINE,
@@ -41,6 +48,16 @@ SECURE_CSP = {
         CSP.SELF,
         "https://fonts.gstatic.com",
         "https://cdnjs.cloudflare.com"
+    ],
+    "frame-src": [
+        CSP.SELF,
+        "https://www.google.com/recaptcha/",
+        "https://recaptcha.google.com/recaptcha/",
+    ],
+    "connect-src": [
+        CSP.SELF,
+        "https://www.google.com/recaptcha/",
+        "https://www.gstatic.com/recaptcha/",
     ],
 }
 
@@ -183,7 +200,7 @@ cloudinary.config(
     cloud_name=config("cloud_name"),
     api_key=config("api_key"),
     api_secret=config("api_secret"),
-    secure = True,
+    secure=True,
 )
 
 # Email configs

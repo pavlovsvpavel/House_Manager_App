@@ -6,7 +6,8 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
 
-from house_manager.accounts.forms import HouseManagerUserCreationForm, HouseManagerUserSetPasswordForm
+from house_manager.accounts.forms import HouseManagerUserCreationForm, HouseManagerUserSetPasswordForm, \
+    HouseManagerUserLoginForm
 from django.contrib.auth import forms as auth_forms
 from house_manager.accounts.mixins import OwnerRequiredMixin
 from house_manager.accounts.models import Profile
@@ -16,6 +17,7 @@ UserModel = get_user_model()
 
 class LogInUserView(auth_views.LoginView):
     template_name = "accounts/login.html"
+    form_class = HouseManagerUserLoginForm
     redirect_authenticated_user = True
 
     def get_redirect_url(self):
@@ -24,6 +26,7 @@ class LogInUserView(auth_views.LoginView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['register_form'] = HouseManagerUserCreationForm()
+        context['login_form'] = context.pop('form')
 
         return context
 
@@ -36,7 +39,7 @@ class RegisterUserView(views.CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['register_form'] = context.pop('form')
-        context['login_form'] = auth_forms.AuthenticationForm
+        context['login_form'] = HouseManagerUserLoginForm()
 
         return context
 
