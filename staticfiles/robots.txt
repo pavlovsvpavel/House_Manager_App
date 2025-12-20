@@ -4,4 +4,4 @@ Allow: /$
 Allow: /about/
 Allow: /static/
 
-Sitemap: https://house-manager.eu/sitemap.xml
+Sitemap: https://house-manager.win/sitemap.xml

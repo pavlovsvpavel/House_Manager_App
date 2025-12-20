@@ -4,7 +4,7 @@
 
 [![Technologies](https://skillicons.dev/icons?i=python,django,postgres,html,css,js,aws,docker,terraform)](https://skillicons.dev)
 ---
-## :link:[House Manager App](https://house-manager.eu)
+## :link:[House Manager App](https://house-manager.win)
 
 **House Manager** is an application for efficient expenses management tailored specifically for building cashiers.
 It is designed to simplify every aspect of the process, allowing you to focus on what matters most – ensuring financial integrity and smooth operations within your building.
