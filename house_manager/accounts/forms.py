@@ -3,23 +3,9 @@ from django.contrib.auth import forms as auth_forms, get_user_model
 from django.contrib.auth.forms import SetPasswordForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 import requests
-from django_recaptcha.fields import ReCaptchaField
-from django_recaptcha.widgets import ReCaptchaV2Checkbox
-
 from house_manager import settings
 
 UserModel = get_user_model()
-
-
-# class HouseManagerUserCreationForm(auth_forms.UserCreationForm):
-#     user = None
-#     usable_password = None
-#
-#     class Meta(auth_forms.UserCreationForm.Meta):
-#         model = UserModel
-#         fields = ('email',)
-#
-#     recaptcha = ReCaptchaField(widget=ReCaptchaV2Checkbox, required=True)
 
 class HouseManagerUserLoginForm(AuthenticationForm):
     def clean(self):

@@ -88,7 +88,6 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
 
     "import_export",
-    "django_recaptcha",
     "axes",
     "debug_toolbar",
 ]

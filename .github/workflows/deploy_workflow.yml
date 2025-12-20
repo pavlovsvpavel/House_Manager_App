@@ -9,13 +9,12 @@ jobs:
     environment: production
     steps:
       - name: Deploy to VM
-        uses: appleboy/ssh-action@v1.2.2
+        uses: appleboy/ssh-action@v1.2.4
         with:
           host: ${{ secrets.GCP_INSTANCE_IP }}
           username: ${{ secrets.GCP_USER }}
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.GCP_PASSPHRASE }}
-          command_timeout: "20m"
           script: |
                 cd /home/ubuntu/app/House_Manager_App
                 sudo git pull origin main

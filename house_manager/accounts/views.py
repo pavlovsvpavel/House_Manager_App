@@ -8,7 +8,6 @@ from django.utils.translation import gettext_lazy as _
 
 from house_manager.accounts.forms import HouseManagerUserCreationForm, HouseManagerUserSetPasswordForm, \
     HouseManagerUserLoginForm
-from django.contrib.auth import forms as auth_forms
 from house_manager.accounts.mixins import OwnerRequiredMixin
 from house_manager.accounts.models import Profile
 
