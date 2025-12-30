@@ -59,7 +59,6 @@ build/
 *.DS_Store
 Thumbs.db
 caller.py
-uv.lock
 ssl_renewal/
 nginx/
 certbot/

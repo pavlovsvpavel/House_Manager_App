@@ -3,7 +3,6 @@ FROM python:3.12.11-slim-bookworm AS builder
 
 # Environment setup
 ENV DEBIAN_FRONTEND=noninteractive
-ENV APP_HOME=/home/app
 
 # System setup
 RUN apt-get update -y && \
@@ -18,21 +17,20 @@ RUN apt-get update -y && \
         && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install uv
-ADD https://astral.sh/uv/install.sh /uv-installer.sh
-RUN sh /uv-installer.sh && rm /uv-installer.sh
-ENV PATH="/root/.local/bin/:$PATH"
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Virtual environment
+# Virtual environment creation
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv
 RUN uv venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-WORKDIR $APP_HOME
+WORKDIR /app
 
 # Copy dependency files
-COPY pyproject.toml requirements.lock ./
+COPY pyproject.toml uv.lock ./
 
 # Install dependencies
-RUN uv pip install -r requirements.lock
+RUN uv sync --frozen --no-install-project --no-dev
 
 # Stage 2: Runtime stage
 FROM python:3.12.11-slim-bookworm

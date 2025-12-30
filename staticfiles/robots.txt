@@ -3,5 +3,6 @@ Disallow: /
 Allow: /$
 Allow: /about/
 Allow: /static/
+Allow: /sitemap.xml
 
 Sitemap: https://house-manager.win/sitemap.xml
