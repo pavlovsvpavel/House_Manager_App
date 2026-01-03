@@ -58,6 +58,7 @@ SECURE_CSP = {
         CSP.SELF,
         "https://www.google.com/recaptcha/",
         "https://www.gstatic.com/recaptcha/",
+        "https://region1.google-analytics.com",
     ],
 }
 

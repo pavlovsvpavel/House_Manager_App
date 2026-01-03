@@ -64,15 +64,15 @@
                         <p class="column-data">{{ object.others }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">{% trans "Monthly bill, BGN" %}</p>
+                        <p class="column-name">{% trans "Monthly bill, EUR" %}</p>
                         <p class="column-data">{{ object.total_amount }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">{% trans "Unpaid bills, BGN" %}</p>
+                        <p class="column-name">{% trans "Unpaid bills, EUR" %}</p>
                         <p class="column-data">{{ object.amount_old_debts }}</p>
                     </div>
                     <div class="card-column">
-                        <p class="column-name">{% trans "Total, BGN" %}</p>
+                        <p class="column-name">{% trans "Total, EUR" %}</p>
                         <p class="column-data">{{ object.amount_old_debts|add:object.total_amount }}</p>
                     </div>
                 </div>

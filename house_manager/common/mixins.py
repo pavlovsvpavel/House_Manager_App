@@ -176,7 +176,7 @@ class MonthlyBill(models.Model):
         validators=(
             MinValueValidator(MIN_VALUE, message=_("Please enter a value greater than zero")),
         ),
-        verbose_name=_("Total BGN"),
+        verbose_name=_("Total EUR"),
         db_persist=True,
         expression=(
                 F('electricity_common') +
@@ -246,7 +246,7 @@ class OtherBill(models.Model):
         validators=(
             MinValueValidator(MIN_VALUE, message=_("Please enter a value greater than zero")),
         ),
-        verbose_name=_("Total BGN"),
+        verbose_name=_("Total EUR"),
     )
 
     is_paid = models.BooleanField(

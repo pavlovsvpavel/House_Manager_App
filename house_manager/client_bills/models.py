@@ -41,7 +41,7 @@ class ClientMonthlyBill(MonthlyBill):
         default=0,
         blank=False,
         null=False,
-        verbose_name=_("Unpaid bills, BGN"),
+        verbose_name=_("Unpaid bills, EUR"),
     )
 
     def __str__(self):

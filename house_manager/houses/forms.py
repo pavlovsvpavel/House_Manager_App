@@ -11,7 +11,7 @@ class HouseBaseForm(forms.ModelForm):
 
 class HouseCreateForm(HouseBaseForm):
     money_balance = forms.CharField(
-        label=_("Current balance, BGN"),
+        label=_("Current balance, EUR"),
         required=True,
         widget=forms.TextInput(
             attrs={
