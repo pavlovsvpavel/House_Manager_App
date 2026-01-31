@@ -6,7 +6,7 @@ asgiref==3.11.0
     #   django
     #   django-allauth
     #   django-axes
-certifi==2025.11.12
+certifi==2026.1.4
     # via
     #   house-manager-app (pyproject.toml)
     #   cloudinary
@@ -23,34 +23,34 @@ cloudinary==1.44.1
     # via
     #   house-manager-app (pyproject.toml)
     #   django-cloudinary-storage
-cryptography==46.0.3
+cryptography==46.0.4
     # via house-manager-app (pyproject.toml)
 diff-match-patch==20241021
     # via
     #   house-manager-app (pyproject.toml)
     #   django-import-export
-django==6.0
+django==6.0.1
     # via
     #   house-manager-app (pyproject.toml)
     #   django-allauth
     #   django-axes
     #   django-debug-toolbar
     #   django-import-export
-django-allauth==65.13.1
+django-allauth==65.14.0
     # via house-manager-app (pyproject.toml)
 django-axes==8.1.0
     # via house-manager-app (pyproject.toml)
 django-cloudinary-storage==0.3.0
     # via house-manager-app (pyproject.toml)
-django-debug-toolbar==6.1.0
+django-debug-toolbar==6.2.0
     # via house-manager-app (pyproject.toml)
-django-import-export==4.3.14
+django-import-export==4.4.0
     # via house-manager-app (pyproject.toml)
 et-xmlfile==2.0.0
     # via
     #   house-manager-app (pyproject.toml)
     #   openpyxl
-gunicorn==23.0.0
+gunicorn==24.1.1
     # via house-manager-app (pyproject.toml)
 idna==3.11
     # via
@@ -62,13 +62,14 @@ oauthlib==3.3.1
     #   requests-oauthlib
 openpyxl==3.1.5
     # via house-manager-app (pyproject.toml)
-packaging==25.0
+packaging==26.0
     # via
     #   house-manager-app (pyproject.toml)
     #   gunicorn
-pillow==12.0.0
+    #   wheel
+pillow==12.1.0
     # via house-manager-app (pyproject.toml)
-pip==25.3
+pip==26.0
     # via house-manager-app (pyproject.toml)
 psycopg==3.3.2
     # via house-manager-app (pyproject.toml)
@@ -76,11 +77,11 @@ psycopg-binary==3.3.2
     # via psycopg
 psycopg-c==3.3.2
     # via psycopg
-pycparser==2.23
+pycparser==3.0
     # via
     #   house-manager-app (pyproject.toml)
     #   cffi
-pyjwt==2.10.1
+pyjwt==2.11.0
     # via house-manager-app (pyproject.toml)
 python-decouple==3.8
     # via house-manager-app (pyproject.toml)
@@ -91,7 +92,7 @@ requests==2.32.5
     #   requests-oauthlib
 requests-oauthlib==2.0.0
     # via house-manager-app (pyproject.toml)
-setuptools==80.9.0
+setuptools==80.10.2
     # via house-manager-app (pyproject.toml)
 six==1.17.0
     # via
@@ -112,10 +113,10 @@ typing-extensions==4.15.0
     #   psycopg
 tzdata==2025.3
     # via house-manager-app (pyproject.toml)
-urllib3==2.6.2
+urllib3==2.6.3
     # via
     #   house-manager-app (pyproject.toml)
     #   cloudinary
     #   requests
-wheel==0.45.1
+wheel==0.46.3
     # via house-manager-app (pyproject.toml)
