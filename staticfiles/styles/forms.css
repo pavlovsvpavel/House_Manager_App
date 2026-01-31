@@ -69,6 +69,24 @@
     gap: 1em;
 }
 
+.edit-house .create-form div:has(label[for="id_fixed_monthly_taxes"]) {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    background: #ffffff;
+    border-radius: 0.5em;
+    border: 1px solid var(--form-input-border);
+    padding: 0.5em;
+    margin-top: 1em;
+}
+
+.edit-house .create-form div:has(label[for="id_fixed_monthly_taxes"]) input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    margin: 0;
+}
+
 .is-paid-form div:nth-of-type(1) {
     display: flex;
     background-color: var(--card-bgnd);

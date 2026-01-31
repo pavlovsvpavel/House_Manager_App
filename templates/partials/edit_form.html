@@ -5,29 +5,32 @@
     {% csrf_token %}
     {{ form }}
 
-    <div class="form-group">
-        <label>{{ calc_options_form.based_on_apartment.label }}</label>
-        <div class="checkbox-grid">
-            {% for checkbox in calc_options_form.based_on_apartment %}
-                <div class="checkbox-container">
-                    {{ checkbox.tag }}
-                    <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
-                </div>
-            {% endfor %}
+    <div id="calc-options-wrapper">
+        <div class="form-group">
+            <label>{{ calc_options_form.based_on_apartment.label }}</label>
+            <div class="checkbox-grid">
+                {% for checkbox in calc_options_form.based_on_apartment %}
+                    <div class="checkbox-container">
+                        {{ checkbox.tag }}
+                        <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>{{ calc_options_form.based_on_total_people.label }}</label>
+            <div class="checkbox-grid">
+                {% for checkbox in calc_options_form.based_on_total_people %}
+                    <div class="checkbox-container">
+                        {{ checkbox.tag }}
+                        <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
-    <div class="form-group">
-        <label>{{ calc_options_form.based_on_total_people.label }}</label>
-        <div class="checkbox-grid">
-            {% for checkbox in calc_options_form.based_on_total_people %}
-                <div class="checkbox-container">
-                    {{ checkbox.tag }}
-                    <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
 
     {% include "partials/form_buttons.html" %}
 </form>

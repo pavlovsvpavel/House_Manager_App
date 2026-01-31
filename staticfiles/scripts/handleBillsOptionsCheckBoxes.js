@@ -2,15 +2,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const apartmentCheckboxes = document.querySelectorAll('[name="based_on_apartment"]');
     const peopleCheckboxes = document.querySelectorAll('[name="based_on_total_people"]');
     const saveButton = document.querySelector('button.btn[type="submit"]');
+    const fixedTaxCheckbox = document.getElementById('id_fixed_monthly_taxes');
+    const calcOptionsWrapper = document.getElementById('calc-options-wrapper');
 
     const checkboxMap = {};
     const allUniqueExpenseValues = new Set();
 
-    // 1. Collect all unique expense values from both lists
+    // 1. Collect all unique expense values
     apartmentCheckboxes.forEach(cb => allUniqueExpenseValues.add(cb.value));
     peopleCheckboxes.forEach(cb => allUniqueExpenseValues.add(cb.value));
 
-    // 2. Populate checkboxMap for each unique expense value
+    // 2. Populate checkboxMap
     allUniqueExpenseValues.forEach(value => {
         checkboxMap[value] = {
             apartment: document.querySelector(`[name="based_on_apartment"][value="${value}"]`),
@@ -18,14 +20,17 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     });
 
-    // Function to update the enabled/disabled state of the Save button
     function updateSaveButtonState() {
+        if (fixedTaxCheckbox && fixedTaxCheckbox.checked) {
+            saveButton.disabled = false;
+            return;
+        }
+
         if (allUniqueExpenseValues.size === 0) {
             saveButton.disabled = false;
             return;
         }
 
-        // Check if every unique expense option has a selection
         const allOptionsConfigured = Array.from(allUniqueExpenseValues).every(value => {
             const config = checkboxMap[value];
             const isApartmentSelected = config.apartment && config.apartment.checked;
@@ -37,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
         saveButton.disabled = !allOptionsConfigured;
     }
 
-    // Function to update disabled states of the paired checkboxes
     function updateCheckboxPairDisabledStates() {
         allUniqueExpenseValues.forEach(value => {
             const config = checkboxMap[value];
@@ -59,24 +63,35 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Combined handler for checkbox changes
+    function toggleCalcOptions() {
+        if (!fixedTaxCheckbox || !calcOptionsWrapper) return;
+
+        if (fixedTaxCheckbox.checked) {
+            calcOptionsWrapper.style.display = 'none';
+        } else {
+            calcOptionsWrapper.style.display = 'block';
+        }
+
+        updateSaveButtonState();
+    }
+
     function handleCheckboxChange() {
         updateCheckboxPairDisabledStates();
         updateSaveButtonState();
     }
 
-    // Add event listeners to all relevant checkboxes
+    // Add listeners to calculation checkboxes
     allUniqueExpenseValues.forEach(value => {
         const config = checkboxMap[value];
-        if (config.apartment) {
-            config.apartment.addEventListener('change', handleCheckboxChange);
-        }
-        if (config.people) {
-            config.people.addEventListener('change', handleCheckboxChange);
-        }
+        if (config.apartment) config.apartment.addEventListener('change', handleCheckboxChange);
+        if (config.people) config.people.addEventListener('change', handleCheckboxChange);
     });
+
+    if (fixedTaxCheckbox) {
+        fixedTaxCheckbox.addEventListener('change', toggleCalcOptions);
+    }
 
     // Initialize states on page load
     updateCheckboxPairDisabledStates();
-    updateSaveButtonState();
+    toggleCalcOptions();
 });

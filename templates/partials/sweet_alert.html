@@ -1,0 +1,28 @@
+{% if sweet_alert %}
+    {{ sweet_alert|json_script:"sweet-alert-data" }}
+    <script nonce="{{ csp_nonce }}">
+        document.addEventListener('DOMContentLoaded', function () {
+            const dataElement = document.getElementById('sweet-alert-data');
+            if (!dataElement) return;
+
+            const alertData = JSON.parse(dataElement.textContent);
+
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: alertData.title,
+                    text: alertData.text,
+                    icon: alertData.icon,
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then((result) => {
+                    if (result.isConfirmed && alertData.redirect_url) {
+                        window.location.href = alertData.redirect_url;
+                    }
+                });
+            } else {
+                console.warn("SweetAlert2 library is not loaded on this page.");
+            }
+        });
+    </script>
+{% endif %}

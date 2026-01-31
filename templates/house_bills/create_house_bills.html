@@ -1,5 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
+
+{% block extra_head_scripts %}
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/sweetAlert.js" %}" defer></script>
+{% endblock %}
 
 {% block main_content %}
 

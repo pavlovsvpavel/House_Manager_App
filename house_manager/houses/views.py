@@ -74,7 +74,7 @@ class HouseClientsDetailView(CheckForLoggedInUserMixin, views.DetailView):
 @method_decorator(get_current_house_id, name='dispatch')
 class HouseEditView(CheckForLoggedInUserMixin, views.UpdateView):
     template_name = "houses/edit_house.html"
-    fields = ("town", "address", "building_number", "entrance", "money_balance")
+    fields = ("town", "address", "building_number", "entrance", "fixed_monthly_taxes", "money_balance")
 
     def get_object(self, queryset=None):
         return self.request.selected_house

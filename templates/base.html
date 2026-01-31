@@ -21,7 +21,11 @@
     <link href="{% static "images/favicon.ico" %}" rel="icon" type="image/x-icon">
     <script nonce="{{ csp_nonce }}" src="{% static "scripts/redirects.js" %}" defer></script>
     <script nonce="{{ csp_nonce }}" src="{% static "scripts/backToTop.js" %}" defer></script>
-
+    {% block extra_head_scripts %}
+    {% endblock %}
+    {% block script %}
+        {% include "partials/sweet_alert.html" %}
+    {% endblock %}
     {% include "common/google_tag.html" %}
 </head>
 <body>

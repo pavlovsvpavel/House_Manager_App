@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import FieldDoesNotExist
+from django.utils.translation import gettext_lazy as _
 from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill
 
 
@@ -6,7 +8,13 @@ class HouseBaseBillForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            verbose_name = self.Meta.model._meta.get_field(field_name).verbose_name
+            verbose_name = ""
+
+            try:
+                model_field = self.Meta.model._meta.get_field(field_name)
+                verbose_name = model_field.verbose_name
+            except FieldDoesNotExist:
+                verbose_name = field.label or field_name
 
             if field_name in ["month", "year", "type_of_bill"]:
                 field.widget.choices = [('', verbose_name)] + list(field.widget.choices)[1:]
@@ -28,3 +36,16 @@ class HouseOtherBillForm(HouseBaseBillForm):
     class Meta:
         model = HouseOtherBill
         fields = ("month", "year", "comment", "type_of_bill", "total_amount")
+
+
+class HouseFixedBillForm(HouseBaseBillForm):
+    fixed_amount = forms.DecimalField(
+        label=_("Amount"),
+        max_digits=10,
+        decimal_places=2,
+        required=True
+    )
+
+    class Meta:
+        model = HouseMonthlyBill
+        fields = ("month", "year")

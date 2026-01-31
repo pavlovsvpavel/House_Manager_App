@@ -27,42 +27,44 @@
                         <p class="column-name">{% trans "Month" %}</p>
                         <p class="column-data">{{ object.get_month_name }}</p>
                     </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Electricity common" %}</p>
-                        <p class="column-data">{{ object.electricity_common }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Electricity lift" %}</p>
-                        <p class="column-data">{{ object.electricity_lift }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Internet" %}</p>
-                        <p class="column-data">{{ object.internet }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Lift maintenance" %}</p>
-                        <p class="column-data">{{ object.maintenance_lift }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Cleaner fee" %}</p>
-                        <p class="column-data">{{ object.fee_cleaner }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Manager fee" %}</p>
-                        <p class="column-data">{{ object.fee_manager }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Cashier fee" %}</p>
-                        <p class="column-data">{{ object.fee_cashier }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Repairs fund" %}</p>
-                        <p class="column-data">{{ object.repairs }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Other expenses" %}</p>
-                        <p class="column-data">{{ object.others }}</p>
-                    </div>
+                    {% if not current_house.fixed_monthly_taxes %}
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Electricity common" %}</p>
+                            <p class="column-data">{{ object.electricity_common }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Electricity lift" %}</p>
+                            <p class="column-data">{{ object.electricity_lift }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Internet" %}</p>
+                            <p class="column-data">{{ object.internet }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Lift maintenance" %}</p>
+                            <p class="column-data">{{ object.maintenance_lift }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Cleaner fee" %}</p>
+                            <p class="column-data">{{ object.fee_cleaner }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Manager fee" %}</p>
+                            <p class="column-data">{{ object.fee_manager }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Cashier fee" %}</p>
+                            <p class="column-data">{{ object.fee_cashier }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Repairs fund" %}</p>
+                            <p class="column-data">{{ object.repairs }}</p>
+                        </div>
+                        <div class="card-column">
+                            <p class="column-name">{% trans "Other expenses" %}</p>
+                            <p class="column-data">{{ object.others }}</p>
+                        </div>
+                    {% endif %}
                     <div class="card-column">
                         <p class="column-name">{% trans "Monthly bill, EUR" %}</p>
                         <p class="column-data">{{ object.total_amount }}</p>

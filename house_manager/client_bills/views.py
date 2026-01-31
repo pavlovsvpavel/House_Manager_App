@@ -63,18 +63,20 @@ class CurrentClientBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView)
     queryset = None
     template_name = None
     success_url_name = None
-    fields = ("is_paid", )
+    fields = ("is_paid",)
 
     def get_success_url(self):
         return reverse_lazy(self.success_url_name, kwargs={"pk": self.object.client.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        house_id = self.request.session.get("selected_house")
+        house_instance = self.object.house
+        session_house_id = self.request.session.get("selected_house")
 
-        current_house = self.object.house.pk
-        if current_house != house_id:
+        if house_instance.pk != session_house_id:
             raise PermissionDenied(_("Bill not found for current client."))
+
+        context['current_house'] = house_instance
 
         return context
 

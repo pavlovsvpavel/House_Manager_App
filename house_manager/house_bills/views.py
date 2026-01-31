@@ -1,4 +1,3 @@
-import logging
 from decimal import Decimal
 from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError, transaction
@@ -13,9 +12,11 @@ from django.utils.translation import gettext_lazy as _
 from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.client_bills.helpers.calculate_fees import calculate_fees
 from house_manager.client_bills.helpers.calculate_fees_other_bills import calculate_fees_other_bills
+from house_manager.client_bills.helpers.calculate_fixed_bills import calculate_fixed_client_bills
+from house_manager.client_bills.models import ClientMonthlyBill
 from house_manager.clients.models import Client
 from house_manager.common.mixins import MonthChoices, YearChoices
-from house_manager.house_bills.forms import HouseMonthlyBillForm, HouseOtherBillForm
+from house_manager.house_bills.forms import HouseMonthlyBillForm, HouseOtherBillForm, HouseFixedBillForm
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
 from house_manager.house_bills.helpers.subtract_amount_from_balance import subtract_amount_from_house_balance
 from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill, TypeOfBillChoices
@@ -25,31 +26,72 @@ from house_manager.houses.models import House, HouseCalculationsOptions
 
 
 class HouseBaseBillCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.CreateView):
-    queryset = None
     template_name = None
     form_class = None
     action_url = None
     title = None
 
+    @property
+    def current_house(self):
+        house_id = self.request.session.get("selected_house")
+
+        if house_id:
+            return get_object_or_404(House, pk=house_id)
+        return None
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        selected_house_id = self.request.session.get("selected_house")
+        house = self.current_house
+        context['house'] = house
 
-        context['house_id'] = selected_house_id
-        context['clients'] = Client.objects.filter(house=selected_house_id)
+        if house:
+            context['clients'] = Client.objects.filter(house=house)
+
         context['action_url'] = self.action_url
         context["title"] = self.title
-
         return context
 
     def get_success_url(self):
-        selected_house_id = self.request.session.get("selected_house")
+        house_id = self.request.session.get("selected_house")
+        return reverse_lazy('details_house', kwargs={'pk': house_id})
 
-        return reverse_lazy('details_house', kwargs={'pk': selected_house_id})
+    def render_success_alert(self, form, message):
+        """
+        Renders the page with a Success Popup.
+        """
+        context = self.get_context_data(form=form)
+        context['sweet_alert'] = {
+            'title': _("Success!"),
+            'text': message,
+            'icon': 'success',
+            'redirect_url': self.get_success_url()
+        }
+        return self.render_to_response(context)
+
+    def form_invalid(self, form):
+        """
+        Automatically extracts the first error found in the form
+        and renders the Error Popup.
+        """
+        context = self.get_context_data(form=form)
+        error_message = _("Please correct the errors below.")
+
+        if form.non_field_errors():
+            error_message = form.non_field_errors()[0]
+        elif form.errors:
+            first_field = next(iter(form.errors))
+            error_message = f"{first_field}: {form.errors[first_field][0]}"
+
+        context['sweet_alert'] = {
+            'title': _("Error"),
+            'text': error_message,
+            'icon': 'error',
+            'redirect_url': None
+        }
+        return self.render_to_response(context)
 
 
 class HouseMonthlyBillCreateView(HouseBaseBillCreateView):
-    queryset = HouseMonthlyBill.objects.select_related('house')
     template_name = "house_bills/create_house_bills.html"
     form_class = HouseMonthlyBillForm
     action_url = reverse_lazy("create_house_bills")
@@ -58,37 +100,27 @@ class HouseMonthlyBillCreateView(HouseBaseBillCreateView):
     def form_valid(self, form):
         try:
             with transaction.atomic():
-                response = super().form_valid(form)
+                self.object: HouseMonthlyBill = form.save()
 
-                current_year = form.instance.year
-                current_month = form.instance.month
-                house_id = form.instance.house_id
-                user_id = self.request.user.pk
-
-                try:
-                    calculate_fees(house_id, current_year, current_month, user_id)
-                except HouseCalculationsOptions.DoesNotExist as error:
-                    form.add_error(
-                        None,
-                        _("Calculation settings are missing. Please configure them on house edit page."))
-                    raise error
-
-                return response
+                if not self.object.house.fixed_monthly_taxes:
+                    calculate_fees(
+                        form.instance.house.id,
+                        form.instance.year,
+                        form.instance.month,
+                        form.instance.user.pk
+                    )
+                return self.render_success_alert(form, _("Successfully created bill."))
 
         except IntegrityError:
-            error_message = _("Bill with those month and year already exists.")
-            form.add_error(None, error_message)
+            form.add_error(None, _("Bill with those month and year already exists."))
             return self.form_invalid(form)
 
         except HouseCalculationsOptions.DoesNotExist:
+            form.add_error(None, _("Calculation settings are missing."))
             return self.form_invalid(form)
 
 
-logger = logging.getLogger(__name__)
-
-
 class HouseOtherBillCreateView(HouseBaseBillCreateView):
-    queryset = HouseOtherBill.objects.select_related('house')
     template_name = "house_bills/create_other_bill.html"
     form_class = HouseOtherBillForm
     action_url = reverse_lazy("create_other_bill")
@@ -96,25 +128,57 @@ class HouseOtherBillCreateView(HouseBaseBillCreateView):
 
     def form_valid(self, form):
         try:
-            response = super().form_valid(form)
-            current_year = form.instance.year
-            current_month = form.instance.month
-            current_type_of_bill = form.instance.type_of_bill
-            current_other_bill = form.instance.pk
-            house_id = form.instance.house_id
-            user_id = self.request.user.pk
+            with transaction.atomic():
+                self.object: HouseOtherBill = form.save()
 
-            if current_type_of_bill == "Single bill":
-                return response
+                if self.object.type_of_bill != "Single bill":
+                    calculate_fees_other_bills(
+                        self.object.house.id,
+                        self.object.year,
+                        self.object.month,
+                        self.object.user.pk,
+                        self.object.pk
+                    )
 
-            calculate_fees_other_bills(house_id, current_year, current_month, user_id, current_other_bill)
+                return self.render_success_alert(form, _("Successfully created bill."))
 
-            return response
+        except IntegrityError:
+            form.add_error(None, _("Bill with those month and year already exists."))
+            return self.form_invalid(form)
 
-        except IntegrityError as e:
-            error_message = _("Bill with those month and year already exists.")
-            form.add_error(None, error_message)
 
+class HouseFixedMonthlyBillView(HouseBaseBillCreateView):
+    template_name = "house_bills/create_house_bills.html"
+    form_class = HouseFixedBillForm
+    action_url = reverse_lazy("create_fixed_bill")
+    title = _("Add Monthly Bill (Per Apartment)")
+
+    def form_valid(self, form):
+        house = form.instance.house
+        year = form.cleaned_data['year']
+        month = form.cleaned_data['month']
+        fixed_amount = form.cleaned_data['fixed_amount']
+        user_id = form.instance.user.pk
+
+        if ClientMonthlyBill.objects.filter(house=house, year=year, month=month).exists():
+            form.add_error(None, _("Client bills for this month and year already exist."))
+            return self.form_invalid(form)
+
+        try:
+            with transaction.atomic():
+                created_count = calculate_fixed_client_bills(
+                    house_id=house.id,
+                    year=year,
+                    month=month,
+                    fixed_amount=fixed_amount,
+                    user_id=user_id
+                )
+
+                msg = _("Successfully created bills for %(count)d apartments.") % {'count': created_count}
+                return self.render_success_alert(form, msg)
+
+        except Exception as e:
+            form.add_error(None, _("An error occurred: ") + str(e))
             return self.form_invalid(form)
 
 
@@ -236,7 +300,7 @@ class ReportMonthlyBillView(views.DetailView):
 
         context["current_house"] = current_house
 
-        context["bill"] = (current_house.house_monthly_bills
+        context["bill"] = (current_house.client_house_monthly_bills
                            .filter(month=selected_month, year=selected_year).first())
 
         clients_bills = (current_house.client_house_monthly_bills

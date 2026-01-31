@@ -9,6 +9,11 @@ from house_manager.houses.models import House
 
 
 def calculate_fees(house_id, year, month, user_id):
+    house = House.objects.get(pk=house_id)
+
+    if house.fixed_monthly_taxes:
+        return
+
     house_bills = (HouseMonthlyBill
                    .objects
                    .get(house_id=house_id, year=year, month=month))

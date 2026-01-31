@@ -59,6 +59,12 @@ class House(TimeStampModel):
         verbose_name=_("Current balance"),
     )
 
+    fixed_monthly_taxes = models.BooleanField(
+        default=False,
+        blank=False,
+        verbose_name=_("Fixed monthly taxes")
+    )
+
     user = models.ForeignKey(
         to=UserModel,
         on_delete=models.CASCADE,
