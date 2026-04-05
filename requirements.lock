@@ -32,10 +32,13 @@ diff-match-patch==20241021
 django==6.0.3
     # via
     #   house-manager-app (pyproject.toml)
+    #   django-admin-multi-select-filter
     #   django-allauth
     #   django-axes
     #   django-debug-toolbar
     #   django-import-export
+django-admin-multi-select-filter==1.5.0
+    # via house-manager-app (pyproject.toml)
 django-allauth==65.15.1
     # via house-manager-app (pyproject.toml)
 django-axes==8.3.1

@@ -145,6 +145,18 @@ wheels = [
 ]
 
 [[package]]
+name = "django-admin-multi-select-filter"
+version = "1.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3c/c3/df6078b888eafaf0d05cc75b265d51bec77fbd1b06709876a6a3015b9e33/django_admin_multi_select_filter-1.5.0.tar.gz", hash = "sha256:c992b970d43cee4d8720b7d7ca37db15b64457851a7f0f01402a7402be044813", size = 4450, upload-time = "2025-08-25T10:57:53.658Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/93/cf/dd6bf9ddb9763f98f78704f100e266cc29a2c1b38e655327a6faace5e5b4/django_admin_multi_select_filter-1.5.0-py3-none-any.whl", hash = "sha256:a6b0e5d3ec5fb568947d2df251b31ca05c2700f82cd0d4bb8a4f24a455bc5740", size = 5198, upload-time = "2025-08-25T10:57:52.461Z" },
+]
+
+[[package]]
 name = "django-allauth"
 version = "65.15.1"
 source = { registry = "https://pypi.org/simple" }
@@ -244,6 +256,7 @@ dependencies = [
     { name = "cryptography" },
     { name = "diff-match-patch" },
     { name = "django" },
+    { name = "django-admin-multi-select-filter" },
     { name = "django-allauth" },
     { name = "django-axes" },
     { name = "django-cloudinary-storage" },
@@ -283,6 +296,7 @@ requires-dist = [
     { name = "cryptography", specifier = "==46.0.6" },
     { name = "diff-match-patch", specifier = "==20241021" },
     { name = "django", specifier = "==6.0.3" },
+    { name = "django-admin-multi-select-filter", specifier = ">=1.5.0" },
     { name = "django-allauth", specifier = "==65.15.1" },
     { name = "django-axes", specifier = "==8.3.1" },
     { name = "django-cloudinary-storage", specifier = "==0.3.0" },

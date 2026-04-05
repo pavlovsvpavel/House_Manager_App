@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-31 15:07+0000\n"
+"POT-Creation-Date: 2026-04-05 09:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -99,38 +99,38 @@ msgstr "Маркирайте тази опция, ако този апартам
 msgid "Mark this option, if this apartment is permanently inhabitable"
 msgstr "Маркирайте тази опция, ако този апартамент е постоянно обитаем"
 
-#: house_manager/clients/models.py:26 templates/clients/details_client.html:18
+#: house_manager/clients/models.py:27 templates/clients/details_client.html:18
 #: templates/houses/house_clients_list.html:24
 #: templates/partials/reports/table_headers.html:4
 #: templates/partials/reports/table_headers_other_bills.html:4
 msgid "Family Name"
 msgstr "Фамилия"
 
-#: house_manager/clients/models.py:32 templates/clients/details_client.html:22
+#: house_manager/clients/models.py:33 templates/clients/details_client.html:22
 #: templates/houses/house_clients_list.html:28
 msgid "Floor"
 msgstr "Етаж"
 
-#: house_manager/clients/models.py:38 templates/clients/details_client.html:26
+#: house_manager/clients/models.py:40 templates/clients/details_client.html:26
 #: templates/houses/house_clients_list.html:32
 #: templates/partials/reports/table_headers.html:5
 #: templates/partials/reports/table_headers_other_bills.html:5
 msgid "Apartment"
 msgstr "Апартамент"
 
-#: house_manager/clients/models.py:44
+#: house_manager/clients/models.py:46
 msgid "Number of people"
 msgstr "Брой живущи"
 
-#: house_manager/clients/models.py:51
+#: house_manager/clients/models.py:53
 msgid "Lift"
 msgstr "Асансьор"
 
-#: house_manager/clients/models.py:58 templates/clients/details_client.html:38
+#: house_manager/clients/models.py:60 templates/clients/details_client.html:38
 msgid "Occupied"
 msgstr "Зает"
 
-#: house_manager/clients/models.py:65 templates/clients/details_client.html:42
+#: house_manager/clients/models.py:67 templates/clients/details_client.html:42
 msgid "Inhabitable"
 msgstr "Обитаем"
 
@@ -319,19 +319,23 @@ msgstr "Платена"
 msgid "Comment"
 msgstr "Коментар"
 
-#: house_manager/common/validators.py:7
-msgid "Field should contains only letters"
-msgstr "Полето трябва да съдържа само букви"
+#: house_manager/common/validators.py:9
+msgid "Field should contain only letters, spaces, (), /, and -"
+msgstr "Полето трябва да съдържа само букви, (), /, -"
 
-#: house_manager/common/validators.py:12
+#: house_manager/common/validators.py:13
+msgid "Field must contain at least one letter"
+msgstr "Полето трябва да съдържа поне една буква"
+
+#: house_manager/common/validators.py:18
 msgid "Phone number should contains only digits"
 msgstr "Телефонният номер трябва да съдържа само цифри"
 
-#: house_manager/common/validators.py:15
+#: house_manager/common/validators.py:21
 msgid "Phone number should be exactly 10 digits"
 msgstr "Телефонният номер трябва да бъде точно 10 цифри"
 
-#: house_manager/house_bills/forms.py:46
+#: house_manager/house_bills/forms.py:43
 msgid "Amount"
 msgstr "Сума"
 
@@ -387,7 +391,7 @@ msgid "Calculation settings are missing."
 msgstr "Изчисления на база апартаменти:"
 
 #: house_manager/house_bills/views.py:127
-#: templates/houses/details_house.html:30
+#: templates/houses/details_house.html:35
 msgid "Add other bill"
 msgstr "Добави друга сметка"
 
@@ -430,25 +434,25 @@ msgid "Calculations based on total people:"
 msgstr "Изчисления на база живущи:"
 
 #: house_manager/houses/models.py:28 templates/common/dashboard.html:17
-#: templates/houses/details_house.html:47
+#: templates/houses/details_house.html:48
 #: templates/partials/reports/reports_house_details.html:6
 msgid "Town"
 msgstr "Град"
 
 #: house_manager/houses/models.py:35 templates/common/dashboard.html:21
-#: templates/houses/details_house.html:51
+#: templates/houses/details_house.html:52
 #: templates/partials/reports/reports_house_details.html:10
 msgid "Address"
 msgstr "Адрес"
 
 #: house_manager/houses/models.py:41 templates/common/dashboard.html:25
-#: templates/houses/details_house.html:55
+#: templates/houses/details_house.html:56
 #: templates/partials/reports/reports_house_details.html:14
 msgid "Building number"
 msgstr "Блок"
 
 #: house_manager/houses/models.py:48 templates/common/dashboard.html:29
-#: templates/houses/details_house.html:59
+#: templates/houses/details_house.html:60
 #: templates/partials/reports/reports_house_details.html:18
 msgid "Entrance"
 msgstr "Вход"
@@ -457,7 +461,7 @@ msgstr "Вход"
 msgid "Current balance"
 msgstr "Настоящо салдо"
 
-#: house_manager/houses/models.py:65 templates/houses/details_house.html:75
+#: house_manager/houses/models.py:65 templates/houses/details_house.html:76
 msgid "Fixed monthly taxes"
 msgstr "Фиксирани месечни такси"
 
@@ -511,7 +515,7 @@ msgstr "Име"
 
 #: templates/accounts/details_profile.html:26
 #: templates/clients/details_client.html:46
-#: templates/houses/details_house.html:83
+#: templates/houses/details_house.html:84
 msgid "Edit"
 msgstr "Промени"
 
@@ -637,7 +641,7 @@ msgstr "Използва ли асансьор"
 #: templates/clients/details_client.html:35
 #: templates/clients/details_client.html:39
 #: templates/clients/details_client.html:43
-#: templates/houses/details_house.html:76
+#: templates/houses/details_house.html:77
 #: templates/houses/house_clients_list.html:41
 msgid "Yes,No"
 msgstr "Да,Не"
@@ -842,14 +846,14 @@ msgid "Amount for collection"
 msgstr "Сума за събиране"
 
 #: templates/common/reports_bills.html:30
-#: templates/houses/details_house.html:80
+#: templates/houses/details_house.html:81
 #: templates/partials/reports/filtered_other_bill_type_multi.html:22
 #: templates/partials/reports/filtered_other_bill_type_single.html:18
 msgid "EUR"
 msgstr "ЕВРО"
 
 #: templates/common/reports_other_bills.html:12
-#: templates/houses/details_house.html:35
+#: templates/houses/details_house.html:40
 msgid "Other bills - reports"
 msgstr "Други сметки - справки"
 
@@ -900,27 +904,27 @@ msgstr "Клиенти - детайли"
 msgid "Monthly bills - details"
 msgstr "Месечни сметки - детайли"
 
-#: templates/houses/details_house.html:32
-msgid "Other bills - details"
-msgstr "Други сметки - детайли"
-
-#: templates/houses/details_house.html:39
+#: templates/houses/details_house.html:31
 msgid "Add fixed monthly bill"
 msgstr "Добави фиксирана месечна сметка"
 
-#: templates/houses/details_house.html:63
+#: templates/houses/details_house.html:37
+msgid "Other bills - details"
+msgstr "Други сметки - детайли"
+
+#: templates/houses/details_house.html:64
 msgid "Total apartments"
 msgstr "Общо апартаменти"
 
-#: templates/houses/details_house.html:67
+#: templates/houses/details_house.html:68
 msgid "Total people"
 msgstr "Общо живущи"
 
-#: templates/houses/details_house.html:71
+#: templates/houses/details_house.html:72
 msgid "Total people using lift"
 msgstr "Общо живущи ползващи асансьор"
 
-#: templates/houses/details_house.html:79
+#: templates/houses/details_house.html:80
 msgid "Current Balance"
 msgstr "Настоящо салдо"
 

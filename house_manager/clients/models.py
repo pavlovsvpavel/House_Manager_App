@@ -10,7 +10,8 @@ UserModel = get_user_model()
 
 
 class Client(TimeStampModel):
-    MAX_FAMILY_NAME_LENGTH = 30
+    MAX_FAMILY_NAME_LENGTH = 60
+    MAX_APARTMENT_LENGTH = 10
 
     class Meta:
         unique_together = ['apartment', 'house']
@@ -32,7 +33,8 @@ class Client(TimeStampModel):
         verbose_name=_("Floor"),
     )
 
-    apartment = models.PositiveIntegerField(
+    apartment = models.CharField(
+        max_length=MAX_APARTMENT_LENGTH,
         blank=False,
         null=False,
         verbose_name=_("Apartment"),

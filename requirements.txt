@@ -6,6 +6,7 @@ cloudinary==1.44.1
 cryptography==46.0.6
 diff-match-patch==20241021
 Django==6.0.3
+django-admin-multi-select-filter==1.5.0
 django-allauth==65.15.1
 django-axes==8.3.1
 django-cloudinary-storage==0.3.0

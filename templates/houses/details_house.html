@@ -26,17 +26,18 @@
                             <li><a class="report"
                                    href="{% url "reports_bills" pk=object.pk %}">{% trans "Monthly bills - reports" %}</a>
                             </li>
-                            <li><a class="create-other-bill"
-                                   href="{% url "create_other_bill" %}">{% trans "Add other bill" %}</a></li>
-                            <li><a class="list-other-bills"
-                                   href="{% url "list_other_house_bills" pk=object.pk %}">{% trans "Other bills - details" %}</a>
-                            </li>
-                            <li><a class="report"
-                                   href="{% url "reports_other_bills" pk=object.pk %}">{% trans "Other bills - reports" %}</a>
-                            </li>
                             {% if object.fixed_monthly_taxes %}
                                 <li><a class="create-house-bill"
                                        href="{% url "create_fixed_bill" %}">{% trans "Add fixed monthly bill" %}</a>
+                                </li>
+                            {% else %}
+                                <li><a class="create-other-bill"
+                                       href="{% url "create_other_bill" %}">{% trans "Add other bill" %}</a></li>
+                                <li><a class="list-other-bills"
+                                       href="{% url "list_other_house_bills" pk=object.pk %}">{% trans "Other bills - details" %}</a>
+                                </li>
+                                <li><a class="report"
+                                       href="{% url "reports_other_bills" pk=object.pk %}">{% trans "Other bills - reports" %}</a>
                                 </li>
                             {% endif %}
                         </ul>

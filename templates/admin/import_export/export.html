@@ -1,0 +1,5 @@
+{% extends "admin/import_export/export.html" %}
+{% load static %} {% block extrahead %}
+    {{ block.super }}
+    <script nonce="{{ csp_nonce }}" src="{% static 'scripts/export_fix.js' %}" defer></script>
+{% endblock %}

@@ -63,7 +63,7 @@ class HouseClientsDetailView(CheckForLoggedInUserMixin, views.DetailView):
 
         is_paid = self.request.GET.get('is_paid', None)
         month = self.request.GET.get('month', None)
-        clients = self.object.clients.all()
+        clients = self.object.clients.order_by('floor').all()
 
         context["clients"] = house_clients_filter_by_payment_status(clients, is_paid, month)
         context["MonthChoices"] = MonthChoices
