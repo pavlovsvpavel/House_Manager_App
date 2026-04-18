@@ -46,7 +46,14 @@ ENV APP_HOME=/home/app
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
     libpq5 \
-    gettext && \
+    gettext \
+    libpango-1.0-0 \
+    libpangoft2-1.0-0 \
+    libpangocairo-1.0-0 \
+    libglib2.0-0 \
+    libcairo2 \
+    libffi-dev \
+    shared-mime-info && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy virtual environment from builder
