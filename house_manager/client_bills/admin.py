@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django_admin_multi_select_filter.filters import MultiSelectFieldListFilter, MultiSelectRelatedFieldListFilter
+from django_admin_multi_select_filter.filters import MultiSelectFieldListFilter
 from import_export import resources, fields
 from import_export.admin import ExportMixin
 from house_manager.accounts.mixins import CheckLoggedInUserModelInstancesMixin
@@ -9,8 +9,8 @@ from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 class ClientMonthlyBillResource(resources.ModelResource):
     house = fields.Field(column_name='House')
     client = fields.Field(column_name='Client')
-    total_amount = fields.Field(column_name='Total Amount, EUR')
-    amount_old_debts = fields.Field(column_name='Amount Old Debts, EUR')
+    total_amount = fields.Field(attribute='total_amount', column_name='Total Amount, EUR')
+    amount_old_debts = fields.Field(attribute='amount_old_debts', column_name='Amount Old Debts, EUR')
     apartment = fields.Field(attribute='client__apartment', column_name='Apartment')
     floor = fields.Field(attribute='client__floor', column_name='Floor')
     month = fields.Field(attribute='month', column_name='Month')

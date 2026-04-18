@@ -6,6 +6,8 @@ asgiref==3.11.1
     #   django
     #   django-allauth
     #   django-axes
+brotli==1.2.0
+    # via fonttools
 certifi==2026.2.25
     # via
     #   house-manager-app (pyproject.toml)
@@ -15,21 +17,24 @@ cffi==2.0.0
     # via
     #   house-manager-app (pyproject.toml)
     #   cryptography
+    #   weasyprint
 charset-normalizer==3.4.7
     # via
     #   house-manager-app (pyproject.toml)
     #   requests
-cloudinary==1.44.1
+cloudinary==1.44.2
     # via
     #   house-manager-app (pyproject.toml)
     #   django-cloudinary-storage
-cryptography==46.0.6
+cryptography==46.0.7
     # via house-manager-app (pyproject.toml)
+cssselect2==0.9.0
+    # via weasyprint
 diff-match-patch==20241021
     # via
     #   house-manager-app (pyproject.toml)
     #   django-import-export
-django==6.0.3
+django==6.0.4
     # via
     #   house-manager-app (pyproject.toml)
     #   django-admin-multi-select-filter
@@ -39,7 +44,7 @@ django==6.0.3
     #   django-import-export
 django-admin-multi-select-filter==1.5.0
     # via house-manager-app (pyproject.toml)
-django-allauth==65.15.1
+django-allauth==65.16.1
     # via house-manager-app (pyproject.toml)
 django-axes==8.3.1
     # via house-manager-app (pyproject.toml)
@@ -53,6 +58,8 @@ et-xmlfile==2.0.0
     # via
     #   house-manager-app (pyproject.toml)
     #   openpyxl
+fonttools==4.62.1
+    # via weasyprint
 gunicorn==25.3.0
     # via house-manager-app (pyproject.toml)
 idna==3.11
@@ -65,13 +72,15 @@ oauthlib==3.3.1
     #   requests-oauthlib
 openpyxl==3.1.5
     # via house-manager-app (pyproject.toml)
-packaging==26.0
+packaging==26.1
     # via
     #   house-manager-app (pyproject.toml)
     #   gunicorn
     #   wheel
 pillow==12.2.0
-    # via house-manager-app (pyproject.toml)
+    # via
+    #   house-manager-app (pyproject.toml)
+    #   weasyprint
 pip==26.0.1
     # via house-manager-app (pyproject.toml)
 psycopg==3.3.3
@@ -84,8 +93,12 @@ pycparser==3.0
     # via
     #   house-manager-app (pyproject.toml)
     #   cffi
+pydyf==0.12.1
+    # via weasyprint
 pyjwt==2.12.1
     # via house-manager-app (pyproject.toml)
+pyphen==0.17.2
+    # via weasyprint
 python-decouple==3.8
     # via house-manager-app (pyproject.toml)
 requests==2.33.1
@@ -110,6 +123,12 @@ tablib==3.9.0
     # via
     #   house-manager-app (pyproject.toml)
     #   django-import-export
+tinycss2==1.5.1
+    # via
+    #   cssselect2
+    #   weasyprint
+tinyhtml5==2.1.0
+    # via weasyprint
 typing-extensions==4.15.0
     # via
     #   house-manager-app (pyproject.toml)
@@ -121,5 +140,14 @@ urllib3==2.6.3
     #   house-manager-app (pyproject.toml)
     #   cloudinary
     #   requests
+weasyprint==68.1
+    # via house-manager-app (pyproject.toml)
+webencodings==0.5.1
+    # via
+    #   cssselect2
+    #   tinycss2
+    #   tinyhtml5
 wheel==0.46.3
     # via house-manager-app (pyproject.toml)
+zopfli==0.4.1
+    # via fonttools

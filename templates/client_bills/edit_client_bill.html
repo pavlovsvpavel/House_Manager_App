@@ -71,11 +71,11 @@
                     </div>
                     <div class="card-column">
                         <p class="column-name">{% trans "Unpaid bills, EUR" %}</p>
-                        <p class="column-data">{{ object.amount_old_debts }}</p>
+                        <p class="column-data">{{ amount_old_debts }}</p>
                     </div>
                     <div class="card-column">
                         <p class="column-name">{% trans "Total, EUR" %}</p>
-                        <p class="column-data">{{ object.amount_old_debts|add:object.total_amount }}</p>
+                        <p class="column-data">{{ amount_old_debts|add:object.total_amount }}</p>
                     </div>
                 </div>
                 <form class="is-paid-form" method="post" action="{% url "edit_client_bill" pk=object.pk %}">
@@ -92,6 +92,12 @@
                             document.querySelector('label[for="id_is_paid"]').textContent = "{% trans 'Paid' %}";
                         </script>
                         {% include "partials/signature-show.html" %}
+
+                        <div class="download-receipt-container">
+                            <a href="{% url 'download_receipt' pk=object.pk %}" class="download-receipt-btn" target="_blank">
+                                {% trans "Download Receipt" %}
+                            </a>
+                        </div>
                     {% else %}
                         <script nonce="{{ csp_nonce }}" src="{% static "scripts/signaturePad.js" %}" defer></script>
                         {% include "partials/signature-pad.html" %}

@@ -12,16 +12,22 @@
 .details-house-elements .buttons {
     display: flex;
     flex: 0 1 50%;
+    flex-direction: column;
+    gap: 1em;
 }
 
-.details-house-elements .buttons ul {
+.details-house-elements .buttons .dashboard-clients,
+.details-house-elements .buttons .dashboard-bills {
     display: flex;
     flex-direction: column;
     list-style: none outside;
     justify-content: space-between;
+    gap: 1em;
+    max-width: 70%;
 }
 
-.details-house-elements .buttons ul li a {
+.details-house-elements .buttons .dashboard-clients li a,
+.details-house-elements .buttons .dashboard-bills li a {
     display: block;
     background-color: #E4D0D0;
     padding: 0.5em;
@@ -32,31 +38,30 @@
     color: inherit;
 }
 
-.details-house-elements .buttons ul li a:hover {
+.details-house-elements .buttons .dashboard-clients li a:hover,
+.details-house-elements .buttons .dashboard-bills li a:hover {
     cursor: pointer;
     background-color: #D5B4B4;
     transition: 0.3s ease-in-out;
 }
 
-.details-house-elements .buttons ul li:nth-of-type(1) a,
-.details-house-elements .buttons ul li:nth-of-type(2) a {
+.details-house-elements .buttons .dashboard-clients li a {
     background-color: var(--card-bgnd-paid);
 }
 
-.details-house-elements .buttons ul li:nth-of-type(1) a:hover,
-.details-house-elements .buttons ul li:nth-of-type(2) a:hover {
+.details-house-elements .buttons .dashboard-clients li a:hover {
     background-color: var(--card-bgnd-paid-hover);
 }
 
-.details-house-elements .buttons ul li:nth-of-type(6) a,
-.details-house-elements .buttons ul li:nth-of-type(7) a,
-.details-house-elements .buttons ul li:nth-of-type(8) a {
+.details-house-elements .buttons .dashboard-bills li:nth-of-type(1) a,
+.details-house-elements .buttons .dashboard-bills  li:nth-of-type(2) a,
+.details-house-elements .buttons .dashboard-bills  li:nth-of-type(3) a {
     background-color: #AAD7D9;
 }
 
-.details-house-elements .buttons ul li:nth-of-type(6) a:hover,
-.details-house-elements .buttons ul li:nth-of-type(7) a:hover,
-.details-house-elements .buttons ul li:nth-of-type(8) a:hover {
+.details-house-elements .buttons .dashboard-bills li:nth-of-type(1) a:hover,
+.details-house-elements .buttons .dashboard-bills li:nth-of-type(2) a:hover,
+.details-house-elements .buttons .dashboard-bills li:nth-of-type(3) a:hover {
     background-color: #92C7CF;
 }
 
@@ -318,4 +323,20 @@
     pointer-events: none;
     text-decoration: none;
     cursor: not-allowed;
+}
+
+.download-receipt-btn {
+    color: #fff;
+    padding: 0.5em;
+    text-align: center;
+    border-radius: 1.5em;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    background-color: #FF8080;
+    border: none transparent;
+    text-decoration: none;
+}
+
+.download-receipt-btn:hover {
+    background-color: #D37676;
 }

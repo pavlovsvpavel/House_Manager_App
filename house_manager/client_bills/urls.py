@@ -1,7 +1,7 @@
 from django.urls import path
 from house_manager.client_bills.views import (
     ClientMonthlyBillsDetailView, CurrentClientMonthlyBillEditView,
-    ClientOtherBillsDetailView, CurrentClientOtherBillEditView
+    ClientOtherBillsDetailView, CurrentClientOtherBillEditView, DownloadReceiptView
 )
 
 urlpatterns = (
@@ -9,4 +9,5 @@ urlpatterns = (
     path("edit-bill/<int:pk>/", CurrentClientMonthlyBillEditView.as_view(), name="edit_client_bill"),
     path("other-bills/<int:pk>/", ClientOtherBillsDetailView.as_view(), name="list_other_client_bills"),
     path("edit-other-bill/<int:pk>/", CurrentClientOtherBillEditView.as_view(), name="edit_client_other_bill"),
+    path('bill/<int:pk>/receipt/download/', DownloadReceiptView.as_view(), name='download_receipt'),
 )

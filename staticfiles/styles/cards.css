@@ -163,6 +163,7 @@
     flex: 1 1 30%;
     gap: 1em;
     padding: 1em;
+    justify-content: space-between;
 }
 
 .house-card .card-column {

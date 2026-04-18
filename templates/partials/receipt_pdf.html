@@ -1,0 +1,74 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Receipt - {{ bill.client.family_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            margin: 40px;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        .bill-details {
+            margin-top: 30px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .bill-details th, .bill-details td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+        .signature-box {
+            margin-top: 50px;
+            text-align: right;
+        }
+        .signature-img {
+            max-width: 250px;
+            border-bottom: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>{% trans "Payment Receipt" %}</h1>
+
+{#    <p><strong>{% trans "Date Paid:" %}</strong> {{ bill.paid_date|date:"F j, Y"|default:"N/A" }}</p>#}
+    <p><strong>{% trans "Client:" %}</strong> {{ bill.client.family_name }}</p>
+    <p><strong>{% trans "Apartment:" %}</strong> {{ bill.client.apartment }}</p>
+
+    <p><strong>{% trans "Period:" %}</strong> {{ bill.get_month_name }} {{ bill.year }}</p>
+
+    <table class="bill-details">
+        <tr>
+            <th>{% trans "Monthly Bill" %}</th>
+            <td>€{{ bill.total_amount }}</td>
+        </tr>
+{#        <tr>#}
+{#            <th>{% trans "Unpaid Bills (Old Debt)" %}</th>#}
+{#            <td>€{{ bill.amount_old_debts }}</td>#}
+{#        </tr>#}
+        <tr>
+            <th><strong>{% trans "Total Paid" %}</strong></th>
+{#            <td><strong>€{{ bill.amount_old_debts|add:bill.total_amount }}</strong></td>#}
+            <td><strong>€{{ bill.total_amount }}</strong></td>
+        </tr>
+    </table>
+
+    <div class="signature-box">
+        <p>{% trans "Signature:" %}</p>
+        {% if bill.signature %}
+            <img src="{{ bill.signature }}" alt="Signature" class="signature-img">
+        {% else %}
+            <p><em>{% trans "No signature provided" %}</em></p>
+        {% endif %}
+    </div>
+
+</body>
+</html>

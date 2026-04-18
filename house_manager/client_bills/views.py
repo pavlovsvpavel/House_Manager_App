@@ -1,14 +1,19 @@
 from django.core.exceptions import PermissionDenied
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
+from django.utils.text import slugify
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
-
+from django.views.generic import DetailView
+from weasyprint import HTML
+from urllib.parse import quote
 from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.client_bills.helpers.add_amount_to_balance import add_amount_to_house_balance
 from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 from house_manager.clients.models import Client
+from house_manager.common.helpers.filtering_unpaid_client_bills import filtering_unpaid_client_bills
 from house_manager.common.mixins import MonthChoices
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
 
@@ -76,7 +81,14 @@ class CurrentClientBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView)
         if house_instance.pk != session_house_id:
             raise PermissionDenied(_("Bill not found for current client."))
 
+        unpaid_sum = filtering_unpaid_client_bills(
+            client=self.object.client,
+            selected_year=self.object.year,
+            selected_month=self.object.month
+        )
+
         context['current_house'] = house_instance
+        context['amount_old_debts'] = unpaid_sum
 
         return context
 
@@ -113,3 +125,34 @@ class CurrentClientOtherBillEditView(CurrentClientBaseBillEditView):
     queryset = ClientOtherBill.objects.prefetch_related('client')
     template_name = "client_bills/edit_client_other_bill.html"
     success_url_name = "list_other_client_bills"
+
+
+class DownloadReceiptView(CheckForLoggedInUserMixin, DetailView):
+    model = ClientMonthlyBill
+    template_name = 'partials/receipt_pdf.html'
+    context_object_name = 'bill'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        bill = self.object
+
+        if not bill.is_paid:
+            return HttpResponse("Receipt is not available for unpaid bills.", status=400)
+
+        context = self.get_context_data(object=self.object)
+        html_string = render_to_string(self.template_name, context, request=request)
+
+        html = HTML(string=html_string, base_url=request.build_absolute_uri('/'))
+        pdf_file = html.write_pdf()
+
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+
+        raw_filename = f"receipt-{bill.client.family_name}-{bill.get_month_name()}-{bill.year}"
+
+        clean_filename = f"{slugify(raw_filename, allow_unicode=True)}.pdf"
+
+        encoded_filename = quote(clean_filename)
+
+        response['Content-Disposition'] = f"attachment; filename*=utf-8''{encoded_filename}"
+
+        return response

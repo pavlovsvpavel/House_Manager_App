@@ -9,7 +9,7 @@
                 <h3 class="section-title">{% trans 'House details' %}</h3>
                 <div class="details-house-elements">
                     <div class="buttons">
-                        <ul>
+                        <ul class="dashboard-clients">
                             <li><a class="create-client"
                                    href="{% url "create_client" %}">{% trans "Add client" %}</a>
                             </li>
@@ -18,6 +18,13 @@
                                    data-url="{% url 'house_clients_list' pk=0 %}">{% trans "Clients - details" %}
                             </a>
                             </li>
+                            {% if object.fixed_monthly_taxes %}
+                                <li><a class="create-house-bill"
+                                       href="{% url "create_fixed_bill" %}">{% trans "Add fixed monthly bill" %}</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                        <ul class="dashboard-bills">
                             <li><a class="create-house-bill"
                                    href="{% url "create_house_bills" %}">{% trans "Add monthly bill" %}</a></li>
                             <li><a class="list-house-bills"
@@ -26,20 +33,15 @@
                             <li><a class="report"
                                    href="{% url "reports_bills" pk=object.pk %}">{% trans "Monthly bills - reports" %}</a>
                             </li>
-                            {% if object.fixed_monthly_taxes %}
-                                <li><a class="create-house-bill"
-                                       href="{% url "create_fixed_bill" %}">{% trans "Add fixed monthly bill" %}</a>
-                                </li>
-                            {% else %}
-                                <li><a class="create-other-bill"
-                                       href="{% url "create_other_bill" %}">{% trans "Add other bill" %}</a></li>
-                                <li><a class="list-other-bills"
-                                       href="{% url "list_other_house_bills" pk=object.pk %}">{% trans "Other bills - details" %}</a>
-                                </li>
-                                <li><a class="report"
-                                       href="{% url "reports_other_bills" pk=object.pk %}">{% trans "Other bills - reports" %}</a>
-                                </li>
-                            {% endif %}
+                            <li><a class="create-other-bill"
+                                   href="{% url "create_other_bill" %}">{% trans "Add other bill" %}</a></li>
+                            <li><a class="list-other-bills"
+                                   href="{% url "list_other_house_bills" pk=object.pk %}">{% trans "Other bills - details" %}</a>
+                            </li>
+                            <li><a class="report"
+                                   href="{% url "reports_other_bills" pk=object.pk %}">{% trans "Other bills - reports" %}</a>
+                            </li>
+
                         </ul>
                     </div>
 
