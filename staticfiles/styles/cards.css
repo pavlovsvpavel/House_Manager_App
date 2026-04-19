@@ -49,12 +49,10 @@
 .list-client-bills .client-card-not-paid,
 .list-house-bills .client-card-not-paid {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     background-color: var(--card-bgnd-paid);
     border-radius: 0.5em;
     padding: 0.5em 1em;
-    /*align-items: center;*/
     transition: 0.3s ease-in-out;
 }
 
