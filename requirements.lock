@@ -8,7 +8,7 @@ asgiref==3.11.1
     #   django-axes
 brotli==1.2.0
     # via fonttools
-certifi==2026.2.25
+certifi==2026.4.22
     # via
     #   house-manager-app (pyproject.toml)
     #   cloudinary
@@ -26,7 +26,7 @@ cloudinary==1.44.2
     # via
     #   house-manager-app (pyproject.toml)
     #   django-cloudinary-storage
-cryptography==46.0.7
+cryptography==47.0.0
     # via house-manager-app (pyproject.toml)
 cssselect2==0.9.0
     # via weasyprint
@@ -62,7 +62,7 @@ fonttools==4.62.1
     # via weasyprint
 gunicorn==25.3.0
     # via house-manager-app (pyproject.toml)
-idna==3.11
+idna==3.13
     # via
     #   house-manager-app (pyproject.toml)
     #   requests
@@ -72,7 +72,7 @@ oauthlib==3.3.1
     #   requests-oauthlib
 openpyxl==3.1.5
     # via house-manager-app (pyproject.toml)
-packaging==26.1
+packaging==26.2
     # via
     #   house-manager-app (pyproject.toml)
     #   gunicorn
@@ -133,7 +133,7 @@ typing-extensions==4.15.0
     # via
     #   house-manager-app (pyproject.toml)
     #   psycopg
-tzdata==2026.1
+tzdata==2026.2
     # via house-manager-app (pyproject.toml)
 urllib3==2.6.3
     # via
@@ -147,7 +147,7 @@ webencodings==0.5.1
     #   cssselect2
     #   tinycss2
     #   tinyhtml5
-wheel==0.46.3
+wheel==0.47.0
     # via house-manager-app (pyproject.toml)
 zopfli==0.4.1
     # via fonttools
