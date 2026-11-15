@@ -10,10 +10,6 @@
                 {% breadcrumbs house=object.house client=object current=_("Client details") %}
                 <div class="title-back-btn">
                     <h3>{% trans 'Client details' %}</h3>
-                    <div class="back-button">
-                        <a href="{% url "house_clients_list" house_pk=house.pk %}"><i
-                            class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
-                    </div>
                 </div>
                 <div class="client-card">
                     <div class="card-column">

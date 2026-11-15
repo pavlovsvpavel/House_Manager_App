@@ -16,10 +16,6 @@
                 {% breadcrumbs house=object current=_("Other bills") %}
                 <div class="title-back-btn">
                     <h3>{% trans 'Other bills' %}</h3>
-                    <div class="back-button">
-                        <a href="{% url "details_house" house_pk=object.pk %}"><i
-                                class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
-                    </div>
                 </div>
                 {% include "house_bills/partials/other_bill_list.html" %}
                 <div id="bill-modal-container"></div>

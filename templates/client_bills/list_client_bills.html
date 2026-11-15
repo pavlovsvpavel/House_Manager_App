@@ -22,10 +22,6 @@
                         <p>{% trans 'Client bills' %}:</p>
                         <p class="family-name">{{ object.family_name }}</p>
                     </div>
-                    <div class="back-button">
-                        <a href="{% url "details_client" house_pk=house.pk pk=object.pk %}"><i
-                                class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
-                    </div>
                 </div>
 
                 {% include "client_bills/partials/monthly_bill_list.html" %}

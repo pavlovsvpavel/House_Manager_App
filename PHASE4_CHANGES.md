@@ -242,6 +242,15 @@ console - alarming next to real errors, and unrelated to the Apply
 button (verified: Apply does an HTMX swap, no navigation, no console
 errors). The path now answers 204 No Content in the root URLconf.
 
+## Follow-up: back buttons removed where breadcrumbs exist
+
+Every breadcrumb page (clients list, client details, the four bill
+lists, both reports) dropped its redundant "Back" control - the trail
+now provides the way back. The edit pages have no breadcrumbs, so
+`partials/back_button.html` stays there; the reports back-button
+partial is deleted. The payment modal's Cancel is unaffected (it
+closes the dialog, it does not navigate).
+
 ## Not In Scope
 
 - **Phase 4e (skipped per review):** dashboard cockpit — balance sparklines, KPI trends, "This month" panel.

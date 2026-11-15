@@ -10,10 +10,6 @@
                 {% breadcrumbs house=object current=_("Clients") %}
                 <div class="title-back-btn">
                     <h3>{% trans 'Clients' %}</h3>
-                    <div class="back-button">
-                        <a href="{% url "details_house" house_pk=object.pk %}"><i
-                                class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
-                    </div>
                 </div>
                 {% include "partials/filter_buttons.html" %}
                 <div class="clients-cards">
