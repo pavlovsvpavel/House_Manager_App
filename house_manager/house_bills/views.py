@@ -3,7 +3,7 @@ from decimal import Decimal
 from django.contrib import messages
 from django.db import IntegrityError, transaction
 from django.http import Http404, HttpResponse
-from django.db.models import Sum, Value
+from django.db.models import F, Sum, Value
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
@@ -21,13 +21,20 @@ from house_manager.common.helpers.bills_summary import bills_summary, filtered_b
 from house_manager.common.mixins import HtmxFragmentMixin, MonthChoices, YearChoices
 from house_manager.house_bills.forms import HouseMonthlyBillForm, HouseOtherBillForm, HouseFixedBillForm
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
-from house_manager.house_bills.helpers.restore_balance_on_revert import restore_house_balance_on_revert
-from house_manager.house_bills.helpers.subtract_amount_from_balance import subtract_amount_from_house_balance
 from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill, TypeOfBillChoices
 from house_manager.houses.mixins import GetHouseAndUserMixin, HouseOwnershipMixin
 from house_manager.houses.models import House, HouseCalculationsOptions
 
 logger = logging.getLogger(__name__)
+
+
+def house_bill_balance_delta(bill):
+    """The amount a house bill moves the house balance by: monthly bills
+    debit amount_without_repairs (the repairs fund is tracked
+    separately), every other bill its total."""
+    if isinstance(bill, HouseMonthlyBill):
+        return bill.amount_without_repairs()
+    return bill.total_amount
 
 
 class HouseBaseBillCreateView(CheckForLoggedInUserMixin, HouseOwnershipMixin, GetHouseAndUserMixin, views.CreateView):
@@ -245,16 +252,33 @@ class HouseBaseBillEditView(HtmxFragmentMixin, HouseOwnershipMixin, views.Update
         if not form.cleaned_data['is_paid']:
             return self.form_invalid(form)
         else:
-            house_id = form.instance.house_id
-            bill_id = form.instance.id
-            type_of_bill = self.queryset.model
-            subtract_amount_from_house_balance(type_of_bill, house_id, bill_id)
+            with transaction.atomic():
+                # Row locks (#18): the house row is locked before anything
+                # reads or writes, and the bill is re-checked under that
+                # lock - two concurrent payments cannot both pass the
+                # unpaid check and debit the balance twice. (Same pattern
+                # as the client-bill flows.)
+                House.objects.select_for_update().get(
+                    pk=form.instance.house_id)
 
-            if self.is_htmx_request():
-                self.object = form.save()
-                return self.render_row_fragment()
+                still_unpaid = (
+                    self.queryset.model.objects.select_for_update()
+                    .filter(pk=form.instance.pk, is_paid=False).exists())
+                if not still_unpaid:
+                    return self.form_invalid(form)
 
-            return super().form_valid(form)
+                delta = house_bill_balance_delta(form.instance)
+
+                if self.is_htmx_request():
+                    self.object = form.save()
+                    response = self.render_row_fragment()
+                else:
+                    response = super().form_valid(form)
+
+                House.objects.filter(pk=form.instance.house_id).update(
+                    money_balance=F("money_balance") - delta)
+
+            return response
 
     def render_row_fragment(self):
         """Return the updated bill row plus a fresh summary line for an
@@ -342,8 +366,22 @@ class HouseBaseBillRevertView(HouseOwnershipMixin, HtmxFragmentMixin, views.View
         return bill
 
     def revert(self, bill):
-        if self._bill_paid_before_request:
-            restore_house_balance_on_revert(self.queryset.model, bill.house_id, bill.pk)
+        with transaction.atomic():
+            # Row locks (#18): the house row is locked before the balance
+            # update, and the bill is re-checked under that lock - two
+            # concurrent reverts cannot both credit the balance.
+            House.objects.select_for_update().get(pk=bill.house_id)
+
+            still_paid = (
+                self.queryset.model.objects.select_for_update()
+                .filter(pk=bill.pk, is_paid=True).exists())
+            if not still_paid:
+                return
+
+            amount = house_bill_balance_delta(bill)
+            House.objects.filter(pk=bill.house_id).update(
+                money_balance=F("money_balance") + amount)
+
             bill.is_paid = False
             bill.save(update_fields=["is_paid"])
 

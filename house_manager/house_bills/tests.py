@@ -336,6 +336,11 @@ class HouseBillsSecurityTests(TestCase):
         self.assertNotIn("HX-Trigger", response)
         self.assertEqual(response["HX-Retarget"], "#bill-modal-container")
 
+        # Idempotency under the row lock (#18): the replay must not debit
+        # the balance a second time.
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("-100.00"))
+
         self.house.refresh_from_db()
         self.assertEqual(self.house.money_balance, Decimal("-100.00"))
 
