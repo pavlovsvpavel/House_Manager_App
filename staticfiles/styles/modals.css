@@ -96,6 +96,12 @@ html.htmx-running .filter-apply {
     color: var(--danger);
 }
 
+/* Flash-message toasts (Django messages framework) — e.g. after a
+   bill creation redirect. Success gets a green accent border. */
+.messages-toast--success {
+    border-color: var(--state-success);
+}
+
 /* ============================================================
    Payment dialog — amount-first hero, itemized breakdown,
    switch-style pay control, clear action bar.
@@ -677,8 +683,21 @@ dialog.bill-modal::backdrop {
         border-bottom: 1px dashed var(--line);
         display: flex;
         justify-content: space-between;
+        align-items: center;
         gap: var(--space-4);
         text-align: right;
+    }
+
+    /* Row labels: each td carries data-label from its column header. */
+    .report-table tbody td::before {
+        content: attr(data-label);
+        color: var(--text-2);
+        font-weight: 600;
+        text-align: left;
+    }
+
+    .report-table tbody td:empty::before {
+        display: none;
     }
 
     .report-table tbody td:last-child {

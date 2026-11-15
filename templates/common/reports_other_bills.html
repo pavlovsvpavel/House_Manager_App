@@ -27,7 +27,9 @@
                     <div class="report-table-wrap">
                         <table class="report-table">
                             {% if clients_bills %}
-                                {% include "partials/reports/table_headers_other_bills.html" %}
+                                <thead>
+                                    {% include "partials/reports/table_headers_other_bills.html" %}
+                                </thead>
                             {% elif single_bills %}
                                 <thead>
                                     <tr>

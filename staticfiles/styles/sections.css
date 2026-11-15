@@ -226,10 +226,6 @@
     flex: 0 1 100%;
 }
 
-.site-section.about .mission {
-    background-color: var(--form-bgnd);
-}
-
 .site-section.about .choose-us-cards {
     display: flex;
     gap: 1em;
@@ -333,25 +329,6 @@
     color: var(--text-on-inverse);
 }
 
-.report-results table {
-    border-collapse: collapse;
-    width: 100%;
-    table-layout: fixed;
-    margin-top: 1em;
-}
-
-.report-results table tr th {
-    text-align: center;
-}
-
-.report-results table tr {
-    height: 10px;
-}
-
-.report-results table td {
-    height: 30px;
-}
-
 .report-results .signature-column {
     text-align: center
 }
@@ -368,12 +345,6 @@
     background-color: var(--surface-paper);
     border-radius: var(--radius-s);
     padding: 1px 3px;
-}
-
-.report-results table th, td {
-    border: 1px solid var(--line-strong);
-    padding: 1px;
-    text-align: center;
 }
 
 .form-buttons {

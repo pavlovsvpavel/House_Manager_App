@@ -1,8 +1,9 @@
+{% load i18n %}
 <tr>
-    <td>{{ client_bill.client.family_name }}</td>
-    <td>{{ client_bill.client.apartment }}</td>
-    <td class="money money--right">{{ client_bill.total_amount }}</td>
-    <td class="signature-column">
+    <td data-label="{% trans "Family Name" %}">{{ client_bill.client.family_name }}</td>
+    <td data-label="{% trans "Apartment" %}">{{ client_bill.client.apartment }}</td>
+    <td data-label="{% trans "Total, EUR" %}" class="money money--right">{{ client_bill.total_amount }}</td>
+    <td data-label="{% trans "Signature" %}" class="signature-column">
         {% if client_bill.signature %}
         <div>
             <img src="{{ client_bill.signature }}" alt="Signature"/>
