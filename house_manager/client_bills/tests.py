@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from house_manager.clients.models import Client
-from house_manager.client_bills.models import ClientMonthlyBill
+from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 from house_manager.houses.models import House
 
 UserModel = get_user_model()
@@ -415,3 +415,255 @@ class ClientBillsSecurityTests(TestCase):
 
         self.house.refresh_from_db()
         self.assertEqual(self.house.money_balance, Decimal("100.00"))
+
+
+class ClientBillMultiPaymentTests(TestCase):
+    """
+    Multi-payment: the payment modal may check other unpaid bills of the
+    same client; they are paid (or reverted) in ONE transaction — one
+    signature on every selected bill, one locked balance update.
+    """
+    SIGNATURE_B64 = "data:image/svg+xml;base64,PHN2Zy8+"
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = UserModel.objects.create_user(
+            email="owner@test.bg", password="StrongPass123!")
+        cls.attacker = UserModel.objects.create_user(
+            email="attacker@test.bg", password="StrongPass123!")
+
+        cls.house = House.objects.create(
+            town="Sofia", address="Test str. 1", entrance="A",
+            money_balance=Decimal("0.00"), user=cls.owner)
+
+        cls.client_obj = Client.objects.create(
+            family_name="Ivanov", floor=1, apartment="1",
+            number_of_people=2, house=cls.house, user=cls.owner)
+
+        cls.other_client = Client.objects.create(
+            family_name="Petrov", floor=2, apartment="2",
+            number_of_people=2, house=cls.house, user=cls.owner)
+
+        def make_bill(month, electricity):
+            return ClientMonthlyBill.objects.create(
+                month=month, year="2026",
+                electricity_common=Decimal(electricity),
+                electricity_lift=Decimal("0.00"),
+                internet=Decimal("0.00"),
+                maintenance_lift=Decimal("0.00"),
+                fee_cleaner=Decimal("0.00"),
+                fee_manager=Decimal("0.00"),
+                fee_cashier=Decimal("0.00"),
+                repairs=Decimal("0.00"),
+                others=Decimal("0.00"),
+                amount_old_debts=Decimal("0.00"),
+                house=cls.house, client=cls.client_obj, user=cls.owner)
+
+        # Jan = the bill being paid in the modal; Feb + Mar = group targets.
+        cls.bill_jan = make_bill("01", "100.00")   # total 100.00
+        cls.bill_feb = make_bill("02", "50.00")    # total 50.00
+        cls.bill_mar = make_bill("03", "30.00")    # total 30.00
+
+        cls.bill_paid = make_bill("04", "7.00")    # total 7.00, already paid
+        cls.bill_paid.is_paid = True
+        cls.bill_paid.signature = cls.SIGNATURE_B64
+        cls.bill_paid.save()
+
+        cls.foreign_bill = ClientMonthlyBill.objects.create(
+            month="01", year="2026",
+            electricity_common=Decimal("99.00"),
+            electricity_lift=Decimal("0.00"),
+            internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"),
+            fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"),
+            fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"),
+            others=Decimal("0.00"),
+            amount_old_debts=Decimal("0.00"),
+            house=cls.house, client=cls.other_client, user=cls.owner)
+        # Paid — a forged revert id must not undo another client's payment.
+        cls.foreign_bill.is_paid = True
+        cls.foreign_bill.signature = cls.SIGNATURE_B64
+        cls.foreign_bill.save()
+
+    def pay_url(self, bill):
+        return reverse("edit_client_bill", kwargs={
+            "house_pk": self.house.pk,
+            "client_pk": self.client_obj.pk,
+            "pk": bill.pk})
+
+    def test_payment_modal_lists_other_unpaid_bills(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(
+            self.pay_url(self.bill_jan), HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        # Jan's modal offers Feb, Mar and the already-paid Apr? No — only unpaid.
+        self.assertContains(response, 'name="pay_bill"')
+        self.assertContains(response, f'value="{self.bill_feb.pk}"')
+        self.assertContains(response, f'value="{self.bill_mar.pk}"')
+        self.assertNotContains(response, f'value="{self.bill_paid.pk}"')
+        self.assertNotContains(response, f'value="{self.foreign_bill.pk}"')
+
+    def test_multi_pay_marks_all_selected_paid_with_one_signature_and_credit(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            self.pay_url(self.bill_jan),
+            {"is_paid": "on", "signature": "PHN2Zy8+",
+             "pay_bill": [str(self.bill_feb.pk), str(self.bill_mar.pk)]},
+            HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["HX-Trigger"], "billPaid")
+        self.assertEqual(response["X-Paid-Together"],
+                         f"{self.bill_feb.pk},{self.bill_mar.pk}")
+        # Main row + one OOB fragment per group bill.
+        self.assertEqual(response.content.decode().count("hx-swap-oob"), 2)
+
+        for bill in (self.bill_jan, self.bill_feb, self.bill_mar):
+            bill.refresh_from_db()
+            self.assertTrue(bill.is_paid)
+            self.assertEqual(bill.signature, self.SIGNATURE_B64)
+
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("180.00"))
+
+    def test_multi_pay_skips_already_paid_and_foreign_bills(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            self.pay_url(self.bill_jan),
+            {"is_paid": "on", "signature": "PHN2Zy8+",
+             "pay_bill": [str(self.bill_feb.pk), str(self.bill_paid.pk),
+                          str(self.foreign_bill.pk)]},
+            HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        # Only Feb joins the group — the already-paid and the other
+        # client's bill are silently dropped.
+        self.assertEqual(response["X-Paid-Together"], str(self.bill_feb.pk))
+        self.assertEqual(response.content.decode().count("hx-swap-oob"), 1)
+
+        self.bill_paid.refresh_from_db()
+        self.foreign_bill.refresh_from_db()
+        self.bill_feb.refresh_from_db()
+        self.assertTrue(self.bill_paid.is_paid)
+        # The other client's bill is untouched — not credited, not modified.
+        self.assertTrue(self.foreign_bill.is_paid)
+        self.assertEqual(self.foreign_bill.signature, self.SIGNATURE_B64)
+        self.assertTrue(self.bill_feb.is_paid)
+
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("150.00"))
+
+    def test_undo_reverts_whole_group(self):
+        self.client.force_login(self.owner)
+        self.client.post(
+            self.pay_url(self.bill_jan),
+            {"is_paid": "on", "signature": "PHN2Zy8+",
+             "pay_bill": [str(self.bill_feb.pk), str(self.bill_mar.pk)]})
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("180.00"))
+
+        response = self.client.post(
+            reverse("revert_client_bill", kwargs={
+                "house_pk": self.house.pk,
+                "client_pk": self.client_obj.pk,
+                "pk": self.bill_jan.pk}),
+            {"paid_together": [str(self.bill_feb.pk), str(self.bill_mar.pk)]},
+            HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["HX-Trigger"], "billReverted")
+        self.assertEqual(response.content.decode().count("hx-swap-oob"), 2)
+
+        for bill in (self.bill_jan, self.bill_feb, self.bill_mar):
+            bill.refresh_from_db()
+            self.assertFalse(bill.is_paid)
+            self.assertEqual(bill.signature, "")
+
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("0.00"))
+
+    def test_undo_ignores_forged_ids(self):
+        self.client.force_login(self.owner)
+        self.client.post(
+            self.pay_url(self.bill_jan),
+            {"is_paid": "on", "signature": "PHN2Zy8+",
+             "pay_bill": [str(self.bill_feb.pk)]})
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("150.00"))
+
+        # A foreign client's bill id must not be reverted.
+        response = self.client.post(
+            reverse("revert_client_bill", kwargs={
+                "house_pk": self.house.pk,
+                "client_pk": self.client_obj.pk,
+                "pk": self.bill_jan.pk}),
+            {"paid_together": [str(self.foreign_bill.pk)]},
+            HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.bill_jan.refresh_from_db()
+        self.bill_feb.refresh_from_db()
+        self.foreign_bill.refresh_from_db()
+        self.assertFalse(self.bill_jan.is_paid)
+        self.assertTrue(self.bill_feb.is_paid)   # not in paid_together: stays
+        self.assertTrue(self.foreign_bill.is_paid)
+
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("50.00"))
+
+    def test_other_bill_multi_pay(self):
+        other_jan = ClientOtherBill.objects.create(
+            month="01", year="2026", comment="Repair fund",
+            total_amount=Decimal("55.50"),
+            house=self.house, client=self.client_obj, user=self.owner)
+        other_feb = ClientOtherBill.objects.create(
+            month="02", year="2026", comment="Repair fund Feb",
+            total_amount=Decimal("22.25"),
+            house=self.house, client=self.client_obj, user=self.owner)
+
+        self.client.force_login(self.owner)
+        url = reverse("edit_client_other_bill", kwargs={
+            "house_pk": self.house.pk,
+            "client_pk": self.client_obj.pk,
+            "pk": other_jan.pk})
+
+        response = self.client.post(
+            url,
+            {"is_paid": "on", "signature": "PHN2Zy8+",
+             "pay_bill": [str(other_feb.pk)]},
+            HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["X-Paid-Together"], str(other_feb.pk))
+
+        other_jan.refresh_from_db()
+        other_feb.refresh_from_db()
+        self.assertTrue(other_jan.is_paid)
+        self.assertTrue(other_feb.is_paid)
+        self.assertEqual(other_jan.signature, self.SIGNATURE_B64)
+        self.assertEqual(other_feb.signature, self.SIGNATURE_B64)
+
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("77.75"))
+
+    def test_no_js_multi_pay_redirects_and_pays_group(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            self.pay_url(self.bill_jan),
+            {"is_paid": "on", "signature": "PHN2Zy8+",
+             "pay_bill": [str(self.bill_feb.pk)]})
+
+        self.assertEqual(response.status_code, 302)
+        self.bill_jan.refresh_from_db()
+        self.bill_feb.refresh_from_db()
+        self.assertTrue(self.bill_jan.is_paid)
+        self.assertTrue(self.bill_feb.is_paid)
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("150.00"))

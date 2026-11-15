@@ -1,6 +1,7 @@
 {% load static %}
 {% load i18n %}
-<form class="bill-form" method="post"
+{% load l10n %}
+<form class="bill-form" method="post" data-base-amount="{{ form.instance.total_amount|unlocalize }}"
       action="{% url 'edit_client_other_bill' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}"
       hx-post="{% url 'edit_client_other_bill' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}"
       hx-target="#bill-row-{{ object.pk }}"
@@ -11,6 +12,24 @@
         <span class="bill-form__track" aria-hidden="true"></span>
         <span class="bill-form__switch-label">{% if form.instance.is_paid %}{% trans "Paid" %}{% else %}{% trans "Mark as paid" %}{% endif %}</span>
     </label>
+
+    {% if pay_bills %}
+        <fieldset class="bill-form__pay-bills">
+            <legend>{% trans "Also pay other unpaid bills" %}</legend>
+            {% for bill in pay_bills %}
+                <label class="bill-form__pay-bill">
+                    <input type="checkbox" name="pay_bill" value="{{ bill.pk }}"
+                           data-amount="{{ bill.total_amount|unlocalize }}">
+                    <span class="bill-form__pay-bill-period">{{ bill.get_month_name }} {{ bill.year }}</span>
+                    <span class="bill-form__pay-bill-amount money">{{ bill.total_amount }} EUR</span>
+                </label>
+            {% endfor %}
+            <p class="bill-form__total">
+                {% trans "Total to pay" %}:
+                <span class="money" data-bill-total>{{ form.instance.total_amount|floatformat:2 }} EUR</span>
+            </p>
+        </fieldset>
+    {% endif %}
 
     {% if form.instance.is_paid %}
         {% include "partials/signature-show.html" %}

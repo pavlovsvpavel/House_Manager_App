@@ -399,6 +399,56 @@ dialog.bill-modal::backdrop {
     background-color: var(--surface-1);
 }
 
+/* Multi-payment: checkboxes for the client's other unpaid bills. */
+.bill-form__pay-bills {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+    margin: 0;
+    padding: 0.75em 1em;
+}
+
+.bill-form__pay-bills legend {
+    color: var(--text-2);
+    font-size: 0.9em;
+    font-weight: 600;
+    padding: 0 0.25em;
+}
+
+.bill-form__pay-bill {
+    align-items: center;
+    border-radius: var(--radius-s);
+    cursor: pointer;
+    display: flex;
+    gap: 0.75em;
+    justify-content: space-between;
+    padding: 0.35em 0.5em;
+}
+
+.bill-form__pay-bill:hover {
+    background-color: var(--surface-1);
+}
+
+.bill-form__pay-bill input[type="checkbox"] {
+    accent-color: var(--accent);
+    height: 1em;
+    width: 1em;
+}
+
+.bill-form__pay-bill-period {
+    flex: 1;
+}
+
+.bill-form__total {
+    border-top: 1px dashed var(--border-color);
+    font-weight: 600;
+    margin: 0.35em 0 0;
+    padding-top: 0.5em;
+    text-align: right;
+}
+
 /* Receipt link (paid client bills) */
 .bill-form__receipt {
     display: inline-flex;

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 13:33+0000\n"
+"POT-Creation-Date: 2026-11-15 14:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -80,7 +80,7 @@ msgid "Unpaid bills, EUR"
 msgstr "Неплатени сметки, ЕВРО"
 
 #: house_manager/client_bills/views.py:97
-#: house_manager/client_bills/views.py:216
+#: house_manager/client_bills/views.py:279
 msgid "Bill not found for current client."
 msgstr "Не е намерена сметка на съответния клиент."
 
@@ -376,7 +376,7 @@ msgstr "Добави месечна сметка"
 
 #: house_manager/house_bills/views.py:84
 msgid "Monthly bill created successfully."
-msgstr ""
+msgstr "Месечната сметка е създадена успешно."
 
 #: house_manager/house_bills/views.py:88 house_manager/house_bills/views.py:120
 msgid "Bill with those month and year already exists."
@@ -393,7 +393,7 @@ msgstr "Добави друга сметка"
 
 #: house_manager/house_bills/views.py:116
 msgid "Other bill created successfully."
-msgstr ""
+msgstr "Друга сметка е създадена успешно."
 
 #: house_manager/house_bills/views.py:128
 msgid "Add Monthly Bill (Per Apartment)"
@@ -410,7 +410,7 @@ msgstr "Успешно създадени сметки за %(count)d апарт
 
 #: house_manager/house_bills/views.py:157
 msgid "An error occurred while creating the bills. Please try again."
-msgstr ""
+msgstr "Възникна грешка при създаването на сметките. Моля, опитайте отново."
 
 #: house_manager/house_bills/views.py:231
 #: house_manager/house_bills/views.py:330
@@ -602,7 +602,17 @@ msgstr "Общо сума, ЕВРО"
 msgid "Mark as paid"
 msgstr "Отбележи като платено"
 
-#: templates/client_bills/partials/monthly_bill_form.html:20
+#: templates/client_bills/partials/monthly_bill_form.html:17
+#: templates/client_bills/partials/other_bill_form.html:17
+msgid "Also pay other unpaid bills"
+msgstr "Платете и други неплатени сметки"
+
+#: templates/client_bills/partials/monthly_bill_form.html:27
+#: templates/client_bills/partials/other_bill_form.html:27
+msgid "Total to pay"
+msgstr "Общо за плащане"
+
+#: templates/client_bills/partials/monthly_bill_form.html:38
 msgid "Download Receipt"
 msgstr "Изтегли разписка"
 

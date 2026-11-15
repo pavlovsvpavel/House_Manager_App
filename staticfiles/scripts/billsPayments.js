@@ -94,7 +94,50 @@
                 });
             }
 
+            initPayBillsTotal(form);
             syncSaveButton(form);
+        });
+    }
+
+    /* Multi-payment total -------------------------------------------------- */
+
+    // The payment modal may check other unpaid bills; the "Total to pay"
+    // line updates live. Without JS the line simply shows the bill's own
+    // amount and the server pays whatever boxes were checked.
+    //
+    // The displayed amounts are Django-localized (a Bulgarian page shows
+    // "45,50"), so parse anything and render back in the SAME format the
+    // server used: the separator is detected from the initial total text.
+    function parseAmount(text) {
+        const cleaned = String(text).replace(/[^\d.,-]/g, '');
+        const normalized = cleaned.includes(',') && cleaned.includes('.')
+            ? (cleaned.lastIndexOf(',') > cleaned.lastIndexOf('.')
+                ? cleaned.replace(/\./g, '').replace(',', '.')
+                : cleaned.replace(/,/g, ''))
+            : cleaned.replace(/,/g, '.');
+        const value = parseFloat(normalized);
+        return isNaN(value) ? 0 : value;
+    }
+
+    function initPayBillsTotal(form) {
+        const boxes = form.querySelectorAll('input[name="pay_bill"]');
+        const totalEl = form.querySelector('[data-bill-total]');
+        if (!boxes.length || !totalEl) return;
+
+        // "220.00 EUR" (en) or "220,00 EUR" (bg) — keep the page's format.
+        const decimalSeparator = totalEl.textContent.indexOf(',') !== -1 ? ',' : '.';
+        const base = parseAmount(form.dataset.baseAmount || '0');
+
+        const recalc = function () {
+            let total = base;
+            boxes.forEach(function (box) {
+                if (box.checked) total += parseAmount(box.dataset.amount || '0');
+            });
+            totalEl.textContent = total.toFixed(2).replace('.', decimalSeparator) + ' EUR';
+        };
+
+        boxes.forEach(function (box) {
+            box.addEventListener('change', recalc);
         });
     }
 
@@ -110,7 +153,7 @@
         clearTimeout(undoToastTimer);
     }
 
-    function showUndoToast(revertUrl, rowSelector) {
+    function showUndoToast(revertUrl, rowSelector, paidTogether) {
         const toast = undoToast();
         if (!toast) return;
 
@@ -120,6 +163,15 @@
                 undoButton.setAttribute('hx-post', revertUrl);
                 undoButton.setAttribute('hx-target', rowSelector);
                 undoButton.setAttribute('hx-swap', 'outerHTML settle:400ms');
+                if (paidTogether && paidTogether.length) {
+                    // Revert the WHOLE multi-payment group: the revert view
+                    // undoes every id sent as paid_together.
+                    undoButton.setAttribute('hx-vals', JSON.stringify({
+                        paid_together: paidTogether
+                    }));
+                } else {
+                    undoButton.removeAttribute('hx-vals');
+                }
                 undoButton.hidden = false;
                 if (window.htmx) window.htmx.process(undoButton);
             } else {
@@ -203,8 +255,13 @@
             const rowSelector = form && form.getAttribute ? form.getAttribute('hx-target') : null;
             const row = rowSelector && document.querySelector(rowSelector);
 
+            // The view echoes the ids of the bills paid in the same
+            // transaction; undo reverts the whole group.
+            const paidTogether = (detail.xhr.getResponseHeader('X-Paid-Together') || '')
+                .split(',').filter(Boolean);
+
             if (row && row.dataset.revertUrl) {
-                showUndoToast(row.dataset.revertUrl, rowSelector);
+                showUndoToast(row.dataset.revertUrl, rowSelector, paidTogether);
             }
         } else if (trigger === 'billReverted') {
             hideUndoToast();
