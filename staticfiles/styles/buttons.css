@@ -29,7 +29,7 @@
 .details-house-elements .buttons .dashboard-clients li a,
 .details-house-elements .buttons .dashboard-bills li a {
     display: block;
-    background-color: #E4D0D0;
+    background-color: var(--accent-soft);
     padding: 0.5em;
     border-radius: 0.5em;
     transition: 0.3s ease-in-out;
@@ -41,7 +41,7 @@
 .details-house-elements .buttons .dashboard-clients li a:hover,
 .details-house-elements .buttons .dashboard-bills li a:hover {
     cursor: pointer;
-    background-color: #D5B4B4;
+    background-color: color-mix(in oklab, var(--accent-soft), var(--text-1) 12%);
     transition: 0.3s ease-in-out;
 }
 
@@ -56,13 +56,13 @@
 .details-house-elements .buttons .dashboard-bills li:nth-of-type(1) a,
 .details-house-elements .buttons .dashboard-bills  li:nth-of-type(2) a,
 .details-house-elements .buttons .dashboard-bills  li:nth-of-type(3) a {
-    background-color: #AAD7D9;
+    background-color: var(--accent-soft);
 }
 
 .details-house-elements .buttons .dashboard-bills li:nth-of-type(1) a:hover,
 .details-house-elements .buttons .dashboard-bills li:nth-of-type(2) a:hover,
 .details-house-elements .buttons .dashboard-bills li:nth-of-type(3) a:hover {
-    background-color: #92C7CF;
+    background-color: color-mix(in oklab, var(--accent-soft), var(--text-1) 12%);
 }
 
 .details-house-elements .house-card .client-card-btns,
@@ -88,7 +88,7 @@
 .wrapper .bills-button a,
 .details-client .client-card a {
     text-decoration: none;
-    color: #fff;
+    color: var(--text-on-accent);
     padding: 0.5em;
     min-width: 100px;
     text-align: center;
@@ -101,7 +101,7 @@
 }
 
 .wrapper .back-button a {
-    background-color: #FF8080;
+    background-color: var(--state-danger);
     min-width: auto;
 }
 
@@ -123,7 +123,7 @@
 }
 
 .wrapper .back-button a:hover {
-    background-color: #D37676;
+    background-color: color-mix(in oklab, var(--state-danger), var(--surface-0) 18%);
 }
 
 .wrapper .back-button i {
@@ -136,7 +136,7 @@
     border-radius: 0.5em;
     border: none;
     cursor: pointer;
-    color: #fff;
+    color: var(--text-on-accent);
 }
 
 .delete-card .no-btn {
@@ -145,20 +145,20 @@
     border-radius: 0.5em;
     border: none;
     cursor: pointer;
-    color: #fff;
+    color: var(--text-on-accent);
     text-decoration: none;
 }
 
 .back-btn {
     display: inline-block;
-    color: #fff;
+    color: var(--text-on-accent);
     padding: 0.5em;
     text-align: center;
     border-radius: 1.5em;
     border-color: transparent;
     cursor: pointer;
     transition: 0.3s ease-in-out;
-    background-color: #FF8080;
+    background-color: var(--state-danger);
     border: none;
     text-decoration: none;
 }
@@ -168,7 +168,7 @@
 }
 
 .back-btn:hover {
-    background-color: #D37676;
+    background-color: color-mix(in oklab, var(--state-danger), var(--surface-0) 18%);
 }
 
 .btn-reset-signature {
@@ -190,14 +190,14 @@
     border-radius: 1.5em;
     background-color: var(--form-btn-color);
     cursor: pointer;
-    color: #fff;
+    color: var(--text-on-accent);
     display: inline-block;
     text-align: center;
     padding: 0.5em;
 }
 
 .filter-buttons .disabled {
-    background-color: #ccc;
+    background-color: color-mix(in oklab, var(--surface-2), var(--text-1) 30%);
     pointer-events: none; /* Disable clicking on the link */
     text-decoration: none; /* Remove underline */
     cursor: not-allowed; /* Change cursor to indicate it's not clickable */
@@ -208,7 +208,7 @@
     border-radius: 1.5em;
     border-color: transparent;
     background-color: var(--form-btn-color);
-    color: #fff;
+    color: var(--text-on-accent);
     cursor: pointer;
     transition: 0.3s ease-in-out;
     align-self: center;
@@ -221,7 +221,7 @@
 }
 
 .is-paid-form .btn.disabled {
-    background-color: #ccc;
+    background-color: color-mix(in oklab, var(--surface-2), var(--text-1) 30%);
     pointer-events: none;
     text-decoration: none;
     cursor: not-allowed;
@@ -229,10 +229,10 @@
 
 /*Back to top button*/
 .scrollToTopBtn {
-    background-color: #F6995C;
+    background-color: var(--accent);
     border: none;
     border-radius: 50%;
-    color: #000000;
+    color: var(--text-on-accent);
     cursor: pointer;
     font-size: 30px;
     line-height: 48px;
@@ -271,7 +271,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 1.5em;
-    background-color: #F2F2F2;
+    background-color: var(--surface-sunk);
     color: var(--card-text-color);
     padding: 0.3em;
     border: 1px solid var(--form-input-border);
@@ -279,7 +279,7 @@
 }
 
 .google-button-content-wrapper:hover {
-    background-color: #E6E6E6;
+    background-color: color-mix(in oklab, var(--surface-sunk), var(--text-1) 8%);
 }
 
 /* Password container styling */
@@ -321,24 +321,24 @@
 }
 
 .edit-house .btn:disabled {
-    background-color: #ccc;
+    background-color: color-mix(in oklab, var(--surface-2), var(--text-1) 30%);
     pointer-events: none;
     text-decoration: none;
     cursor: not-allowed;
 }
 
 .download-receipt-btn {
-    color: #fff;
+    color: var(--text-on-accent);
     padding: 0.5em;
     text-align: center;
     border-radius: 1.5em;
     cursor: pointer;
     transition: 0.3s ease-in-out;
-    background-color: #FF8080;
+    background-color: var(--state-danger);
     border: none transparent;
     text-decoration: none;
 }
 
 .download-receipt-btn:hover {
-    background-color: #D37676;
+    background-color: color-mix(in oklab, var(--state-danger), var(--surface-0) 18%);
 }

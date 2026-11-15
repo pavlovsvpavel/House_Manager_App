@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+{% load common_tags %}
 
 {% block extra_head_scripts %}
     <script nonce="{{ csp_nonce }}" src="{% static "scripts/htmx.min.js" %}" defer></script>
@@ -12,6 +13,7 @@
 
 {% block main_content %}
 
+    {% breadcrumbs house=house client=object current=_("Client bills") %}
     <section class="site-section list-client-bills">
         <div class="container">
             <div class="wrapper">

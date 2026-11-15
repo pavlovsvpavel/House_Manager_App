@@ -1,3 +1,7 @@
+from decimal import Decimal
+
+from django.db.models import Sum, Value
+from django.db.models.functions import Coalesce
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
@@ -38,6 +42,13 @@ class ClientBaseBillsDetailView(HtmxFragmentMixin, ClientOwnershipMixin, views.D
         # present, not only when is_paid is in the URL.
         if is_paid is not None or month is not None:
             client_bills = filter_bills_by_payment_status(client_bills, is_paid, month)
+
+        # Summary line above the list (server-rendered, no JS).
+        unpaid = client_bills.filter(is_paid=False)
+        context["bills_count"] = client_bills.count()
+        context["unpaid_count"] = unpaid.count()
+        context["unpaid_total"] = unpaid.aggregate(
+            total=Coalesce(Sum("total_amount"), Value(Decimal("0.00"))))["total"]
 
         context["client"] = self.selected_client
         context["house"] = self.selected_client.house

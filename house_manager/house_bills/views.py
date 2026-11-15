@@ -58,41 +58,6 @@ class HouseBaseBillCreateView(CheckForLoggedInUserMixin, HouseOwnershipMixin, Ge
         return reverse_lazy(
             'details_house', kwargs={'house_pk': self.selected_house.pk})
 
-    def render_success_alert(self, form, message):
-        """
-        Renders the page with a Success Popup.
-        """
-        context = self.get_context_data(form=form)
-        context['sweet_alert'] = {
-            'title': _("Success!"),
-            'text': message,
-            'icon': 'success',
-            'redirect_url': self.get_success_url()
-        }
-        return self.render_to_response(context)
-
-    def form_invalid(self, form):
-        """
-        Automatically extracts the first error found in the form
-        and renders the Error Popup.
-        """
-        context = self.get_context_data(form=form)
-        error_message = _("Please correct the errors below.")
-
-        if form.non_field_errors():
-            error_message = form.non_field_errors()[0]
-        elif form.errors:
-            first_field = next(iter(form.errors))
-            error_message = f"{first_field}: {form.errors[first_field][0]}"
-
-        context['sweet_alert'] = {
-            'title': _("Error"),
-            'text': error_message,
-            'icon': 'error',
-            'redirect_url': None
-        }
-        return self.render_to_response(context)
-
 
 class HouseMonthlyBillCreateView(HouseBaseBillCreateView):
     template_name = "house_bills/create_house_bills.html"
@@ -112,7 +77,7 @@ class HouseMonthlyBillCreateView(HouseBaseBillCreateView):
                         form.instance.month,
                         form.instance.user.pk
                     )
-                return self.render_success_alert(form, _("Successfully created bill."))
+                return redirect(self.get_success_url())
 
         except IntegrityError:
             form.add_error(None, _("Bill with those month and year already exists."))
@@ -143,7 +108,7 @@ class HouseOtherBillCreateView(HouseBaseBillCreateView):
                         self.object.pk
                     )
 
-                return self.render_success_alert(form, _("Successfully created bill."))
+                return redirect(self.get_success_url())
 
         except IntegrityError:
             form.add_error(None, _("Bill with those month and year already exists."))
@@ -178,7 +143,7 @@ class HouseFixedMonthlyBillView(HouseBaseBillCreateView):
                 )
 
                 msg = _("Successfully created bills for %(count)d apartments.") % {'count': created_count}
-                return self.render_success_alert(form, msg)
+                return redirect(self.get_success_url())
 
         except Exception as e:
             form.add_error(None, _("An error occurred: ") + str(e))
@@ -207,6 +172,13 @@ class CurrentHouseBaseBillDetailView(HtmxFragmentMixin, HouseOwnershipMixin, vie
         # is_paid was present, so a month choice alone showed every month.
         if is_paid is not None or month is not None:
             house_bills = filter_bills_by_payment_status(house_bills, is_paid, month)
+
+        # Summary line above the list (server-rendered, no JS).
+        unpaid = house_bills.filter(is_paid=False)
+        context["bills_count"] = house_bills.count()
+        context["unpaid_count"] = unpaid.count()
+        context["unpaid_total"] = unpaid.aggregate(
+            total=Coalesce(Sum("total_amount"), Value(Decimal("0.00"))))["total"]
 
         context["house"] = current_house
         context["house_bills"] = house_bills

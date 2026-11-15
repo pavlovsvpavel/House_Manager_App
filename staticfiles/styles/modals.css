@@ -1,6 +1,7 @@
 /* ============================================================
-   Bill payment modal + HTMX list refinements.
-   Colours come from the design tokens in variables.css.
+   Component layer: payment modal, undo toast, skeletons, breadcrumbs,
+   sticky filter bar, modern report tables.
+   Colours come ONLY from the semantic tokens in variables.css.
    ============================================================ */
 
 /* Bill rows and cards are links now (no-JS navigation works), so reset
@@ -23,7 +24,7 @@ a.house-card {
     border: 1px solid transparent;
     border-radius: 1.5em;
     background-color: var(--form-btn-color);
-    color: #fff;
+    color: var(--text-on-accent);
     cursor: pointer;
     transition: 0.3s ease-in-out;
 }
@@ -63,7 +64,7 @@ a.house-card {
     border: none;
     border-radius: 1.5em;
     background-color: var(--form-btn-color);
-    color: #fff;
+    color: var(--text-on-accent);
     cursor: pointer;
     transition: 0.3s ease-in-out;
 }
@@ -74,7 +75,7 @@ a.house-card {
 
 .undo-toast__undo.disabled,
 .undo-toast__undo[disabled] {
-    background-color: #ccc;
+    background-color: color-mix(in oklab, var(--surface-2), var(--text-1) 30%);
     cursor: not-allowed;
 }
 
@@ -162,6 +163,262 @@ dialog.bill-modal::backdrop {
 }
 
 .bill-modal #signature {
-    background-color: #fff;
+    background-color: var(--text-on-accent);
     border-radius: var(--radius);
+}
+
+/* ============================================================
+   Sticky filter bar + live summary
+   ============================================================ */
+#bills-region {
+    position: relative;
+}
+
+.filter-buttons {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background-color: var(--surface-0);
+    padding-block: var(--space-2);
+}
+
+.bills-summary {
+    padding: var(--space-2) var(--space-3);
+    color: var(--text-2);
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+}
+
+.bills-summary:empty {
+    display: none;
+}
+
+/* ============================================================
+   Skeleton shimmer while an HTMX filter request is in flight
+   ============================================================ */
+.bills-skeleton {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    background-color: var(--surface-0);
+}
+
+.bills-skeleton.htmx-request {
+    display: flex;
+}
+
+.bills-skeleton > div {
+    flex: 1 1 3.5em;
+    border-radius: var(--radius-m);
+    background: linear-gradient(
+        100deg,
+        var(--surface-1) 40%,
+        color-mix(in oklab, var(--surface-1), var(--text-1) 8%) 50%,
+        var(--surface-1) 60%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+    from { background-position: 120% 0; }
+    to { background-position: -80% 0; }
+}
+
+/* ============================================================
+   Payment / revert feedback — the swapped-in row explains itself
+   (htmx keeps htmx-settling on new content for the settle period).
+   ============================================================ */
+.client-card.htmx-settling,
+.client-card-not-paid.htmx-settling {
+    animation: row-flash 400ms ease-out;
+}
+
+@keyframes row-flash {
+    from {
+        background-color: color-mix(in oklab, var(--bill-paid), white 45%);
+    }
+}
+
+/* ============================================================
+   Undo toast — slide-up entrance, draining progress bar that IS
+   the timeout (8 s, matching UNDO_TOAST_TIMEOUT in billsPayments.js)
+   ============================================================ */
+.undo-toast {
+    overflow: hidden;
+    animation: toast-in 200ms ease-out;
+}
+
+@keyframes toast-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 0.75em);
+    }
+}
+
+.undo-toast::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 2px;
+    background-color: var(--accent);
+    animation: toast-life 8s linear forwards;
+}
+
+@keyframes toast-life {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
+
+/* ============================================================
+   Reduced motion: keep the feedback, drop the movement
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .bills-skeleton > div {
+        animation: none;
+    }
+
+    .client-card.htmx-settling,
+    .client-card-not-paid.htmx-settling {
+        animation: none;
+        opacity: 0.6;
+    }
+
+    .undo-toast {
+        animation: none;
+    }
+
+    .undo-toast::after {
+        animation: none;
+        opacity: 0.4;
+    }
+}
+
+/* ============================================================
+   Breadcrumbs (rendered by the `breadcrumbs` template tag)
+   ============================================================ */
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-block: var(--space-2);
+    font-size: var(--step--1);
+    color: var(--text-2);
+}
+
+.breadcrumbs a {
+    color: var(--text-2);
+    text-decoration: none;
+    border-radius: var(--radius-s);
+}
+
+.breadcrumbs a:hover {
+    color: var(--text-1);
+    text-decoration: underline;
+}
+
+.breadcrumbs [aria-current="page"] {
+    color: var(--text-1);
+    font-weight: 500;
+}
+
+.breadcrumbs__sep {
+    color: var(--text-2);
+    opacity: 0.6;
+}
+
+/* ============================================================
+   Report tables — sticky header, totals footer, money alignment;
+   collapse to cards when the CONTAINER is narrow (container query,
+   not viewport — the table may live in a wide modal too).
+   ============================================================ */
+.report-table-wrap {
+    container-type: inline-size;
+    overflow: auto;
+    max-width: 100%;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: var(--space-4);
+}
+
+.report-table th,
+.report-table td {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--line);
+    overflow-wrap: anywhere;
+}
+
+.report-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: var(--surface-inverse);
+    color: var(--text-on-inverse);
+    text-align: left;
+}
+
+.report-table tbody tr:hover {
+    background-color: var(--surface-2);
+}
+
+.report-table tfoot th,
+.report-table tfoot td {
+    border-top: 2px solid var(--line-strong);
+    border-bottom: none;
+    font-weight: 700;
+    background-color: var(--surface-1);
+}
+
+.report-table .money--right {
+    text-align: right;
+}
+
+@container (max-width: 520px) {
+    .report-table,
+    .report-table tbody,
+    .report-table tr,
+    .report-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .report-table thead,
+    .report-table tfoot {
+        display: none;
+    }
+
+    .report-table tbody tr {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-m);
+        padding: var(--space-2);
+        margin-block: var(--space-2);
+        background-color: var(--surface-1);
+    }
+
+    .report-table tbody td {
+        border-bottom: 1px dashed var(--line);
+        display: flex;
+        justify-content: space-between;
+        gap: var(--space-4);
+        text-align: right;
+    }
+
+    .report-table tbody td:last-child {
+        border-bottom: none;
+    }
+
+    /* Empty signature cells collapse in card view */
+    .report-table .signature-column:has(div:empty) {
+        display: none;
+    }
 }

@@ -2,8 +2,8 @@
 /*@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css");*/
 
 html {
-	font: 18px/1.5 "Ubuntu", sans-serif;
-	color: var(--card-text-color);
+	font: var(--step-0)/1.55 "Ubuntu", sans-serif;
+	color: var(--text-1);
 	scroll-behavior: smooth;
 }
 
@@ -16,15 +16,71 @@ label, input, select, textarea {
 	width: 100%;
 }
 
-h1 { font-size: 2.8em; }
-h2 { font-size: 2.2em; }
-h3 { font-size: 1.8em; }
-h4 { font-size: 1.6em; }
-h5 { font-size: 1.2em; }
-h6 { font-size: 1.0em; }
+h1 { font-size: var(--step-3); }
+h2 { font-size: var(--step-2); }
+h3 { font-size: var(--step-2); }
+h4 { font-size: var(--step-1); }
+h5 { font-size: var(--step-0); }
+h6 { font-size: var(--step-0); }
+
+/* Titles balance their last line; long paragraphs wrap prettily. */
+h1, h2, h3, h4 {
+	text-wrap: balance;
+}
+p {
+	text-wrap: pretty;
+}
 
 img {
 	display: block;
 	width: 100%;
 	height: auto;
+}
+
+/* ============================================================
+   Money — figures align in columns and never jitter when values
+   change (tabular figures). Right-aligned, with state modifiers.
+   ============================================================ */
+.money {
+	font-variant-numeric: tabular-nums;
+	font-weight: 500;
+	text-align: right;
+}
+
+.money--negative {
+	color: var(--state-danger);
+}
+
+.money--muted {
+	color: var(--text-2);
+	font-weight: 400;
+}
+
+/* ============================================================
+   Keyboard focus — visible, consistent, theme-aware.
+   ============================================================ */
+:focus {
+	outline: none;
+}
+
+:focus-visible {
+	outline: none;
+	box-shadow: var(--focus-ring);
+	border-radius: var(--radius-s);
+}
+
+/* ============================================================
+   Cross-document View Transitions (progressive enhancement:
+   browsers without support simply navigate instantly; users who
+   prefer reduced motion keep instant navigation).
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+	@view-transition {
+		navigation: auto;
+	}
+
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation-duration: 180ms;
+	}
 }

@@ -168,9 +168,10 @@ class HouseBillsSecurityTests(TestCase):
                 "others": "0",
             })
 
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse(
+            "details_house", kwargs={"house_pk": self.house.pk}))
         self.assertEqual(HouseMonthlyBill.objects.count(), 2)
-        # Note: create views render a SweetAlert success page (HTTP 200 with
-        # a JS redirect), not a 302.
 
     # --- HTMX fragments (Phase 2) -------------------------------------------
 

@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="house-kpis">
                                     <div class="kpi">
-                                        <p class="kpi-value">{{ house.money_balance }}</p>
+                                        <p class="kpi-value money {% if house.money_balance < 0 %}money--negative{% endif %}">{{ house.money_balance }}</p>
                                         <p class="kpi-label">{% trans "Balance, EUR" %}</p>
                                     </div>
                                     <div class="kpi">
@@ -39,7 +39,7 @@
                                         <p class="kpi-label">{% trans "Unpaid bills" %}</p>
                                     </div>
                                     <div class="kpi">
-                                        <p class="kpi-value">{{ house.unpaid_bills_total }}</p>
+                                        <p class="kpi-value money">{{ house.unpaid_bills_total }}</p>
                                         <p class="kpi-label">{% trans "Due, EUR" %}</p>
                                     </div>
                                 </div>

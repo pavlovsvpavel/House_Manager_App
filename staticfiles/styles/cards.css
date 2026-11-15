@@ -131,7 +131,7 @@
 .details-client-bill .client-card .card-column {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--line-strong);
     text-align: right;
 }
 
@@ -168,7 +168,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--line-strong);
     align-items: center;
 }
 
@@ -250,7 +250,7 @@
 .profile-card .details-profile-btns ul li a {
     display: block;
     text-decoration: none;
-    color: #fff;
+    color: var(--text-on-accent);
     background-color: var(--form-btn-color);
     border-radius: 0.5em;
     text-align: center;

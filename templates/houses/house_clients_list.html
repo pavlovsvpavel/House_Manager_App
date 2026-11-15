@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load common_tags %}
 
 {% block main_content %}
 
+    {% breadcrumbs house=object current=_("Clients") %}
     <section class="site-section list-clients">
         <div class="container">
             <div class="wrapper">

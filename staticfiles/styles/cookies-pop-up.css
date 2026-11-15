@@ -20,7 +20,7 @@
 .cookies-eu-banner button {
   text-decoration: none;
   background: var(--form-btn-color);
-  color: #fff;
+  color: var(--text-on-accent);
   border: transparent;
   border-radius: 0.5em;
   cursor: pointer;
@@ -30,8 +30,8 @@
 }
 
 .cookies-eu-banner button:hover {
-  background: #fff;
-  color: #222;
+  background: var(--surface-sunk);
+  color: var(--text-1);
 }
 
 .hidden {

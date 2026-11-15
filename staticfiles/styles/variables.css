@@ -1,77 +1,143 @@
 /* ============================================================
-   Design tokens — single source of truth for colors and shape.
-   Dark mode overrides the same variables under [data-theme="dark"];
-   the theme is applied before first paint by scripts/themeToggle.js
-   (system preference by default, manual choice in localStorage).
+   Design tokens 2.0 — semantic, self-deriving, OKLCH.
+
+   Components consume ONLY the semantic layer (--surface-*, --text-*,
+   --accent, --state-*). Derived states (hover/active/disabled/borders)
+   are computed with color-mix(), so themes cannot drift apart.
+
+   Dark mode re-maps the same semantic variables under
+   [data-theme="dark"]; the theme is applied before first paint by
+   scripts/themeToggle.js (system preference by default, manual choice
+   in localStorage).
+
+   A legacy alias block at the bottom keeps the Phase 1 token names
+   (--site-bgnd, --card-bgnd, …) working while stylesheets are
+   migrated; it is intentionally the ONLY place old names appear.
    ============================================================ */
 
 :root {
-    /* Surfaces */
-    --site-bgnd: #FBF9F1;
-    --card-bgnd: #F2C18D;
-    --card-bgnd-hover: #F6995C;
-    --card-text-color: #071952;
-    --menu-bgnd: #272832;
+    /* ---- Surfaces (elevation by lightness) ---- */
+    --surface-0: oklch(97.5% 0.015 100);  /* page background  */
+    --surface-1: oklch(93% 0.055 85);     /* cards            */
+    --surface-2: oklch(88% 0.09 75);      /* hover / raised   */
+    --surface-sunk: oklch(96% 0.02 95);   /* wells, panels    */
+    --surface-inverse: oklch(24% 0.02 275); /* nav, backdrops */
 
-    /* Forms */
-    --form-bgnd: #D2E0FB;
-    --form-input-border: #35587D;
-    --form-btn-color: #35587D;
-    --form-btn-color-hover: #0079FF;
+    /* ---- Text ---- */
+    --text-1: oklch(28% 0.09 265);        /* primary  */
+    --text-2: oklch(48% 0.05 265);        /* muted    */
+    --text-on-accent: oklch(99% 0.005 100);
+    --text-on-inverse: oklch(95% 0.01 275);
 
-    /* Bill states */
-    --card-bgnd-not-paid: #D37676;
-    --card-bgnd-not-paid-hover: #B06161;
-    --card-bgnd-paid: #C5EBAA;
-    --card-bgnd-paid-hover: #A5DD9B;
+    /* ---- Accent + states (each with a -soft surface variant) ---- */
+    --accent:       oklch(58% 0.14 255);
+    --accent-soft:  oklch(92% 0.045 255);
+    --state-success:      oklch(52% 0.13 150);
+    --state-success-soft: oklch(91% 0.09 148);
+    --state-danger:       oklch(52% 0.16 25);
+    --state-danger-soft:  oklch(91% 0.05 25);
+    --state-warning:      oklch(68% 0.13 75);
 
-    /* Text */
-    --text-color: var(--card-text-color);
-    --text-muted: #5a6377;
+    /* ---- Bill states ---- */
+    --bill-paid:      oklch(89% 0.09 148);
+    --bill-paid-hover: oklch(85% 0.11 148);
+    --bill-unpaid:    oklch(80% 0.09 25);
+    --bill-unpaid-hover: oklch(76% 0.1 25);
 
-    /* Borders, shadows, shape */
-    --border-color: rgba(7, 25, 82, 0.15);
-    --shadow: 0 0.25em 0.75em rgba(7, 25, 82, 0.12);
-    --radius: 0.5em;
+    /* ---- Derived lines, focus, shadow, shape ---- */
+    --line:  color-mix(in oklab, var(--text-1), transparent 86%);
+    --line-strong: color-mix(in oklab, var(--text-1), transparent 68%);
+    --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent), transparent 52%);
+    --shadow: 0 0.25em 0.75em color-mix(in oklab, var(--text-1), transparent 88%);
+    --radius-s: 0.375rem;
+    --radius-m: 0.625rem;
+    --radius-l: 1rem;
 
-    /* Semantic states */
-    --success: #3f7d2c;
-    --danger: #a33a3a;
-    --alert-bgnd: #f8d7da;
-    --alert-text: #7d2430;
+    /* ---- Fluid type scale ---- */
+    --step--2: clamp(0.69rem, 0.66rem + 0.12vw, 0.78rem);
+    --step--1: clamp(0.8rem, 0.77rem + 0.16vw, 0.9rem);
+    --step-0: clamp(0.94rem, 0.9rem + 0.2vw, 1.05rem);
+    --step-1: clamp(1.13rem, 1.05rem + 0.4vw, 1.32rem);
+    --step-2: clamp(1.35rem, 1.2rem + 0.75vw, 1.76rem);
+    --step-3: clamp(1.62rem, 1.35rem + 1.3vw, 2.34rem);
+
+    /* ---- Third-party brand marks (documented exception: brand
+       colors are identity, not theme) ---- */
+    --brand-google: #7d2ae8;
+
+    /* ---- Spacing scale (4pt grid) ---- */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
 }
 
 [data-theme="dark"] {
-    /* Surfaces */
-    --site-bgnd: #12141c;
-    --card-bgnd: #232838;
-    --card-bgnd-hover: #2d3448;
-    --card-text-color: #e8eaf2;
-    --menu-bgnd: #0d0f16;
+    /* ---- Surfaces ---- */
+    --surface-0: oklch(16% 0.02 275);
+    --surface-1: oklch(22% 0.03 275);
+    --surface-2: oklch(28% 0.04 275);
+    --surface-sunk: oklch(19% 0.025 275);
+    --surface-inverse: oklch(12% 0.015 275);
 
-    /* Forms */
-    --form-bgnd: #1a1e2b;
-    --form-input-border: #3d4666;
-    --form-btn-color: #8ab4ff;
-    --form-btn-color-hover: #4d94ff;
+    /* ---- Text ---- */
+    --text-1: oklch(93% 0.01 275);
+    --text-2: oklch(70% 0.02 275);
+    --text-on-accent: oklch(15% 0.03 255);
+    --text-on-inverse: oklch(93% 0.01 275);
 
-    /* Bill states — desaturated for dark surfaces */
-    --card-bgnd-not-paid: #5a3030;
-    --card-bgnd-not-paid-hover: #6e3c3c;
-    --card-bgnd-paid: #2e4423;
-    --card-bgnd-paid-hover: #3a542c;
+    /* ---- Accent + states (desaturated, lighter for dark surfaces) ---- */
+    --accent:       oklch(75% 0.1 255);
+    --accent-soft:  oklch(28% 0.05 255);
+    --state-success:      oklch(78% 0.11 150);
+    --state-success-soft: oklch(30% 0.05 150);
+    --state-danger:       oklch(74% 0.12 25);
+    --state-danger-soft:  oklch(28% 0.05 25);
+    --state-warning:      oklch(80% 0.1 80);
 
-    /* Text */
-    --text-color: #e8eaf2;
-    --text-muted: #9aa3b8;
+    /* ---- Bill states ---- */
+    --bill-paid:      oklch(33% 0.06 150);
+    --bill-paid-hover: oklch(39% 0.07 150);
+    --bill-unpaid:    oklch(32% 0.06 25);
+    --bill-unpaid-hover: oklch(38% 0.07 25);
 
-    /* Borders, shadows, shape */
-    --border-color: rgba(232, 234, 242, 0.18);
-    --shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.45);
+    /* ---- Derived ---- */
+    --shadow: 0 0.25em 0.75em oklch(0% 0 0 / 0.45);
+}
 
-    /* Semantic states */
-    --success: #8fc97a;
-    --danger: #e08a8a;
-    --alert-bgnd: #4a2a2e;
-    --alert-text: #f2c4c9;
+/* ============================================================
+   Legacy aliases — Phase 1 token names. ONLY this block may use
+   them; migrate stylesheets to the semantic layer above, then
+   delete entries from here.
+   ============================================================ */
+:root {
+    --site-bgnd: var(--surface-0);
+    --card-bgnd: var(--surface-1);
+    --card-bgnd-hover: var(--surface-2);
+    --card-text-color: var(--text-1);
+    --menu-bgnd: var(--surface-inverse);
+    --form-bgnd: var(--accent-soft);
+    --form-input-border: var(--line-strong);
+    --form-btn-color: var(--accent);
+    --form-btn-color-hover: color-mix(in oklab, var(--accent), var(--text-1) 18%);
+    --card-bgnd-not-paid: var(--bill-unpaid);
+    --card-bgnd-not-paid-hover: var(--bill-unpaid-hover);
+    --card-bgnd-paid: var(--bill-paid);
+    --card-bgnd-paid-hover: var(--bill-paid-hover);
+    --text-color: var(--text-1);
+    --text-muted: var(--text-2);
+    --border-color: var(--line);
+    --success: var(--state-success);
+    --danger: var(--state-danger);
+    --alert-bgnd: var(--state-danger-soft);
+    --alert-text: var(--state-danger);
+    --radius: var(--radius-m);
+}
+
+[data-theme="dark"] {
+    --form-btn-color-hover: color-mix(in oklab, var(--accent), white 15%);
 }

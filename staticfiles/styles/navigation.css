@@ -134,7 +134,7 @@
 }
 
 .navigation .menu-links a:hover {
-    background-color: #4e4e53;
+    background-color: color-mix(in oklab, var(--surface-inverse), white 12%);
     border-radius: 0.5em;
 }
 
@@ -172,7 +172,7 @@
 }
 
 .navigation svg {
-    fill: #000;
+    fill: var(--text-on-inverse);
 }
 
 #sidebar-active {

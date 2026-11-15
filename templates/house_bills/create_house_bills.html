@@ -2,10 +2,6 @@
 {% load static %}
 {% load i18n %}
 
-{% block extra_head_scripts %}
-    <script nonce="{{ csp_nonce }}" src="{% static "scripts/sweetAlert.js" %}" defer></script>
-{% endblock %}
-
 {% block main_content %}
 
     <section class="site-section create-house-bills">

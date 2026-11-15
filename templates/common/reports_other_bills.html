@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+{% load common_tags %}
 
 {% block main_content %}
     <script src="{% static "scripts/jquery.js" %}" defer></script>
     <script src="{% static 'scripts/layoutControls.js' %}" defer></script>
 
+    {% breadcrumbs house=current_house current=_("Reports") %}
     <section class="site-section reports">
         <div class="container">
             <div class="reports-wrapper">
@@ -22,29 +24,52 @@
                             {% endif %}
                         </div>
                     </div>
-                    <table>
-                        {% if clients_bills %}
-                            {% include "partials/reports/table_headers_other_bills.html" %}
-                        {% elif single_bills %}
-                            <tr>
-                                <th>{% trans "Full name" %}</th>
-                                <th>{% trans "Comment" %}</th>
-                                <th>{% trans "Total EUR" %}</th>
-                                <th>{% trans "Signature" %}</th>
-                            </tr>
-                        {% endif %}
-                        {% for bill in single_bills %}
-                            <tr>
-                                <td></td>
-                                <td>{{ bill.comment }}</td>
-                                <td>{{ bill.total_amount }}</td>
-                                <td></td>
-                            </tr>
-                        {% endfor %}
-                        {% for client_bill in clients_bills|dictsort:"client.apartment" %}
-                            {% include "partials/reports/reports_clients_data_other_bills.html" %}
-                        {% endfor %}
-                    </table>
+                    <div class="report-table-wrap">
+                        <table class="report-table">
+                            {% if clients_bills %}
+                                {% include "partials/reports/table_headers_other_bills.html" %}
+                            {% elif single_bills %}
+                                <thead>
+                                    <tr>
+                                        <th>{% trans "Full name" %}</th>
+                                        <th>{% trans "Comment" %}</th>
+                                        <th>{% trans "Total EUR" %}</th>
+                                        <th>{% trans "Signature" %}</th>
+                                    </tr>
+                                </thead>
+                            {% endif %}
+                            <tbody>
+                                {% for bill in single_bills %}
+                                    <tr>
+                                        <td></td>
+                                        <td>{{ bill.comment }}</td>
+                                        <td class="money money--right">{{ bill.total_amount }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endfor %}
+                                {% for client_bill in clients_bills|dictsort:"client.apartment" %}
+                                    {% include "partials/reports/reports_clients_data_other_bills.html" %}
+                                {% endfor %}
+                            </tbody>
+                            {% if clients_bills %}
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row" colspan="2">{% trans "Total" %}</th>
+                                        <td class="money money--right">{{ clients_bills_total_amount }}</td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            {% elif single_bills %}
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row" colspan="2">{% trans "Total" %}</th>
+                                        <td class="money money--right">{{ calculated_total_amount }}</td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            {% endif %}
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,0 +1,101 @@
+# Phase 4 Changes — Modern Design (Tokens 2.0, Data Layouts, Motion, Unified Feedback)
+
+**Branch:** `dev` only (local; nothing pushed, nothing merged to `main`)
+**Date:** 2026-11-15
+**Scope:** Phases 4a–4d of `MODERN_DESIGN_PROPOSAL.md`. Phase 4e (dashboard sparklines/KPI trends) was **skipped per review**.
+**Related docs:** `MODERN_DESIGN_PROPOSAL.md` (the reviewed proposal), `PHASE1–3_CHANGES.md`.
+
+---
+
+## Summary of Changes
+
+### 1. Tokens 2.0 — semantic, self-deriving, OKLCH (`4a`)
+
+| File | Change |
+|------|--------|
+| `staticfiles/styles/variables.css` | Rewritten as a **semantic OKLCH layer**: `--surface-0/1/2/sunk/inverse`, `--text-1/2`, `--text-on-accent`, `--accent(-soft)`, `--state-success/danger/warning(+soft)`, `--bill-paid/unpaid(-hover)`, derived `--line`, `--line-strong`, `--focus-ring`, `--shadow`; fluid type (`--step--2…3` via `clamp()`); 4pt spacing scale (`--space-1…8`); radius scale. **All Phase 1 token names kept as legacy aliases** in one clearly-fenced block — the only place old names exist |
+| All 12 stylesheets | **Every raw hex replaced** (55+ occurrences) with semantic tokens or `color-mix()` derivations — hover/active/disabled/border states are now computed from tokens, so light/dark can never drift. The only literal color left is `--brand-google` (a documented brand-identity exception) |
+| `staticfiles/styles/typography.css` | Fluid type applied to `html`/`h1–h6`; `text-wrap: balance/pretty` for titles/paragraphs; **`.money` utility** (`tabular-nums`, state modifiers `--negative`/`--muted`, `.money--right` for tables); global `:focus-visible` ring; View Transitions opt-in (see §3) |
+
+### 2. Money typography sweep (`4a`)
+
+`.money` applied to every monetary value across templates: dashboard KPIs (with `--negative` modifier on negative balances), house/client detail cards, bill rows, report cells. Digits now share fixed widths — columns align and never jitter on update.
+
+### 3. Motion — platform primitives only (`4c`)
+
+| Feature | Implementation |
+|---------|----------------|
+| Cross-fade page navigation | `<meta name="view-transition" content="same-origin">` (base.html) + `@view-transition` CSS, **inside `prefers-reduced-motion: no-preference`** — unsupported browsers and reduced-motion users get instant navigation |
+| Payment feedback | Swapped-in bill rows animate a one-shot flash while htmx holds `htmx-settling` (`hx-swap="outerHTML settle:400ms"` on the payment forms and the JS-wired Undo button); green-tint flash for paid, played in reverse for reverts |
+| Filter loading | Skeleton shimmer overlay (`#bills-skeleton`, `hx-indicator` on the filter form + debt links) — no spinners |
+| Undo toast | Slide-up entrance + a **draining progress bar** (`::after` animation, 8 s — the same constant as `UNDO_TOAST_TIMEOUT` in `billsPayments.js`): the bar *is* the countdown, no JS timer display |
+| Reduced motion | All of the above collapse to opacity-only under one media query |
+
+### 4. Data-first layouts (`4b`)
+
+| File | Change |
+|------|--------|
+| `templates/common/reports_bills.html`, `reports_other_bills.html` | Tables wrapped in `.report-table-wrap`; real `<thead>` (the monthly header row was a bare `<tr>` the browser hoisted into an anonymous tbody — sticky styling could never apply); **`<tfoot>` totals row** fed by the aggregates the report views already compute (`unpaid_bills`, `clients_bills_total_amount`, `amount_for_collection`, `calculated_total_amount`) |
+| `staticfiles/styles/modals.css` | `.report-table`: sticky inverse-surface header, hover rows, bold totals, money alignment; **container query** collapses the table to cards below 520px *container* width (signature columns with empty cells hidden in card view) |
+| `staticfiles/styles/sections.css` | `.reports-wrapper` gets a real measure (`max-width: 60em`, centered) — it previously shrink-to-fit its content, which crammed the table into ~440px; the superseded `.report-results table th` rule removed |
+| Bill list fragments (×4) | **Live summary line**: `Bills: N · Unpaid: N · Due: X EUR` — server-rendered from the list views (annotate + aggregate, no JS) |
+| `staticfiles/styles/modals.css` | `.filter-buttons` sticky under the top edge with a surface background |
+| `house_manager/common/templatetags/common_tags.py` | **New** (`common/templatetags` package): `breadcrumbs` tag — renders Dashboard / House / Client / *current* from the Phase 1 URL hierarchy, current page as `aria-current="page"`. Wired into house details, clients list, client details, the 4 bill lists, and both reports |
+
+### 5. SweetAlert retired (`4d`)
+
+| File | Change |
+|------|--------|
+| `house_manager/house_bills/views.py` | `HouseBaseBillCreateView`: `render_success_alert` and the error-popup `form_invalid` removed — success is a plain **302** to the house details; invalid forms re-render with standard field errors (`.errorlist` was already styled) |
+| `templates/base.html` | `sweet_alert.html` include removed (block hook kept); `<meta name="view-transition">` added |
+| `templates/house_bills/create_house_bills.html`, `create_other_bill.html` | SweetAlert script tags removed |
+| **Deleted** | `templates/partials/sweet_alert.html`, `staticfiles/scripts/sweetAlert.js` (the ≈50 KB SweetAlert2 bundle) |
+
+One interaction vocabulary now: server-rendered pages + `<dialog>` modals + toasts. Delete confirmations were already server-rendered pages (`delete_*.html`), unchanged.
+
+### 6. Tests + translations
+
+| File | Change |
+|------|--------|
+| `house_manager/house_bills/tests.py` | Create test updated: asserts **302 → details_house** (was: 200 SweetAlert page) |
+| `locale/bg/LC_MESSAGES/django.po` (+ `.mo`) | New strings translated: Местоположение, Сметки, Неплатени, Дължими, Репорти, Общо, Клиент - детайли |
+
+---
+
+## Implementation Notes
+
+### 1. The breadcrumb escaping trap
+
+`separator.join(items)` on a list of `SafeString`s returns a **plain `str`** (join loses safe-marking), so the outer `format_html` escaped the whole trail — caught in browser verification as visible `&lt;a href=…` text. Fixed by composing the pieces (all built with `format_html`) and `mark_safe`-ing only the final joined string.
+
+### 2. Legacy token aliases
+
+Every pre-existing stylesheet consumed the Phase 1 token names. The sweep replaced all *raw hexes*, and the old token *names* are aliased to the semantic layer in one fenced block — the codebase has a single color vocabulary now, and the aliases can be dissolved stylesheet-by-stylesheet later without a big-bang rewrite.
+
+### 3. Reports width was a pre-existing squeeze
+
+`.report-results` measured ~440px because `.reports-wrapper` shrink-to-fit inside the flex container — the old table was always cramped. Giving the wrapper a real measure (`60em`) also keeps the new container-query card fallback honest (it now only triggers on genuinely narrow screens).
+
+---
+
+## Verification
+
+- Regression suite: **44 tests, all passing** (throwaway Postgres 17 container; `envs/.env` untouched):
+  ```
+  Ran 44 tests in 3.488s — OK
+  ```
+- Browser-verified (seeded dev server, dark + light):
+  - Client bills list: breadcrumbs render and navigate; summary line correct (`Bills: 1 · Unpaid: 0 · Due: 0.00 EUR` after payment); filter bar sticky; skeleton overlay during filter requests.
+  - Payment: row flash animation plays, dialog closes, toast slides up with the draining progress bar; ledger verified in DB.
+  - Create flow: POST → **302 → house details** (SweetAlert page gone; the form_invalid path still renders proper field errors — exercised with the missing-calculation-options seed case, which produces a clean non-field error message).
+  - Monthly report: full-width table, sticky light-on-inverse header, right-aligned tabular money, bold totals row.
+  - Zero raw hexes outside `variables.css` (except the documented `--brand-google`).
+  - No console errors / CSP violations in either theme.
+
+---
+
+## Not In Scope
+
+- **Phase 4e (skipped per review):** dashboard cockpit — balance sparklines, KPI trends, "This month" panel.
+- **Remaining a11y pass:** table→card fallback is done for reports; focus-ring sweep is done; remaining: audit all icon-only buttons, landmarks/heading order.
+- **P1 security findings** (`SECURITY_FINDINGS.md`): HSTS/security headers (#8), debug toolbar removal (#9), `SOCIALACCOUNT_LOGIN_ON_GET`/GET logout (#10), email verification (#11), atomic balance updates with row locks (#18), `axes.W006`.

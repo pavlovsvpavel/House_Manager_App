@@ -119,7 +119,7 @@
             if (revertUrl && rowSelector) {
                 undoButton.setAttribute('hx-post', revertUrl);
                 undoButton.setAttribute('hx-target', rowSelector);
-                undoButton.setAttribute('hx-swap', 'outerHTML');
+                undoButton.setAttribute('hx-swap', 'outerHTML settle:400ms');
                 undoButton.hidden = false;
                 if (window.htmx) window.htmx.process(undoButton);
             } else {

@@ -5,7 +5,8 @@
       hx-target="{{ filter_target }}"
       hx-swap="outerHTML"
       hx-push-url="true"
-      hx-trigger="submit, change"{% endif %}>
+      hx-trigger="submit, change"
+      hx-indicator="#bills-skeleton"{% endif %}>
     <div class="filter-buttons">
         <label for="month" class="month-label">
             <select name="month" id="month">
@@ -23,7 +24,8 @@
            {% if filter_target %}hx-get="{{ request.path }}?is_paid=True&month={{ request.GET.month }}"
            hx-target="{{ filter_target }}"
            hx-swap="outerHTML"
-           hx-push-url="true"{% endif %}
+           hx-push-url="true"
+           hx-indicator="#bills-skeleton"{% endif %}
            class="{% if request.GET.month == "" or not request.GET.dict %}disabled{% endif %}">
            {% trans "Without debts" %}
         </a>
@@ -32,7 +34,8 @@
            {% if filter_target %}hx-get="{{ request.path }}?is_paid=False&month={{ request.GET.month }}"
            hx-target="{{ filter_target }}"
            hx-swap="outerHTML"
-           hx-push-url="true"{% endif %}
+           hx-push-url="true"
+           hx-indicator="#bills-skeleton"{% endif %}
            class="{% if request.GET.month == "" or not request.GET.dict %}disabled{% endif %}">
            {% trans "With debts" %}
         </a>
