@@ -124,6 +124,29 @@ class ClientBillsSecurityTests(TestCase):
         self.bill.refresh_from_db()
         self.assertFalse(self.bill.is_paid)
 
+    # --- Owner renders: template URL reversals must not 500 -----------------
+
+    def test_client_bills_list_renders_for_owner(self):
+        """Regression: the list template reversed 'details_client' with
+        client_pk (route uses pk) and 500'd for the owner."""
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "list_client_bills",
+            kwargs={"house_pk": self.house.pk, "client_pk": self.client_obj.pk}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Ivanov")
+
+    def test_client_other_bills_list_renders_for_owner(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "list_other_client_bills",
+            kwargs={"house_pk": self.house.pk, "client_pk": self.client_obj.pk}))
+
+        self.assertEqual(response.status_code, 200)
+
     # --- Receipt download (IDOR) --------------------------------------------
 
     def test_receipt_download_blocked_for_other_user(self):

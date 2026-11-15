@@ -12,7 +12,7 @@
                         <p class="family-name">{{ object.family_name }}</p>
                     </div>
                     <div class="back-button">
-                        <a href="{% url "details_client" house_pk=house.pk client_pk=object.pk %}"><i
+                        <a href="{% url "details_client" house_pk=house.pk pk=object.pk %}"><i
                                 class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                     </div>
                 </div>

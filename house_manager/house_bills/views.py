@@ -4,7 +4,7 @@ from django.http import Http404
 from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
 
@@ -26,13 +26,19 @@ from house_manager.houses.models import House, HouseCalculationsOptions
 class HouseBaseBillCreateView(CheckForLoggedInUserMixin, HouseOwnershipMixin, GetHouseAndUserMixin, views.CreateView):
     template_name = None
     form_class = None
-    action_url = None
+    action_url_name = None
     title = None
 
     @property
     def current_house(self):
         # Ownership-verified house derived from the URL (house_pk).
         return self.selected_house
+
+    def get_action_url(self):
+        # The create routes are nested under /houses/<house_pk>/..., so the
+        # form target must be reversed per-request with the house from the URL.
+        return reverse(
+            self.action_url_name, kwargs={"house_pk": self.selected_house.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,7 +48,7 @@ class HouseBaseBillCreateView(CheckForLoggedInUserMixin, HouseOwnershipMixin, Ge
         if house:
             context['clients'] = Client.objects.filter(house=house)
 
-        context['action_url'] = self.action_url
+        context['action_url'] = self.get_action_url()
         context["title"] = self.title
         return context
 
@@ -89,7 +95,7 @@ class HouseBaseBillCreateView(CheckForLoggedInUserMixin, HouseOwnershipMixin, Ge
 class HouseMonthlyBillCreateView(HouseBaseBillCreateView):
     template_name = "house_bills/create_house_bills.html"
     form_class = HouseMonthlyBillForm
-    action_url = reverse_lazy("create_house_bills")
+    action_url_name = "create_house_bills"
     title = _("Add monthly bill")
 
     def form_valid(self, form):
@@ -118,7 +124,7 @@ class HouseMonthlyBillCreateView(HouseBaseBillCreateView):
 class HouseOtherBillCreateView(HouseBaseBillCreateView):
     template_name = "house_bills/create_other_bill.html"
     form_class = HouseOtherBillForm
-    action_url = reverse_lazy("create_other_bill")
+    action_url_name = "create_other_bill"
     title = _("Add other bill")
 
     def form_valid(self, form):
@@ -145,7 +151,7 @@ class HouseOtherBillCreateView(HouseBaseBillCreateView):
 class HouseFixedMonthlyBillView(HouseBaseBillCreateView):
     template_name = "house_bills/create_house_bills.html"
     form_class = HouseFixedBillForm
-    action_url = reverse_lazy("create_fixed_bill")
+    action_url_name = "create_fixed_bill"
     title = _("Add Monthly Bill (Per Apartment)")
 
     def form_valid(self, form):
