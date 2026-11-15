@@ -6,10 +6,29 @@ from house_manager.houses.models import House
 
 
 class OwnerRequiredMixin(auth_mixins.AccessMixin):
+    """
+    Profile pages are keyed by the user's pk, with two guards: dispatch
+    compares the URL pk with the requester (cheap early exit), and
+    get_object verifies the fetched row's user relation — the object-level
+    check stays correct even if the Profile pk ever stops being the user
+    FK column (#13).
+    """
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.pk != kwargs.get("pk", None):
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+
+        # Profile rows are one-to-one with the user (Profile.pk is the
+        # user FK column); user rows are the user itself.
+        owner_pk = getattr(obj, "user_id", obj.pk)
+        if owner_pk != self.request.user.pk:
+            return self.handle_no_permission()
+
+        return obj
 
 
 class CheckForLoggedInUserMixin:

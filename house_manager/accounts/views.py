@@ -67,7 +67,7 @@ def logout_user(request):
 
 
 class ProfileDetailsView(OwnerRequiredMixin, views.DetailView):
-    queryset = Profile.objects.prefetch_related("user")
+    queryset = Profile.objects.select_related("user")
     template_name = "accounts/details_profile.html"
 
     def get_context_data(self, **kwargs):
@@ -115,13 +115,14 @@ class ProfileDeleteView(OwnerRequiredMixin, views.DeleteView):
 
     success_url = reverse_lazy("index")
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        user = self.object.user
-        logout(request)
-        user.delete()
-
-        return super().delete(request, *args, **kwargs)
+    def form_valid(self, form):
+        # The queryset is UserModel: the fetched object IS the user row and
+        # deleting it cascades to the Profile. Log out first so the session
+        # does not outlive the account. (A custom delete() override would
+        # never run: Django's DeleteView POSTs through the form flow -
+        # post() -> form_valid() -> object.delete().)
+        logout(self.request)
+        return super().form_valid(form)
 
     def get_success_url(self):
         return self.success_url
