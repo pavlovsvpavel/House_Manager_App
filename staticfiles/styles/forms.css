@@ -182,6 +182,10 @@
     position: relative;
 }
 
+#signature .signature-label {
+    padding-left: 1em;
+}
+
 [data-theme="dark"] #signature {
     background-color: var(--surface-sunk);
     color: var(--text-1);
