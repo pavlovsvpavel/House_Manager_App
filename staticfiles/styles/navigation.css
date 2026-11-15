@@ -52,8 +52,6 @@
     text-transform: uppercase;
     font-weight: bold;
     padding: 0.5em;
-    /*border-radius: 0.5em;*/
-    /*transition: 0.3s ease-in-out;*/
     display: block;
     cursor: pointer;
 }
