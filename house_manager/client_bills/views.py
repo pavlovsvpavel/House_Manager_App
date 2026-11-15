@@ -1,7 +1,7 @@
 from django.http import Http404, HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.text import slugify
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
@@ -15,6 +15,7 @@ from house_manager.clients.models import Client
 from house_manager.common.helpers.filtering_unpaid_client_bills import filtering_unpaid_client_bills
 from house_manager.common.mixins import HtmxFragmentMixin, MonthChoices
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
+from house_manager.house_bills.helpers.subtract_amount_from_balance import subtract_amount_from_house_balance
 from house_manager.houses.mixins import HouseOwnershipMixin
 
 
@@ -178,6 +179,71 @@ class CurrentClientOtherBillEditView(CurrentClientBaseBillEditView):
     queryset = ClientOtherBill.objects.prefetch_related('client')
     template_name = "client_bills/edit_client_other_bill.html"
     partial_template_name = "client_bills/partials/other_bill_modal.html"
+    row_template_name = "client_bills/partials/other_bill_row.html"
+    success_url_name = "list_other_client_bills"
+
+
+class ClientBaseBillRevertView(ClientOwnershipMixin, HtmxFragmentMixin, views.View):
+    """Undo a client bill payment (the Phase 3 toast's "Undo" button).
+
+    Owner-only, POST-only, and idempotent. The revert subtracts exactly
+    what the payment credited (total_amount) and clears the signature —
+    a payment that is undone did not happen.
+    """
+    queryset = None
+    row_template_name = None
+    success_url_name = None
+
+    def get_object(self):
+        bill = get_object_or_404(self.queryset, pk=self.kwargs["pk"])
+
+        # The bill must belong to the logged-in user, to the client in the
+        # URL and to the house in the URL — same rule as the edit views.
+        if (bill.user_id != self.request.user.pk
+                or bill.client_id != self.kwargs["client_pk"]
+                or bill.house_id != self.kwargs["house_pk"]):
+            raise Http404(_("Bill not found for current client."))
+
+        self._bill_paid_before_request = bill.is_paid
+        return bill
+
+    def revert(self, bill):
+        if self._bill_paid_before_request:
+            # subtract_amount_from_house_balance special-cases HouseMonthlyBill
+            # by class name; for client bills it subtracts total_amount, which
+            # is exactly the inverse of add_amount_to_house_balance.
+            subtract_amount_from_house_balance(self.queryset.model, bill.house_id, bill.pk)
+            bill.is_paid = False
+            bill.signature = ""
+            bill.save(update_fields=["is_paid", "signature"])
+
+    def post(self, request, *args, **kwargs):
+        bill = self.get_object()
+        self.revert(bill)
+
+        if self.is_htmx_request():
+            html = render_to_string(
+                self.row_template_name, {"bill": bill}, request=request)
+            response = HttpResponse(html)
+            response["HX-Trigger"] = "billReverted"
+            return response
+
+        return redirect(reverse(
+            self.success_url_name,
+            kwargs={
+                "house_pk": self.kwargs["house_pk"],
+                "client_pk": self.kwargs["client_pk"],
+            }))
+
+
+class CurrentClientMonthlyBillRevertView(ClientBaseBillRevertView):
+    queryset = ClientMonthlyBill.objects
+    row_template_name = "client_bills/partials/monthly_bill_row.html"
+    success_url_name = "list_client_bills"
+
+
+class CurrentClientOtherBillRevertView(ClientBaseBillRevertView):
+    queryset = ClientOtherBill.objects
     row_template_name = "client_bills/partials/other_bill_row.html"
     success_url_name = "list_other_client_bills"
 

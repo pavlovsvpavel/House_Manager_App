@@ -191,6 +191,88 @@ class ClientBillsSecurityTests(TestCase):
         self.house.refresh_from_db()
         self.assertEqual(self.house.money_balance, Decimal("100.00"))
 
+    # --- Revert (undo payment) ----------------------------------------------
+
+    def test_revert_client_bill_restores_balance_and_clears_signature(self):
+        self.client.force_login(self.owner)
+        self.client.post(
+            reverse("edit_client_bill",
+                    kwargs={"house_pk": self.house.pk,
+                            "client_pk": self.client_obj.pk,
+                            "pk": self.bill.pk}),
+            {"is_paid": "on", "signature": "PHN2Zy8+"})
+        self.bill.refresh_from_db()
+        self.house.refresh_from_db()
+        self.assertTrue(self.bill.is_paid)
+        self.assertEqual(self.house.money_balance, Decimal("100.00"))
+
+        response = self.client.post(
+            reverse("revert_client_bill",
+                    kwargs={"house_pk": self.house.pk,
+                            "client_pk": self.client_obj.pk,
+                            "pk": self.bill.pk}),
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["HX-Trigger"], "billReverted")
+        self.assertTemplateUsed(
+            response, "client_bills/partials/monthly_bill_row.html")
+        self.assertContains(response, f'id="bill-row-{self.bill.pk}"')
+        self.assertNotContains(response, "<html")
+
+        self.bill.refresh_from_db()
+        self.house.refresh_from_db()
+        self.assertFalse(self.bill.is_paid)
+        self.assertEqual(self.bill.signature, "")
+        self.assertEqual(self.house.money_balance, Decimal("0.00"))
+
+        # Replay: reverting an already-unpaid bill must not touch the balance.
+        self.client.post(
+            reverse("revert_client_bill",
+                    kwargs={"house_pk": self.house.pk,
+                            "client_pk": self.client_obj.pk,
+                            "pk": self.bill.pk}),
+            HTTP_HX_REQUEST="true",
+        )
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("0.00"))
+
+    def test_revert_client_bill_blocked_for_foreign_client_pk(self):
+        self.client.force_login(self.owner)
+
+        other_client = Client.objects.create(
+            family_name="Petrov",
+            floor=2,
+            apartment="2",
+            number_of_people=1,
+            house=self.house,
+            user=self.owner,
+        )
+
+        response = self.client.post(
+            reverse("revert_client_bill",
+                    kwargs={"house_pk": self.house.pk,
+                            "client_pk": other_client.pk,
+                            "pk": self.bill.pk}))
+
+        self.assertEqual(response.status_code, 404)
+        self.bill.refresh_from_db()
+        self.assertFalse(self.bill.is_paid)
+
+    def test_revert_client_bill_blocked_for_other_user(self):
+        self.client.force_login(self.attacker)
+
+        response = self.client.post(
+            reverse("revert_client_bill",
+                    kwargs={"house_pk": self.house.pk,
+                            "client_pk": self.client_obj.pk,
+                            "pk": self.bill.pk}))
+
+        self.assertEqual(response.status_code, 404)
+        self.bill.refresh_from_db()
+        self.assertFalse(self.bill.is_paid)
+
     # --- HTMX fragments (Phase 2) -------------------------------------------
 
     def test_client_bills_list_partial_for_htmx(self):

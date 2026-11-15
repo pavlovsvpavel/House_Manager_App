@@ -3,7 +3,8 @@
 <div id="signature">
     <div class="signature-btn-label">
         <label for="signature" class="signature-label">{% trans "Signature:" %}</label>
-        <button type="button" id="reset_signature" class="btn-reset-signature">&#8635;</button>
+        <button type="button" id="reset_signature" class="btn-reset-signature"
+                aria-label="{% trans 'Reset signature' %}">&#8635;</button>
     </div>
     <input type="hidden" name="signature" id="signature_input">
 </div>

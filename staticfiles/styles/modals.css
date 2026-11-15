@@ -3,9 +3,11 @@
    Colours come from the design tokens in variables.css.
    ============================================================ */
 
-/* Bill rows are links now (no-JS navigation works), so reset link chrome. */
+/* Bill rows and cards are links now (no-JS navigation works), so reset
+   link chrome. */
 a.client-card,
-a.client-card-not-paid {
+a.client-card-not-paid,
+a.house-card {
     text-decoration: none;
     color: inherit;
 }
@@ -28,6 +30,66 @@ a.client-card-not-paid {
 
 .filter-apply:hover {
     background-color: var(--form-btn-color-hover);
+}
+
+/* Undo toast (payment feedback) */
+.undo-toast {
+    position: fixed;
+    bottom: 1.25em;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding: 0.75em 1.25em;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background-color: var(--card-bgnd);
+    color: var(--text-color);
+    box-shadow: var(--shadow);
+}
+
+.undo-toast[hidden] {
+    display: none;
+}
+
+.undo-toast__message {
+    font-weight: bold;
+}
+
+.undo-toast__undo {
+    padding: 0.25em 1.25em;
+    border: none;
+    border-radius: 1.5em;
+    background-color: var(--form-btn-color);
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.undo-toast__undo:hover {
+    background-color: var(--form-btn-color-hover);
+}
+
+.undo-toast__undo.disabled,
+.undo-toast__undo[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.undo-toast__close {
+    padding: 0 0.25em;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    font-size: 1.5em;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.undo-toast__close:hover {
+    color: var(--danger);
 }
 
 /* Payment dialog */

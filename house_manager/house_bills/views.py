@@ -3,7 +3,7 @@ from django.db import IntegrityError, transaction
 from django.http import Http404, HttpResponse
 from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.views import generic as views
@@ -18,6 +18,7 @@ from house_manager.clients.models import Client
 from house_manager.common.mixins import HtmxFragmentMixin, MonthChoices, YearChoices
 from house_manager.house_bills.forms import HouseMonthlyBillForm, HouseOtherBillForm, HouseFixedBillForm
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
+from house_manager.house_bills.helpers.restore_balance_on_revert import restore_house_balance_on_revert
 from house_manager.house_bills.helpers.subtract_amount_from_balance import subtract_amount_from_house_balance
 from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill, TypeOfBillChoices
 from house_manager.houses.mixins import GetHouseAndUserMixin, HouseOwnershipMixin
@@ -324,6 +325,66 @@ class HouseOtherBillEditView(HouseBaseBillEditView):
     queryset = HouseOtherBill.objects.prefetch_related("house")
     template_name = "house_bills/edit_other_house_bills.html"
     partial_template_name = "house_bills/partials/other_bill_modal.html"
+    row_template_name = "house_bills/partials/other_bill_row.html"
+    success_url_name = "list_other_house_bills"
+
+
+class HouseBaseBillRevertView(HouseOwnershipMixin, HtmxFragmentMixin, views.View):
+    """Undo a payment (the Phase 3 toast's "Undo" button).
+
+    Owner-only, POST-only, and idempotent: the balance delta paid is
+    restored exactly (amount_without_repairs for monthly bills), the bill
+    goes back to unpaid, and reverting an already-unpaid bill only
+    re-renders the row without touching the balance.
+    """
+    queryset = None
+    row_template_name = None
+    success_url_name = None
+
+    def get_object(self):
+        bill = get_object_or_404(self.queryset, pk=self.kwargs["pk"])
+
+        # The bill must belong to the logged-in user and to the house in
+        # the URL — same rule as the edit views.
+        if bill.user_id != self.request.user.pk or bill.house_id != self.kwargs["house_pk"]:
+            raise Http404(_("Bill not found for current user."))
+
+        # Pristine DB state, captured before any mutation (same pattern as
+        # the payment idempotency guard).
+        self._bill_paid_before_request = bill.is_paid
+        return bill
+
+    def revert(self, bill):
+        if self._bill_paid_before_request:
+            restore_house_balance_on_revert(self.queryset.model, bill.house_id, bill.pk)
+            bill.is_paid = False
+            bill.save(update_fields=["is_paid"])
+
+    def post(self, request, *args, **kwargs):
+        bill = self.get_object()
+        self.revert(bill)
+
+        if self.is_htmx_request():
+            html = render_to_string(
+                self.row_template_name, {"bill": bill}, request=request)
+            response = HttpResponse(html)
+            response["HX-Trigger"] = "billReverted"
+            return response
+
+        # No undo UI exists without JS; a crafted POST just goes back to
+        # the list.
+        return redirect(
+            reverse(self.success_url_name, kwargs={"house_pk": self.selected_house.pk}))
+
+
+class HouseMonthlyBillRevertView(HouseBaseBillRevertView):
+    queryset = HouseMonthlyBill.objects
+    row_template_name = "house_bills/partials/monthly_bill_row.html"
+    success_url_name = "list_house_bills"
+
+
+class HouseOtherBillRevertView(HouseBaseBillRevertView):
+    queryset = HouseOtherBill.objects
     row_template_name = "house_bills/partials/other_bill_row.html"
     success_url_name = "list_other_house_bills"
 

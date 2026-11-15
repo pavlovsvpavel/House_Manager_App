@@ -332,3 +332,92 @@ class HouseBillsSecurityTests(TestCase):
 
         self.house.refresh_from_db()
         self.assertEqual(self.house.money_balance, Decimal("-100.00"))
+
+    # --- Revert (undo payment) ----------------------------------------------
+
+    def test_revert_monthly_bill_restores_balance(self):
+        self.client.force_login(self.owner)
+        self.client.post(
+            reverse("edit_house_bills",
+                    kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk}),
+            {"is_paid": "on"})
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("-100.00"))
+
+        response = self.client.post(
+            reverse("revert_house_bills",
+                    kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk}),
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["HX-Trigger"], "billReverted")
+        self.assertTemplateUsed(
+            response, "house_bills/partials/monthly_bill_row.html")
+        self.assertContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+        self.assertNotContains(response, "<html")
+
+        self.monthly_bill.refresh_from_db()
+        self.house.refresh_from_db()
+        self.assertFalse(self.monthly_bill.is_paid)
+        self.assertEqual(self.house.money_balance, Decimal("0.00"))
+
+        # Replay: reverting an already-unpaid bill must not touch the balance.
+        self.client.post(
+            reverse("revert_house_bills",
+                    kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk}),
+            HTTP_HX_REQUEST="true",
+        )
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("0.00"))
+
+    def test_revert_other_bill_restores_total_amount(self):
+        self.client.force_login(self.owner)
+        self.client.post(
+            reverse("edit_other_house_bills",
+                    kwargs={"house_pk": self.house.pk, "pk": self.other_bill.pk}),
+            {"is_paid": "on"})
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("-50.00"))
+
+        response = self.client.post(
+            reverse("revert_other_house_bills",
+                    kwargs={"house_pk": self.house.pk, "pk": self.other_bill.pk}),
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.other_bill.refresh_from_db()
+        self.house.refresh_from_db()
+        self.assertFalse(self.other_bill.is_paid)
+        self.assertEqual(self.house.money_balance, Decimal("0.00"))
+
+    def test_revert_blocked_for_other_user(self):
+        self.client.force_login(self.owner)
+        self.client.post(
+            reverse("edit_house_bills",
+                    kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk}),
+            {"is_paid": "on"})
+
+        self.client.force_login(self.attacker)
+        response = self.client.post(
+            reverse("revert_house_bills",
+                    kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk}))
+
+        self.assertEqual(response.status_code, 404)
+        self.monthly_bill.refresh_from_db()
+        self.house.refresh_from_db()
+        self.assertTrue(self.monthly_bill.is_paid)
+        self.assertEqual(self.house.money_balance, Decimal("-100.00"))
+
+    def test_revert_without_htmx_redirects_to_list(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            reverse("revert_house_bills",
+                    kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk}))
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse("list_house_bills", kwargs={"house_pk": self.house.pk}))

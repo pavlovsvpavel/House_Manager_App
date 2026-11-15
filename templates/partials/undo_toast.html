@@ -1,0 +1,7 @@
+{% load i18n %}
+<div id="undo-toast" class="undo-toast" role="status" aria-live="polite" hidden>
+    <span class="undo-toast__message">{% trans "Bill paid." %}</span>
+    <button type="button" class="undo-toast__undo" data-undo-revert hidden>{% trans "Undo" %}</button>
+    <button type="button" class="undo-toast__close" data-toast-close
+            aria-label="{% trans 'Dismiss' %}">&times;</button>
+</div>

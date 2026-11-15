@@ -7,12 +7,18 @@
  *   payment (``billPaid`` trigger sent by the view).
  * - Keeps the Save button disabled until the bill is marked paid (and, for
  *   client bills, until a signature exists — see signaturePad.js).
+ * - Shows the undo toast after a payment; "Undo" POSTs the bill's revert
+ *   endpoint, which swaps the row back to unpaid.
  *
  * Every flow still works without JavaScript: rows are real links, the modal
- * form is a normal POST form, and filters are a normal GET form.
+ * form is a normal POST form, and filters are a normal GET form. The undo
+ * toast is the one JS-only affordance (there is no undo UI without JS).
  */
 (function () {
     'use strict';
+
+    var UNDO_TOAST_TIMEOUT = 8000;
+    var undoToastTimer = null;
 
     function csrfToken() {
         const meta = document.querySelector('meta[name="csrf-token"]');
@@ -92,6 +98,42 @@
         });
     }
 
+    /* Undo toast ---------------------------------------------------------- */
+
+    function undoToast() {
+        return document.getElementById('undo-toast');
+    }
+
+    function hideUndoToast() {
+        const toast = undoToast();
+        if (toast) toast.hidden = true;
+        clearTimeout(undoToastTimer);
+    }
+
+    function showUndoToast(revertUrl, rowSelector) {
+        const toast = undoToast();
+        if (!toast) return;
+
+        const undoButton = toast.querySelector('[data-undo-revert]');
+        if (undoButton) {
+            if (revertUrl && rowSelector) {
+                undoButton.setAttribute('hx-post', revertUrl);
+                undoButton.setAttribute('hx-target', rowSelector);
+                undoButton.setAttribute('hx-swap', 'outerHTML');
+                undoButton.hidden = false;
+                if (window.htmx) window.htmx.process(undoButton);
+            } else {
+                undoButton.hidden = true;
+            }
+        }
+
+        toast.hidden = false;
+        clearTimeout(undoToastTimer);
+        undoToastTimer = setTimeout(hideUndoToast, UNDO_TOAST_TIMEOUT);
+    }
+
+    /* Events ---------------------------------------------------------------- */
+
     document.body.addEventListener('htmx:configRequest', function (event) {
         if (!event.detail || event.detail.verb === 'get') return;
 
@@ -112,6 +154,20 @@
     });
 
     document.body.addEventListener('click', function (event) {
+        const toastClose = event.target.closest('[data-toast-close]');
+        if (toastClose) {
+            event.preventDefault();
+            hideUndoToast();
+            return;
+        }
+
+        const undoButton = event.target.closest('[data-undo-revert]');
+        if (undoButton && !undoButton.hidden) {
+            // The revert response swaps the row back; the toast is done.
+            hideUndoToast();
+            return;
+        }
+
         const closer = event.target.closest('[data-bill-cancel], [data-close-modal]');
         if (closer) {
             event.preventDefault();
@@ -131,8 +187,27 @@
         }
     });
 
-    // Sent by the edit view after a successful HX POST row swap.
-    document.body.addEventListener('billPaid', function () {
-        closeModal();
+    // Sent by the edit view after a successful HX POST row swap: close the
+    // dialog and offer the undo toast. Read from htmx:afterRequest (which
+    // exposes the requesting element and the raw response header) — the
+    // HX-Trigger custom event itself is dispatched without the element.
+    document.body.addEventListener('htmx:afterRequest', function (event) {
+        const detail = event.detail;
+        if (!detail || !detail.xhr) return;
+
+        const trigger = detail.xhr.getResponseHeader('HX-Trigger');
+        if (trigger === 'billPaid') {
+            closeModal();
+
+            const form = detail.elt;
+            const rowSelector = form && form.getAttribute ? form.getAttribute('hx-target') : null;
+            const row = rowSelector && document.querySelector(rowSelector);
+
+            if (row && row.dataset.revertUrl) {
+                showUndoToast(row.dataset.revertUrl, rowSelector);
+            }
+        } else if (trigger === 'billReverted') {
+            hideUndoToast();
+        }
     });
 })();

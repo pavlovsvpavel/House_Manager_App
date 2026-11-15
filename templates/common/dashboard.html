@@ -13,8 +13,8 @@
                 <div class="house-cards">
                     {% if houses %}
                         {% for house in houses %}
-                            <div class="house-card js-redirect"
-                                 data-url="{% url 'details_house' house_pk=house.pk %}">
+                            <a class="house-card"
+                               href="{% url 'details_house' house_pk=house.pk %}">
                                 <div class="house-card-title">
                                     <p class="house-address">{{ house.town }}, {{ house.address }}</p>
                                     {% if house.building_number or house.entrance %}
@@ -43,7 +43,7 @@
                                         <p class="kpi-label">{% trans "Due, EUR" %}</p>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         {% endfor %}
                     {% else %}
                         <h1>{% trans "No houses" %}</h1>
