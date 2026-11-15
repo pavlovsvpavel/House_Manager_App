@@ -150,6 +150,7 @@
 }
 
 .back-btn {
+    display: inline-block;
     color: #fff;
     padding: 0.5em;
     text-align: center;
@@ -159,6 +160,7 @@
     transition: 0.3s ease-in-out;
     background-color: #FF8080;
     border: none;
+    text-decoration: none;
 }
 
 .back-btn i {

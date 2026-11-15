@@ -13,9 +13,8 @@
                             <li><a class="create-client"
                                    href="{% url "create_client" house_pk=object.pk %}">{% trans "Add client" %}</a>
                             </li>
-                            <li><a class="details-house-list-clients js-redirect"
-                                   data-url="{% url 'house_clients_list' house_pk=object.pk %}">{% trans "Clients - details" %}
-                            </a>
+                            <li><a class="details-house-list-clients"
+                                   href="{% url 'house_clients_list' house_pk=object.pk %}">{% trans "Clients - details" %}</a>
                             </li>
                             {% if object.fixed_monthly_taxes %}
                                 <li><a class="create-house-bill"
