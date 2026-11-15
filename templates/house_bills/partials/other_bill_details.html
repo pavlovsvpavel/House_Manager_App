@@ -1,23 +1,19 @@
 {% load i18n %}
-<div class="client-card">
-    <div class="card-column">
-        <p class="column-name">{% trans "Year" %}</p>
-        <p class="column-data">{{ object.year }}</p>
-    </div>
-    <div class="card-column">
-        <p class="column-name">{% trans "Month" %}</p>
-        <p class="column-data">{{ object.get_month_name }}</p>
-    </div>
-    <div class="card-column">
-        <p class="column-name">{% trans "Comment" %}</p>
-        <p class="column-data">{{ object.comment }}</p>
-    </div>
-    <div class="card-column">
-        <p class="column-name">{% trans "Type of bill" %}</p>
-        <p class="column-data">{{ object.get_type_of_bill }}</p>
-    </div>
-    <div class="card-column">
-        <p class="column-name">{% trans "Total EUR" %}</p>
-        <p class="column-data money">{{ object.total_amount }}</p>
-    </div>
+<div class="bill-details">
+    <header class="bill-details__hero">
+        <div class="bill-details__meta">
+            <span class="bill-status" data-status="{% if object.is_paid %}paid{% else %}unpaid{% endif %}">
+                {% if object.is_paid %}{% trans "Paid" %}{% else %}{% trans "Unpaid" %}{% endif %}
+            </span>
+            <p class="bill-details__who">{{ object.house.town }}, {{ object.house.address }}</p>
+            <p class="bill-details__period">{{ object.get_month_name }} {{ object.year }}</p>
+        </div>
+        <p class="bill-details__amount money">{{ object.total_amount }}<span class="bill-details__currency"> EUR</span></p>
+    </header>
+
+    <dl class="bill-details__breakdown">
+        <div><dt>{% trans "Comment" %}</dt><dd>{{ object.comment }}</dd></div>
+        <div><dt>{% trans "Type of bill" %}</dt><dd>{{ object.get_type_of_bill }}</dd></div>
+        <div class="bill-details__total"><dt>{% trans "Total EUR" %}</dt><dd class="money">{{ object.total_amount }}</dd></div>
+    </dl>
 </div>

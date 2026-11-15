@@ -1,66 +1,30 @@
 {% load i18n %}
 {% load custom_filters %}
-<div class="client-card">
-    <div class="card-column">
-        <p class="column-name">{% trans "Family name" %}</p>
-        <p class="column-data">{{ object.client.family_name }}</p>
-    </div>
-    <div class="card-column">
-        <p class="column-name">{% trans "Year" %}</p>
-        <p class="column-data">{{ object.year }}</p>
-    </div>
-    <div class="card-column">
-        <p class="column-name">{% trans "Month" %}</p>
-        <p class="column-data">{{ object.get_month_name }}</p>
-    </div>
-    {% if not current_house.fixed_monthly_taxes %}
-        <div class="card-column">
-            <p class="column-name">{% trans "Electricity common" %}</p>
-            <p class="column-data money">{{ object.electricity_common }}</p>
+<div class="bill-details">
+    <header class="bill-details__hero">
+        <div class="bill-details__meta">
+            <span class="bill-status" data-status="{% if object.is_paid %}paid{% else %}unpaid{% endif %}">
+                {% if object.is_paid %}{% trans "Paid" %}{% else %}{% trans "Unpaid" %}{% endif %}
+            </span>
+            <p class="bill-details__who">{% trans "Apartment" %} {{ object.client.apartment }} · {{ object.client.family_name }}</p>
+            <p class="bill-details__period">{{ object.get_month_name }} {{ object.year }}</p>
         </div>
-        <div class="card-column">
-            <p class="column-name">{% trans "Electricity lift" %}</p>
-            <p class="column-data money">{{ object.electricity_lift }}</p>
-        </div>
-        <div class="card-column">
-            <p class="column-name">{% trans "Internet" %}</p>
-            <p class="column-data money">{{ object.internet }}</p>
-        </div>
-        <div class="card-column">
-            <p class="column-name">{% trans "Lift maintenance" %}</p>
-            <p class="column-data money">{{ object.maintenance_lift }}</p>
-        </div>
-        <div class="card-column">
-            <p class="column-name">{% trans "Cleaner fee" %}</p>
-            <p class="column-data money">{{ object.fee_cleaner }}</p>
-        </div>
-        <div class="card-column">
-            <p class="column-name">{% trans "Manager fee" %}</p>
-            <p class="column-data money">{{ object.fee_manager }}</p>
-        </div>
-        <div class="card-column">
-            <p class="column-name">{% trans "Cashier fee" %}</p>
-            <p class="column-data money">{{ object.fee_cashier }}</p>
-        </div>
-        <div class="card-column">
-            <p class="column-name">{% trans "Repairs fund" %}</p>
-            <p class="column-data money">{{ object.repairs }}</p>
-        </div>
-        <div class="card-column">
-            <p class="column-name">{% trans "Other expenses" %}</p>
-            <p class="column-data money">{{ object.others }}</p>
-        </div>
-    {% endif %}
-    <div class="card-column">
-        <p class="column-name">{% trans "Monthly bill, EUR" %}</p>
-        <p class="column-data money">{{ object.total_amount }}</p>
-    </div>
-    <div class="card-column">
-        <p class="column-name">{% trans "Unpaid bills, EUR" %}</p>
-        <p class="column-data">{{ amount_old_debts }}</p>
-    </div>
-    <div class="card-column">
-        <p class="column-name">{% trans "Total, EUR" %}</p>
-        <p class="column-data money">{{ amount_old_debts|add:object.total_amount }}</p>
-    </div>
+        <p class="bill-details__amount money">{{ object.total_amount }}<span class="bill-details__currency"> EUR</span></p>
+    </header>
+
+    <dl class="bill-details__breakdown">
+        {% if not current_house.fixed_monthly_taxes %}
+            <div><dt>{% trans "Electricity common" %}</dt><dd class="money">{{ object.electricity_common }}</dd></div>
+            <div><dt>{% trans "Electricity lift" %}</dt><dd class="money">{{ object.electricity_lift }}</dd></div>
+            <div><dt>{% trans "Internet" %}</dt><dd class="money">{{ object.internet }}</dd></div>
+            <div><dt>{% trans "Lift maintenance" %}</dt><dd class="money">{{ object.maintenance_lift }}</dd></div>
+            <div><dt>{% trans "Cleaner fee" %}</dt><dd class="money">{{ object.fee_cleaner }}</dd></div>
+            <div><dt>{% trans "Manager fee" %}</dt><dd class="money">{{ object.fee_manager }}</dd></div>
+            <div><dt>{% trans "Cashier fee" %}</dt><dd class="money">{{ object.fee_cashier }}</dd></div>
+            <div><dt>{% trans "Repairs fund" %}</dt><dd class="money">{{ object.repairs }}</dd></div>
+            <div><dt>{% trans "Other expenses" %}</dt><dd class="money">{{ object.others }}</dd></div>
+        {% endif %}
+        <div><dt>{% trans "Unpaid bills, EUR" %}</dt><dd class="money">{{ amount_old_debts }}</dd></div>
+        <div class="bill-details__total"><dt>{% trans "Total, EUR" %}</dt><dd class="money">{{ amount_old_debts|add:object.total_amount }}</dd></div>
+    </dl>
 </div>

@@ -1,15 +1,18 @@
 {% load i18n %}
-<form class="is-paid-form" method="post"
+<form class="bill-form" method="post"
       action="{% url 'edit_other_house_bills' house_pk=object.house_id pk=object.pk %}"
       hx-post="{% url 'edit_other_house_bills' house_pk=object.house_id pk=object.pk %}"
       hx-target="#bill-row-{{ object.pk }}"
       hx-swap="outerHTML settle:400ms">
     {% csrf_token %}
-    <div>
-        <label for="id_is_paid">{% if form.instance.is_paid %}{% trans "Paid" %}{% else %}{% trans "Pay the bill:" %}{% endif %}</label>
+    <label class="bill-form__switch" for="id_is_paid">
         {{ form.is_paid }}
-    </div>
+        <span class="bill-form__track" aria-hidden="true"></span>
+        <span class="bill-form__switch-label">{% if form.instance.is_paid %}{% trans "Paid" %}{% else %}{% trans "Mark as paid" %}{% endif %}</span>
+    </label>
     {% if not form.instance.is_paid %}
-        {% include "partials/bill_form_buttons.html" %}
+        <div class="bill-form__actions">
+            {% include "partials/bill_form_buttons.html" %}
+        </div>
     {% endif %}
 </form>

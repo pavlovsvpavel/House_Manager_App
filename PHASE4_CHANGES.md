@@ -94,6 +94,36 @@ Every pre-existing stylesheet consumed the Phase 1 token names. The sweep replac
 
 ---
 
+## Post-review follow-up: payment modal redesign
+
+The first modal design (the Phase 2 one) reproduced the detail-card grid
+inside the dialog — cramped label-over-value cells, weak hierarchy, and
+no visual anchor on the amount. Redesigned (same hooks, zero logic
+changes):
+
+- **Amount-first hero**: status pill (Paid/Unpaid with state colors),
+  apartment + family name (or the house), period — and the total as the
+  dominant element (`--step-3`, tabular figures).
+- **Itemized breakdown**: label/value rows with hairline dividers and a
+  bold totals row (replaces the label-over-value grid).
+- **Pay switch**: the bare "Pay the bill" checkbox became a labeled
+  switch (track + knob, success color when on, focus ring on the track,
+  disabled state preserved) — Django's `{{ form.is_paid }}` is kept in
+  the DOM, so no-JS POSTs are unchanged.
+- **Action bar**: primary Save right / ghost Cancel; receipt link styled
+  as a secondary action on paid client bills; the repairs-fund warning
+  is a proper callout (`--state-warning`), not a red inline string.
+- JS selector updated (`form.is-paid-form` → `form.bill-form`);
+  `data-bill-modal` / `hx-post` / `#signature` / `#save-btn` hooks
+  unchanged — all 44 tests pass untouched.
+- Also fixed: the client-monthly breakdown had lost
+  `{% load custom_filters %}` in the Phase 4 rewrite, so the
+  built-in `add` coerced the total to `220` instead of `220.00`.
+
+Verified in-browser (dark + light): unpaid, paid (signature + receipt),
+and house-bill (warning callout) variants; full pay → toast → undo
+cycle through the new UI.
+
 ## Not In Scope
 
 - **Phase 4e (skipped per review):** dashboard cockpit — balance sparklines, KPI trends, "This month" panel.

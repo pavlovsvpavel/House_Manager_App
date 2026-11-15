@@ -13,10 +13,6 @@ a.house-card {
     color: inherit;
 }
 
-.bill-warning {
-    color: var(--danger);
-}
-
 /* Keep the no-JS filter usable: an explicit Apply button next to the select. */
 .filter-apply {
     flex: 0 1 120px;
@@ -93,29 +89,31 @@ a.house-card {
     color: var(--danger);
 }
 
-/* Payment dialog */
+/* ============================================================
+   Payment dialog — amount-first hero, itemized breakdown,
+   switch-style pay control, clear action bar.
+   ============================================================ */
 dialog.bill-modal {
     max-width: none;
     max-height: none;
     padding: 0;
     border: none;
     background: transparent;
-    color: var(--text-color);
+    color: var(--text-1);
 }
 
 dialog.bill-modal::backdrop {
-    background-color: var(--menu-bgnd);
+    background-color: var(--surface-inverse);
     opacity: 0.72;
 }
 
 .bill-modal__panel {
-    width: min(46rem, 94vw);
-    max-height: 92vh;
+    width: min(30rem, 94vw);
+    max-height: 92dvh;
     overflow: auto;
-    padding: 1em 1.5em 1.5em;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    background-color: var(--site-bgnd);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    background-color: var(--surface-0);
     box-shadow: var(--shadow);
 }
 
@@ -124,47 +122,299 @@ dialog.bill-modal::backdrop {
     align-items: center;
     justify-content: space-between;
     gap: 1em;
-    margin-bottom: 0.75em;
+    padding: 0.9em 1.25em 0;
+}
+
+.bill-modal__eyebrow {
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-2);
 }
 
 .bill-modal__close {
     padding: 0 0.25em;
     border: none;
     background: transparent;
-    color: var(--text-color);
+    color: var(--text-2);
     font-size: 2em;
     line-height: 1;
     cursor: pointer;
 }
 
 .bill-modal__close:hover {
-    color: var(--danger);
+    color: var(--state-danger);
 }
 
 .bill-modal__body {
     display: flex;
     flex-direction: column;
     gap: 1em;
+    padding: 0.75em 1.25em 1.25em;
 }
 
-/* The detail card can have a dozen columns — let it wrap inside the dialog. */
-.bill-modal .client-card {
-    flex-wrap: wrap;
-    gap: 0.75em 1em;
-    background-color: var(--form-bgnd);
+/* Hero: status pill, who/when, and the amount as the visual anchor */
+.bill-details__hero {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1em;
+    padding: 1em;
+    border-radius: var(--radius-m);
+    background-color: var(--surface-1);
 }
 
-.bill-modal .client-card .card-column {
-    flex: 1 1 8em;
+.bill-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.15em 0.7em;
+    border-radius: 999px;
+    font-size: var(--step--2);
+    font-weight: 600;
+    background-color: var(--state-danger-soft);
+    color: var(--state-danger);
 }
 
-.bill-modal .is-paid-form .form-buttons {
+.bill-status::before {
+    content: "";
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+.bill-status[data-status="paid"] {
+    background-color: var(--state-success-soft);
+    color: var(--state-success);
+}
+
+.bill-details__who {
+    margin-top: 0.5em;
+    color: var(--text-2);
+    font-size: var(--step--1);
+}
+
+.bill-details__period {
+    font-size: var(--step-1);
+    font-weight: 600;
+}
+
+.bill-details__amount {
+    font-size: var(--step-3);
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.bill-details__currency {
+    font-size: 0.4em;
+    font-weight: 500;
+    color: var(--text-2);
+}
+
+/* Breakdown: label/value rows with hairline dividers */
+.bill-details__breakdown {
+    display: flex;
+    flex-direction: column;
+}
+
+.bill-details__breakdown > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1em;
+    padding: 0.45em 0.25em;
+    border-bottom: 1px solid var(--line);
+}
+
+.bill-details__breakdown > div:last-child {
+    border-bottom: none;
+}
+
+.bill-details__breakdown dt {
+    color: var(--text-2);
+    font-size: var(--step--1);
+}
+
+.bill-details__breakdown dd {
+    font-weight: 500;
+    text-align: right;
+}
+
+.bill-details__breakdown .bill-details__total {
+    margin-top: 0.25em;
+    padding-top: 0.6em;
+    border-top: 2px solid var(--line-strong);
+}
+
+.bill-details__breakdown .bill-details__total dt {
+    color: var(--text-1);
+    font-size: var(--step-0);
+    font-weight: 700;
+}
+
+.bill-details__breakdown .bill-details__total dd {
+    font-size: var(--step-1);
+    font-weight: 700;
+}
+
+/* Callout (e.g. "payment is without 'Repairs fund'") */
+.bill-callout {
+    padding: 0.6em 0.9em;
+    border-radius: var(--radius-s);
+    font-size: var(--step--1);
+}
+
+.bill-callout--warning {
+    background-color: color-mix(in oklab, var(--state-warning), transparent 85%);
+    color: var(--state-warning);
+}
+
+/* Pay control: a switch, not a bare checkbox */
+.bill-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.bill-form__switch {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    width: auto;
+    padding: 0.8em 1em;
+    border-radius: var(--radius-m);
+    background-color: var(--surface-1);
+    cursor: pointer;
+}
+
+.bill-form__switch input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.bill-form__track {
+    position: relative;
+    flex: 0 0 auto;
+    width: 2.6em;
+    height: 1.5em;
+    border-radius: 999px;
+    background-color: var(--line-strong);
+    transition: background-color 200ms ease;
+}
+
+.bill-form__track::after {
+    content: "";
+    position: absolute;
+    top: 0.15em;
+    left: 0.15em;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 50%;
+    background-color: var(--surface-0);
+    transition: translate 200ms ease;
+}
+
+.bill-form__switch input:checked ~ .bill-form__track {
+    background-color: var(--state-success);
+}
+
+.bill-form__switch input:checked ~ .bill-form__track::after {
+    translate: 1.1em 0;
+}
+
+.bill-form__switch input:disabled ~ .bill-form__track {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.bill-form__switch:has(input:disabled) {
+    cursor: not-allowed;
+}
+
+.bill-form__switch input:focus-visible ~ .bill-form__track {
+    box-shadow: var(--focus-ring);
+}
+
+.bill-form__switch-label {
+    font-weight: 600;
+}
+
+/* Action bar: primary Save right, ghost Cancel beside it */
+.bill-form__actions {
+    display: flex;
     justify-content: flex-end;
+    gap: 0.75em;
 }
 
+.bill-form .btn {
+    padding: 0.55em 1.6em;
+    border: none;
+    border-radius: 999px;
+    background-color: var(--accent);
+    color: var(--text-on-accent);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 200ms ease-in-out;
+}
+
+.bill-form .btn:hover {
+    background-color: color-mix(in oklab, var(--accent), var(--text-1) 15%);
+}
+
+.bill-form .btn.disabled,
+.bill-form .btn[disabled] {
+    background-color: color-mix(in oklab, var(--surface-2), var(--text-1) 30%);
+    cursor: not-allowed;
+}
+
+.bill-form [data-bill-cancel] {
+    background-color: transparent;
+    color: var(--text-1);
+    border: 1px solid var(--line-strong);
+}
+
+.bill-form [data-bill-cancel]:hover {
+    background-color: var(--surface-1);
+}
+
+/* Receipt link (paid client bills) */
+.bill-form__receipt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.55em 1.4em;
+    border-radius: 999px;
+    background-color: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+    transition: 200ms ease-in-out;
+}
+
+.bill-form__receipt:hover {
+    background-color: color-mix(in oklab, var(--accent-soft), var(--text-1) 10%);
+}
+
+/* Signature surfaces inside the dialog */
 .bill-modal #signature {
-    background-color: var(--text-on-accent);
-    border-radius: var(--radius);
+    background-color: var(--surface-sunk);
+    border-radius: var(--radius-m);
+    padding: 0.5em;
+}
+
+.bill-modal #displaySignature {
+    text-align: center;
+}
+
+.bill-modal #displaySignature img {
+    display: inline-block;
+    width: auto;
+    max-width: 100%;
 }
 
 /* ============================================================

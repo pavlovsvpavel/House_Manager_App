@@ -81,7 +81,7 @@
     }
 
     function initBillForm(scope) {
-        const forms = (scope || document).querySelectorAll('form.is-paid-form');
+        const forms = (scope || document).querySelectorAll('form.bill-form');
 
         forms.forEach(function (form) {
             if (form.dataset.billFormInitialized === 'true') return;
