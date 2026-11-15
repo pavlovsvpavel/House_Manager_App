@@ -157,6 +157,24 @@ edge in dark + light, HTMX filter round-trip keeps the header planted,
 footer back inside `.site` and pinned to the viewport bottom, zero
 console messages, all 44 tests pass.
 
+## Follow-up: dark-mode inverse text + breadcrumbs placement
+
+- **Invisible dark-mode text**: elements on the inverse surface (site
+  header nav, its hover underline bars, footer, cookies banner) used
+  `--site-bgnd`/`black` as text/underline color - fine in light mode
+  (light text on dark chrome), but `--site-bgnd` flips to near-black in
+  dark mode, so the nav/footer/cookies text vanished. They now use
+  `--text-on-inverse` (light in both themes) and the banner uses
+  `--surface-inverse` instead of raw black.
+- **Breadcrumbs moved into the site sections**: the `breadcrumbs` tag
+  was called before `<section class="site-section">`, so the crumbs sat
+  at the container's left edge, outside the content measure (and as a
+  flex sibling of `.wrapper` they split the container into columns).
+  The call now lives inside the section's `.wrapper` /
+  `.reports-wrapper` (flex column) as the first row - aligned with the
+  page content on all nine hierarchy pages. HTMX region swaps don't
+  touch the crumbs.
+
 ## Not In Scope
 
 - **Phase 4e (skipped per review):** dashboard cockpit — balance sparklines, KPI trends, "This month" panel.

@@ -4,7 +4,10 @@
     justify-content: space-between;
     padding: 0.5em 0;
     flex-basis: 100%;
-    color: var(--site-bgnd);
+    /* The header sits on --surface-inverse (dark in both themes), so its
+       text must use the on-inverse token — --site-bgnd flips to near-black
+       in dark mode and renders the nav unreadable. */
+    color: var(--text-on-inverse);
 }
 
 .site-title {
@@ -63,7 +66,7 @@
     position: absolute;
     width: 0;
     height: 2px;
-    background-color: var(--site-bgnd);
+    background-color: var(--text-on-inverse);
     transition: all 0.5s ease-in-out;
 }
 

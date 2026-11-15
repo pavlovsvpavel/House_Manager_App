@@ -4,10 +4,10 @@
 
 {% block main_content %}
 
-    {% breadcrumbs house=object %}
     <section class="site-section details-house">
         <div class="container">
             <div class="wrapper">
+                {% breadcrumbs house=object %}
                 <h3 class="section-title">{% trans 'House details' %}</h3>
                 <div class="details-house-elements">
                     <div class="buttons">

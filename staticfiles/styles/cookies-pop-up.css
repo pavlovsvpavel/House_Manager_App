@@ -1,6 +1,6 @@
 .cookies-eu-banner {
-  background: black;
-  color: var(--site-bgnd);
+  background-color: var(--surface-inverse);
+  color: var(--text-on-inverse);
   padding: 6px;
   text-align: center;
   position: fixed;

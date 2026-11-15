@@ -7,10 +7,10 @@
     <script src="{% static "scripts/jquery.js" %}" defer></script>
     <script src="{% static 'scripts/layoutControls.js' %}" defer></script>
 
-    {% breadcrumbs house=current_house current=_("Reports") %}
     <section class="site-section reports">
         <div class="container">
             <div class="reports-wrapper">
+                {% breadcrumbs house=current_house current=_("Reports") %}
                 <h3 class="section-title">{% trans 'Monthly bills - reports' %}</h3>
                 {% include "partials/reports/reports_bills_search_fields.html" %}
                 <div class="report-results">
