@@ -1,0 +1,25 @@
+{% load i18n %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="undo-toast messages-toast messages-toast--{{ message.tags|default:'info' }}"
+             role="status" aria-live="polite">
+            <span class="undo-toast__message">{{ message }}</span>
+            <button type="button" class="undo-toast__close" data-toast-close
+                    aria-label="{% trans 'Dismiss' %}">&times;</button>
+        </div>
+    {% endfor %}
+    <script nonce="{{ csp_nonce }}">
+        (function () {
+            'use strict';
+            /* Matches the toast-life progress-bar animation (8 s) —
+               same lifetime as the payment undo toast. */
+            var TOAST_TIMEOUT = 8000;
+            document.querySelectorAll('.messages-toast').forEach(function (toast) {
+                var dismiss = function () { toast.remove(); };
+                var close = toast.querySelector('[data-toast-close]');
+                if (close) close.addEventListener('click', dismiss);
+                setTimeout(dismiss, TOAST_TIMEOUT);
+            });
+        })();
+    </script>
+{% endif %}

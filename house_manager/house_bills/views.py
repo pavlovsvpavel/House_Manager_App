@@ -1,5 +1,6 @@
 import logging
 from decimal import Decimal
+from django.contrib import messages
 from django.db import IntegrityError, transaction
 from django.http import Http404, HttpResponse
 from django.db.models import Sum, Value
@@ -80,6 +81,7 @@ class HouseMonthlyBillCreateView(HouseBaseBillCreateView):
                         form.instance.month,
                         form.instance.user.pk
                     )
+                messages.success(self.request, _("Monthly bill created successfully."))
                 return redirect(self.get_success_url())
 
         except IntegrityError:
@@ -111,6 +113,7 @@ class HouseOtherBillCreateView(HouseBaseBillCreateView):
                         self.object.pk
                     )
 
+                messages.success(self.request, _("Other bill created successfully."))
                 return redirect(self.get_success_url())
 
         except IntegrityError:
@@ -146,6 +149,7 @@ class HouseFixedMonthlyBillView(HouseBaseBillCreateView):
                 )
 
                 msg = _("Successfully created bills for %(count)d apartments.") % {'count': created_count}
+                messages.success(self.request, msg)
                 return redirect(self.get_success_url())
 
         except Exception:
