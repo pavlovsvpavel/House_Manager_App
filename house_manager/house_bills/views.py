@@ -35,9 +35,12 @@ class HouseBaseBillCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, v
     def current_house(self):
         house_id = self.request.session.get("selected_house")
 
-        if house_id:
-            return get_object_or_404(House, pk=house_id)
-        return None
+        if not house_id:
+            return None
+
+        # The house must belong to the logged-in user — the session value is
+        # not a sufficient proof of ownership on its own.
+        return get_object_or_404(House, pk=house_id, user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -238,6 +241,20 @@ class HouseBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):
     def get_template_name(self):
         return [self.template_name]
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+
+        # Ownership check executed on both GET and POST — a check that lives
+        # only in get_context_data() is skipped on the successful POST path.
+        if obj.user_id != self.request.user.pk:
+            raise PermissionDenied(_("Bill not found for current user."))
+
+        # Capture the pristine DB state: binding the form to request.POST
+        # mutates the instance, so this must happen before validation.
+        self._bill_paid_before_request = obj.is_paid
+
+        return obj
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         house_id = self.request.session.get("selected_house")
@@ -249,6 +266,14 @@ class HouseBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):
         return context
 
     def form_valid(self, form):
+        # Idempotency guard: a bill that was already paid in the DB must
+        # never be re-processed, otherwise replaying the form re-credits or
+        # re-debits the house balance. NOTE: form.instance.is_paid already
+        # reflects the submitted POST data, so the pristine value captured
+        # in get_object() is used instead.
+        if getattr(self, "_bill_paid_before_request", False):
+            return self.form_invalid(form)
+
         if not form.cleaned_data['is_paid']:
             return self.form_invalid(form)
         else:

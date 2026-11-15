@@ -14,11 +14,14 @@ def get_current_house_id(view_func):
 
         try:
             selected_house = House.objects.select_related('user').get(id=selected_house_id)
-            request.selected_house = selected_house
-            request.session['selected_house'] = selected_house.pk
 
+            # Ownership check MUST run before any session/request mutation,
+            # otherwise a denied request primes the session with a foreign house.
             if selected_house.user_id != request.user.id:
                 raise PermissionDenied("You are not the owner of this house.")
+
+            request.selected_house = selected_house
+            request.session['selected_house'] = selected_house.pk
 
             return view_func(request, *args, **kwargs)
 

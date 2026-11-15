@@ -14,11 +14,14 @@ def get_current_client_id(view_func):
 
         try:
             selected_client = Client.objects.get(id=selected_client_id)
-            request.selected_client = selected_client
-            request.session['selected_client'] = selected_client.pk
 
+            # Ownership check MUST run before any session/request mutation,
+            # otherwise a denied request primes the session with a foreign client.
             if selected_client.user_id != request.user.id:
                 raise PermissionDenied("You are not the owner of this house.")
+
+            request.selected_client = selected_client
+            request.session['selected_client'] = selected_client.pk
 
             return view_func(request, *args, **kwargs)
 

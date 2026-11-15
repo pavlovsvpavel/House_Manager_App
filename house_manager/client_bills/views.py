@@ -1,5 +1,5 @@
 from django.core.exceptions import PermissionDenied
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
@@ -26,10 +26,10 @@ class ClientBaseBillsDetailView(CheckForLoggedInUserMixin, views.DetailView):
         selected_client_id = self.request.session.get("selected_client")
         if not selected_client_id or selected_client_id != self.kwargs['pk']:
             raise PermissionDenied("Client not found for current house.")
-        try:
-            return get_object_or_404(Client, pk=self.kwargs['pk'])
-        except ClientMonthlyBill.DoesNotExist:
-            raise Http404(_("Bill not found for current client"))
+
+        # The client must belong to the logged-in user — the session value is
+        # not a sufficient proof of ownership on its own.
+        return get_object_or_404(Client, pk=self.kwargs['pk'], user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -70,6 +70,20 @@ class CurrentClientBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView)
     success_url_name = None
     fields = ("is_paid",)
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+
+        # Ownership check executed on both GET and POST — a check that lives
+        # only in get_context_data() is skipped on the successful POST path.
+        if obj.user_id != self.request.user.pk:
+            raise PermissionDenied(_("Bill not found for current user."))
+
+        # Capture the pristine DB state: binding the form to request.POST
+        # mutates the instance, so this must happen before validation.
+        self._bill_paid_before_request = obj.is_paid
+
+        return obj
+
     def get_success_url(self):
         return reverse_lazy(self.success_url_name, kwargs={"pk": self.object.client.pk})
 
@@ -93,6 +107,14 @@ class CurrentClientBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView)
         return context
 
     def form_valid(self, form):
+        # Idempotency guard: a bill that was already paid in the DB must
+        # never be re-processed, otherwise replaying the form re-credits the
+        # house balance. NOTE: form.instance.is_paid already reflects the
+        # submitted POST data, so the pristine value captured in get_object()
+        # is used instead.
+        if getattr(self, "_bill_paid_before_request", False):
+            return self.form_invalid(form)
+
         if not form.cleaned_data['is_paid']:
             return self.form_invalid(form)
 
@@ -128,9 +150,12 @@ class CurrentClientOtherBillEditView(CurrentClientBaseBillEditView):
 
 
 class DownloadReceiptView(CheckForLoggedInUserMixin, DetailView):
-    model = ClientMonthlyBill
     template_name = 'partials/receipt_pdf.html'
     context_object_name = 'bill'
+
+    def get_queryset(self):
+        # Only the bill's owner may download its receipt (prevents IDOR).
+        return ClientMonthlyBill.objects.filter(user=self.request.user)
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
