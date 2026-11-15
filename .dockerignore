@@ -1,6 +1,7 @@
 # Database
 postgres_backups
 postgres_db
+postgresql_prod
 
 # Python artifacts
 __pycache__/

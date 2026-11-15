@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM python:3.12.11-slim-bookworm AS builder
+FROM python:3.14-slim-bookworm AS builder
 
 # Environment setup
 ENV DEBIAN_FRONTEND=noninteractive
@@ -33,7 +33,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-install-project --no-dev
 
 # Stage 2: Runtime stage
-FROM python:3.12.11-slim-bookworm
+FROM python:3.14-slim-bookworm
 
 # Environment setup
 ENV DEBIAN_FRONTEND=noninteractive
