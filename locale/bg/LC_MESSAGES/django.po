@@ -117,6 +117,14 @@ msgstr "Фамилия"
 msgid "Floor"
 msgstr "Етаж"
 
+#: templates/houses/partials/clients_results.html:12
+msgid "Clients on floor %(floor)s"
+msgstr "Клиенти на етаж %(floor)s"
+
+#: templates/houses/partials/clients_results.html:18
+msgid "Clear floor filter"
+msgstr "Изчисти филтъра по етаж"
+
 #: house_manager/clients/models.py:40
 #: templates/client_bills/partials/monthly_bill_details.html:9
 #: templates/client_bills/partials/other_bill_details.html:8
@@ -324,6 +332,15 @@ msgstr "Общо сума"
 #: templates/partials/reports/table_headers_other_bills.html:10
 msgid "Paid"
 msgstr "Платена"
+
+#: templates/partials/filter_buttons.html:30
+msgctxt "filter chips: plural, next to Неплатени/Всички"
+msgid "Paid"
+msgstr "Платени"
+
+#: templates/partials/filter_buttons.html:5
+msgid "Status"
+msgstr "Статус"
 
 #: house_manager/common/mixins.py:262
 #: templates/client_bills/partials/other_bill_details.html:15

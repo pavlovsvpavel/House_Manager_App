@@ -1,6 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 {% load common_tags %}
+
+{% block extra_head_scripts %}
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/htmx.min.js" %}" defer></script>
+{% endblock %}
 
 {% block main_content %}
 
@@ -11,46 +16,39 @@
                 <div class="page-title-row">
                     <h3>{% trans 'Clients' %}</h3>
                 </div>
-                <p class="bills-filter-status">
-                    {% if bills_filter_status == 'unpaid' %}
-                        {% trans "Clients with unpaid bills" %}
-                    {% elif bills_filter_status == 'paid' %}
-                        {% trans "Clients with paid bills" %}
-                    {% else %}
-                        {% trans "All clients" %}
+                <!-- Floor filter: plain GET form (Apply works without JS);
+                     under HTMX it live-filters as you type and swaps only
+                     the results region below. The hidden inputs keep the
+                     payment-status filter composed with the floor one. -->
+                <form class="clients-floor-filter" method="get" action=""
+                      hx-get="{{ request.path }}"
+                      hx-target="#clients-results"
+                      hx-swap="outerHTML"
+                      hx-push-url="true"
+                      hx-trigger="submit, input changed delay:300ms"
+                      hx-indicator="#clients-results">
+                    <input type="number" inputmode="numeric" min="0"
+                           name="floor" id="floor-filter"
+                           placeholder="{% trans "Floor" %}"
+                           value="{{ selected_floor|default_if_none:'' }}"
+                           aria-label="{% trans "Floor" %}">
+                    {% if request.GET.is_paid %}
+                        <input type="hidden" name="is_paid" value="{{ request.GET.is_paid }}">
                     {% endif %}
-                </p>
-                <div class="clients-cards">
-                    {% if clients %}
-                        {% for client in clients %}
-                            <a class="client-card"
-                               href="{% url 'details_client' house_pk=object.pk pk=client.pk %}">
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Family Name" %}</p>
-                                    <p class="column-data">{{ client.family_name }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Floor" %}</p>
-                                    <p class="column-data">{{ client.floor }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Apartment" %}</p>
-                                    <p class="column-data">{{ client.apartment }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "People" %}</p>
-                                    <p class="column-data">{{ client.number_of_people }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Using lift" %}</p>
-                                    <p class="column-data">{{ client.is_using_lift|yesno:_("Yes,No") }}</p>
-                                </div>
-                            </a>
-                        {% endfor %}
-                    {% else %}
-                        <h3>{% trans "No clients" %}</h3>
+                    {% if request.GET.month %}
+                        <input type="hidden" name="month" value="{{ request.GET.month }}">
                     {% endif %}
-                </div>
+                    <button type="submit" class="filter-apply">{% trans "Apply" %}</button>
+                </form>
+                {% comment %}Only htmx itself can fire htmx:load, so the class
+                marks "HTMX is genuinely running" — the Apply fallback hides
+                via CSS once live filtering is available.{% endcomment %}
+                <script nonce="{{ csp_nonce }}">
+                    document.addEventListener('htmx:load', function () {
+                        document.documentElement.classList.add('htmx-running');
+                    });
+                </script>
+                {% include "houses/partials/clients_results.html" %}
             </div>
         </div>
     </section>

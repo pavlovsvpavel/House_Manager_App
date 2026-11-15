@@ -1,74 +1,77 @@
 {% load i18n %}
-
+<!-- Bill filters as always-visible chip groups (radio behaviour with an
+     "All" chip each): Status, Year, Month. One click filters live under
+     HTMX (change event); the Apply button is the no-JS fallback and hides
+     itself once htmx is running. Chips submit every group together, so
+     the filters compose freely (?is_paid=&year=&month=). -->
 <form method="get" action=""
       {% if filter_target %}hx-get="{{ request.path }}"
       hx-target="{{ filter_target }}"
       hx-swap="outerHTML"
       hx-push-url="true"
       hx-trigger="submit, change"
+      hx-sync="this:replace"
       hx-indicator="#bills-skeleton"{% endif %}>
-    <div class="filter-buttons">
-        <label for="month" class="month-label">
-            <select name="month" id="month">
-                <option value="" disabled {% if not request.GET.month %}selected{% endif %}>{% trans "Month" %}</option>
-                <option value="" {% if request.GET.month == "" %}selected{% endif %}>{% trans "All" %}</option>
-                {% for choice in MonthChoices.choices %}
-                    <option value="{{ choice.0 }}"
-                            {% if request.GET.month == choice.0 %}selected{% endif %}>{{ choice.1 }}
-                    </option>
-                {% endfor %}
-            </select>
+    <fieldset class="chip-group">
+        <legend class="chip-group__legend">{% trans "Status" %}</legend>
+        <label class="chip">
+            <input type="radio" name="is_paid" value=""
+                   {% if request.GET.is_paid != "True" and request.GET.is_paid != "False" %}checked{% endif %}>
+            <span>{% trans "All" %}</span>
         </label>
+        <label class="chip">
+            <input type="radio" name="is_paid" value="False"
+                   {% if request.GET.is_paid == "False" %}checked{% endif %}>
+            <span>{% trans "Unpaid" %}</span>
+        </label>
+        <label class="chip">
+            <input type="radio" name="is_paid" value="True"
+                   {% if request.GET.is_paid == "True" %}checked{% endif %}>
+            <span>{% trans "Paid" context "filter chips: plural, next to Неплатени/Всички" %}</span>
+        </label>
+    </fieldset>
 
-        <a href="?is_paid=True&month={{ request.GET.month }}"
-           {% if filter_target %}hx-get="{{ request.path }}?is_paid=True&month={{ request.GET.month }}"
-           hx-target="{{ filter_target }}"
-           hx-swap="outerHTML"
-           hx-push-url="true"
-           hx-indicator="#bills-skeleton"{% endif %}
-           class="{% if request.GET.month == "" or not request.GET.dict %}disabled{% endif %}">
-           {% trans "Without debts" %}
-        </a>
+    <fieldset class="chip-group">
+        <legend class="chip-group__legend">{% trans "Year" %}</legend>
+        <label class="chip">
+            <input type="radio" name="year" value=""
+                   {% if not request.GET.year %}checked{% endif %}>
+            <span>{% trans "All" %}</span>
+        </label>
+        {% for choice in YearChoices %}
+            <label class="chip">
+                <input type="radio" name="year" value="{{ choice.0 }}"
+                       {% if request.GET.year == choice.0 %}checked{% endif %}>
+                <span>{{ choice.0 }}</span>
+            </label>
+        {% endfor %}
+    </fieldset>
 
-        <a href="?is_paid=False&month={{ request.GET.month }}"
-           {% if filter_target %}hx-get="{{ request.path }}?is_paid=False&month={{ request.GET.month }}"
-           hx-target="{{ filter_target }}"
-           hx-swap="outerHTML"
-           hx-push-url="true"
-           hx-indicator="#bills-skeleton"{% endif %}
-           class="{% if request.GET.month == "" or not request.GET.dict %}disabled{% endif %}">
-           {% trans "With debts" %}
-        </a>
+    <fieldset class="chip-group">
+        <legend class="chip-group__legend">{% trans "Month" %}</legend>
+        <label class="chip">
+            <input type="radio" name="month" value=""
+                   {% if not request.GET.month %}checked{% endif %}>
+            <span>{% trans "All" %}</span>
+        </label>
+        {% for choice in MonthChoices.choices %}
+            <label class="chip">
+                <input type="radio" name="month" value="{{ choice.0 }}"
+                       {% if request.GET.month == choice.0 %}checked{% endif %}>
+                <span>{{ choice.0 }}</span>
+            </label>
+        {% endfor %}
+    </fieldset>
 
-        <button type="submit" class="filter-apply">{% trans "Apply" %}</button>
-    </div>
+    <button type="submit" class="filter-apply">{% trans "Apply" %}</button>
 </form>
 
 {% if filter_target %}
-{% comment %}The month select applies instantly under HTMX; Apply is the
-no-JS fallback. Only htmx itself can fire htmx:load, so the class marks
-"HTMX is genuinely running" - the button stays visible otherwise.{% endcomment %}
+{% comment %}Only htmx itself can fire htmx:load, so the class marks
+"HTMX is genuinely running" - the Apply fallback stays visible otherwise.{% endcomment %}
 <script nonce="{{ csp_nonce }}">
-    document.addEventListener('htmx:load', function() {
+    document.addEventListener('htmx:load', function () {
         document.documentElement.classList.add('htmx-running');
-    });
-</script>
-{% endif %}
-
-{% if not filter_target %}
-<script nonce="{{ csp_nonce }}">
-    document.addEventListener('DOMContentLoaded', function() {
-        const monthSelect = document.getElementById('month');
-        if (monthSelect) {
-            monthSelect.addEventListener('change', function() {
-                this.form.submit();
-            });
-        }
-        document.body.addEventListener('click', function(e) {
-            if (e.target.closest('.disabled')) {
-                e.preventDefault();
-            }
-        });
     });
 </script>
 {% endif %}

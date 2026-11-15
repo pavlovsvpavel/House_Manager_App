@@ -1,10 +1,11 @@
-def filter_bills_by_payment_status(bills, is_paid, month):
-    """Filter bills by payment state and/or month, independently.
+def filter_bills_by_payment_status(bills, is_paid, month, year=None):
+    """Filter bills by payment state, month and/or year, independently.
 
     - ``?is_paid=False``  -> debts across all months
     - ``?month=01``       -> January, paid and unpaid
-    - both together       -> narrowed further
-    - ``None`` / ``""``   -> no-op ("" is the "All" months choice)
+    - ``?year=2026``      -> only that year
+    - any combination     -> narrowed further
+    - ``None`` / ``""``   -> no-op ("" is the "All" chips choice)
     """
     if is_paid == "True":
         bills = bills.filter(is_paid=True)
@@ -13,5 +14,8 @@ def filter_bills_by_payment_status(bills, is_paid, month):
 
     if month:
         bills = bills.filter(month=month)
+
+    if year:
+        bills = bills.filter(year=year)
 
     return bills

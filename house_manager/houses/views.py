@@ -4,6 +4,7 @@ from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
 
 from house_manager.accounts.mixins import CheckForLoggedInUserMixin
+from house_manager.common.mixins import HtmxFragmentMixin
 from house_manager.houses.forms import HouseCreateForm, HouseCalculationsOptionsEditForm
 from house_manager.houses.helpers.house_clients_filter_by_payment_status import house_clients_filter_by_payment_status
 from house_manager.houses.mixins import HouseOwnershipMixin
@@ -49,8 +50,9 @@ class HouseDetailView(HouseOwnershipMixin, views.DetailView):
         return context
 
 
-class HouseClientsDetailView(HouseOwnershipMixin, views.DetailView):
+class HouseClientsDetailView(HouseOwnershipMixin, HtmxFragmentMixin, views.DetailView):
     template_name = "houses/house_clients_list.html"
+    partial_template_name = "houses/partials/clients_results.html"
 
     def get_object(self, queryset=None):
         return self.selected_house
@@ -61,6 +63,18 @@ class HouseClientsDetailView(HouseOwnershipMixin, views.DetailView):
         is_paid = self.request.GET.get('is_paid', None)
         month = self.request.GET.get('month', None)
         clients = self.selected_house.clients.order_by('floor').all()
+
+        # Floor filter: a typed floor number narrows the list. Anything
+        # that is not a plain non-negative integer ("", "abc", "-2")
+        # means "no floor filter".
+        selected_floor = None
+        floor_raw = (self.request.GET.get('floor') or "").strip()
+        if floor_raw.isdigit():
+            selected_floor = int(floor_raw)
+        if selected_floor is not None:
+            clients = clients.filter(floor=selected_floor)
+
+        context["selected_floor"] = selected_floor
 
         context["clients"] = house_clients_filter_by_payment_status(clients, is_paid, month)
         if is_paid == 'False':

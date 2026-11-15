@@ -256,6 +256,45 @@ class HouseBillsSecurityTests(TestCase):
         self.assertContains(response, f'id="bill-row-{february.pk}"')
         self.assertNotContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
 
+    def test_list_filters_by_year(self):
+        """The Year chip group: ?year= narrows to that year alone and
+        composes with the payment-status filter."""
+        self.client.force_login(self.owner)
+
+        last_year = HouseMonthlyBill.objects.create(
+            month="01", year="2025",
+            electricity_common=Decimal("10.00"),
+            electricity_lift=Decimal("0.00"),
+            internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"),
+            fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"),
+            fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"),
+            others=Decimal("0.00"),
+            house=self.house,
+            user=self.owner,
+        )
+
+        url = reverse("list_house_bills", kwargs={"house_pk": self.house.pk})
+
+        response = self.client.get(f"{url}?year=2026", HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+        self.assertNotContains(response, f'id="bill-row-{last_year.pk}"')
+
+        # All years back when the All chip is on (year param empty).
+        response = self.client.get(f"{url}?year=&month=&is_paid=", HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+        self.assertContains(response, f'id="bill-row-{last_year.pk}"')
+
+        # Composed: unpaid 2025 only.
+        response = self.client.get(f"{url}?year=2025&is_paid=False", HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{last_year.pk}"')
+        self.assertNotContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+
     def test_list_filters_by_payment_status_only(self):
         """Regression: the helper nested the is_paid branches under the month
         check, so debt filters with "All" months returned everything."""

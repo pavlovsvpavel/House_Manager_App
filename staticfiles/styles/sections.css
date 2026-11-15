@@ -263,6 +263,38 @@
     gap: 0.5em;
 }
 
+/* Clients floor filter: type-in box + Apply (no-JS). Under HTMX it
+   live-filters as you type — the Apply button hides itself via the global
+   html.htmx-running rule — and swaps only #clients-results. */
+.clients-floor-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5em;
+    margin-bottom: 0.75em;
+}
+
+.clients-floor-filter input[type="number"] {
+    width: auto;
+    padding: 0.5em 1.25em;
+    border: 1px solid var(--form-input-border);
+    border-radius: 1.5em;
+    background-color: var(--surface-0);
+    color: var(--text-1);
+}
+
+#clients-results.htmx-request {
+    opacity: 0.55;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.floor-filter-clear {
+    text-decoration: none;
+    color: var(--accent);
+    font-weight: 600;
+    margin-left: 0.35em;
+}
+
 .search_by_month_and_year label {
     width: auto;
 }

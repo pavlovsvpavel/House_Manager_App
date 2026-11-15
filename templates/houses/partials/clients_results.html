@@ -1,0 +1,53 @@
+{% load i18n %}
+<div id="clients-results">
+    <p class="bills-filter-status">
+        {% if bills_filter_status == 'unpaid' %}
+            {% trans "Clients with unpaid bills" %}
+        {% elif bills_filter_status == 'paid' %}
+            {% trans "Clients with paid bills" %}
+        {% else %}
+            {% trans "All clients" %}
+        {% endif %}
+    </p>
+    {% if selected_floor %}
+        <p class="bills-filter-status">
+            {% blocktrans with floor=selected_floor %}Clients on floor {{ floor }}{% endblocktrans %}
+            <a class="floor-filter-clear"
+               href="{% url 'house_clients_list' house_pk=object.pk %}{% if request.GET.is_paid %}?is_paid={{ request.GET.is_paid }}{% endif %}"
+               hx-get="{% url 'house_clients_list' house_pk=object.pk %}{% if request.GET.is_paid %}?is_paid={{ request.GET.is_paid }}{% endif %}"
+               hx-target="#clients-results" hx-swap="outerHTML" hx-push-url="true"
+               aria-label="{% trans "Clear floor filter" %}">&times;</a>
+        </p>
+    {% endif %}
+    <div class="clients-cards">
+        {% if clients %}
+            {% for client in clients %}
+                <a class="client-card"
+                   href="{% url 'details_client' house_pk=object.pk pk=client.pk %}">
+                    <div class="card-column">
+                        <p class="column-name">{% trans "Family Name" %}</p>
+                        <p class="column-data">{{ client.family_name }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">{% trans "Floor" %}</p>
+                        <p class="column-data">{{ client.floor }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">{% trans "Apartment" %}</p>
+                        <p class="column-data">{{ client.apartment }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">{% trans "People" %}</p>
+                        <p class="column-data">{{ client.number_of_people }}</p>
+                    </div>
+                    <div class="card-column">
+                        <p class="column-name">{% trans "Using lift" %}</p>
+                        <p class="column-data">{{ client.is_using_lift|yesno:_("Yes,No") }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <h3>{% trans "No clients" %}</h3>
+        {% endif %}
+    </div>
+</div>

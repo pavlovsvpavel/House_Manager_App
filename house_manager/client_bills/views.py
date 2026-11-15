@@ -19,7 +19,7 @@ from house_manager.clients.mixins import ClientOwnershipMixin
 from house_manager.clients.models import Client
 from house_manager.common.helpers.bills_summary import bills_summary, filtered_bills
 from house_manager.common.helpers.filtering_unpaid_client_bills import filtering_unpaid_client_bills
-from house_manager.common.mixins import HtmxFragmentMixin, MonthChoices
+from house_manager.common.mixins import HtmxFragmentMixin, MonthChoices, YearChoices
 from house_manager.common.validators import validate_signature_payload
 from house_manager.houses.models import House
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
@@ -39,12 +39,13 @@ class ClientBaseBillsDetailView(HtmxFragmentMixin, ClientOwnershipMixin, views.D
 
         is_paid = self.request.GET.get('is_paid', None)
         month = self.request.GET.get('month', None)
+        year = self.request.GET.get('year', None)
         client_bills = self.get_type_of_client_bills()
 
-        # Same fix as the house lists: filter when either parameter is
-        # present, not only when is_paid is in the URL.
-        if is_paid is not None or month is not None:
-            client_bills = filter_bills_by_payment_status(client_bills, is_paid, month)
+        # The chips always submit all three groups (radios with an "All"
+        # chip each); the helper no-ops on "" / None, so calling it
+        # unconditionally keeps every combination working.
+        client_bills = filter_bills_by_payment_status(client_bills, is_paid, month, year)
 
         # Summary line above the list (server-rendered, no JS).
         context.update(bills_summary(client_bills))
@@ -53,6 +54,7 @@ class ClientBaseBillsDetailView(HtmxFragmentMixin, ClientOwnershipMixin, views.D
         context["house"] = self.selected_client.house
         context["client_bills"] = client_bills
         context["MonthChoices"] = MonthChoices
+        context["YearChoices"] = YearChoices.previous_and_next_years()
 
         return context
 

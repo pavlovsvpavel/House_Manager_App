@@ -17,12 +17,12 @@ from house_manager.house_bills.helpers.filter_bills_by_payment_status import (
 
 
 def filtered_bills(bills, request):
-    """Apply the bills list's GET filter (?is_paid / ?month) — no-op when
-    neither parameter is present."""
+    """Apply the bills list's GET filter (?is_paid / ?month / ?year) — no-op when
+    none are present."""
     is_paid = request.GET.get("is_paid")
     month = request.GET.get("month")
-    if is_paid is not None or month is not None:
-        bills = filter_bills_by_payment_status(bills, is_paid, month)
+    year = request.GET.get("year")
+    bills = filter_bills_by_payment_status(bills, is_paid, month, year)
     return bills
 
 

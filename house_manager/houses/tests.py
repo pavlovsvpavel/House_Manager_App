@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from house_manager.clients.models import Client
+from house_manager.client_bills.models import ClientMonthlyBill
 from house_manager.houses.models import House
 
 UserModel = get_user_model()
@@ -109,3 +111,118 @@ class HouseSignatureOptionTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.house.refresh_from_db()
         self.assertTrue(self.house.signature_required)
+
+
+class ClientsFloorFilterTests(TestCase):
+    """
+    The clients page filters by a typed floor number (?floor=N): anything
+    that is not a non-negative integer means "no filter"; the filter
+    composes with the existing payment-status filter; HTMX requests get
+    only the results fragment.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = UserModel.objects.create_user(
+            email="owner@test.bg", password="StrongPass123!")
+        cls.house = House.objects.create(
+            town="Sofia", address="Test str. 1", entrance="A",
+            money_balance=Decimal("0.00"), user=cls.owner)
+
+        cls.client_f1 = Client.objects.create(
+            family_name="Ivanov", floor=1, apartment="1",
+            number_of_people=2, house=cls.house, user=cls.owner)
+        cls.client_f2 = Client.objects.create(
+            family_name="Petrov", floor=2, apartment="5",
+            number_of_people=3, house=cls.house, user=cls.owner)
+        cls.client_f2b = Client.objects.create(
+            family_name="Georgiev", floor=2, apartment="6",
+            number_of_people=2, house=cls.house, user=cls.owner)
+
+    def test_floor_filters_the_list(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "house_clients_list", kwargs={"house_pk": self.house.pk}), {"floor": "2"})
+
+        self.assertEqual(response.status_code, 200)
+        clients = list(response.context["clients"])
+        self.assertEqual(
+            [c.family_name for c in clients], ["Petrov", "Georgiev"])
+        self.assertEqual(response.context["selected_floor"], 2)
+        self.assertContains(response, "Clients on floor 2")
+
+    def test_non_numeric_floor_is_ignored(self):
+        self.client.force_login(self.owner)
+
+        for raw in ["abc", "-2", "1.5"]:
+            response = self.client.get(reverse(
+                "house_clients_list", kwargs={"house_pk": self.house.pk}), {"floor": raw})
+
+            self.assertEqual(response.status_code, 200, raw)
+            self.assertEqual(len(response.context["clients"]), 3, raw)
+            self.assertIsNone(response.context["selected_floor"], raw)
+
+    def test_impossible_floor_shows_no_clients(self):
+        # A well-formed but absurd floor number is a real filter that
+        # simply matches nothing.
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "house_clients_list", kwargs={"house_pk": self.house.pk}),
+            {"floor": "999999999999999999999"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["clients"]), 0)
+        self.assertContains(response, "No clients")
+
+    def test_missing_floor_shows_all_clients(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "house_clients_list", kwargs={"house_pk": self.house.pk}), {"floor": ""})
+
+        self.assertEqual(len(response.context["clients"]), 3)
+
+    def test_floor_composes_with_payment_status_filter(self):
+        ClientMonthlyBill.objects.create(
+            month="01", year="2026",
+            electricity_common=Decimal("100.00"),
+            electricity_lift=Decimal("0.00"), internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"), fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"), fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"), others=Decimal("0.00"),
+            amount_old_debts=Decimal("0.00"),
+            house=self.house, client=self.client_f2, user=self.owner)
+
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "house_clients_list", kwargs={"house_pk": self.house.pk}),
+            {"floor": "2", "is_paid": "False"})
+
+        self.assertEqual(
+            [c.family_name for c in response.context["clients"]], ["Petrov"])
+        self.assertContains(response, "Clients with unpaid bills")
+
+    def test_htmx_request_returns_results_fragment_only(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "house_clients_list", kwargs={"house_pk": self.house.pk}),
+            {"floor": "2"}, headers={"HX-Request": "true"})
+
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertIn('id="clients-results"', html)
+        self.assertNotIn("<html", html)
+
+    def test_floor_filter_blocked_for_other_user(self):
+        attacker = UserModel.objects.create_user(
+            email="attacker@test.bg", password="StrongPass123!")
+        self.client.force_login(attacker)
+
+        response = self.client.get(reverse(
+            "house_clients_list", kwargs={"house_pk": self.house.pk}), {"floor": "2"})
+
+        self.assertEqual(response.status_code, 404)

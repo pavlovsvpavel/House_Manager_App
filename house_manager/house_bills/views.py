@@ -181,15 +181,14 @@ class CurrentHouseBaseBillDetailView(HtmxFragmentMixin, HouseOwnershipMixin, vie
 
         is_paid = self.request.GET.get('is_paid', None)
         month = self.request.GET.get('month', None)
+        year = self.request.GET.get('year', None)
 
         house_bills = self.get_type_of_house_bills()
 
-        # Filter when either parameter is present: the month select submits
-        # only "month", the debt links submit "is_paid" (with an empty month
-        # when "All" is selected). Previously filtering ran only when
-        # is_paid was present, so a month choice alone showed every month.
-        if is_paid is not None or month is not None:
-            house_bills = filter_bills_by_payment_status(house_bills, is_paid, month)
+        # The chips always submit all three groups (radios with an "All"
+        # chip each); the helper no-ops on "" / None, so calling it
+        # unconditionally keeps every combination working.
+        house_bills = filter_bills_by_payment_status(house_bills, is_paid, month, year)
 
         # Summary line above the list (server-rendered, no JS).
         context.update(bills_summary(house_bills))
@@ -197,6 +196,7 @@ class CurrentHouseBaseBillDetailView(HtmxFragmentMixin, HouseOwnershipMixin, vie
         context["house"] = current_house
         context["house_bills"] = house_bills
         context["MonthChoices"] = MonthChoices
+        context["YearChoices"] = YearChoices.previous_and_next_years()
 
         return context
 

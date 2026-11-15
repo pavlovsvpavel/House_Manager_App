@@ -1080,3 +1080,52 @@ class ClientBillSignatureOptionalTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Signature")
         self.assertNotContains(response, 'data-label="Paid"')
+
+
+class ClientBillsYearFilterTests(TestCase):
+    """The Year chip group on the client bills lists: ?year= narrows to
+    that year, composes with is_paid, and "" (the All chip) shows every
+    year."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = UserModel.objects.create_user(
+            email="owner@test.bg", password="StrongPass123!")
+        cls.house = House.objects.create(
+            town="Sofia", address="Test str. 1", entrance="A",
+            money_balance=Decimal("0.00"), user=cls.owner)
+        cls.client_obj = Client.objects.create(
+            family_name="Ivanov", floor=1, apartment="1",
+            number_of_people=2, house=cls.house, user=cls.owner)
+
+        bill_defaults = dict(
+            electricity_lift=Decimal("0.00"), internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"), fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"), fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"), others=Decimal("0.00"),
+            amount_old_debts=Decimal("0.00"),
+            house=cls.house, client=cls.client_obj, user=cls.owner)
+
+        cls.bill_2026 = ClientMonthlyBill.objects.create(
+            month="01", year="2026", electricity_common=Decimal("100.00"),
+            **bill_defaults)
+        cls.bill_2025 = ClientMonthlyBill.objects.create(
+            month="01", year="2025", electricity_common=Decimal("80.00"),
+            **bill_defaults)
+
+    def test_year_chip_filters_client_bills(self):
+        self.client.force_login(self.owner)
+        url = reverse("list_client_bills", kwargs={
+            "house_pk": self.house.pk, "client_pk": self.client_obj.pk})
+
+        response = self.client.get(f"{url}?year=2026&month=&is_paid=",
+                                   HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{self.bill_2026.pk}"')
+        self.assertNotContains(response, f'id="bill-row-{self.bill_2025.pk}"')
+
+        response = self.client.get(f"{url}?year=&month=&is_paid=",
+                                   HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{self.bill_2026.pk}"')
+        self.assertContains(response, f'id="bill-row-{self.bill_2025.pk}"')
