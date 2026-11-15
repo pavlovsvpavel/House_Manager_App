@@ -11,7 +11,15 @@
                 <div class="page-title-row">
                     <h3>{% trans 'Clients' %}</h3>
                 </div>
-                {% include "partials/filter_buttons.html" %}
+                <p class="bills-filter-status">
+                    {% if bills_filter_status == 'unpaid' %}
+                        {% trans "Clients with unpaid bills" %}
+                    {% elif bills_filter_status == 'paid' %}
+                        {% trans "Clients with paid bills" %}
+                    {% else %}
+                        {% trans "All clients" %}
+                    {% endif %}
+                </p>
                 <div class="clients-cards">
                     {% if clients %}
                         {% for client in clients %}

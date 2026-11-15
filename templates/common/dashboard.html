@@ -12,9 +12,9 @@
                 <div class="house-cards">
                     {% if houses %}
                         {% for house in houses %}
-                            <a class="house-card"
-                               href="{% url 'details_house' house_pk=house.pk %}">
-                                <div class="house-card-title">
+                            <div class="house-card">
+                                <a class="house-card-title"
+                                   href="{% url 'details_house' house_pk=house.pk %}">
                                     <p class="house-address">{{ house.town }}, {{ house.address }}</p>
                                     {% if house.building_number or house.entrance %}
                                         <p class="house-meta">
@@ -23,26 +23,50 @@
                                             {% if house.entrance %}{% trans "Entrance" %} {{ house.entrance }}{% endif %}
                                         </p>
                                     {% endif %}
-                                </div>
+                                </a>
                                 <div class="house-kpis">
-                                    <div class="kpi">
-                                        <p class="kpi-value money {% if house.money_balance < 0 %}money--negative{% endif %}">{{ house.money_balance }}</p>
-                                        <p class="kpi-label">{% trans "Balance, EUR" %}</p>
+                                    <div class="kpi-group">
+                                        <p class="kpi-group-label">{% trans "House" %}</p>
+                                        <div class="kpi-group-items">
+                                            <a class="kpi"
+                                               href="{% url 'details_house' house_pk=house.pk %}">
+                                                <p class="kpi-value money {% if house.money_balance < 0 %}money--negative{% endif %}">{{ house.money_balance }}</p>
+                                                <p class="kpi-label">{% trans "Balance, EUR" %}</p>
+                                            </a>
+                                            <a class="kpi"
+                                               href="{% url 'list_house_bills' house_pk=house.pk %}">
+                                                <p class="kpi-value money">{{ house.unpaid_house_monthly_total }}</p>
+                                                <p class="kpi-label">{% trans "Monthly bills, EUR" %}</p>
+                                            </a>
+                                            <a class="kpi"
+                                               href="{% url 'list_other_house_bills' house_pk=house.pk %}">
+                                                <p class="kpi-value money">{{ house.unpaid_house_other_total }}</p>
+                                                <p class="kpi-label">{% trans "Other bills, EUR" %}</p>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="kpi">
-                                        <p class="kpi-value">{{ house.clients_count }}</p>
-                                        <p class="kpi-label">{% trans "Clients" %}</p>
-                                    </div>
-                                    <div class="kpi {% if house.unpaid_bills_count %}kpi-alert{% endif %}">
-                                        <p class="kpi-value">{{ house.unpaid_bills_count }}</p>
-                                        <p class="kpi-label">{% trans "Unpaid bills" %}</p>
-                                    </div>
-                                    <div class="kpi">
-                                        <p class="kpi-value money">{{ house.unpaid_bills_total }}</p>
-                                        <p class="kpi-label">{% trans "Due, EUR" %}</p>
+                                    <div class="kpi-group">
+                                        <p class="kpi-group-label">{% trans "Clients" %}</p>
+                                        <div class="kpi-group-items">
+                                            <a class="kpi {% if house.unpaid_bills_count %}kpi-alert{% endif %}"
+                                               href="{% url 'house_clients_list' house_pk=house.pk %}?is_paid=False">
+                                                <p class="kpi-value">{{ house.unpaid_bills_count }}</p>
+                                                <p class="kpi-label">{% trans "Unpaid bills" %}</p>
+                                            </a>
+                                            <a class="kpi"
+                                               href="{% url 'house_clients_list' house_pk=house.pk %}?is_paid=True">
+                                                <p class="kpi-value">{{ house.paid_bills_count }}</p>
+                                                <p class="kpi-label">{% trans "Paid bills" %}</p>
+                                            </a>
+                                            <a class="kpi"
+                                               href="{% url 'house_clients_list' house_pk=house.pk %}?is_paid=False">
+                                                <p class="kpi-value money">{{ house.unpaid_bills_total }}</p>
+                                                <p class="kpi-label">{% trans "Due, EUR" %}</p>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         {% endfor %}
                     {% else %}
                         <h1>{% trans "No houses" %}</h1>

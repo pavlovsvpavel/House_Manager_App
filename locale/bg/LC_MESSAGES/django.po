@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 14:04+0000\n"
+"POT-Creation-Date: 2026-11-15 17:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -98,7 +98,7 @@ msgid "Mark this option, if this apartment is permanently inhabitable"
 msgstr "Маркирайте тази опция, ако този апартамент е постоянно обитаем"
 
 #: house_manager/clients/models.py:27 templates/clients/details_client.html:16
-#: templates/houses/house_clients_list.html:21
+#: templates/houses/house_clients_list.html:29
 #: templates/partials/reports/reports_clients_data.html:4
 #: templates/partials/reports/reports_clients_data_other_bills.html:3
 #: templates/partials/reports/table_headers.html:4
@@ -107,7 +107,7 @@ msgid "Family Name"
 msgstr "Фамилия"
 
 #: house_manager/clients/models.py:33 templates/clients/details_client.html:20
-#: templates/houses/house_clients_list.html:25
+#: templates/houses/house_clients_list.html:33
 msgid "Floor"
 msgstr "Етаж"
 
@@ -115,7 +115,7 @@ msgstr "Етаж"
 #: templates/client_bills/partials/monthly_bill_details.html:9
 #: templates/client_bills/partials/other_bill_details.html:8
 #: templates/clients/details_client.html:24
-#: templates/houses/house_clients_list.html:29
+#: templates/houses/house_clients_list.html:37
 #: templates/partials/reports/reports_clients_data.html:5
 #: templates/partials/reports/reports_clients_data_other_bills.html:4
 #: templates/partials/reports/table_headers.html:5
@@ -302,9 +302,9 @@ msgstr "Общо сума"
 
 #: house_manager/common/mixins.py:220 house_manager/common/mixins.py:278
 #: templates/client_bills/partials/monthly_bill_details.html:7
-#: templates/client_bills/partials/monthly_bill_form.html:12
+#: templates/client_bills/partials/monthly_bill_form.html:13
 #: templates/client_bills/partials/other_bill_details.html:6
-#: templates/client_bills/partials/other_bill_form.html:12
+#: templates/client_bills/partials/other_bill_form.html:13
 #: templates/house_bills/partials/monthly_bill_details.html:6
 #: templates/house_bills/partials/monthly_bill_form.html:11
 #: templates/house_bills/partials/other_bill_details.html:6
@@ -478,11 +478,11 @@ msgstr "Избрани полета на база апартаменти"
 msgid "Selected fields based on total people"
 msgstr "Избрани полета на база живущи"
 
-#: house_manager/houses/views.py:29 templates/partials/profile_menu.html:26
+#: house_manager/houses/views.py:28 templates/partials/profile_menu.html:26
 msgid "Create House"
 msgstr "Създай обект"
 
-#: house_manager/houses/views.py:100
+#: house_manager/houses/views.py:104
 msgid "Edit House"
 msgstr "Промяна на обект"
 
@@ -595,24 +595,24 @@ msgstr "Неплатени"
 msgid "Total, EUR"
 msgstr "Общо сума, ЕВРО"
 
-#: templates/client_bills/partials/monthly_bill_form.html:12
-#: templates/client_bills/partials/other_bill_form.html:12
+#: templates/client_bills/partials/monthly_bill_form.html:13
+#: templates/client_bills/partials/other_bill_form.html:13
 #: templates/house_bills/partials/monthly_bill_form.html:11
 #: templates/house_bills/partials/other_bill_form.html:11
 msgid "Mark as paid"
 msgstr "Отбележи като платено"
 
-#: templates/client_bills/partials/monthly_bill_form.html:17
-#: templates/client_bills/partials/other_bill_form.html:17
+#: templates/client_bills/partials/monthly_bill_form.html:18
+#: templates/client_bills/partials/other_bill_form.html:18
 msgid "Also pay other unpaid bills"
 msgstr "Платете и други неплатени сметки"
 
-#: templates/client_bills/partials/monthly_bill_form.html:27
-#: templates/client_bills/partials/other_bill_form.html:27
+#: templates/client_bills/partials/monthly_bill_form.html:28
+#: templates/client_bills/partials/other_bill_form.html:28
 msgid "Total to pay"
 msgstr "Общо за плащане"
 
-#: templates/client_bills/partials/monthly_bill_form.html:38
+#: templates/client_bills/partials/monthly_bill_form.html:39
 msgid "Download Receipt"
 msgstr "Изтегли разписка"
 
@@ -648,12 +648,12 @@ msgid "Client details"
 msgstr "Клиент - детайли"
 
 #: templates/clients/details_client.html:28
-#: templates/houses/house_clients_list.html:33
+#: templates/houses/house_clients_list.html:41
 msgid "People"
 msgstr "Живущи"
 
 #: templates/clients/details_client.html:32
-#: templates/houses/house_clients_list.html:37
+#: templates/houses/house_clients_list.html:45
 msgid "Using lift"
 msgstr "Използва ли асансьор"
 
@@ -661,7 +661,7 @@ msgstr "Използва ли асансьор"
 #: templates/clients/details_client.html:37
 #: templates/clients/details_client.html:41
 #: templates/houses/details_house.html:79
-#: templates/houses/house_clients_list.html:38
+#: templates/houses/house_clients_list.html:46
 msgid "Yes,No"
 msgstr "Да,Не"
 
@@ -762,25 +762,41 @@ msgstr "Обекти"
 msgid "Building"
 msgstr "Блок"
 
-#: templates/common/dashboard.html:30
+#: templates/common/dashboard.html:29
+msgid "House"
+msgstr "Обект"
+
+#: templates/common/dashboard.html:34
 msgid "Balance, EUR"
 msgstr "Салдо, ЕВРО"
 
-#: templates/common/dashboard.html:34
+#: templates/common/dashboard.html:39
+msgid "Monthly bills, EUR"
+msgstr "Месечни сметки, ЕВРО"
+
+#: templates/common/dashboard.html:44
+msgid "Other bills, EUR"
+msgstr "Други сметки, ЕВРО"
+
+#: templates/common/dashboard.html:49
 #: templates/houses/house_clients_list.html:10
 #: templates/houses/house_clients_list.html:12
 msgid "Clients"
 msgstr "Клиенти"
 
-#: templates/common/dashboard.html:38
+#: templates/common/dashboard.html:54
 msgid "Unpaid bills"
 msgstr "Неплатени сметки"
 
-#: templates/common/dashboard.html:42
+#: templates/common/dashboard.html:59
+msgid "Paid bills"
+msgstr "Платени сметки"
+
+#: templates/common/dashboard.html:64
 msgid "Due, EUR"
 msgstr "Дължими, ЕВРО"
 
-#: templates/common/dashboard.html:48
+#: templates/common/dashboard.html:72
 msgid "No houses"
 msgstr "Няма създадени обекти"
 
@@ -980,7 +996,19 @@ msgstr "Общо живущи ползващи асансьор"
 msgid "Current Balance"
 msgstr "Настоящо салдо"
 
-#: templates/houses/house_clients_list.html:43
+#: templates/houses/house_clients_list.html:16
+msgid "Clients with unpaid bills"
+msgstr "Клиенти с неплатени сметки"
+
+#: templates/houses/house_clients_list.html:18
+msgid "Clients with paid bills"
+msgstr "Клиенти с платени сметки"
+
+#: templates/houses/house_clients_list.html:20
+msgid "All clients"
+msgstr "Всички клиенти"
+
+#: templates/houses/house_clients_list.html:51
 msgid "No clients"
 msgstr "Няма клиенти"
 

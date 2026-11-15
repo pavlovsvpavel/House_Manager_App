@@ -24,8 +24,11 @@
 }
 
 .house-card-title {
+    color: inherit;
+    display: block;
     margin-bottom: 0.75em;
     text-align: left;
+    text-decoration: none;
 }
 
 .house-card-title .house-address {
@@ -40,20 +43,41 @@
 }
 
 .house-kpis {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+    margin-top: 0.75em;
+}
+
+.kpi-group-label {
+    color: var(--text-muted);
+    font-size: 0.7em;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.35em;
+    text-transform: uppercase;
+}
+
+.kpi-group-items {
     display: grid;
     gap: 0.5em;
-    grid-template-columns: repeat(4, 1fr);
-    margin-top: 0.75em;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .house-kpis .kpi {
     background: var(--site-bgnd);
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
+    color: inherit;
     padding: 0.5em 0.25em;
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.house-kpis .kpi:hover {
+    background: var(--surface-2);
 }
 
 .house-kpis .kpi-value {
@@ -77,9 +101,14 @@
     color: var(--alert-text);
 }
 
-/* Stack KPIs two-by-two on narrow screens. */
+/* KPI chips wrap onto narrower columns on small screens. */
 @media (max-width: 640px) {
-    .house-kpis {
-        grid-template-columns: repeat(2, 1fr);
+    .kpi-group-items {
+        gap: 0.4em;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .house-kpis .kpi-value {
+        font-size: 0.95em;
     }
 }

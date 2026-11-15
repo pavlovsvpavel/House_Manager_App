@@ -4,7 +4,6 @@ from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
 
 from house_manager.accounts.mixins import CheckForLoggedInUserMixin
-from house_manager.common.mixins import MonthChoices
 from house_manager.houses.forms import HouseCreateForm, HouseCalculationsOptionsEditForm
 from house_manager.houses.helpers.house_clients_filter_by_payment_status import house_clients_filter_by_payment_status
 from house_manager.houses.mixins import HouseOwnershipMixin
@@ -64,7 +63,12 @@ class HouseClientsDetailView(HouseOwnershipMixin, views.DetailView):
         clients = self.selected_house.clients.order_by('floor').all()
 
         context["clients"] = house_clients_filter_by_payment_status(clients, is_paid, month)
-        context["MonthChoices"] = MonthChoices
+        if is_paid == 'False':
+            context["bills_filter_status"] = 'unpaid'
+        elif is_paid == 'True':
+            context["bills_filter_status"] = 'paid'
+        else:
+            context["bills_filter_status"] = 'all'
 
         return context
 

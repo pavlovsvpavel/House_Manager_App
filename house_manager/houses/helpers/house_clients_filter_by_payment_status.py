@@ -19,5 +19,15 @@ def house_clients_filter_by_payment_status(clients, is_paid, month):
                     Q(client_monthly_bills__is_paid=False, client_monthly_bills__month=month) |
                     Q(client_other_bills__is_paid=False, client_other_bills__month=month)
                 )
+    elif is_paid == 'True':
+        clients = clients.filter(
+            Q(client_monthly_bills__is_paid=True) |
+            Q(client_other_bills__is_paid=True)
+        )
+    elif is_paid == 'False':
+        clients = clients.filter(
+            Q(client_monthly_bills__is_paid=False) |
+            Q(client_other_bills__is_paid=False)
+        )
 
     return clients.distinct()

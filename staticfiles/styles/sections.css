@@ -358,3 +358,11 @@
     justify-content: space-between;
     align-items: center;
 }
+
+/* Status line under the page title, e.g. the dashboard-driven
+   "clients with unpaid / paid bills" scope on the clients page. */
+.bills-filter-status {
+    color: var(--text-2);
+    font-size: 0.9em;
+    margin: -0.5em 0 1em;
+}

@@ -16,12 +16,6 @@
     transition: 0.3s ease-in-out;
 }
 
-.dashboard .house-card:hover {
-    cursor: pointer;
-    background-color: var(--card-bgnd-hover);
-    transition: 0.3s ease-in-out;
-}
-
 .create-house-bills .clients-cards,
 .list-clients .clients-cards,
 .list-house-bills .clients-cards,
