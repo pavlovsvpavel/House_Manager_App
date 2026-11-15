@@ -36,7 +36,11 @@
                                         <th>{% trans "Full name" %}</th>
                                         <th>{% trans "Comment" %}</th>
                                         <th>{% trans "Total EUR" %}</th>
+                                        {% if current_house.signature_required %}
                                         <th>{% trans "Signature" %}</th>
+                                        {% else %}
+                                        <th>{% trans "Paid" %}</th>
+                                        {% endif %}
                                     </tr>
                                 </thead>
                             {% endif %}
@@ -46,7 +50,11 @@
                                         <td></td>
                                         <td>{{ bill.comment }}</td>
                                         <td class="money money--right">{{ bill.total_amount }}</td>
+                                        {% if current_house.signature_required %}
                                         <td></td>
+                                        {% else %}
+                                        <td>{% if bill.is_paid %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</td>
+                                        {% endif %}
                                     </tr>
                                 {% endfor %}
                                 {% for client_bill in clients_bills|dictsort:"client.apartment" %}

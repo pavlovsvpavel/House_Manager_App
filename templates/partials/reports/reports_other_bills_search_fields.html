@@ -6,32 +6,19 @@
 <script nonce="{{ csp_nonce }}" src="{% static "scripts/exportToPdf.js" %}" defer></script>
 
 <form class="search_by_month_and_year" method="get">
-    <label for="month">
-        <select name="month" id="month">
-            <option value="" selected disabled>{% trans "Month" %}</option>
-            {% for choice in MonthChoices.choices %}
-                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-            {% endfor %}
-        </select>
-    </label>
-    <label for="year">
-        <select name="year" id="year" placeholder="Year" id="year">
-            <option value="" selected disabled>{% trans "Year" %}</option>
-            {% for choice in YearChoices %}
-                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-            {% endfor %}
-        </select>
-    </label>
-    <label for="type_of_bill">
+    {% include "partials/reports/month_picker.html" %}
+    {% include "partials/reports/year_picker.html" %}
+
+    <div class="action-buttons-reports">
+        <label for="type_of_bill">
         <select name="type_of_bill" placeholder="Type of bill" id="type_of_bill">
-            <option value="" selected disabled>{% trans "Type of bill" %}</option>
+            <option value="" {% if not selected_type_of_bill %}selected{% endif %} disabled>{% trans "Type of bill" %}</option>
             {% for choice in TypeOfBillChoices.choices %}
-                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                <option value="{{ choice.0 }}" {% if choice.0 == selected_type_of_bill %}selected{% endif %}>{{ choice.1 }}</option>
             {% endfor %}
         </select>
     </label>
-    <button class="search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button class="search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button type="button" id="generatePdf" class="save-btn">{% trans "Save as PDF" %}</button>
+    </div>
 </form>
-<div class="buttons">
-    <button id="generatePdf" class="save-btn">{% trans "Save as PDF" %}</button>
-</div>

@@ -254,7 +254,7 @@ class CurrentClientBaseBillEditView(HtmxFragmentMixin, ClientOwnershipMixin, vie
 
 
 class CurrentClientMonthlyBillEditView(CurrentClientBaseBillEditView):
-    queryset = ClientMonthlyBill.objects.prefetch_related('client')
+    queryset = ClientMonthlyBill.objects.select_related('client', 'house')
     template_name = "client_bills/edit_client_bill.html"
     partial_template_name = "client_bills/partials/monthly_bill_modal.html"
     row_template_name = "client_bills/partials/monthly_bill_row.html"
@@ -262,7 +262,7 @@ class CurrentClientMonthlyBillEditView(CurrentClientBaseBillEditView):
 
 
 class CurrentClientOtherBillEditView(CurrentClientBaseBillEditView):
-    queryset = ClientOtherBill.objects.prefetch_related('client')
+    queryset = ClientOtherBill.objects.select_related('client', 'house')
     template_name = "client_bills/edit_client_other_bill.html"
     partial_template_name = "client_bills/partials/other_bill_modal.html"
     row_template_name = "client_bills/partials/other_bill_row.html"

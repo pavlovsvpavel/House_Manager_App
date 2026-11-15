@@ -112,17 +112,42 @@ dialog.bill-modal {
     position: fixed;
     inset: 0;
     margin: auto;
+    /* Full-viewport height + flex centering: the panel is centered on
+       both axes no matter how tall it is (short modal without the
+       signature pad, tall one with it). With the UA's fit-content
+       height the dialog could keep scrollable overflow (e.g. after
+       focus() scrolls it), which clipped the panel's top. Sized to the
+       viewport there is nothing to scroll - the panel is the only
+       scroll container. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100dvh;
     max-width: none;
     max-height: none;
     padding: 0;
     border: none;
     background: transparent;
     color: var(--text-1);
+    /* The panel is the only scroll container: the UA's dialog
+       { overflow: auto } would draw a second scrollbar at the window's
+       edge next to the panel's own. clip (fallback: hidden) also makes
+       the dialog itself UNSCROLLABLE - focus() on a field deep in a
+       tall multi-month form must not shift the panel upwards. */
+    overflow: hidden;
+    overflow: clip;
 }
 
 dialog.bill-modal::backdrop {
     background-color: var(--surface-inverse);
     opacity: 0.72;
+}
+
+/* While a payment modal is open, the page behind must not scroll -
+   otherwise the page scrollbar and the panel's scrollbar both show
+   (double scrollbar). :has() restores the page when the dialog closes. */
+body:has(dialog.bill-modal[open]) {
+    overflow: hidden;
 }
 
 .bill-modal__panel {

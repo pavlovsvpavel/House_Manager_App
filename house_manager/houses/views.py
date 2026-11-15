@@ -75,7 +75,8 @@ class HouseClientsDetailView(HouseOwnershipMixin, views.DetailView):
 
 class HouseEditView(HouseOwnershipMixin, views.UpdateView):
     template_name = "houses/edit_house.html"
-    fields = ("town", "address", "building_number", "entrance", "fixed_monthly_taxes", "money_balance")
+    fields = ("town", "address", "building_number", "entrance", "fixed_monthly_taxes",
+              "signature_required", "money_balance")
 
     def get_object(self, queryset=None):
         return self.selected_house

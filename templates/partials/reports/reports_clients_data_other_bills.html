@@ -3,6 +3,7 @@
     <td data-label="{% trans "Family Name" %}">{{ client_bill.client.family_name }}</td>
     <td data-label="{% trans "Apartment" %}">{{ client_bill.client.apartment }}</td>
     <td data-label="{% trans "Total, EUR" %}" class="money money--right">{{ client_bill.total_amount }}</td>
+    {% if current_house.signature_required and not is_multi_month %}
     <td data-label="{% trans "Signature" %}" class="signature-column">
         {% if client_bill.signature %}
         <div>
@@ -12,4 +13,7 @@
         <div></div>
     {% endif %}
     </td>
+    {% else %}
+    <td data-label="{% trans "Paid" %}" class="paid-column">{% if client_bill.is_paid %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</td>
+    {% endif %}
 </tr>

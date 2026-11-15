@@ -6,6 +6,7 @@
     <td data-label="{% trans "Unpaid bills, EUR" %}" class="money money--right">{{ client_bill.amount_old_debts }}</td>
     <td data-label="{% trans "Monthly bill, EUR" %}" class="money money--right">{{ client_bill.total_amount }}</td>  <!-- Total amount searched month/year client_monthly bill -->
     <td data-label="{% trans "Total, EUR" %}" class="money money--right">{{ client_bill.amount_old_debts|add:client_bill.total_amount }}</td>
+    {% if current_house.signature_required and not is_multi_month %}
     <td data-label="{% trans "Signature" %}" class="signature-column">
         {% if client_bill.signature %}
         <div>
@@ -15,4 +16,7 @@
         <div></div>
     {% endif %}
     </td>
+    {% else %}
+    <td data-label="{% trans "Paid" %}" class="paid-column">{% if client_bill.is_paid %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</td>
+    {% endif %}
 </tr>

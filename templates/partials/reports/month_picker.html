@@ -1,0 +1,11 @@
+{% load i18n %}
+<fieldset class="chip-group chip-group--months">
+    <legend class="chip-group__legend">{% trans "Months" %}</legend>
+    {% for choice in MonthChoices.choices %}
+    <label class="chip">
+        <input type="checkbox" name="month" value="{{ choice.0 }}"
+               {% if choice.0 in selected_months %}checked{% endif %}>
+        <span>{{ choice.0 }}</span>
+    </label>
+    {% endfor %}
+</fieldset>

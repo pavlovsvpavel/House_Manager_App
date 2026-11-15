@@ -57,6 +57,10 @@
             } else {
                 dialog.setAttribute('open', '');
             }
+            // The dialog itself never scrolls (the panel is the only
+            // scroll container) - a scroll position left over from a
+            // previous interaction must not clip the panel on reopen.
+            dialog.scrollTop = 0;
         }
 
         if (typeof window.initBillSignaturePad === 'function') {
@@ -65,6 +69,11 @@
 
         const firstField = dialog.querySelector('input[name="is_paid"]');
         if (firstField && !firstField.disabled) firstField.focus();
+
+        // After focus: on browsers without overflow:clip, focusing a
+        // field deep in a tall form can scroll the dialog itself and
+        // shift the panel - undo it so the panel stays put.
+        dialog.scrollTop = 0;
     }
 
     function syncSaveButton(form) {

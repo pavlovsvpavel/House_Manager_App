@@ -5,8 +5,10 @@
 
 {% block extra_head_scripts %}
     <script nonce="{{ csp_nonce }}" src="{% static "scripts/jquery.js" %}" defer></script>
+    {% if object.house.signature_required %}
     <script nonce="{{ csp_nonce }}" src="{% static "scripts/jSignature.js" %}" defer></script>
     <script nonce="{{ csp_nonce }}" src="{% static "scripts/signaturePad.js" %}" defer></script>
+    {% endif %}
     <script nonce="{{ csp_nonce }}" src="{% static "scripts/billsPayments.js" %}" defer></script>
 {% endblock %}
 

@@ -58,3 +58,54 @@ class HouseOwnershipTests(TestCase):
         response = self.client.get(reverse("house_clients_list", kwargs={"house_pk": self.house.pk}))
 
         self.assertEqual(response.status_code, 404)
+
+
+class HouseSignatureOptionTests(TestCase):
+    """
+    The per-house "Require signature on bills" option: checked by default
+    (the pre-existing workflow), editable from the Edit House page.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = UserModel.objects.create_user(
+            email="owner@test.bg", password="StrongPass123!")
+        cls.house = House.objects.create(
+            town="Sofia",
+            address="Test str. 1",
+            entrance="A",
+            money_balance=Decimal("0.00"),
+            user=cls.owner,
+        )
+
+    def test_new_house_defaults_to_signature_required(self):
+        self.assertTrue(self.house.signature_required)
+
+    def test_edit_page_renders_the_option_checked_by_default(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse("edit_house", kwargs={"house_pk": self.house.pk}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'name="signature_required"')
+        self.assertContains(response, "checked")
+
+    def test_edit_house_can_disable_and_reenable_signatures(self):
+        self.client.force_login(self.owner)
+        url = reverse("edit_house", kwargs={"house_pk": self.house.pk})
+        data = {"town": "Sofia", "address": "Test str. 1",
+                "entrance": "A", "money_balance": "0.00"}
+
+        # The checkbox left unchecked opts the house out of signatures.
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 302)
+        self.house.refresh_from_db()
+        self.assertFalse(self.house.signature_required)
+
+        # Ticking it again restores the default workflow.
+        response = self.client.post(url, {**data, "signature_required": "on"})
+
+        self.assertEqual(response.status_code, 302)
+        self.house.refresh_from_db()
+        self.assertTrue(self.house.signature_required)

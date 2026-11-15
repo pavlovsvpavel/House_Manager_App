@@ -1,9 +1,12 @@
+import re
 from decimal import Decimal
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from house_manager.clients.models import Client
+from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 from house_manager.houses.models import House
 from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill
 
@@ -433,3 +436,204 @@ class HouseBillsSecurityTests(TestCase):
         self.assertEqual(
             response.url,
             reverse("list_house_bills", kwargs={"house_pk": self.house.pk}))
+
+
+class ReportsMultiMonthTests(TestCase):
+    """
+    Report pages accept several months at once (<select multiple>): rows
+    collapse to one per client with the money columns summed, the details
+    card lists the months as numbers ("01, 02, 03"), and the Signature
+    column (which cannot be summed) is replaced by Paid - "Yes" only when
+    every selected month's bill for the client is paid.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = UserModel.objects.create_user(email="owner@test.bg", password="StrongPass123!")
+
+        cls.house = House.objects.create(
+            town="Sofia",
+            address="Test str. 1",
+            entrance="A",
+            money_balance=Decimal("0.00"),
+            user=cls.owner,
+        )
+
+        cls.client_a = Client.objects.create(
+            family_name="Ivanov", floor=1, apartment="1",
+            number_of_people=2, house=cls.house, user=cls.owner)
+        cls.client_b = Client.objects.create(
+            family_name="Petrov", floor=2, apartment="2",
+            number_of_people=3, house=cls.house, user=cls.owner)
+
+        bill_defaults = dict(
+            electricity_lift=Decimal("0.00"), internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"), fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"), fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"), others=Decimal("0.00"),
+            house=cls.house, user=cls.owner)
+
+        # Client A: January + February (one unpaid, one paid);
+        # client B: February only (paid).
+        cls.bill_a_jan = ClientMonthlyBill.objects.create(
+            month="01", year="2026",
+            electricity_common=Decimal("100.00"), amount_old_debts=Decimal("10.00"),
+            client=cls.client_a, is_paid=False, **bill_defaults)
+        cls.bill_a_feb = ClientMonthlyBill.objects.create(
+            month="02", year="2026",
+            electricity_common=Decimal("110.00"), amount_old_debts=Decimal("0.00"),
+            client=cls.client_a, is_paid=True, **bill_defaults)
+        cls.bill_b_feb = ClientMonthlyBill.objects.create(
+            month="02", year="2026",
+            electricity_common=Decimal("50.00"), amount_old_debts=Decimal("0.00"),
+            client=cls.client_b, is_paid=True, **bill_defaults)
+        cls.bill_a_jan.refresh_from_db()
+        cls.bill_a_feb.refresh_from_db()
+        cls.bill_b_feb.refresh_from_db()
+
+        cls.other_bill_feb = HouseOtherBill.objects.create(
+            month="02", year="2026",
+            comment="Elevator repair", total_amount=Decimal("50.00"),
+            type_of_bill="Bill for all clients", house=cls.house, user=cls.owner)
+
+    # --- monthly reports ----------------------------------------------------
+
+    def test_monthly_report_multi_month_sums_per_client(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "reports_bills", kwargs={"house_pk": self.house.pk}),
+            {"month": ["01", "02"], "year": "2026"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "01, 02")
+
+        # One row per client: A summed 210.00 (100+110), B 50.00.
+        clients_bills = response.context["clients_bills"]
+        self.assertEqual(len(clients_bills), 2)
+        row_a = next(r for r in clients_bills if r.client == self.client_a)
+        row_b = next(r for r in clients_bills if r.client == self.client_b)
+        self.assertEqual(row_a.total_amount, Decimal("210.00"))
+        self.assertEqual(row_a.amount_old_debts, Decimal("10.00"))
+        self.assertEqual(row_b.total_amount, Decimal("50.00"))
+
+        # Table foot sums over both months.
+        self.assertEqual(response.context["clients_bills_total_amount"], Decimal("260.00"))
+        self.assertEqual(response.context["unpaid_bills"], Decimal("10.00"))
+        self.assertEqual(response.context["amount_for_collection"], Decimal("270.00"))
+
+    def test_monthly_report_multi_month_swaps_signature_for_paid(self):
+        # The house requires signatures (default), but a signature cannot be
+        # summed: multi-month shows Paid instead - "Yes" only when every
+        # selected month is paid (A: Jan unpaid -> No; B: both months paid).
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "reports_bills", kwargs={"house_pk": self.house.pk}),
+            {"month": ["01", "02"], "year": "2026"})
+
+        self.assertContains(response, "Paid")
+        self.assertNotContains(response, "Signature")
+        rows_by_client = {row.client.pk: row for row in response.context["clients_bills"]}
+        self.assertFalse(rows_by_client[self.client_a.pk].is_paid)
+        self.assertTrue(rows_by_client[self.client_b.pk].is_paid)
+
+    def test_monthly_report_single_month_keeps_signature_column(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "reports_bills", kwargs={"house_pk": self.house.pk}),
+            {"month": ["01"], "year": "2026"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Signature")
+        self.assertNotContains(response, "Paid")
+        # Months render as numbers, also for a single selection.
+        self.assertContains(response, "01")
+
+    def test_month_picker_checkboxes_persist_selection(self):
+        # The month picker is a checkbox grid: the picked months render
+        # checked after a search (no ctrl+click needed, no JS involved).
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "reports_bills", kwargs={"house_pk": self.house.pk}),
+            {"month": ["01", "02"], "year": "2026"})
+
+        html = response.content.decode()
+        checked = re.findall(
+            r'<input type="checkbox" name="month" value="(\d\d)"\s+checked>', html)
+        self.assertEqual(sorted(checked), ["01", "02"])
+
+        # The picked months stay checked; the year radio stays checked.
+        self.assertContains(response, "01, 02")
+        self.assertTrue(re.search(r'name="year" value="2026"\s+checked', html))
+
+    def test_monthly_report_without_month_shows_no_table(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "reports_bills", kwargs={"house_pk": self.house.pk}), {"year": "2026"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["clients_bills"]), 0)
+
+    # --- other-bills reports -------------------------------------------------
+
+    def test_other_bills_report_multi_month_sums_per_client(self):
+        ClientOtherBill.objects.create(
+            month="01", year="2026", comment="Roof fund",
+            total_amount=Decimal("30.00"),
+            house=self.house, client=self.client_a, user=self.owner)
+        ClientOtherBill.objects.create(
+            month="02", year="2026", comment="Roof fund",
+            total_amount=Decimal("20.00"),
+            house=self.house, client=self.client_a, user=self.owner)
+
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "reports_other_bills", kwargs={"house_pk": self.house.pk}),
+            {"month": ["01", "02"], "year": "2026",
+             "type_of_bill": "Bill for all clients"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "01, 02")
+
+        row_a = next(r for r in response.context["clients_bills"] if r.client == self.client_a)
+        self.assertEqual(row_a.total_amount, Decimal("50.00"))
+        self.assertEqual(response.context["clients_bills_total_amount"], Decimal("50.00"))
+        self.assertNotContains(response, "Signature")
+
+    def test_other_bills_report_single_type_sums_total(self):
+        HouseOtherBill.objects.create(
+            month="01", year="2026", comment="Elevator repair",
+            total_amount=Decimal("40.00"), type_of_bill="Single bill",
+            house=self.house, user=self.owner)
+        HouseOtherBill.objects.create(
+            month="02", year="2026", comment="Elevator repair",
+            total_amount=Decimal("50.00"), type_of_bill="Single bill",
+            house=self.house, user=self.owner)
+
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse(
+            "reports_other_bills", kwargs={"house_pk": self.house.pk}),
+            {"month": ["01", "02"], "year": "2026", "type_of_bill": "Single bill"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "01, 02")
+        # One row per bill (comments differ), total summed over the months.
+        self.assertEqual(len(response.context["single_bills"]), 2)
+        self.assertEqual(response.context["calculated_total_amount"], Decimal("90.00"))
+
+    def test_reports_blocked_for_other_user(self):
+        attacker = UserModel.objects.create_user(
+            email="attacker@test.bg", password="StrongPass123!")
+        self.client.force_login(attacker)
+
+        response = self.client.get(reverse(
+            "reports_bills", kwargs={"house_pk": self.house.pk}),
+            {"month": ["01", "02"], "year": "2026"})
+
+        self.assertEqual(response.status_code, 404)

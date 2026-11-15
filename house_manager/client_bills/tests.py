@@ -7,6 +7,7 @@ from django.urls import reverse
 
 from house_manager.clients.models import Client
 from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
+from house_manager.house_bills.models import HouseOtherBill
 from house_manager.houses.models import House
 
 UserModel = get_user_model()
@@ -883,3 +884,199 @@ class ClientBillSignatureValidationTests(TestCase):
         response = self.pay(payload)
 
         self.assert_bill_still_unpaid()
+
+
+class ClientBillSignatureOptionalTests(TestCase):
+    """
+    Per-house "Require signature on bills": with the option off, the
+    payment UI renders no signature pad (HTMX modal and no-JS page
+    alike) and a payment without any signature data still goes through;
+    the reports show a Paid (Yes/No) column instead of Signature.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = UserModel.objects.create_user(
+            email="owner@test.bg", password="StrongPass123!")
+
+        cls.house = House.objects.create(
+            town="Sofia", address="Test str. 1", entrance="A",
+            money_balance=Decimal("0.00"), user=cls.owner,
+            signature_required=False)
+
+        cls.client_obj = Client.objects.create(
+            family_name="Ivanov", floor=1, apartment="1",
+            number_of_people=2, house=cls.house, user=cls.owner)
+
+        cls.monthly_bill = ClientMonthlyBill.objects.create(
+            month="01", year="2026",
+            electricity_common=Decimal("100.00"),
+            electricity_lift=Decimal("0.00"),
+            internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"),
+            fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"),
+            fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"),
+            others=Decimal("0.00"),
+            amount_old_debts=Decimal("0.00"),
+            house=cls.house, client=cls.client_obj, user=cls.owner)
+
+        cls.other_bill = ClientOtherBill.objects.create(
+            month="01", year="2026", comment="Doorbell repair",
+            total_amount=Decimal("40.00"),
+            house=cls.house, client=cls.client_obj, user=cls.owner)
+
+    def edit_url(self, bill, other=False):
+        name = "edit_client_other_bill" if other else "edit_client_bill"
+        return reverse(name, kwargs={
+            "house_pk": self.house.pk,
+            "client_pk": self.client_obj.pk,
+            "pk": bill.pk,
+        })
+
+    # --- Payment UI without the pad -----------------------------------------
+
+    def test_monthly_modal_omits_signature_pad(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(
+            self.edit_url(self.monthly_bill), HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "data-bill-modal")
+        self.assertContains(response, 'id="id_is_paid"')
+        self.assertNotContains(response, 'id="signature"')
+
+    def test_other_bill_modal_omits_signature_pad(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(
+            self.edit_url(self.other_bill, other=True), HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "data-bill-modal")
+        self.assertNotContains(response, 'id="signature"')
+
+    def test_no_js_page_omits_signature_scripts(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(self.edit_url(self.monthly_bill))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "jSignature.js")
+        self.assertNotContains(response, "signaturePad.js")
+        # The payment flow itself is unchanged - its script still loads.
+        self.assertContains(response, "billsPayments.js")
+
+    def test_pay_monthly_bill_without_signature_credits_balance(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            self.edit_url(self.monthly_bill), {"is_paid": "on"},
+            HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.monthly_bill.refresh_from_db()
+        self.house.refresh_from_db()
+        self.assertTrue(self.monthly_bill.is_paid)
+        self.assertEqual(self.monthly_bill.signature, "")
+        self.assertEqual(self.house.money_balance, Decimal("100.00"))
+
+    def test_pay_other_bill_without_signature_credits_balance(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            self.edit_url(self.other_bill, other=True), {"is_paid": "on"},
+            HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.other_bill.refresh_from_db()
+        self.house.refresh_from_db()
+        self.assertTrue(self.other_bill.is_paid)
+        self.assertEqual(self.other_bill.signature, "")
+        self.assertEqual(self.house.money_balance, Decimal("40.00"))
+
+    # --- Reports: Paid column instead of Signature ---------------------------
+
+    def test_monthly_report_shows_paid_column_when_opted_out(self):
+        self.client.force_login(self.owner)
+        self.monthly_bill.is_paid = True
+        self.monthly_bill.save(update_fields=["is_paid"])
+
+        url = reverse("reports_bills", kwargs={"house_pk": self.house.pk})
+        response = self.client.get(f"{url}?month=01&year=2026")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Signature")
+        self.assertContains(response, 'data-label="Paid"')
+        self.assertContains(response, ">Yes<")
+
+    def test_monthly_report_shows_no_for_unpaid_bill_when_opted_out(self):
+        self.client.force_login(self.owner)
+
+        url = reverse("reports_bills", kwargs={"house_pk": self.house.pk})
+        response = self.client.get(f"{url}?month=01&year=2026")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, ">No<")
+
+    def test_other_bills_report_shows_paid_column_when_opted_out(self):
+        self.client.force_login(self.owner)
+        self.other_bill.is_paid = True
+        self.other_bill.save(update_fields=["is_paid"])
+
+        url = reverse("reports_other_bills", kwargs={"house_pk": self.house.pk})
+        response = self.client.get(
+            f"{url}?month=01&year=2026&type_of_bill=Bill%20for%20all%20clients")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Signature")
+        self.assertContains(response, 'data-label="Paid"')
+        self.assertContains(response, ">Yes<")
+
+    def test_other_bills_single_report_shows_paid_state_of_house_bill(self):
+        self.client.force_login(self.owner)
+        HouseOtherBill.objects.create(
+            month="01", year="2026", comment="Facade repair",
+            type_of_bill="Single bill", total_amount=Decimal("300.00"),
+            house=self.house, user=self.owner)
+
+        url = reverse("reports_other_bills", kwargs={"house_pk": self.house.pk})
+        response = self.client.get(
+            f"{url}?month=01&year=2026&type_of_bill=Single%20bill")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Signature")
+        self.assertContains(response, ">No<")
+
+    def test_report_keeps_signature_column_when_required(self):
+        """The default workflow is untouched for houses with the option on."""
+        self.client.force_login(self.owner)
+        signature_house = House.objects.create(
+            town="Varna", address="Sea str. 2", entrance="B",
+            money_balance=Decimal("0.00"), user=self.owner,
+            signature_required=True)
+        signature_client = Client.objects.create(
+            family_name="Petrov", floor=2, apartment="2",
+            number_of_people=1, house=signature_house, user=self.owner)
+        ClientMonthlyBill.objects.create(
+            month="01", year="2026",
+            electricity_common=Decimal("100.00"),
+            electricity_lift=Decimal("0.00"),
+            internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"),
+            fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"),
+            fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"),
+            others=Decimal("0.00"),
+            amount_old_debts=Decimal("0.00"),
+            house=signature_house, client=signature_client, user=self.owner)
+
+        url = reverse("reports_bills", kwargs={"house_pk": signature_house.pk})
+        response = self.client.get(f"{url}?month=01&year=2026")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Signature")
+        self.assertNotContains(response, 'data-label="Paid"')

@@ -1,0 +1,11 @@
+{% load i18n %}
+<fieldset class="chip-group chip-group--year">
+    <legend class="chip-group__legend">{% trans "Year" %}</legend>
+    {% for choice in YearChoices %}
+    <label class="chip">
+        <input type="radio" name="year" value="{{ choice.0 }}"
+               {% if choice.0 == selected_year %}checked{% endif %}>
+        <span>{{ choice.0 }}</span>
+    </label>
+    {% endfor %}
+</fieldset>

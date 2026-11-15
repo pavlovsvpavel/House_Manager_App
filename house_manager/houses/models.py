@@ -65,6 +65,12 @@ class House(TimeStampModel):
         verbose_name=_("Fixed monthly taxes")
     )
 
+    signature_required = models.BooleanField(
+        default=True,
+        blank=False,
+        verbose_name=_("Require signature on bills")
+    )
+
     user = models.ForeignKey(
         to=UserModel,
         on_delete=models.CASCADE,

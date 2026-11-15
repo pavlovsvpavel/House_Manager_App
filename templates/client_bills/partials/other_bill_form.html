@@ -8,14 +8,6 @@
       hx-target="#bill-row-{{ object.pk }}"
       hx-swap="outerHTML settle:400ms">
     {% csrf_token %}
-    {% if not form.initial.is_paid %}
-        <label class="bill-form__switch" for="id_is_paid">
-            {{ form.is_paid }}
-            <span class="bill-form__track" aria-hidden="true"></span>
-            <span class="bill-form__switch-label">{% trans "Mark as paid" %}</span>
-        </label>
-    {% endif %}
-
     {% if pay_bills and not form.initial.is_paid %}
         <fieldset class="bill-form__pay-bills">
             <legend>{% trans "Also pay other unpaid bills" %}</legend>
@@ -45,7 +37,14 @@
     {% if form.initial.is_paid %}
         {% include "partials/signature-show.html" %}
     {% else %}
-        {% include "partials/signature-pad.html" %}
+        {% if object.house.signature_required %}
+            {% include "partials/signature-pad.html" %}
+        {% endif %}
+        <label class="bill-form__switch" for="id_is_paid">
+            {{ form.is_paid }}
+            <span class="bill-form__track" aria-hidden="true"></span>
+            <span class="bill-form__switch-label">{% trans "Mark as paid" %}</span>
+        </label>
         <div class="bill-form__actions">
             {% include "partials/bill_form_buttons.html" %}
         </div>

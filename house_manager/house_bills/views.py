@@ -1,5 +1,7 @@
 import logging
 from decimal import Decimal
+from types import SimpleNamespace
+
 from django.contrib import messages
 from django.db import IntegrityError, transaction
 from django.http import Http404, HttpResponse
@@ -433,7 +435,9 @@ class ReportMonthlyBillView(HouseOwnershipMixin, views.DetailView):
         context = super().get_context_data(**kwargs)
         current_house = self.object
 
-        selected_month = self.request.GET.get("month")
+        # The month select is <select multiple>: it posts the month once
+        # per selection. An empty list (nothing selected) matches no bills.
+        selected_months = [month for month in self.request.GET.getlist("month") if month]
         selected_year = self.request.GET.get("year")
 
         context["MonthChoices"] = MonthChoices
@@ -441,17 +445,31 @@ class ReportMonthlyBillView(HouseOwnershipMixin, views.DetailView):
 
         context["current_house"] = current_house
 
+        # Re-render the search form with the picked search preserved.
+        context["selected_months"] = selected_months
+        context["selected_year"] = selected_year
+
+        # The details card lists the selected months as numbers ("01, 02, 03").
+        context["selected_months_display"] = ", ".join(selected_months)
+        # A signature cannot be summed across months, so multi-month reports
+        # swap the Signature column for Paid ("Yes" when every selected
+        # month's bill for the client is paid).
+        context["is_multi_month"] = len(selected_months) > 1
+
         context["bill"] = (current_house.client_house_monthly_bills
-                           .filter(month=selected_month, year=selected_year).first())
+                           .filter(month__in=selected_months, year=selected_year).first())
 
         clients_bills = (current_house.client_house_monthly_bills
-                         .filter(month=selected_month, year=selected_year))
+                         .filter(month__in=selected_months, year=selected_year))
+
+        if context["is_multi_month"]:
+            clients_bills = summarize_bills_per_client(clients_bills)
 
         context["clients_bills"] = clients_bills
 
         clients_bills_total_amount = (
             current_house.client_house_monthly_bills
-            .filter(month=selected_month, year=selected_year)
+            .filter(month__in=selected_months, year=selected_year)
             .aggregate(total_amount=Coalesce(Sum("total_amount"), Value(Decimal("0.00"))))["total_amount"]
         )
 
@@ -459,7 +477,7 @@ class ReportMonthlyBillView(HouseOwnershipMixin, views.DetailView):
 
         unpaid_bills = (
             current_house.client_house_monthly_bills
-            .filter(month=selected_month, year=selected_year)
+            .filter(month__in=selected_months, year=selected_year)
             .aggregate(amount_old_debts=Coalesce(Sum("amount_old_debts"), Value(Decimal("0.00"))))["amount_old_debts"]
         )
 
@@ -481,7 +499,8 @@ class ReportOtherBillView(HouseOwnershipMixin, views.DetailView):
         context = super().get_context_data(**kwargs)
         current_house = self.selected_house
 
-        selected_month = self.request.GET.get("month")
+        # <select multiple> posts the month once per selection.
+        selected_months = [month for month in self.request.GET.getlist("month") if month]
         selected_year = self.request.GET.get("year")
         selected_type_of_bill = self.request.GET.get("type_of_bill")
 
@@ -491,13 +510,29 @@ class ReportOtherBillView(HouseOwnershipMixin, views.DetailView):
 
         context["current_house"] = current_house
 
+        # Re-render the search form with the picked search preserved.
+        context["selected_months"] = selected_months
+        context["selected_year"] = selected_year
+        context["selected_type_of_bill"] = selected_type_of_bill
+
+        # The details card lists the selected months as numbers ("01, 02, 03").
+        context["selected_months_display"] = ", ".join(selected_months)
+        # A signature cannot be summed across months: multi-month reports
+        # swap the Signature column for Paid (all selected months paid).
+        context["is_multi_month"] = len(selected_months) > 1
+
         if selected_type_of_bill == "Bill for all clients":
-            context["clients_bills"] = (current_house.client_house_other_bills
-                                        .filter(month=selected_month, year=selected_year))
+            clients_bills = (current_house.client_house_other_bills
+                             .filter(month__in=selected_months, year=selected_year))
+
+            if context["is_multi_month"]:
+                clients_bills = summarize_bills_per_client(clients_bills)
+
+            context["clients_bills"] = clients_bills
 
             clients_bills_total_amount = (
                 current_house.client_house_other_bills
-                .filter(month=selected_month, year=selected_year)
+                .filter(month__in=selected_months, year=selected_year)
                 .aggregate(total_amount=Coalesce(Sum("total_amount"), Value(Decimal("0.00"))))["total_amount"]
             )
 
@@ -505,7 +540,7 @@ class ReportOtherBillView(HouseOwnershipMixin, views.DetailView):
 
             context["bill"] = (
                 current_house.house_other_bills
-                .filter(month=selected_month, year=selected_year, type_of_bill=selected_type_of_bill)
+                .filter(month__in=selected_months, year=selected_year, type_of_bill=selected_type_of_bill)
                 .first()
             )
         else:
@@ -513,7 +548,7 @@ class ReportOtherBillView(HouseOwnershipMixin, views.DetailView):
 
             single_bills = (
                 current_house.house_other_bills
-                .filter(month=selected_month,
+                .filter(month__in=selected_months,
                         year=selected_year,
                         type_of_bill=selected_type_of_bill)
             )
@@ -525,3 +560,36 @@ class ReportOtherBillView(HouseOwnershipMixin, views.DetailView):
             context["calculated_total_amount"] = calculated_total_amount
 
         return context
+
+
+def summarize_bills_per_client(bills):
+    """Multi-month reports collapse one-bill-per-month rows into one row
+    per client with the money columns summed over the selected months.
+
+    Returns plain row objects carrying the attributes the report templates
+    read (client, amount_old_debts, total_amount, is_paid, signature): a
+    signature cannot be summed, so multi-month rows have none and the
+    templates show the Paid column instead.
+    """
+    grouped = {}
+    for bill in bills:
+        row = grouped.setdefault(bill.client_id, {
+            "client": bill.client,
+            "amount_old_debts": Decimal("0.00"),
+            "total_amount": Decimal("0.00"),
+            "paid_all": True,
+        })
+        row["amount_old_debts"] += getattr(bill, "amount_old_debts", None) or Decimal("0.00")
+        row["total_amount"] += bill.total_amount or Decimal("0.00")
+        row["paid_all"] = row["paid_all"] and bill.is_paid
+
+    return [
+        SimpleNamespace(
+            client=row["client"],
+            amount_old_debts=row["amount_old_debts"],
+            total_amount=row["total_amount"],
+            is_paid=row["paid_all"],
+            signature=None,
+        )
+        for row in grouped.values()
+    ]
