@@ -286,7 +286,7 @@
     align-self: flex-start;
     border: transparent;
     border-radius: 1.5em;
-    background-color: var(--card-bgnd-hover);
+    background-color: var(--accent);
     color: var(--text-on-accent);
     padding: 0.5em;
     cursor: pointer;
@@ -332,7 +332,9 @@
     gap: 0.5em;
     font-size: 0.8em;
     background-color: var(--surface-inverse);
-    color: var(--text-on-accent);
+    /* On the inverse surface (dark in both themes); --text-on-accent
+       flips to near-black in dark mode and disappears. */
+    color: var(--text-on-inverse);
 }
 
 .report-results table {

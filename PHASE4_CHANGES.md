@@ -175,6 +175,29 @@ console messages, all 44 tests pass.
   page content on all nine hierarchy pages. HTMX region swaps don't
   touch the crumbs.
 
+## Follow-up: reports pages — dark-mode text + working PDF export
+
+- **Invisible dark-mode text**: the report house cards (Town/Address/
+  Building number/Entrance + Month/Year/Amount) sat on
+  `--surface-inverse` with `--text-on-accent` text - near-black on
+  near-black in dark mode. Now `--text-on-inverse` (same fix as the
+  header/footer). The search button also paired `--text-on-accent`
+  with the light `--card-bgnd-hover` background (white on cream in
+  light mode too) - it now uses the `--accent` pairing, which is
+  correct in both themes.
+- **"Save as PDF" silently broken since the token migration**: the
+  vendored html2pdf bundle carries html2canvas 1.4.1, which cannot
+  parse `oklch()`/`color-mix()` - every token color since Phase 4 - so
+  `save()` rejected with "Attempting to parse an unsupported color
+  function" and nobody caught the rejection. Replaced with the
+  maintained fork **html2canvas-pro** 2.5.2 (oklch/color-mix support,
+  MIT, vendored `html2canvas-pro.min.js`) plus **jspdf 2.5.2** UMD;
+  `exportToPdf.js` now renders the report and lays it across A4 pages
+  itself (same pipeline/pagination as the bundle) with a meaningful
+  filename (`monthly-bills-reports-2026-10.pdf`), and surfaces errors
+  on the console instead of failing silently. The 2MB html2pdf bundle
+  is deleted.
+
 ## Not In Scope
 
 - **Phase 4e (skipped per review):** dashboard cockpit — balance sparklines, KPI trends, "This month" panel.

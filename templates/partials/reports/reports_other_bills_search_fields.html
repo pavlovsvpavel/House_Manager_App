@@ -1,8 +1,11 @@
 {% load static %}
 {% load i18n %}
 
+<script nonce="{{ csp_nonce }}" src="{% static "scripts/html2canvas-pro.min.js" %}" defer></script>
+<script nonce="{{ csp_nonce }}" src="{% static "scripts/jspdf.umd.min.js" %}" defer></script>
+<script nonce="{{ csp_nonce }}" src="{% static "scripts/exportToPdf.js" %}" defer></script>
+
 <form class="search_by_month_and_year" method="get">
-    <script src="{% static "scripts/exportToPdf.js" %}" defer></script>
     <label for="month">
         <select name="month" id="month">
             <option value="" selected disabled>{% trans "Month" %}</option>
@@ -33,38 +36,3 @@
     <button id="generatePdf" class="save-btn">{% trans "Save as PDF" %}</button>
     {% include "partials/reports/reports_back_button.html" %}
 </div>
-
-<script nonce="{{ csp_nonce }}">
-    document.addEventListener('DOMContentLoaded', function() {
-        // 1. Find the button by its ID
-        const pdfBtn = document.getElementById('generatePdf');
-
-        // 2. Attach the click event listener
-        if (pdfBtn) {
-            pdfBtn.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                });
-            });
-        }
-    });
-</script>
-
-<script nonce="{{ csp_nonce }}">
-    document.getElementById('generatePdf').addEventListener('click', function () {
-        // Check if the html2pdf library is already loaded
-        if (typeof html2pdf === 'undefined') {
-            // Load the html2pdf script
-            const script = document.createElement('script');
-            script.src = "{% static 'scripts/html2pdf.js' %}";
-            script.onload = () => {
-                console.log("html2pdf loaded");
-                saveAsPDF();
-            };
-            document.head.appendChild(script);
-        } else {
-            console.log("html2pdf already loaded");
-            saveAsPDF();
-        }
-    });
-</script>
