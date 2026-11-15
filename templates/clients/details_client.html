@@ -9,7 +9,7 @@
                 <div class="title-back-btn">
                     <h3>{% trans 'Client details' %}</h3>
                     <div class="back-button">
-                        <a href="{% url "house_clients_list" pk=house.pk %}"><i
+                        <a href="{% url "house_clients_list" house_pk=house.pk %}"><i
                             class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                     </div>
                 </div>
@@ -43,16 +43,16 @@
                         <p class="column-data">{{ object.is_inhabitable|yesno:_("Yes,No") }}</p>
                     </div>
                     <div class="client-card-btns">
-                        <a href="{% url "edit_client" pk=object.pk %}">{% trans "Edit" %}</a>
-{#                        <a href="{% url "delete_client" pk=object.pk %}">{% trans "Delete" %}</a>#}
+                        <a href="{% url "edit_client" house_pk=house.pk pk=object.pk %}">{% trans "Edit" %}</a>
+{#                        <a href="{% url "delete_client" house_pk=house.pk pk=object.pk %}">{% trans "Delete" %}</a>#}
                     </div>
                 </div>
                 <div class="bills-client-card-btns">
                     <div class="bills-button">
-                        <a href="{% url "list_client_bills" pk=object.pk %}">{% trans "Bills" %}</a>
+                        <a href="{% url "list_client_bills" house_pk=house.pk client_pk=object.pk %}">{% trans "Bills" %}</a>
                     </div>
                     <div class="bills-button">
-                        <a href="{% url "list_other_client_bills" pk=object.pk %}">{% trans "Other Bills" %}</a>
+                        <a href="{% url "list_other_client_bills" house_pk=house.pk client_pk=object.pk %}">{% trans "Other Bills" %}</a>
                     </div>
                 </div>
             </div>

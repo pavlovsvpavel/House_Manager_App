@@ -12,11 +12,11 @@ UserModel = get_user_model()
 
 class HouseBillsSecurityTests(TestCase):
     """
-    Regression tests for the Phase 0 security fixes:
-    - house bill edit views must check object ownership on GET and POST (IDOR);
-    - marking a bill paid must be idempotent (no balance changes on replay);
-    - bill creation must verify that the session-selected house belongs to
-      the logged-in user.
+    Regression tests for the Phase 0 + Redesign Phase 1 security model:
+    - house bills are always addressed as /houses/<house_pk>/bills/... and
+      the house in the URL must belong to the logged-in user (IDOR);
+    - the session-based "selected house" is no longer consulted anywhere;
+    - marking a bill paid is idempotent (no balance changes on replay).
     """
 
     @classmethod
@@ -29,6 +29,7 @@ class HouseBillsSecurityTests(TestCase):
             address="Test str. 1",
             entrance="A",
             money_balance=Decimal("0.00"),
+            fixed_monthly_taxes=True,
             user=cls.owner,
         )
 
@@ -56,19 +57,15 @@ class HouseBillsSecurityTests(TestCase):
             user=cls.owner,
         )
 
-    def _prime_session_house(self, house_pk):
-        session = self.client.session
-        session["selected_house"] = house_pk
-        session.save()
-
     # --- IDOR: edit house bills -------------------------------------------
 
     def test_edit_monthly_bill_get_blocked_for_other_user(self):
         self.client.force_login(self.attacker)
 
-        response = self.client.get(reverse("edit_house_bills", kwargs={"pk": self.monthly_bill.pk}))
+        response = self.client.get(reverse(
+            "edit_house_bills", kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk}))
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
         self.monthly_bill.refresh_from_db()
         self.assertFalse(self.monthly_bill.is_paid)
 
@@ -76,11 +73,11 @@ class HouseBillsSecurityTests(TestCase):
         self.client.force_login(self.attacker)
 
         response = self.client.post(
-            reverse("edit_house_bills", kwargs={"pk": self.monthly_bill.pk}),
+            reverse("edit_house_bills", kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk}),
             {"is_paid": "on"},
         )
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
         self.monthly_bill.refresh_from_db()
         self.house.refresh_from_db()
         self.assertFalse(self.monthly_bill.is_paid)
@@ -91,11 +88,11 @@ class HouseBillsSecurityTests(TestCase):
         self.client.force_login(self.attacker)
 
         response = self.client.post(
-            reverse("edit_other_house_bills", kwargs={"pk": self.other_bill.pk}),
+            reverse("edit_other_house_bills", kwargs={"house_pk": self.house.pk, "pk": self.other_bill.pk}),
             {"is_paid": "on"},
         )
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
         self.other_bill.refresh_from_db()
         self.house.refresh_from_db()
         self.assertFalse(self.other_bill.is_paid)
@@ -103,20 +100,18 @@ class HouseBillsSecurityTests(TestCase):
 
     def test_list_house_bills_blocked_for_other_user(self):
         self.client.force_login(self.attacker)
-        self._prime_session_house(self.house.pk)
 
-        response = self.client.get(reverse("list_house_bills", kwargs={"pk": self.house.pk}))
+        response = self.client.get(reverse("list_house_bills", kwargs={"house_pk": self.house.pk}))
 
-        # The session is primed, but the house does not belong to the user.
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
 
     # --- Idempotency: replay must not re-debit the balance -----------------
 
     def test_mark_other_bill_paid_credits_balance_once(self):
         self.client.force_login(self.owner)
-        self._prime_session_house(self.house.pk)
 
-        url = reverse("edit_other_house_bills", kwargs={"pk": self.other_bill.pk})
+        url = reverse(
+            "edit_other_house_bills", kwargs={"house_pk": self.house.pk, "pk": self.other_bill.pk})
         response = self.client.post(url, {"is_paid": "on"})
 
         self.assertEqual(response.status_code, 302)
@@ -130,25 +125,49 @@ class HouseBillsSecurityTests(TestCase):
         self.house.refresh_from_db()
         self.assertEqual(self.house.money_balance, Decimal("-50.00"))
 
-    # --- Create: session-selected house must belong to the user ------------
+    # --- Create: house in the URL must belong to the user ------------------
 
-    def test_create_house_bill_blocked_with_foreign_selected_house(self):
+    def test_create_house_bill_blocked_in_foreign_house_url(self):
         self.client.force_login(self.attacker)
-        self._prime_session_house(self.house.pk)
 
-        response = self.client.post(reverse("create_house_bills"), {
-            "month": "01",
-            "year": "2026",
-            "electricity_common": "10",
-            "electricity_lift": "0",
-            "internet": "0",
-            "maintenance_lift": "0",
-            "fee_cleaner": "0",
-            "fee_manager": "0",
-            "fee_cashier": "0",
-            "repairs": "0",
-            "others": "0",
-        })
+        response = self.client.post(
+            reverse("create_house_bills", kwargs={"house_pk": self.house.pk}),
+            {
+                "month": "01",
+                "year": "2026",
+                "electricity_common": "10",
+                "electricity_lift": "0",
+                "internet": "0",
+                "maintenance_lift": "0",
+                "fee_cleaner": "0",
+                "fee_manager": "0",
+                "fee_cashier": "0",
+                "repairs": "0",
+                "others": "0",
+            })
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(HouseMonthlyBill.objects.count(), 1)  # only the fixture bill
+
+    def test_create_house_bill_allowed_for_owner(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            reverse("create_house_bills", kwargs={"house_pk": self.house.pk}),
+            {
+                "month": "02",
+                "year": "2026",
+                "electricity_common": "10",
+                "electricity_lift": "0",
+                "internet": "0",
+                "maintenance_lift": "0",
+                "fee_cleaner": "0",
+                "fee_manager": "0",
+                "fee_cashier": "0",
+                "repairs": "0",
+                "others": "0",
+            })
+
+        self.assertEqual(HouseMonthlyBill.objects.count(), 2)
+        # Note: create views render a SweetAlert success page (HTTP 200 with
+        # a JS redirect), not a 302.

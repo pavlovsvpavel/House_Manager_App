@@ -1,9 +1,11 @@
 from django.urls import path
+
 from house_manager.clients.views import (
-    ClientCreateView, ClientDetailView,
-    ClientEditView, ClientDeleteView
+    ClientCreateView, ClientEditView,
+    ClientDetailView, ClientDeleteView
 )
 
+# Mounted at: houses/<int:house_pk>/clients/
 urlpatterns = (
     path("create/", ClientCreateView.as_view(), name="create_client"),
     path("details/<int:pk>/", ClientDetailView.as_view(), name="details_client"),

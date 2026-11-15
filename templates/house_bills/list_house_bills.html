@@ -9,7 +9,7 @@
                 <div class="title-back-btn">
                     <h3>{% trans 'Monthly bills' %}</h3>
                     <div class="back-button">
-                        <a href="{% url "details_house" pk=object.pk %}">
+                        <a href="{% url "details_house" house_pk=object.pk %}">
                             <i class="fa-solid fa-arrow-right"></i>{% trans "Back" %}
                         </a>
                     </div>
@@ -19,8 +19,7 @@
                     {% if house_bills %}
                         {% for bill in house_bills %}
                             <div class="{% if bill.is_paid %} client-card {% else %} client-card-not-paid {% endif %} js-redirect"
-                                 data-id="{{ bill.pk }}"
-                                 data-url="{% url 'edit_house_bills' pk=0 %}">
+                                 data-url="{% url 'edit_house_bills' house_pk=object.pk pk=bill.pk %}">
                                 <div class="card-column">
                                     <p class="column-name">{% trans "Year" %}</p>
                                     <p class="column-data">{{ bill.year }}</p>

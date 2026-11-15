@@ -35,7 +35,7 @@
                         <p class="column-data">{{ object.total_amount }}</p>
                     </div>
                 </div>
-                <form class="is-paid-form" method="post" action="{% url "edit_client_other_bill" pk=object.pk %}">
+                <form class="is-paid-form" method="post" action="{% url "edit_client_other_bill" house_pk=object.house_id client_pk=object.client_id pk=object.pk %}">
                     {% csrf_token %}
                     <div>
                         <label for="id_is_paid">{% trans "Pay the bill:" %}</label>

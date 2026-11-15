@@ -9,7 +9,7 @@
                 <div class="title-back-btn">
                     <h3>{% trans 'Clients' %}</h3>
                     <div class="back-button">
-                        <a href="{% url "details_house" pk=object.pk %}"><i
+                        <a href="{% url "details_house" house_pk=object.pk %}"><i
                                 class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                     </div>
                 </div>
@@ -18,8 +18,7 @@
                     {% if clients %}
                         {% for client in clients %}
                             <div class="client-card js-redirect"
-                                 data-id="{{ client.pk }}"
-                                 data-url="{% url 'details_client' pk=0 %}">
+                                 data-url="{% url 'details_client' house_pk=object.pk pk=client.pk %}">
                                 <div class="card-column">
                                     <p class="column-name">{% trans "Family Name" %}</p>
                                     <p class="column-data">{{ client.family_name }}</p>

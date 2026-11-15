@@ -1,14 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
-        document.body.addEventListener('click', function(event) {
-            const target = event.target.closest('.js-redirect');
+    document.body.addEventListener('click', function(event) {
+        const target = event.target.closest('.js-redirect');
 
-            if (!target) return;
+        if (!target) return;
 
-            const id = target.dataset.id;
-            const urlTemplate = target.dataset.url;
+        // The full URL is rendered server-side into data-url — no client-side
+        // placeholder substitution needed.
+        const url = target.dataset.url;
 
-            if (id && urlTemplate) {
-                window.location.href = urlTemplate.replace('0', id);
-            }
-        });
+        if (url) {
+            window.location.href = url;
+        }
     });
+});

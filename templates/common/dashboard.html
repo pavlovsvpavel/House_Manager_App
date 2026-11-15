@@ -6,28 +6,42 @@
     <section class="site-section dashboard">
         <div class="container">
             <div class="wrapper">
-                <h3 class="section-title">{% trans 'Houses' %}</h3>
+                <div class="dashboard-header">
+                    <h3 class="section-title">{% trans 'Houses' %}</h3>
+                    <a class="btn" href="{% url 'create_house' %}">{% trans "Add house" %}</a>
+                </div>
                 <div class="house-cards">
                     {% if houses %}
                         {% for house in houses %}
                             <div class="house-card js-redirect"
-                                 data-id="{{ house.pk }}"
-                                 data-url="{% url 'details_house' pk=0 %}">
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Town" %}</p>
-                                    <p class="column-data">{{ house.town }}</p>
+                                 data-url="{% url 'details_house' house_pk=house.pk %}">
+                                <div class="house-card-title">
+                                    <p class="house-address">{{ house.town }}, {{ house.address }}</p>
+                                    {% if house.building_number or house.entrance %}
+                                        <p class="house-meta">
+                                            {% if house.building_number %}{% trans "Building" %} {{ house.building_number }}{% endif %}
+                                            {% if house.building_number and house.entrance %} · {% endif %}
+                                            {% if house.entrance %}{% trans "Entrance" %} {{ house.entrance }}{% endif %}
+                                        </p>
+                                    {% endif %}
                                 </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Address" %}</p>
-                                    <p class="column-data">{{ house.address }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Building number" %}</p>
-                                    <p class="column-data">{{ house.building_number }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Entrance" %}</p>
-                                    <p class="column-data">{{ house.entrance }}</p>
+                                <div class="house-kpis">
+                                    <div class="kpi">
+                                        <p class="kpi-value">{{ house.money_balance }}</p>
+                                        <p class="kpi-label">{% trans "Balance, EUR" %}</p>
+                                    </div>
+                                    <div class="kpi">
+                                        <p class="kpi-value">{{ house.clients_count }}</p>
+                                        <p class="kpi-label">{% trans "Clients" %}</p>
+                                    </div>
+                                    <div class="kpi {% if house.unpaid_bills_count %}kpi-alert{% endif %}">
+                                        <p class="kpi-value">{{ house.unpaid_bills_count }}</p>
+                                        <p class="kpi-label">{% trans "Unpaid bills" %}</p>
+                                    </div>
+                                    <div class="kpi">
+                                        <p class="kpi-value">{{ house.unpaid_bills_total }}</p>
+                                        <p class="kpi-label">{% trans "Due, EUR" %}</p>
+                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
@@ -40,4 +54,3 @@
     </section>
 
 {% endblock %}
-

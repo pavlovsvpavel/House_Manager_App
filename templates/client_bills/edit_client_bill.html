@@ -78,7 +78,7 @@
                         <p class="column-data">{{ amount_old_debts|add:object.total_amount }}</p>
                     </div>
                 </div>
-                <form class="is-paid-form" method="post" action="{% url "edit_client_bill" pk=object.pk %}">
+                <form class="is-paid-form" method="post" action="{% url "edit_client_bill" house_pk=object.house_id client_pk=object.client_id pk=object.pk %}">
                     {% csrf_token %}
                     <div>
                         <label for="id_is_paid">{% trans "Pay the bill:" %}</label>
@@ -94,7 +94,7 @@
                         {% include "partials/signature-show.html" %}
 
                         <div class="download-receipt-container">
-                            <a href="{% url 'download_receipt' pk=object.pk %}" class="download-receipt-btn" target="_blank">
+                            <a href="{% url 'download_receipt' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}" class="download-receipt-btn" target="_blank">
                                 {% trans "Download Receipt" %}
                             </a>
                         </div>

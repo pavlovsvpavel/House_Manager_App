@@ -1,5 +1,4 @@
-from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
@@ -9,27 +8,22 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView
 from weasyprint import HTML
 from urllib.parse import quote
-from house_manager.accounts.mixins import CheckForLoggedInUserMixin
 from house_manager.client_bills.helpers.add_amount_to_balance import add_amount_to_house_balance
 from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
+from house_manager.clients.mixins import ClientOwnershipMixin
 from house_manager.clients.models import Client
 from house_manager.common.helpers.filtering_unpaid_client_bills import filtering_unpaid_client_bills
 from house_manager.common.mixins import MonthChoices
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
+from house_manager.houses.mixins import HouseOwnershipMixin
 
 
-class ClientBaseBillsDetailView(CheckForLoggedInUserMixin, views.DetailView):
+class ClientBaseBillsDetailView(ClientOwnershipMixin, views.DetailView):
     queryset = ClientMonthlyBill.objects.prefetch_related('client')
     template_name = None
 
     def get_object(self, queryset=None):
-        selected_client_id = self.request.session.get("selected_client")
-        if not selected_client_id or selected_client_id != self.kwargs['pk']:
-            raise PermissionDenied("Client not found for current house.")
-
-        # The client must belong to the logged-in user — the session value is
-        # not a sufficient proof of ownership on its own.
-        return get_object_or_404(Client, pk=self.kwargs['pk'], user=self.request.user)
+        return self.selected_client
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -41,6 +35,8 @@ class ClientBaseBillsDetailView(CheckForLoggedInUserMixin, views.DetailView):
         if is_paid is not None:
             client_bills = filter_bills_by_payment_status(client_bills, is_paid, month)
 
+        context["client"] = self.selected_client
+        context["house"] = self.selected_client.house
         context["client_bills"] = client_bills
         context["MonthChoices"] = MonthChoices
 
@@ -64,7 +60,7 @@ class ClientOtherBillsDetailView(ClientBaseBillsDetailView):
         return self.object.client_other_bills.order_by("is_paid", "-year", "-month").all()
 
 
-class CurrentClientBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):
+class CurrentClientBaseBillEditView(ClientOwnershipMixin, views.UpdateView):
     queryset = None
     template_name = None
     success_url_name = None
@@ -73,10 +69,13 @@ class CurrentClientBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView)
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
 
-        # Ownership check executed on both GET and POST — a check that lives
-        # only in get_context_data() is skipped on the successful POST path.
-        if obj.user_id != self.request.user.pk:
-            raise PermissionDenied(_("Bill not found for current user."))
+        # The bill must belong to the logged-in user, to the client in the
+        # URL and to the house in the URL — the URL is authoritative, no
+        # session state is consulted.
+        if (obj.user_id != self.request.user.pk
+                or obj.client_id != self.kwargs["client_pk"]
+                or obj.house_id != self.kwargs["house_pk"]):
+            raise Http404(_("Bill not found for current client."))
 
         # Capture the pristine DB state: binding the form to request.POST
         # mutates the instance, so this must happen before validation.
@@ -85,18 +84,19 @@ class CurrentClientBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView)
         return obj
 
     def get_success_url(self):
-        return reverse_lazy(self.success_url_name, kwargs={"pk": self.object.client.pk})
+        return reverse_lazy(
+            self.success_url_name,
+            kwargs={
+                "house_pk": self.kwargs["house_pk"],
+                "client_pk": self.kwargs["client_pk"],
+            })
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        house_instance = self.object.house
-        session_house_id = self.request.session.get("selected_house")
-
-        if house_instance.pk != session_house_id:
-            raise PermissionDenied(_("Bill not found for current client."))
+        house_instance = self.selected_client.house
 
         unpaid_sum = filtering_unpaid_client_bills(
-            client=self.object.client,
+            client=self.selected_client,
             selected_year=self.object.year,
             selected_month=self.object.month
         )
@@ -149,13 +149,17 @@ class CurrentClientOtherBillEditView(CurrentClientBaseBillEditView):
     success_url_name = "list_other_client_bills"
 
 
-class DownloadReceiptView(CheckForLoggedInUserMixin, DetailView):
+class DownloadReceiptView(HouseOwnershipMixin, DetailView):
     template_name = 'partials/receipt_pdf.html'
     context_object_name = 'bill'
 
     def get_queryset(self):
-        # Only the bill's owner may download its receipt (prevents IDOR).
-        return ClientMonthlyBill.objects.filter(user=self.request.user)
+        # Only the bill's owner may download its receipt (prevents IDOR),
+        # and only within the house from the URL.
+        return ClientMonthlyBill.objects.filter(
+            user=self.request.user,
+            house_id=self.kwargs["house_pk"],
+        )
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

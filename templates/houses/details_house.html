@@ -11,35 +11,34 @@
                     <div class="buttons">
                         <ul class="dashboard-clients">
                             <li><a class="create-client"
-                                   href="{% url "create_client" %}">{% trans "Add client" %}</a>
+                                   href="{% url "create_client" house_pk=object.pk %}">{% trans "Add client" %}</a>
                             </li>
                             <li><a class="details-house-list-clients js-redirect"
-                                   data-id="{{ object.pk }}"
-                                   data-url="{% url 'house_clients_list' pk=0 %}">{% trans "Clients - details" %}
+                                   data-url="{% url 'house_clients_list' house_pk=object.pk %}">{% trans "Clients - details" %}
                             </a>
                             </li>
                             {% if object.fixed_monthly_taxes %}
                                 <li><a class="create-house-bill"
-                                       href="{% url "create_fixed_bill" %}">{% trans "Add fixed monthly bill" %}</a>
+                                       href="{% url "create_fixed_bill" house_pk=object.pk %}">{% trans "Add fixed monthly bill" %}</a>
                                 </li>
                             {% endif %}
                         </ul>
                         <ul class="dashboard-bills">
                             <li><a class="create-house-bill"
-                                   href="{% url "create_house_bills" %}">{% trans "Add monthly bill" %}</a></li>
+                                   href="{% url "create_house_bills" house_pk=object.pk %}">{% trans "Add monthly bill" %}</a></li>
                             <li><a class="list-house-bills"
-                                   href="{% url "list_house_bills" pk=object.pk %}">{% trans "Monthly bills - details" %}</a>
+                                   href="{% url "list_house_bills" house_pk=object.pk %}">{% trans "Monthly bills - details" %}</a>
                             </li>
                             <li><a class="report"
-                                   href="{% url "reports_bills" pk=object.pk %}">{% trans "Monthly bills - reports" %}</a>
+                                   href="{% url "reports_bills" house_pk=object.pk %}">{% trans "Monthly bills - reports" %}</a>
                             </li>
                             <li><a class="create-other-bill"
-                                   href="{% url "create_other_bill" %}">{% trans "Add other bill" %}</a></li>
+                                   href="{% url "create_other_bill" house_pk=object.pk %}">{% trans "Add other bill" %}</a></li>
                             <li><a class="list-other-bills"
-                                   href="{% url "list_other_house_bills" pk=object.pk %}">{% trans "Other bills - details" %}</a>
+                                   href="{% url "list_other_house_bills" house_pk=object.pk %}">{% trans "Other bills - details" %}</a>
                             </li>
                             <li><a class="report"
-                                   href="{% url "reports_other_bills" pk=object.pk %}">{% trans "Other bills - reports" %}</a>
+                                   href="{% url "reports_other_bills" house_pk=object.pk %}">{% trans "Other bills - reports" %}</a>
                             </li>
 
                         </ul>
@@ -83,8 +82,8 @@
                             <p class="column-data">{{ object.money_balance }} {% trans "EUR" %}</p>
                         </div>
                         <div class="client-card-btns">
-                            <a href="{% url "edit_house" pk=object.pk %}">{% trans "Edit" %}</a>
-                            {#                            <a href="{% url "delete_house" pk=object.pk %}">{% trans "Delete" %}</a>#}
+                            <a href="{% url "edit_house" house_pk=object.pk %}">{% trans "Edit" %}</a>
+                            {#                            <a href="{% url "delete_house" house_pk=object.pk %}">{% trans "Delete" %}</a>#}
                         </div>
                     </div>
                 </div>

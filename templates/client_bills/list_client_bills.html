@@ -12,7 +12,7 @@
                         <p class="family-name">{{ object.family_name }}</p>
                     </div>
                     <div class="back-button">
-                        <a href="{% url "details_client" pk=object.pk %}"><i
+                        <a href="{% url "details_client" house_pk=house.pk client_pk=object.pk %}"><i
                                 class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                     </div>
                 </div>
@@ -22,8 +22,7 @@
                     {% if client_bills %}
                         {% for object in client_bills %}
                             <div class="{% if object.is_paid %} client-card {% else %} client-card-not-paid {% endif %} js-redirect"
-                                 data-id="{{ object.pk }}"
-                                 data-url="{% url 'edit_client_bill' pk=0 %}">
+                                 data-url="{% url 'edit_client_bill' house_pk=house.pk client_pk=client.pk pk=object.pk %}">
                                 {% include "partials/details_client_bills.html" %}
                             </div>
 

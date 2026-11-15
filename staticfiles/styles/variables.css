@@ -1,15 +1,77 @@
+/* ============================================================
+   Design tokens — single source of truth for colors and shape.
+   Dark mode overrides the same variables under [data-theme="dark"];
+   the theme is applied before first paint by scripts/themeToggle.js
+   (system preference by default, manual choice in localStorage).
+   ============================================================ */
+
 :root {
+    /* Surfaces */
     --site-bgnd: #FBF9F1;
     --card-bgnd: #F2C18D;
-    --card-text-color: #071952;
     --card-bgnd-hover: #F6995C;
+    --card-text-color: #071952;
+    --menu-bgnd: #272832;
+
+    /* Forms */
     --form-bgnd: #D2E0FB;
     --form-input-border: #35587D;
     --form-btn-color: #35587D;
     --form-btn-color-hover: #0079FF;
+
+    /* Bill states */
     --card-bgnd-not-paid: #D37676;
     --card-bgnd-not-paid-hover: #B06161;
     --card-bgnd-paid: #C5EBAA;
     --card-bgnd-paid-hover: #A5DD9B;
-    --menu-bgnd: #272832;
+
+    /* Text */
+    --text-color: var(--card-text-color);
+    --text-muted: #5a6377;
+
+    /* Borders, shadows, shape */
+    --border-color: rgba(7, 25, 82, 0.15);
+    --shadow: 0 0.25em 0.75em rgba(7, 25, 82, 0.12);
+    --radius: 0.5em;
+
+    /* Semantic states */
+    --success: #3f7d2c;
+    --danger: #a33a3a;
+    --alert-bgnd: #f8d7da;
+    --alert-text: #7d2430;
+}
+
+[data-theme="dark"] {
+    /* Surfaces */
+    --site-bgnd: #12141c;
+    --card-bgnd: #232838;
+    --card-bgnd-hover: #2d3448;
+    --card-text-color: #e8eaf2;
+    --menu-bgnd: #0d0f16;
+
+    /* Forms */
+    --form-bgnd: #1a1e2b;
+    --form-input-border: #3d4666;
+    --form-btn-color: #8ab4ff;
+    --form-btn-color-hover: #4d94ff;
+
+    /* Bill states — desaturated for dark surfaces */
+    --card-bgnd-not-paid: #5a3030;
+    --card-bgnd-not-paid-hover: #6e3c3c;
+    --card-bgnd-paid: #2e4423;
+    --card-bgnd-paid-hover: #3a542c;
+
+    /* Text */
+    --text-color: #e8eaf2;
+    --text-muted: #9aa3b8;
+
+    /* Borders, shadows, shape */
+    --border-color: rgba(232, 234, 242, 0.18);
+    --shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.45);
+
+    /* Semantic states */
+    --success: #8fc97a;
+    --danger: #e08a8a;
+    --alert-bgnd: #4a2a2e;
+    --alert-text: #f2c4c9;
 }

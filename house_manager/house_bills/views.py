@@ -1,11 +1,10 @@
 from decimal import Decimal
-from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError, transaction
+from django.http import Http404
 from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
 
@@ -20,12 +19,11 @@ from house_manager.house_bills.forms import HouseMonthlyBillForm, HouseOtherBill
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
 from house_manager.house_bills.helpers.subtract_amount_from_balance import subtract_amount_from_house_balance
 from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill, TypeOfBillChoices
-from house_manager.houses.decorators import get_current_house_id
-from house_manager.houses.mixins import GetHouseAndUserMixin
+from house_manager.houses.mixins import GetHouseAndUserMixin, HouseOwnershipMixin
 from house_manager.houses.models import House, HouseCalculationsOptions
 
 
-class HouseBaseBillCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, views.CreateView):
+class HouseBaseBillCreateView(CheckForLoggedInUserMixin, HouseOwnershipMixin, GetHouseAndUserMixin, views.CreateView):
     template_name = None
     form_class = None
     action_url = None
@@ -33,14 +31,8 @@ class HouseBaseBillCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, v
 
     @property
     def current_house(self):
-        house_id = self.request.session.get("selected_house")
-
-        if not house_id:
-            return None
-
-        # The house must belong to the logged-in user — the session value is
-        # not a sufficient proof of ownership on its own.
-        return get_object_or_404(House, pk=house_id, user=self.request.user)
+        # Ownership-verified house derived from the URL (house_pk).
+        return self.selected_house
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -55,8 +47,8 @@ class HouseBaseBillCreateView(CheckForLoggedInUserMixin, GetHouseAndUserMixin, v
         return context
 
     def get_success_url(self):
-        house_id = self.request.session.get("selected_house")
-        return reverse_lazy('details_house', kwargs={'pk': house_id})
+        return reverse_lazy(
+            'details_house', kwargs={'house_pk': self.selected_house.pk})
 
     def render_success_alert(self, form, message):
         """
@@ -185,32 +177,27 @@ class HouseFixedMonthlyBillView(HouseBaseBillCreateView):
             return self.form_invalid(form)
 
 
-@method_decorator(get_current_house_id, name='dispatch')
-class CurrentHouseBaseBillDetailView(CheckForLoggedInUserMixin, views.DetailView):
+class CurrentHouseBaseBillDetailView(HouseOwnershipMixin, views.DetailView):
     template_name = None
 
     def get_object(self, queryset=None):
-        return self.request.selected_house
+        return self.selected_house
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        house_id = self.request.session.get("selected_house")
+        current_house = self.selected_house
 
         is_paid = self.request.GET.get('is_paid', None)
         month = self.request.GET.get('month', None)
 
-        if house_id:
-            current_house = self.get_object()
-            if current_house.id != house_id:
-                raise PermissionDenied(_("Bills not found in selected house."))
+        house_bills = self.get_type_of_house_bills()
 
-            house_bills = self.get_type_of_house_bills()
+        if is_paid is not None:
+            house_bills = filter_bills_by_payment_status(house_bills, is_paid, month)
 
-            if is_paid is not None:
-                house_bills = filter_bills_by_payment_status(house_bills, is_paid, month)
-
-            context["house_bills"] = house_bills
-            context["MonthChoices"] = MonthChoices
+        context["house"] = current_house
+        context["house_bills"] = house_bills
+        context["MonthChoices"] = MonthChoices
 
         return context
 
@@ -232,7 +219,7 @@ class CurrentHouseOtherBillDetailView(CurrentHouseBaseBillDetailView):
         return self.object.house_other_bills.order_by("is_paid", "-year", "-month").all()
 
 
-class HouseBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):
+class HouseBaseBillEditView(HouseOwnershipMixin, views.UpdateView):
     queryset = None
     template_name = None
     success_url_name = None
@@ -244,26 +231,16 @@ class HouseBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
 
-        # Ownership check executed on both GET and POST — a check that lives
-        # only in get_context_data() is skipped on the successful POST path.
-        if obj.user_id != self.request.user.pk:
-            raise PermissionDenied(_("Bill not found for current user."))
+        # The bill must belong to the logged-in user and to the house in the
+        # URL — the URL is authoritative, no session state is consulted.
+        if obj.user_id != self.request.user.pk or obj.house_id != self.kwargs["house_pk"]:
+            raise Http404(_("Bill not found for current user."))
 
         # Capture the pristine DB state: binding the form to request.POST
         # mutates the instance, so this must happen before validation.
         self._bill_paid_before_request = obj.is_paid
 
         return obj
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        house_id = self.request.session.get("selected_house")
-        current_house = self.object.house.pk
-
-        if current_house != house_id:
-            raise PermissionDenied(_("Bills not found in selected house."))
-
-        return context
 
     def form_valid(self, form):
         # Idempotency guard: a bill that was already paid in the DB must
@@ -290,7 +267,10 @@ class HouseBaseBillEditView(CheckForLoggedInUserMixin, views.UpdateView):
         return form
 
     def get_success_url(self):
-        return reverse_lazy(self.success_url_name, kwargs={"pk": self.object.house.pk})
+        return reverse_lazy(
+            self.success_url_name,
+            kwargs={"house_pk": self.selected_house.pk},
+        )
 
 
 class HouseMonthlyBillEditView(HouseBaseBillEditView):
@@ -305,13 +285,11 @@ class HouseOtherBillEditView(HouseBaseBillEditView):
     success_url_name = "list_other_house_bills"
 
 
-@method_decorator(get_current_house_id, name='dispatch')
-class ReportMonthlyBillView(views.DetailView):
+class ReportMonthlyBillView(HouseOwnershipMixin, views.DetailView):
     template_name = "common/reports_bills.html"
-    success_url = reverse_lazy("reports_bills")
 
     def get_object(self, queryset=None):
-        return self.request.selected_house
+        return self.selected_house
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -355,17 +333,15 @@ class ReportMonthlyBillView(views.DetailView):
         return context
 
 
-@method_decorator(get_current_house_id, name='dispatch')
-class ReportOtherBillView(views.DetailView):
+class ReportOtherBillView(HouseOwnershipMixin, views.DetailView):
     template_name = "common/reports_other_bills.html"
-    success_url = reverse_lazy("reports_other_bills")
 
     def get_object(self, queryset=None):
-        return self.request.selected_house
+        return self.selected_house
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        current_house = get_object_or_404(House, pk=self.kwargs["pk"])
+        current_house = self.selected_house
 
         selected_month = self.request.GET.get("month")
         selected_year = self.request.GET.get("year")
