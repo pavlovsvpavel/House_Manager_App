@@ -7,13 +7,15 @@
       hx-target="#bill-row-{{ object.pk }}"
       hx-swap="outerHTML settle:400ms">
     {% csrf_token %}
-    <label class="bill-form__switch" for="id_is_paid">
-        {{ form.is_paid }}
-        <span class="bill-form__track" aria-hidden="true"></span>
-        <span class="bill-form__switch-label">{% if form.instance.is_paid %}{% trans "Paid" %}{% else %}{% trans "Mark as paid" %}{% endif %}</span>
-    </label>
+    {% if not form.instance.is_paid %}
+        <label class="bill-form__switch" for="id_is_paid">
+            {{ form.is_paid }}
+            <span class="bill-form__track" aria-hidden="true"></span>
+            <span class="bill-form__switch-label">{% trans "Mark as paid" %}</span>
+        </label>
+    {% endif %}
 
-    {% if pay_bills %}
+    {% if pay_bills and not form.instance.is_paid %}
         <fieldset class="bill-form__pay-bills">
             <legend>{% trans "Also pay other unpaid bills" %}</legend>
             {% for bill in pay_bills %}

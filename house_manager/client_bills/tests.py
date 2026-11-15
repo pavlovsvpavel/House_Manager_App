@@ -507,6 +507,22 @@ class ClientBillMultiPaymentTests(TestCase):
         self.assertNotContains(response, f'value="{self.bill_paid.pk}"')
         self.assertNotContains(response, f'value="{self.foreign_bill.pk}"')
 
+    def test_paid_bill_modal_is_read_only_receipt(self):
+        # A paid bill's modal must not offer the group-pay checkboxes or the
+        # paid switch: every POST on an already-paid bill is rejected by the
+        # idempotency guard, so those controls would be dead UI. It renders
+        # as a receipt instead (signature + download link).
+        self.client.force_login(self.owner)
+
+        response = self.client.get(
+            self.pay_url(self.bill_paid), HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'name="pay_bill"')
+        self.assertNotContains(response, 'name="is_paid"')
+        self.assertContains(response, "/receipt/download/")
+        self.assertContains(response, self.SIGNATURE_B64)
+
     def test_multi_pay_marks_all_selected_paid_with_one_signature_and_credit(self):
         self.client.force_login(self.owner)
 
