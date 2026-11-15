@@ -19,9 +19,15 @@ class ClientOwnershipMixin:
         if not request.user.is_authenticated:
             raise PermissionDenied("You must be logged in to access this view.")
 
+        # Client detail/edit/delete routes use ``pk``; the bill routes nested
+        # under /clients/<client_pk>/ use ``client_pk``. Accept both.
+        client_pk = kwargs.get("client_pk") or kwargs.get("pk")
+        if client_pk is None:
+            raise Http404("Client does not exist.")
+
         try:
             self.selected_client = Client.objects.get(
-                pk=kwargs["client_pk"],
+                pk=client_pk,
                 user=request.user,
             )
         except Client.DoesNotExist:
