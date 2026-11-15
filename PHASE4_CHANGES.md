@@ -233,6 +233,15 @@ console messages, all 44 tests pass.
   DB and was caught in verification (payments are idempotent to
   re-do: undo + pay again restored clean data).
 
+## Follow-up: silence the Chrome DevTools probe 404
+
+Chrome DevTools requests `/.well-known/appspecific/com.chrome.devtools.json`
+whenever it is open (probing for its workspace config). Django answered
+with the 124KB debug 404 page and a `Not Found:` line in the server
+console - alarming next to real errors, and unrelated to the Apply
+button (verified: Apply does an HTMX swap, no navigation, no console
+errors). The path now answers 204 No Content in the root URLconf.
+
 ## Not In Scope
 
 - **Phase 4e (skipped per review):** dashboard cockpit — balance sparklines, KPI trends, "This month" panel.
