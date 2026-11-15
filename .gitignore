@@ -173,5 +173,8 @@ terraform.tfstate
 terraform.tfstate.backup
 *.pem
 postgres_db
+
+# Local design/redesign working documents (not for the repo)
+project_docs/
 /uv.lock
 /terraform/values.tfvars
