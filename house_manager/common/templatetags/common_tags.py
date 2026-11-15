@@ -9,12 +9,16 @@ register = template.Library()
 
 
 @register.simple_tag
-def breadcrumbs(house=None, client=None, current=""):
+def breadcrumbs(house=None, client=None, parent_label=None, parent_url=None,
+                current=""):
     """Render a breadcrumb trail from the Phase 1 URL hierarchy.
 
-    Dashboard / House / Client / <current page> — every crumb is a link
-    except the current page. Accepts the context objects available on
-    hierarchy pages; anything omitted simply shortens the trail.
+    Dashboard / House / Client / <parent> / <current page> — every crumb
+    is a link except the current page. Accepts the context objects
+    available on hierarchy pages; anything omitted simply shortens the
+    trail. `parent_label` + `parent_url` add one extra linked crumb
+    (edit pages use it to link their list page, replacing the old back
+    button).
     """
     crumbs = [(_("Dashboard"), reverse("dashboard"))]
 
@@ -30,6 +34,9 @@ def breadcrumbs(house=None, client=None, current=""):
             reverse("details_client",
                     kwargs={"house_pk": client.house_id, "pk": client.pk}),
         ))
+
+    if parent_label and parent_url:
+        crumbs.append((str(parent_label), parent_url))
 
     if current:
         crumbs.append((str(current), None))

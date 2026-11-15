@@ -84,7 +84,6 @@
 
 .filter-buttons a,
 .details-house-elements .house-card .client-card-btns a,
-.wrapper .back-button a,
 .wrapper .bills-button a,
 .details-client .client-card a {
     text-decoration: none;
@@ -100,11 +99,6 @@
     display: block;
 }
 
-.wrapper .back-button a {
-    background-color: var(--state-danger);
-    min-width: auto;
-}
-
 .filter-buttons a {
     flex: 0 1 180px;
     padding: 0.5em 0;
@@ -116,18 +110,9 @@
 
 .filter-buttons a:hover,
 .details-house-elements .house-card .client-card-btns a:hover,
-.wrapper .back-button a:hover,
 .wrapper .bills-button a:hover {
     background-color: var(--form-btn-color-hover);
     transition: 0.3s ease-in-out;
-}
-
-.wrapper .back-button a:hover {
-    background-color: color-mix(in oklab, var(--state-danger), var(--surface-0) 18%);
-}
-
-.wrapper .back-button i {
-    padding-right: 0.5em;
 }
 
 .delete-card .btn {

@@ -20,10 +20,6 @@
     font-weight: 900;
 }
 
-.back-button {
-    align-self: flex-end;
-}
-
 .create-house-bills .wrapper .clients-cards h1 {
     text-align: center;
 }
@@ -386,7 +382,7 @@
     justify-content: space-between;
 }
 
-.title-back-btn {
+.page-title-row {
     display: flex;
     justify-content: space-between;
     align-items: center;

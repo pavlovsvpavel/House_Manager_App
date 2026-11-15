@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+{% load common_tags %}
 
 {% block extra_head_scripts %}
     <script nonce="{{ csp_nonce }}" src="{% static "scripts/jquery.js" %}" defer></script>
@@ -13,9 +14,10 @@
     <section class="site-section details-client-bill">
         <div class="container">
             <div class="wrapper">
-                <div class="title-back-btn">
+                {% url "list_client_bills" house_pk=object.house_id client_pk=object.client_id as bills_list_url %}
+                {% breadcrumbs house=object.client.house client=object.client parent_label=_("Client bills") parent_url=bills_list_url current=_("Bill details") %}
+                <div class="page-title-row">
                     <h3>{% trans 'Bill details' %}</h3>
-                    {% include "partials/back_button.html" %}
                 </div>
                 {% include "client_bills/partials/monthly_bill_details.html" %}
                 {% include "client_bills/partials/monthly_bill_form.html" %}

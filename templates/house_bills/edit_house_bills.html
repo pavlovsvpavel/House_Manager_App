@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+{% load common_tags %}
 
 {% block extra_head_scripts %}
     <script nonce="{{ csp_nonce }}" src="{% static "scripts/billsPayments.js" %}" defer></script>
@@ -10,9 +11,10 @@
     <section class="site-section details-house-bill">
         <div class="container">
             <div class="wrapper">
-                <div class="title-back-btn">
+                {% url "list_house_bills" house_pk=object.house_id as bills_list_url %}
+                {% breadcrumbs house=object.house parent_label=_("Monthly bills") parent_url=bills_list_url current=_("Bill details") %}
+                <div class="page-title-row">
                     <h3>{% trans 'Bill details' %}</h3>
-                    {% include "partials/back_button.html" %}
                 </div>
                 {% include "house_bills/partials/monthly_bill_details.html" %}
                 {% include "house_bills/partials/monthly_bill_form.html" %}

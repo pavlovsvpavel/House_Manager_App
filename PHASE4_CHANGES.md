@@ -251,6 +251,19 @@ now provides the way back. The edit pages have no breadcrumbs, so
 partial is deleted. The payment modal's Cancel is unaffected (it
 closes the dialog, it does not navigate).
 
+## Follow-up: edit pages get breadcrumbs, last back button removed
+
+The bill edit pages (the no-JS fallback of the payment modal) kept a
+back button because they had no breadcrumbs. The `breadcrumbs` tag
+gained `parent_label`/`parent_url` - one extra LINKED crumb - so the
+edit pages now read e.g. Dashboard / Sofia / Ivanovi / Client bills /
+Bill details, where "Client bills" links back to the list (plain
+links, no JS needed). All four edit pages dropped the back button;
+`partials/back_button.html` is deleted along with its dead CSS. The
+`.title-back-btn` wrapper (a misnomer now) is renamed
+`.page-title-row`. The HTMX modal fragment does not render
+breadcrumbs.
+
 ## Not In Scope
 
 - **Phase 4e (skipped per review):** dashboard cockpit — balance sparklines, KPI trends, "This month" panel.
