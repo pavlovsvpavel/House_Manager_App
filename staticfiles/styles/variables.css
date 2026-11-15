@@ -16,33 +16,34 @@
    ============================================================ */
 
 :root {
-    /* ---- Surfaces (elevation by lightness) ---- */
-    --surface-0: oklch(97.5% 0.015 100);  /* page background  */
-    --surface-1: oklch(93% 0.055 85);     /* cards            */
-    --surface-2: oklch(88% 0.09 75);      /* hover / raised   */
-    --surface-sunk: oklch(96% 0.02 95);   /* wells, panels    */
-    --surface-inverse: oklch(24% 0.02 275); /* nav, backdrops */
+    /* ---- Surfaces (cool neutrals, normal elevation: tinted page,
+       white cards) ---- */
+    --surface-0: oklch(98.5% 0.002 250);  /* page background  */
+    --surface-1: oklch(100% 0 0);         /* cards            */
+    --surface-2: oklch(96.5% 0.004 250);  /* hover / raised   */
+    --surface-sunk: oklch(97% 0.003 250); /* wells, panels    */
+    --surface-inverse: oklch(21% 0.02 260); /* nav, backdrops */
 
     /* ---- Text ---- */
-    --text-1: oklch(28% 0.09 265);        /* primary  */
-    --text-2: oklch(48% 0.05 265);        /* muted    */
-    --text-on-accent: oklch(99% 0.005 100);
-    --text-on-inverse: oklch(95% 0.01 275);
+    --text-1: oklch(22% 0.02 260);        /* primary  */
+    --text-2: oklch(50% 0.015 260);       /* muted    */
+    --text-on-accent: oklch(99% 0.005 260);
+    --text-on-inverse: oklch(95% 0.005 260);
 
     /* ---- Accent + states (each with a -soft surface variant) ---- */
-    --accent:       oklch(58% 0.14 255);
-    --accent-soft:  oklch(92% 0.045 255);
-    --state-success:      oklch(52% 0.13 150);
-    --state-success-soft: oklch(91% 0.09 148);
-    --state-danger:       oklch(52% 0.16 25);
-    --state-danger-soft:  oklch(91% 0.05 25);
-    --state-warning:      oklch(68% 0.13 75);
+    --accent:       oklch(52% 0.19 264);
+    --accent-soft:  oklch(95.5% 0.02 264);
+    --state-success:      oklch(55% 0.15 155);
+    --state-success-soft: oklch(93% 0.04 152);
+    --state-danger:       oklch(55% 0.2 22);
+    --state-danger-soft:  oklch(93% 0.03 25);
+    --state-warning:      oklch(70% 0.15 80);
 
     /* ---- Bill states ---- */
-    --bill-paid:      oklch(89% 0.09 148);
-    --bill-paid-hover: oklch(85% 0.11 148);
-    --bill-unpaid:    oklch(80% 0.09 25);
-    --bill-unpaid-hover: oklch(76% 0.1 25);
+    --bill-paid:      oklch(93% 0.05 150);
+    --bill-paid-hover: oklch(89% 0.06 150);
+    --bill-unpaid:    oklch(93% 0.035 25);
+    --bill-unpaid-hover: oklch(89% 0.045 25);
 
     /* ---- Paper (theme-independent: signatures are dark ink baked into
        transparent SVGs and must sit on white in both themes) ---- */
@@ -90,25 +91,25 @@
 }
 
 [data-theme="dark"] {
-    /* ---- Surfaces ---- */
-    --surface-0: oklch(16% 0.02 275);
-    --surface-1: oklch(22% 0.03 275);
-    --surface-2: oklch(28% 0.04 275);
-    --surface-sunk: oklch(19% 0.025 275);
-    --surface-inverse: oklch(12% 0.015 275);
+    /* ---- Surfaces (true near-black, subtle blue tint) ---- */
+    --surface-0: oklch(15.5% 0.012 260);
+    --surface-1: oklch(20% 0.015 260);
+    --surface-2: oklch(25% 0.018 260);
+    --surface-sunk: oklch(18% 0.013 260);
+    --surface-inverse: oklch(12.5% 0.01 260);
 
     /* ---- Text ---- */
-    --text-1: oklch(93% 0.01 275);
-    --text-2: oklch(70% 0.02 275);
-    --text-on-accent: oklch(15% 0.03 255);
-    --text-on-inverse: oklch(93% 0.01 275);
+    --text-1: oklch(93% 0.005 260);
+    --text-2: oklch(70% 0.012 260);
+    --text-on-accent: oklch(15% 0.03 264);
+    --text-on-inverse: oklch(93% 0.005 260);
 
-    /* ---- Accent + states (desaturated, lighter for dark surfaces) ---- */
-    --accent:       oklch(75% 0.1 255);
-    --accent-soft:  oklch(28% 0.05 255);
-    --state-success:      oklch(78% 0.11 150);
-    --state-success-soft: oklch(30% 0.05 150);
-    --state-danger:       oklch(74% 0.12 25);
+    /* ---- Accent + states (lighter for dark surfaces) ---- */
+    --accent:       oklch(72% 0.14 264);
+    --accent-soft:  oklch(28% 0.05 264);
+    --state-success:      oklch(78% 0.11 155);
+    --state-success-soft: oklch(30% 0.05 152);
+    --state-danger:       oklch(74% 0.12 22);
     --state-danger-soft:  oklch(28% 0.05 25);
     --state-warning:      oklch(80% 0.1 80);
 
