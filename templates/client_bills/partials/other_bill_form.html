@@ -16,12 +16,12 @@
                     <input type="checkbox" name="pay_bill" value="{{ bill.pk }}"
                            data-amount="{{ bill.total_amount|unlocalize }}">
                     <span class="bill-form__pay-bill-period">{{ bill.get_month_name }} {{ bill.year }}</span>
-                    <span class="bill-form__pay-bill-amount money">{{ bill.total_amount }} EUR</span>
+                    <span class="bill-form__pay-bill-amount money">{{ bill.total_amount }} €</span>
                 </label>
             {% endfor %}
             <p class="bill-form__total">
                 {% trans "Total to pay" %}:
-                <span class="money" data-bill-total>{{ form.instance.total_amount|floatformat:2 }} EUR</span>
+                <span class="money" data-bill-total>{{ form.instance.total_amount|floatformat:2 }} €</span>
             </p>
         </fieldset>
     {% endif %}

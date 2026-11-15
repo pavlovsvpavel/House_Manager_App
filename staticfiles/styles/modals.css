@@ -732,6 +732,14 @@ body:has(dialog.bill-modal[open]) {
     text-align: right;
 }
 
+/* Only the name column reads left-aligned; every other column
+   (apartment, money, comment, signature/paid) aligns right. The tfoot
+   "Total" label keeps its own left position via its colspan cell. */
+.report-table thead th:not(:first-child),
+.report-table tbody td:not(:first-child) {
+    text-align: right;
+}
+
 @container (max-width: 520px) {
     .report-table,
     .report-table tbody,

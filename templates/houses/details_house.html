@@ -80,7 +80,7 @@
                         </div>
                         <div class="card-column">
                             <p class="column-name">{% trans "Current Balance" %}</p>
-                            <p class="column-data money {% if object.money_balance < 0 %}money--negative{% endif %}">{{ object.money_balance }} {% trans "EUR" %}</p>
+                            <p class="column-data money {% if object.money_balance < 0 %}money--negative{% endif %}">{{ object.money_balance }} €</p>
                         </div>
                         <div class="client-card-btns">
                             <a href="{% url "edit_house" house_pk=object.pk %}">{% trans "Edit" %}</a>

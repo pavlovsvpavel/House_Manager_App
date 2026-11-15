@@ -8,7 +8,7 @@
             <p class="bill-details__who">{{ object.house.town }}, {{ object.house.address }}</p>
             <p class="bill-details__period">{{ object.get_month_name }} {{ object.year }}</p>
         </div>
-        <p class="bill-details__amount money">{{ object.total_amount }}<span class="bill-details__currency"> EUR</span></p>
+        <p class="bill-details__amount money">{{ object.total_amount }}<span class="bill-details__currency"> €</span></p>
     </header>
 
     <dl class="bill-details__breakdown">
@@ -21,7 +21,7 @@
         <div><dt>{% trans "Cashier fee" %}</dt><dd class="money">{{ object.fee_cashier }}</dd></div>
         <div><dt>{% trans "Repairs fund" %}</dt><dd class="money">{{ object.repairs }}</dd></div>
         <div><dt>{% trans "Other expenses" %}</dt><dd class="money">{{ object.others }}</dd></div>
-        <div class="bill-details__total"><dt>{% trans "Total EUR" %}</dt><dd class="money">{{ object.total_amount }}</dd></div>
+        <div class="bill-details__total"><dt>{% trans "Total, €" %}</dt><dd class="money">{{ object.total_amount }}</dd></div>
     </dl>
 
     <p class="bill-callout bill-callout--warning">{% trans "The payment is without 'Repairs fund'" %}</p>

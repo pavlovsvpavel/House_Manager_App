@@ -29,7 +29,7 @@
                                     </div>
                                     <div class="card-column">
                                         <p class="column-name">{% trans "Amount for collection" %}</p>
-                                        <p class="column-data money">{{ amount_for_collection }} {% trans "EUR" %}</p>
+                                        <p class="column-data money">{{ amount_for_collection }} €</p>
                                     </div>
                                 </div>
                             {% endif %}
@@ -37,6 +37,17 @@
                     </div>
                     <div class="report-table-wrap">
                         <table class="report-table">
+                            <!-- Fixed column plan: the Family column is the
+                                 wide one; the money columns stay narrow
+                                 (their headers now carry €). -->
+                            <colgroup>
+                                <col style="width: 27%">
+                                <col style="width: 13%">
+                                <col style="width: 17%">
+                                <col style="width: 17%">
+                                <col style="width: 13%">
+                                <col style="width: 13%">
+                            </colgroup>
                             {% if clients_bills %}
                                 <thead>
                                     {% include "partials/reports/table_headers.html" %}

@@ -79,6 +79,9 @@ msgstr "Създаване на парола"
 msgid "Unpaid bills, EUR"
 msgstr "Неплатени сметки, ЕВРО"
 
+msgid "Unpaid bills, €"
+msgstr "Неплатени сметки, €"
+
 #: house_manager/client_bills/views.py:96
 #: house_manager/client_bills/views.py:293
 msgid "Bill not found for current client."
@@ -632,6 +635,9 @@ msgstr "Неплатени"
 msgid "Total, EUR"
 msgstr "Общо сума, ЕВРО"
 
+msgid "Total, €"
+msgstr "Общо сума, €"
+
 #: templates/client_bills/partials/monthly_bill_form.html:15
 #: templates/client_bills/partials/other_bill_form.html:15
 #: templates/house_bills/partials/monthly_bill_form.html:12
@@ -797,13 +803,22 @@ msgstr "Обект"
 msgid "Balance, EUR"
 msgstr "Салдо, ЕВРО"
 
+msgid "Balance, €"
+msgstr "Салдо, €"
+
 #: templates/common/dashboard.html:39
 msgid "Monthly bills, EUR"
 msgstr "Месечни сметки, ЕВРО"
 
+msgid "Monthly bills, €"
+msgstr "Месечни сметки, €"
+
 #: templates/common/dashboard.html:44
 msgid "Other bills, EUR"
 msgstr "Други сметки, ЕВРО"
+
+msgid "Other bills, €"
+msgstr "Други сметки, €"
 
 #: templates/common/dashboard.html:49
 #: templates/houses/house_clients_list.html:10
@@ -822,6 +837,9 @@ msgstr "Платени сметки"
 #: templates/common/dashboard.html:64
 msgid "Due, EUR"
 msgstr "Дължими, ЕВРО"
+
+msgid "Due, €"
+msgstr "Дължими, €"
 
 #: templates/common/dashboard.html:72
 msgid "No houses"
@@ -1143,6 +1161,9 @@ msgstr "Запази в PDF"
 #: templates/partials/reports/table_headers.html:7
 msgid "Monthly bill, EUR"
 msgstr "Месечна сметка, ЕВРО"
+
+msgid "Monthly bill, €"
+msgstr "Месечна сметка, €"
 
 #: templates/partials/signature-pad.html:7
 msgid "Reset signature"

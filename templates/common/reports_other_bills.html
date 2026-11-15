@@ -26,6 +26,16 @@
                     </div>
                     <div class="report-table-wrap">
                         <table class="report-table">
+                            <!-- Fixed column plan: the name column is the
+                                 wide one; Comment gets the rest's spare
+                                 room (serves both the per-client and the
+                                 single-bill table shapes). -->
+                            <colgroup>
+                                <col style="width: 32%">
+                                <col style="width: 30%">
+                                <col style="width: 18%">
+                                <col style="width: 20%">
+                            </colgroup>
                             {% if clients_bills %}
                                 <thead>
                                     {% include "partials/reports/table_headers_other_bills.html" %}
@@ -35,7 +45,7 @@
                                     <tr>
                                         <th>{% trans "Full name" %}</th>
                                         <th>{% trans "Comment" %}</th>
-                                        <th>{% trans "Total EUR" %}</th>
+                                        <th class="money--right">{% trans "Total, €" %}</th>
                                         {% if current_house.signature_required %}
                                         <th>{% trans "Signature" %}</th>
                                         {% else %}

@@ -3,7 +3,7 @@
 <tr>
     <th>{% trans "Family Name" %}</th>
     <th>{% trans "Apartment" %}</th>
-    <th>{% trans "Total EUR" %}</th>
+    <th class="money--right">{% trans "Total, €" %}</th>
     {% if current_house.signature_required and not is_multi_month %}
     <th>{% trans "Signature" %}</th>
     {% else %}

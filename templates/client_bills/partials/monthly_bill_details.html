@@ -9,7 +9,7 @@
             <p class="bill-details__who">{% trans "Apartment" %} {{ object.client.apartment }} · {{ object.client.family_name }}</p>
             <p class="bill-details__period">{{ object.get_month_name }} {{ object.year }}</p>
         </div>
-        <p class="bill-details__amount money">{{ object.total_amount }}<span class="bill-details__currency"> EUR</span></p>
+        <p class="bill-details__amount money">{{ object.total_amount }}<span class="bill-details__currency"> €</span></p>
     </header>
 
     <dl class="bill-details__breakdown">
@@ -24,7 +24,7 @@
             <div><dt>{% trans "Repairs fund" %}</dt><dd class="money">{{ object.repairs }}</dd></div>
             <div><dt>{% trans "Other expenses" %}</dt><dd class="money">{{ object.others }}</dd></div>
         {% endif %}
-        <div><dt>{% trans "Unpaid bills, EUR" %}</dt><dd class="money">{{ amount_old_debts }}</dd></div>
-        <div class="bill-details__total"><dt>{% trans "Total, EUR" %}</dt><dd class="money">{{ amount_old_debts|add:object.total_amount }}</dd></div>
+        <div><dt>{% trans "Unpaid bills, €" %}</dt><dd class="money">{{ amount_old_debts }}</dd></div>
+        <div class="bill-details__total"><dt>{% trans "Total, €" %}</dt><dd class="money">{{ amount_old_debts|add:object.total_amount }}</dd></div>
     </dl>
 </div>

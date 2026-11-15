@@ -31,17 +31,17 @@
                                             <a class="kpi"
                                                href="{% url 'details_house' house_pk=house.pk %}">
                                                 <p class="kpi-value money {% if house.money_balance < 0 %}money--negative{% endif %}">{{ house.money_balance }}</p>
-                                                <p class="kpi-label">{% trans "Balance, EUR" %}</p>
+                                                <p class="kpi-label">{% trans "Balance, €" %}</p>
                                             </a>
                                             <a class="kpi"
                                                href="{% url 'list_house_bills' house_pk=house.pk %}">
                                                 <p class="kpi-value money">{{ house.unpaid_house_monthly_total }}</p>
-                                                <p class="kpi-label">{% trans "Monthly bills, EUR" %}</p>
+                                                <p class="kpi-label">{% trans "Monthly bills, €" %}</p>
                                             </a>
                                             <a class="kpi"
                                                href="{% url 'list_other_house_bills' house_pk=house.pk %}">
                                                 <p class="kpi-value money">{{ house.unpaid_house_other_total }}</p>
-                                                <p class="kpi-label">{% trans "Other bills, EUR" %}</p>
+                                                <p class="kpi-label">{% trans "Other bills, €" %}</p>
                                             </a>
                                         </div>
                                     </div>
@@ -61,7 +61,7 @@
                                             <a class="kpi"
                                                href="{% url 'house_clients_list' house_pk=house.pk %}?is_paid=False">
                                                 <p class="kpi-value money">{{ house.unpaid_bills_total }}</p>
-                                                <p class="kpi-label">{% trans "Due, EUR" %}</p>
+                                                <p class="kpi-label">{% trans "Due, €" %}</p>
                                             </a>
                                         </div>
                                     </div>
