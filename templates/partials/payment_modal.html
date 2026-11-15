@@ -1,0 +1,14 @@
+{% load i18n %}
+<dialog class="bill-modal" data-bill-modal aria-labelledby="bill-modal-title">
+    <div class="bill-modal__panel">
+        <div class="bill-modal__header">
+            <h3 id="bill-modal-title">{% trans "Bill details" %}</h3>
+            <button type="button" class="bill-modal__close" data-close-modal
+                    aria-label="{% trans 'Close' %}">&times;</button>
+        </div>
+        <div class="bill-modal__body">
+            {% include details_template %}
+            {% include form_template %}
+        </div>
+    </div>
+</dialog>

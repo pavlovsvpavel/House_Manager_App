@@ -1,0 +1,13 @@
+{% load i18n %}
+<div id="bills-region">
+    {% include "partials/filter_buttons.html" with filter_target="#bills-region" %}
+    <div class="clients-cards" id="bills-container" aria-live="polite">
+        {% if house_bills %}
+            {% for bill in house_bills %}
+                {% include "house_bills/partials/monthly_bill_row.html" with bill=bill %}
+            {% endfor %}
+        {% else %}
+            <h3>{% trans "No bills" %}</h3>
+        {% endif %}
+    </div>
+</div>

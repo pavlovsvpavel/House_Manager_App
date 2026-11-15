@@ -18,6 +18,30 @@ class TimeStampModel(models.Model):
     )
 
 
+class HtmxFragmentMixin:
+    """Serve a fragment template when the request comes from HTMX.
+
+    Progressive enhancement contract: the same view still renders the full
+    page for a normal browser request, and ownership/permission checks are
+    unchanged — only the template choice differs. ``?partial=1`` mirrors the
+    ``HX-Request`` header so the fragments can be exercised without JS.
+    """
+
+    partial_template_name = None
+
+    def is_htmx_request(self):
+        return (
+            self.request.headers.get("HX-Request") == "true"
+            or self.request.GET.get("partial") == "1"
+        )
+
+    def get_template_names(self):
+        names = super().get_template_names()
+        if self.partial_template_name and self.is_htmx_request():
+            return [self.partial_template_name]
+        return names
+
+
 class MonthChoices(models.TextChoices):
     JANUARY = ("01", _("January"))
     FEBRUARY = ("02", _("February"))

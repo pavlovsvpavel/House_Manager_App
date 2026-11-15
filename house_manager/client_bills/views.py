@@ -13,14 +13,15 @@ from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 from house_manager.clients.mixins import ClientOwnershipMixin
 from house_manager.clients.models import Client
 from house_manager.common.helpers.filtering_unpaid_client_bills import filtering_unpaid_client_bills
-from house_manager.common.mixins import MonthChoices
+from house_manager.common.mixins import HtmxFragmentMixin, MonthChoices
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
 from house_manager.houses.mixins import HouseOwnershipMixin
 
 
-class ClientBaseBillsDetailView(ClientOwnershipMixin, views.DetailView):
+class ClientBaseBillsDetailView(HtmxFragmentMixin, ClientOwnershipMixin, views.DetailView):
     queryset = ClientMonthlyBill.objects.prefetch_related('client')
     template_name = None
+    partial_template_name = None
 
     def get_object(self, queryset=None):
         return self.selected_client
@@ -48,6 +49,7 @@ class ClientBaseBillsDetailView(ClientOwnershipMixin, views.DetailView):
 
 class ClientMonthlyBillsDetailView(ClientBaseBillsDetailView):
     template_name = "client_bills/list_client_bills.html"
+    partial_template_name = "client_bills/partials/monthly_bill_list.html"
 
     def get_type_of_client_bills(self):
         return self.object.client_monthly_bills.order_by("is_paid", "-year", "-month").all()
@@ -55,14 +57,17 @@ class ClientMonthlyBillsDetailView(ClientBaseBillsDetailView):
 
 class ClientOtherBillsDetailView(ClientBaseBillsDetailView):
     template_name = "client_bills/list_other_client_bills.html"
+    partial_template_name = "client_bills/partials/other_bill_list.html"
 
     def get_type_of_client_bills(self):
         return self.object.client_other_bills.order_by("is_paid", "-year", "-month").all()
 
 
-class CurrentClientBaseBillEditView(ClientOwnershipMixin, views.UpdateView):
+class CurrentClientBaseBillEditView(HtmxFragmentMixin, ClientOwnershipMixin, views.UpdateView):
     queryset = None
     template_name = None
+    partial_template_name = None
+    row_template_name = None
     success_url_name = None
     fields = ("is_paid",)
 
@@ -128,7 +133,20 @@ class CurrentClientBaseBillEditView(ClientOwnershipMixin, views.UpdateView):
             bill_id = form.instance.id
             type_of_bill = self.queryset.model
             add_amount_to_house_balance(type_of_bill, house_id, bill_id)
+
+            if self.is_htmx_request():
+                self.object = form.save()
+                return self.render_row_fragment()
+
             return super().form_valid(form)
+
+    def render_row_fragment(self):
+        """Return just the updated bill row for an in-place HTMX swap."""
+        html = render_to_string(
+            self.row_template_name, {"bill": self.object}, request=self.request)
+        response = HttpResponse(html)
+        response["HX-Trigger"] = "billPaid"
+        return response
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -136,16 +154,29 @@ class CurrentClientBaseBillEditView(ClientOwnershipMixin, views.UpdateView):
             form.fields["is_paid"].disabled = True
         return form
 
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        if self.is_htmx_request():
+            # Keep validation errors inside the open payment dialog instead
+            # of replacing the bill row with a modal fragment.
+            response["HX-Retarget"] = "#bill-modal-container"
+            response["HX-Reswap"] = "innerHTML"
+        return response
+
 
 class CurrentClientMonthlyBillEditView(CurrentClientBaseBillEditView):
     queryset = ClientMonthlyBill.objects.prefetch_related('client')
     template_name = "client_bills/edit_client_bill.html"
+    partial_template_name = "client_bills/partials/monthly_bill_modal.html"
+    row_template_name = "client_bills/partials/monthly_bill_row.html"
     success_url_name = "list_client_bills"
 
 
 class CurrentClientOtherBillEditView(CurrentClientBaseBillEditView):
     queryset = ClientOtherBill.objects.prefetch_related('client')
     template_name = "client_bills/edit_client_other_bill.html"
+    partial_template_name = "client_bills/partials/other_bill_modal.html"
+    row_template_name = "client_bills/partials/other_bill_row.html"
     success_url_name = "list_other_client_bills"
 
 

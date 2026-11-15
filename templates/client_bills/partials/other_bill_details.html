@@ -1,0 +1,23 @@
+{% load i18n %}
+<div class="client-card">
+    <div class="card-column">
+        <p class="column-name">{% trans "Family name" %}</p>
+        <p class="column-data">{{ object.client.family_name }}</p>
+    </div>
+    <div class="card-column">
+        <p class="column-name">{% trans "Year" %}</p>
+        <p class="column-data">{{ object.year }}</p>
+    </div>
+    <div class="card-column">
+        <p class="column-name">{% trans "Month" %}</p>
+        <p class="column-data">{{ object.get_month_name }}</p>
+    </div>
+    <div class="card-column">
+        <p class="column-name">{% trans "Comment" %}</p>
+        <p class="column-data">{{ object.comment }}</p>
+    </div>
+    <div class="card-column">
+        <p class="column-name">{% trans "Total EUR" %}</p>
+        <p class="column-data">{{ object.total_amount }}</p>
+    </div>
+</div>

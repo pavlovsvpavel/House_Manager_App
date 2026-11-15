@@ -190,3 +190,95 @@ class ClientBillsSecurityTests(TestCase):
         response = self.client.post(url, {"is_paid": "on"})
         self.house.refresh_from_db()
         self.assertEqual(self.house.money_balance, Decimal("100.00"))
+
+    # --- HTMX fragments (Phase 2) -------------------------------------------
+
+    def test_client_bills_list_partial_for_htmx(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(
+            reverse("list_client_bills",
+                    kwargs={"house_pk": self.house.pk, "client_pk": self.client_obj.pk}),
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response, "client_bills/partials/monthly_bill_list.html")
+        self.assertNotContains(response, "<html")
+        self.assertContains(response, 'id="bills-region"')
+        self.assertContains(response, f'id="bill-row-{self.bill.pk}"')
+
+    def test_client_other_bills_list_partial_for_htmx(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(
+            reverse("list_other_client_bills",
+                    kwargs={"house_pk": self.house.pk, "client_pk": self.client_obj.pk}),
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response, "client_bills/partials/other_bill_list.html")
+        self.assertNotContains(response, "<html")
+
+    def test_edit_client_bill_htmx_get_returns_modal_with_signature_pad(self):
+        self.client.force_login(self.owner)
+        url = reverse(
+            "edit_client_bill",
+            kwargs={"house_pk": self.house.pk,
+                    "client_pk": self.client_obj.pk,
+                    "pk": self.bill.pk})
+
+        response = self.client.get(url, HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response, "client_bills/partials/monthly_bill_modal.html")
+        self.assertContains(response, "data-bill-modal")
+        self.assertContains(response, 'id="signature"')
+        self.assertContains(response, f'hx-post="{url}"')
+        self.assertNotContains(response, "<html")
+
+    def test_edit_client_bill_htmx_post_swaps_row_and_credits_once(self):
+        self.client.force_login(self.owner)
+        url = reverse(
+            "edit_client_bill",
+            kwargs={"house_pk": self.house.pk,
+                    "client_pk": self.client_obj.pk,
+                    "pk": self.bill.pk})
+
+        response = self.client.post(
+            url,
+            {"is_paid": "on", "signature": "PHN2Zy8+"},
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["HX-Trigger"], "billPaid")
+        self.assertTemplateUsed(
+            response, "client_bills/partials/monthly_bill_row.html")
+        self.assertContains(response, f'id="bill-row-{self.bill.pk}"')
+        self.assertNotContains(response, "<html")
+
+        self.bill.refresh_from_db()
+        self.house.refresh_from_db()
+        self.assertTrue(self.bill.is_paid)
+        self.assertEqual(
+            self.bill.signature, "data:image/svg+xml;base64,PHN2Zy8+")
+        self.assertEqual(self.house.money_balance, Decimal("100.00"))
+
+        # Replay: stays idempotent and keeps the dialog target for the error.
+        response = self.client.post(
+            url,
+            {"is_paid": "on", "signature": "PHN2Zy8+"},
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("HX-Trigger", response)
+        self.assertEqual(response["HX-Retarget"], "#bill-modal-container")
+
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("100.00"))

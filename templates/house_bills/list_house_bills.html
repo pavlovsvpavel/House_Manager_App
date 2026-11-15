@@ -1,5 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
+
+{% block extra_head_scripts %}
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/htmx.min.js" %}" defer></script>
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/billsPayments.js" %}" defer></script>
+{% endblock %}
 
 {% block main_content %}
 
@@ -14,30 +20,8 @@
                         </a>
                     </div>
                 </div>
-                {% include "partials/filter_buttons.html" %}
-                <div class="clients-cards">
-                    {% if house_bills %}
-                        {% for bill in house_bills %}
-                            <div class="{% if bill.is_paid %} client-card {% else %} client-card-not-paid {% endif %} js-redirect"
-                                 data-url="{% url 'edit_house_bills' house_pk=object.pk pk=bill.pk %}">
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Year" %}</p>
-                                    <p class="column-data">{{ bill.year }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Month" %}</p>
-                                    <p class="column-data">{{ bill.get_month_name }}</p>
-                                </div>
-                                <div class="card-column">
-                                    <p class="column-name">{% trans "Total EUR" %}</p>
-                                    <p class="column-data">{{ bill.total_amount }}</p>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <h3>{% trans "No bills" %}</h3>
-                    {% endif %}
-                </div>
+                {% include "house_bills/partials/monthly_bill_list.html" %}
+                <div id="bill-modal-container"></div>
             </div>
         </div>
     </section>

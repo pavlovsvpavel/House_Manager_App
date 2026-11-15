@@ -1,9 +1,10 @@
 from decimal import Decimal
 from django.db import IntegrityError, transaction
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
@@ -14,7 +15,7 @@ from house_manager.client_bills.helpers.calculate_fees_other_bills import calcul
 from house_manager.client_bills.helpers.calculate_fixed_bills import calculate_fixed_client_bills
 from house_manager.client_bills.models import ClientMonthlyBill
 from house_manager.clients.models import Client
-from house_manager.common.mixins import MonthChoices, YearChoices
+from house_manager.common.mixins import HtmxFragmentMixin, MonthChoices, YearChoices
 from house_manager.house_bills.forms import HouseMonthlyBillForm, HouseOtherBillForm, HouseFixedBillForm
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
 from house_manager.house_bills.helpers.subtract_amount_from_balance import subtract_amount_from_house_balance
@@ -183,8 +184,9 @@ class HouseFixedMonthlyBillView(HouseBaseBillCreateView):
             return self.form_invalid(form)
 
 
-class CurrentHouseBaseBillDetailView(HouseOwnershipMixin, views.DetailView):
+class CurrentHouseBaseBillDetailView(HtmxFragmentMixin, HouseOwnershipMixin, views.DetailView):
     template_name = None
+    partial_template_name = None
 
     def get_object(self, queryset=None):
         return self.selected_house
@@ -213,6 +215,7 @@ class CurrentHouseBaseBillDetailView(HouseOwnershipMixin, views.DetailView):
 
 class CurrentHouseMonthlyBillDetailView(CurrentHouseBaseBillDetailView):
     template_name = "house_bills/list_house_bills.html"
+    partial_template_name = "house_bills/partials/monthly_bill_list.html"
 
     def get_type_of_house_bills(self):
         return self.object.house_monthly_bills.order_by("is_paid", "-year", "-month").all()
@@ -220,19 +223,19 @@ class CurrentHouseMonthlyBillDetailView(CurrentHouseBaseBillDetailView):
 
 class CurrentHouseOtherBillDetailView(CurrentHouseBaseBillDetailView):
     template_name = "house_bills/list_other_house_bills.html"
+    partial_template_name = "house_bills/partials/other_bill_list.html"
 
     def get_type_of_house_bills(self):
         return self.object.house_other_bills.order_by("is_paid", "-year", "-month").all()
 
 
-class HouseBaseBillEditView(HouseOwnershipMixin, views.UpdateView):
+class HouseBaseBillEditView(HtmxFragmentMixin, HouseOwnershipMixin, views.UpdateView):
     queryset = None
     template_name = None
+    partial_template_name = None
+    row_template_name = None
     success_url_name = None
     fields = ("is_paid",)
-
-    def get_template_name(self):
-        return [self.template_name]
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
@@ -264,13 +267,39 @@ class HouseBaseBillEditView(HouseOwnershipMixin, views.UpdateView):
             bill_id = form.instance.id
             type_of_bill = self.queryset.model
             subtract_amount_from_house_balance(type_of_bill, house_id, bill_id)
+
+            if self.is_htmx_request():
+                self.object = form.save()
+                return self.render_row_fragment()
+
             return super().form_valid(form)
+
+    def render_row_fragment(self):
+        """Return just the updated bill row for an in-place HTMX swap.
+
+        ``HX-Trigger: billPaid`` lets the client close the payment dialog and
+        restore focus without a full page reload.
+        """
+        html = render_to_string(
+            self.row_template_name, {"bill": self.object}, request=self.request)
+        response = HttpResponse(html)
+        response["HX-Trigger"] = "billPaid"
+        return response
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         if form.instance.is_paid:
             form.fields["is_paid"].disabled = True
         return form
+
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        if self.is_htmx_request():
+            # Keep validation errors inside the open payment dialog instead
+            # of replacing the bill row with a modal fragment.
+            response["HX-Retarget"] = "#bill-modal-container"
+            response["HX-Reswap"] = "innerHTML"
+        return response
 
     def get_success_url(self):
         return reverse_lazy(
@@ -282,12 +311,16 @@ class HouseBaseBillEditView(HouseOwnershipMixin, views.UpdateView):
 class HouseMonthlyBillEditView(HouseBaseBillEditView):
     queryset = HouseMonthlyBill.objects.prefetch_related("house")
     template_name = "house_bills/edit_house_bills.html"
+    partial_template_name = "house_bills/partials/monthly_bill_modal.html"
+    row_template_name = "house_bills/partials/monthly_bill_row.html"
     success_url_name = "list_house_bills"
 
 
 class HouseOtherBillEditView(HouseBaseBillEditView):
     queryset = HouseOtherBill.objects.prefetch_related("house")
     template_name = "house_bills/edit_other_house_bills.html"
+    partial_template_name = "house_bills/partials/other_bill_modal.html"
+    row_template_name = "house_bills/partials/other_bill_row.html"
     success_url_name = "list_other_house_bills"
 
 

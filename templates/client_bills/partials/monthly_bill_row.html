@@ -1,0 +1,9 @@
+{% load i18n %}
+<a id="bill-row-{{ bill.pk }}"
+   class="{% if bill.is_paid %}client-card{% else %}client-card-not-paid{% endif %}"
+   href="{% url 'edit_client_bill' house_pk=bill.house_id client_pk=bill.client_id pk=bill.pk %}"
+   hx-get="{% url 'edit_client_bill' house_pk=bill.house_id client_pk=bill.client_id pk=bill.pk %}"
+   hx-target="#bill-modal-container"
+   hx-swap="innerHTML">
+    {% include "partials/details_client_bills.html" with object=bill %}
+</a>

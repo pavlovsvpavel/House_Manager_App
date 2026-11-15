@@ -171,3 +171,98 @@ class HouseBillsSecurityTests(TestCase):
         self.assertEqual(HouseMonthlyBill.objects.count(), 2)
         # Note: create views render a SweetAlert success page (HTTP 200 with
         # a JS redirect), not a 302.
+
+    # --- HTMX fragments (Phase 2) -------------------------------------------
+
+    def test_monthly_bills_list_partial_for_htmx(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(
+            reverse("list_house_bills", kwargs={"house_pk": self.house.pk}),
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response, "house_bills/partials/monthly_bill_list.html")
+        self.assertNotContains(response, "<html")
+        self.assertContains(response, 'id="bills-region"')
+        self.assertContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+
+    def test_other_bills_list_partial_for_htmx(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(
+            reverse("list_other_house_bills", kwargs={"house_pk": self.house.pk}),
+            HTTP_HX_REQUEST="true",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response, "house_bills/partials/other_bill_list.html")
+        self.assertNotContains(response, "<html")
+        self.assertContains(response, f'id="bill-row-{self.other_bill.pk}"')
+
+    def test_list_partial_applies_payment_filter(self):
+        self.client.force_login(self.owner)
+
+        url = reverse("list_house_bills", kwargs={"house_pk": self.house.pk})
+        response = self.client.get(
+            f"{url}?is_paid=False&month=01", HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+
+        response = self.client.get(
+            f"{url}?is_paid=True&month=01", HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+
+    def test_edit_bill_htmx_get_returns_modal_fragment(self):
+        self.client.force_login(self.owner)
+        url = reverse(
+            "edit_house_bills",
+            kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk})
+
+        response = self.client.get(url, HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response, "house_bills/partials/monthly_bill_modal.html")
+        self.assertContains(response, "data-bill-modal")
+        self.assertContains(response, f'hx-post="{url}"')
+        self.assertNotContains(response, "<html")
+
+    def test_edit_bill_htmx_post_swaps_row_and_triggers_event(self):
+        self.client.force_login(self.owner)
+        url = reverse(
+            "edit_house_bills",
+            kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk})
+
+        response = self.client.post(
+            url, {"is_paid": "on"}, HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["HX-Trigger"], "billPaid")
+        self.assertTemplateUsed(
+            response, "house_bills/partials/monthly_bill_row.html")
+        self.assertContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+        self.assertNotContains(response, "<html")
+
+        self.monthly_bill.refresh_from_db()
+        self.house.refresh_from_db()
+        self.assertTrue(self.monthly_bill.is_paid)
+        self.assertEqual(self.house.money_balance, Decimal("-100.00"))
+
+        # Replay through HTMX must stay idempotent and re-render the dialog
+        # (with the error) instead of overwriting the paid row.
+        response = self.client.post(
+            url, {"is_paid": "on"}, HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("HX-Trigger", response)
+        self.assertEqual(response["HX-Retarget"], "#bill-modal-container")
+
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("-100.00"))

@@ -1,8 +1,13 @@
 {% load i18n %}
 
-<form method="get">
+<form method="get" action=""
+      {% if filter_target %}hx-get="{{ request.path }}"
+      hx-target="{{ filter_target }}"
+      hx-swap="outerHTML"
+      hx-push-url="true"
+      hx-trigger="submit, change"{% endif %}>
     <div class="filter-buttons">
-        <label for="month-select" class="month-label">
+        <label for="month" class="month-label">
             <select name="month" id="month">
                 <option value="" disabled {% if not request.GET.month %}selected{% endif %}>{% trans "Month" %}</option>
                 <option value="" {% if request.GET.month == "" %}selected{% endif %}>{% trans "All" %}</option>
@@ -13,19 +18,30 @@
                 {% endfor %}
             </select>
         </label>
-    
+
         <a href="?is_paid=True&month={{ request.GET.month }}"
+           {% if filter_target %}hx-get="{{ request.path }}?is_paid=True&month={{ request.GET.month }}"
+           hx-target="{{ filter_target }}"
+           hx-swap="outerHTML"
+           hx-push-url="true"{% endif %}
            class="{% if request.GET.month == "" or not request.GET.dict %}disabled{% endif %}">
            {% trans "Without debts" %}
         </a>
 
         <a href="?is_paid=False&month={{ request.GET.month }}"
+           {% if filter_target %}hx-get="{{ request.path }}?is_paid=False&month={{ request.GET.month }}"
+           hx-target="{{ filter_target }}"
+           hx-swap="outerHTML"
+           hx-push-url="true"{% endif %}
            class="{% if request.GET.month == "" or not request.GET.dict %}disabled{% endif %}">
            {% trans "With debts" %}
         </a>
+
+        <button type="submit" class="filter-apply">{% trans "Apply" %}</button>
     </div>
 </form>
 
+{% if not filter_target %}
 <script nonce="{{ csp_nonce }}">
     document.addEventListener('DOMContentLoaded', function() {
         const monthSelect = document.getElementById('month');
@@ -41,3 +57,4 @@
         });
     });
 </script>
+{% endif %}

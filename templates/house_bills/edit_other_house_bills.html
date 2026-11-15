@@ -2,6 +2,10 @@
 {% load static %}
 {% load i18n %}
 
+{% block extra_head_scripts %}
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/billsPayments.js" %}" defer></script>
+{% endblock %}
+
 {% block main_content %}
     <section class="site-section details-house-bill">
         <div class="container">
@@ -10,43 +14,8 @@
                     <h3>{% trans 'Bill details' %}</h3>
                     {% include "partials/back_button.html" %}
                 </div>
-                <div class="client-card">
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Year" %}</p>
-                        <p class="column-data">{{ object.year }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Month" %}</p>
-                        <p class="column-data">{{ object.get_month_name }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Comment" %}</p>
-                        <p class="column-data">{{ object.comment }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Type of bill" %}</p>
-                        <p class="column-data">{{ object.get_type_of_bill }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Total EUR" %}</p>
-                        <p class="column-data">{{ object.total_amount }}</p>
-                    </div>
-                </div>
-                <form class="is-paid-form" method="post" action="{% url "edit_other_house_bills" house_pk=object.house.pk pk=object.pk %}">
-                    {% csrf_token %}
-                    <div>
-                        <label for="id_is_paid">{% trans "Pay the bill:" %}</label>
-                        {{ form.is_paid }}
-                    </div>
-                    {% if form.instance.is_paid %}
-                        <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
-                        <script>
-                            document.querySelector('label[for="id_is_paid"]').textContent = "{% trans 'Paid' %}";
-                        </script>
-                    {% else %}
-                        {% include "partials/form_buttons_edit_bills.html" %}
-                    {% endif %}
-                </form>
+                {% include "house_bills/partials/other_bill_details.html" %}
+                {% include "house_bills/partials/other_bill_form.html" %}
             </div>
         </div>
     </section>

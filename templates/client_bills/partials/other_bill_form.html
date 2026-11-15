@@ -1,0 +1,20 @@
+{% load static %}
+{% load i18n %}
+<form class="is-paid-form" method="post"
+      action="{% url 'edit_client_other_bill' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}"
+      hx-post="{% url 'edit_client_other_bill' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}"
+      hx-target="#bill-row-{{ object.pk }}"
+      hx-swap="outerHTML">
+    {% csrf_token %}
+    <div>
+        <label for="id_is_paid">{% if form.instance.is_paid %}{% trans "Paid" %}{% else %}{% trans "Pay the bill:" %}{% endif %}</label>
+        {{ form.is_paid }}
+    </div>
+
+    {% if form.instance.is_paid %}
+        {% include "partials/signature-show.html" %}
+    {% else %}
+        {% include "partials/signature-pad.html" %}
+        {% include "partials/bill_form_buttons.html" %}
+    {% endif %}
+</form>

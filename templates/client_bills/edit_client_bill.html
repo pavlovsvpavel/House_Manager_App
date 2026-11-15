@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-{% load custom_filters %}
+
+{% block extra_head_scripts %}
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/jquery.js" %}" defer></script>
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/jSignature.js" %}" defer></script>
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/signaturePad.js" %}" defer></script>
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/billsPayments.js" %}" defer></script>
+{% endblock %}
 
 {% block main_content %}
-    <script src="{% static "scripts/jquery.js" %}" defer></script>
-    <script src="{% static "scripts/jSignature.js" %}" defer></script>
-
     <section class="site-section details-client-bill">
         <div class="container">
             <div class="wrapper">
@@ -14,96 +17,8 @@
                     <h3>{% trans 'Bill details' %}</h3>
                     {% include "partials/back_button.html" %}
                 </div>
-                <div class="client-card">
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Family name" %}</p>
-                        <p class="column-data">{{ object.client.family_name }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Year" %}</p>
-                        <p class="column-data">{{ object.year }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Month" %}</p>
-                        <p class="column-data">{{ object.get_month_name }}</p>
-                    </div>
-                    {% if not current_house.fixed_monthly_taxes %}
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Electricity common" %}</p>
-                            <p class="column-data">{{ object.electricity_common }}</p>
-                        </div>
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Electricity lift" %}</p>
-                            <p class="column-data">{{ object.electricity_lift }}</p>
-                        </div>
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Internet" %}</p>
-                            <p class="column-data">{{ object.internet }}</p>
-                        </div>
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Lift maintenance" %}</p>
-                            <p class="column-data">{{ object.maintenance_lift }}</p>
-                        </div>
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Cleaner fee" %}</p>
-                            <p class="column-data">{{ object.fee_cleaner }}</p>
-                        </div>
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Manager fee" %}</p>
-                            <p class="column-data">{{ object.fee_manager }}</p>
-                        </div>
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Cashier fee" %}</p>
-                            <p class="column-data">{{ object.fee_cashier }}</p>
-                        </div>
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Repairs fund" %}</p>
-                            <p class="column-data">{{ object.repairs }}</p>
-                        </div>
-                        <div class="card-column">
-                            <p class="column-name">{% trans "Other expenses" %}</p>
-                            <p class="column-data">{{ object.others }}</p>
-                        </div>
-                    {% endif %}
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Monthly bill, EUR" %}</p>
-                        <p class="column-data">{{ object.total_amount }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Unpaid bills, EUR" %}</p>
-                        <p class="column-data">{{ amount_old_debts }}</p>
-                    </div>
-                    <div class="card-column">
-                        <p class="column-name">{% trans "Total, EUR" %}</p>
-                        <p class="column-data">{{ amount_old_debts|add:object.total_amount }}</p>
-                    </div>
-                </div>
-                <form class="is-paid-form" method="post" action="{% url "edit_client_bill" house_pk=object.house_id client_pk=object.client_id pk=object.pk %}">
-                    {% csrf_token %}
-                    <div>
-                        <label for="id_is_paid">{% trans "Pay the bill:" %}</label>
-                        {{ form.is_paid }}
-                    </div>
-
-                    {% if form.instance.is_paid %}
-                        <script src="{% static "scripts/signatureShow.js" %}" defer></script>
-                        <button type="submit" class="btn" hidden="hidden">{% trans "Save" %}</button>
-                        <script nonce="{{ csp_nonce }}">
-                            document.querySelector('label[for="id_is_paid"]').textContent = "{% trans 'Paid' %}";
-                        </script>
-                        {% include "partials/signature-show.html" %}
-
-                        <div class="download-receipt-container">
-                            <a href="{% url 'download_receipt' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}" class="download-receipt-btn" target="_blank">
-                                {% trans "Download Receipt" %}
-                            </a>
-                        </div>
-                    {% else %}
-                        <script nonce="{{ csp_nonce }}" src="{% static "scripts/signaturePad.js" %}" defer></script>
-                        {% include "partials/signature-pad.html" %}
-                        {% include "partials/form_buttons_edit_bills.html" %}
-                    {% endif %}
-                </form>
+                {% include "client_bills/partials/monthly_bill_details.html" %}
+                {% include "client_bills/partials/monthly_bill_form.html" %}
             </div>
         </div>
     </section>

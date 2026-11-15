@@ -1,116 +1,149 @@
-$(document).ready(function () {
-    const $signatureElement = $("#signature");
-    const saveButton = document.getElementById('save-btn');
+/**
+ * Signature pad for bill payment forms.
+ *
+ * Exposed as ``window.initBillSignaturePad(scope)`` so the payment modal can
+ * initialise the pad after an HTMX swap. On a normal page load it runs once on
+ * DOMContentLoaded, preserving the no-JS-first full page flow.
+ */
+(function () {
+    'use strict';
 
-     // Get the width of the #signature element
-    const signatureWidth = $signatureElement.width();
+    function initBillSignaturePad(scope) {
+        scope = scope || document;
 
-    // Initialize the signature widget
-    // $signatureElement.jSignature({
-    //     width: signatureWidth,
-    //     height: 250,
-    // });
+        const signatureElement = scope.querySelector('#signature');
+        if (!signatureElement) return;
+        if (signatureElement.dataset.signatureInitialized === 'true') return;
 
-    // Initialize the signature widget
-    $signatureElement.jSignature({
-        width: signatureWidth,
-        height: 250,
-    }).bind('signatureChange', function() {
-        //This event fires when jSignature is fully initialized and the canvas is ready
-        signatureCanvas = $signatureElement.find('canvas')[0]; // Get the underlying canvas element after initialization
-        attachTouchEventListeners(); //Attach the listeners once the canvas is ready
-    });
+        // jQuery + jSignature are loaded as deferred static scripts. If they
+        // are not present (e.g. house bill pages), leave the form as-is.
+        if (!window.jQuery || !window.jQuery.fn.jSignature) return;
 
-    function attachTouchEventListeners() {
-        signatureCanvas.addEventListener('touchstart', function(e) {
-            const touch = e.touches[0];
-            if (isTouchInsideCanvas(touch)) {
-                // Allow jSignature to handle the touchstart event normally
-            } else {
+        const $ = window.jQuery;
+        const $signatureElement = $(signatureElement);
+        const form = signatureElement.closest('form');
+        const formScope = form || document;
+        const checkbox = formScope.querySelector('input[name="is_paid"]');
+        const saveButton = formScope.querySelector('#save-btn');
+        const resetButton = formScope.querySelector('#reset_signature');
+        const signatureInput = formScope.querySelector('#signature_input');
+
+        signatureElement.dataset.signatureInitialized = 'true';
+
+        // Measure while the element is still visible: the modal calls this
+        // after showModal(), before the pad is toggled hidden.
+        const signatureWidth = $signatureElement.width() || 600;
+        let signatureCanvas = null;
+
+        $signatureElement.jSignature({
+            width: signatureWidth,
+            height: 250,
+        }).bind('signatureChange', function () {
+            signatureCanvas = $signatureElement.find('canvas')[0];
+            attachTouchEventListeners();
+        });
+
+        function attachTouchEventListeners() {
+            if (!signatureCanvas || signatureCanvas.dataset.touchBound === 'true') return;
+            signatureCanvas.dataset.touchBound = 'true';
+
+            signatureCanvas.addEventListener('touchstart', function (e) {
+                const touch = e.touches[0];
+                if (!touch || isTouchInsideCanvas(touch)) return;
                 e.preventDefault();
-            }
-        });
+            });
 
-        signatureCanvas.addEventListener('touchmove', function(e) {
-            const touch = e.touches[0];
-            if (isTouchInsideCanvas(touch)) {
-                // Allow jSignature to handle the touchmove event normally
-            } else {
+            signatureCanvas.addEventListener('touchmove', function (e) {
+                const touch = e.touches[0];
+                if (!touch || isTouchInsideCanvas(touch)) return;
                 e.preventDefault();
-            }
-        });
+            });
+        }
 
-        signatureCanvas.addEventListener('touchend', function(e) {
-            // No need to check bounds here; it's the end of the touch interaction.
-        });
-    }
-
-    // Helper function to check if a touch is inside the canvas
-    function isTouchInsideCanvas(touch) {
-        const rect = signatureCanvas.getBoundingClientRect();
-        return (touch.clientX >= rect.left &&
+        function isTouchInsideCanvas(touch) {
+            const rect = signatureCanvas.getBoundingClientRect();
+            return (touch.clientX >= rect.left &&
                 touch.clientX <= rect.right &&
                 touch.clientY >= rect.top &&
                 touch.clientY <= rect.bottom);
-    }
-
-    // Store the empty signature value for comparison
-    const emptySignature = $signatureElement.jSignature('getData', 'svgbase64')[1];
-
-    // Function to check if the signature is empty
-    function isSignatureEmpty() {
-        const signatureData = $signatureElement.jSignature('getData', 'svgbase64')[1];
-        return signatureData === emptySignature;
-    }
-
-    // Function to toggle the save button's state
-    function toggleSaveButton() {
-        if (isSignatureEmpty()) {
-            saveButton.disabled = true;
-            saveButton.classList.add('disabled');
-        } else {
-            saveButton.disabled = false;
-            saveButton.classList.remove('disabled');
         }
-    }
 
-    // Function to toggle the visibility of the signature pad
-    function toggleSignaturePad() {
-        const isPaidChecked = $('#id_is_paid').is(':checked');
+        // The empty signature value, used to keep Save disabled until the
+        // tenant actually signs.
+        const emptySignature = $signatureElement.jSignature('getData', 'svgbase64')[1];
 
-        if (isPaidChecked) {
-            $signatureElement.removeClass('hidden');
+        function signatureValue() {
+            return $signatureElement.jSignature('getData', 'svgbase64')[1];
+        }
 
-            // Smooth scroll to the signature pad
-            $('html, body').animate({
-                scrollTop: $signatureElement.offset().top - 50,
-            }, 600);
+        function isSignatureEmpty() {
+            return signatureValue() === emptySignature;
+        }
 
+        function syncSignatureInput() {
+            if (signatureInput) {
+                signatureInput.value = signatureValue();
+            }
+        }
+
+        function toggleSaveButton() {
+            if (!saveButton) return;
+            const empty = isSignatureEmpty();
+            saveButton.disabled = empty;
+            saveButton.classList.toggle('disabled', empty);
+        }
+
+        function toggleSignaturePad() {
+            if (!checkbox) return;
+
+            if (checkbox.checked) {
+                $signatureElement.removeClass('hidden');
+
+                // Inside a modal the dialog scrolls, not the page.
+                if (!signatureElement.closest('dialog') && $signatureElement.offset()) {
+                    $('html, body').animate({
+                        scrollTop: $signatureElement.offset().top - 50,
+                    }, 600);
+                }
+
+                toggleSaveButton();
+            } else {
+                $signatureElement.addClass('hidden');
+            }
+        }
+
+        if (checkbox) {
+            $(checkbox).on('change', toggleSignaturePad);
+        }
+
+        // Keep the hidden input in sync as the user draws: HTMX may read the
+        // form values before a submit handler runs.
+        $signatureElement.on('change', function () {
+            syncSignatureInput();
             toggleSaveButton();
-        } else {
-            $signatureElement.addClass('hidden');
+        });
+
+        if (resetButton) {
+            $(resetButton).on('click', function (event) {
+                event.preventDefault();
+                $signatureElement.jSignature('reset');
+                syncSignatureInput();
+                toggleSaveButton();
+            });
         }
+
+        if (form) {
+            $(form).on('submit', syncSignatureInput);
+        }
+
+        // Initial state: the pad is hidden until "Pay the bill" is checked.
+        toggleSignaturePad();
+        toggleSaveButton();
     }
 
-    // Attach event listeners
-    $('#id_is_paid').change(toggleSignaturePad); // Toggle signature pad on checkbox change
+    window.initBillSignaturePad = initBillSignaturePad;
 
-    // Listen for changes on the signature pad and toggle save button
-    $signatureElement.on('change', toggleSaveButton);
-
-    // Reset the signature and update save button when reset button is clicked
-    $('#reset_signature').click(function () {
-        $signatureElement.jSignature('reset');
-        toggleSaveButton(); // Update save button state
+    document.addEventListener('DOMContentLoaded', function () {
+        initBillSignaturePad(document);
     });
-
-    // Capture the signature data on form submission
-    $('form.is-paid-form').submit(function (event) {
-        const signatureData = $signatureElement.jSignature('getData', 'svgbase64')[1];
-        $('#signature_input').val(signatureData);
-    });
-
-    // Initial checks on page load
-    toggleSignaturePad();
-    toggleSaveButton();
-});
+})();

@@ -1,0 +1,105 @@
+/* ============================================================
+   Bill payment modal + HTMX list refinements.
+   Colours come from the design tokens in variables.css.
+   ============================================================ */
+
+/* Bill rows are links now (no-JS navigation works), so reset link chrome. */
+a.client-card,
+a.client-card-not-paid {
+    text-decoration: none;
+    color: inherit;
+}
+
+.bill-warning {
+    color: var(--danger);
+}
+
+/* Keep the no-JS filter usable: an explicit Apply button next to the select. */
+.filter-apply {
+    flex: 0 1 120px;
+    padding: 0.5em 0;
+    border: 1px solid transparent;
+    border-radius: 1.5em;
+    background-color: var(--form-btn-color);
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.filter-apply:hover {
+    background-color: var(--form-btn-color-hover);
+}
+
+/* Payment dialog */
+dialog.bill-modal {
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+}
+
+dialog.bill-modal::backdrop {
+    background-color: var(--menu-bgnd);
+    opacity: 0.72;
+}
+
+.bill-modal__panel {
+    width: min(46rem, 94vw);
+    max-height: 92vh;
+    overflow: auto;
+    padding: 1em 1.5em 1.5em;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background-color: var(--site-bgnd);
+    box-shadow: var(--shadow);
+}
+
+.bill-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    margin-bottom: 0.75em;
+}
+
+.bill-modal__close {
+    padding: 0 0.25em;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    font-size: 2em;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.bill-modal__close:hover {
+    color: var(--danger);
+}
+
+.bill-modal__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+/* The detail card can have a dozen columns — let it wrap inside the dialog. */
+.bill-modal .client-card {
+    flex-wrap: wrap;
+    gap: 0.75em 1em;
+    background-color: var(--form-bgnd);
+}
+
+.bill-modal .client-card .card-column {
+    flex: 1 1 8em;
+}
+
+.bill-modal .is-paid-form .form-buttons {
+    justify-content: flex-end;
+}
+
+.bill-modal #signature {
+    background-color: #fff;
+    border-radius: var(--radius);
+}

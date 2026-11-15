@@ -1,5 +1,14 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
+
+{% block extra_head_scripts %}
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/htmx.min.js" %}" defer></script>
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/jquery.js" %}" defer></script>
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/jSignature.js" %}" defer></script>
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/signaturePad.js" %}" defer></script>
+    <script nonce="{{ csp_nonce }}" src="{% static "scripts/billsPayments.js" %}" defer></script>
+{% endblock %}
 
 {% block main_content %}
 
@@ -16,19 +25,8 @@
                                 class="fa-solid fa-arrow-right"></i>{% trans "Back" %}</a>
                     </div>
                 </div>
-                {% include "partials/filter_buttons.html" %}
-                <div class="clients-cards">
-                    {% if client_bills %}
-                        {% for object in client_bills %}
-                            <div class="{% if object.is_paid %} client-card {% else %} client-card-not-paid {% endif %} js-redirect"
-                                 data-url="{% url 'edit_client_other_bill' house_pk=house.pk client_pk=client.pk pk=object.pk %}">
-                                {% include "partials/details_client_bills.html" %}
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <h3>{% trans "No bills" %}</h3>
-                    {% endif %}
-                </div>
+                {% include "client_bills/partials/other_bill_list.html" %}
+                <div id="bill-modal-container"></div>
             </div>
         </div>
     </section>
