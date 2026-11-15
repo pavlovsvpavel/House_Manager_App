@@ -29,11 +29,11 @@ urlpatterns = [
     path("houses/<int:house_pk>/clients/<int:client_pk>/", include("house_manager.client_bills.urls")),
     path("houses/<int:house_pk>/bills/", include("house_manager.house_bills.urls")),
     path('i18n/', include('django.conf.urls.i18n')),
-    path('__debug__/', include('debug_toolbar.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('.well-known/appspecific/com.chrome.devtools.json', chrome_devtools_probe),
 ]
 
 if settings.DEBUG:
+    urlpatterns += [path('__debug__/', include('debug_toolbar.urls'))]
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

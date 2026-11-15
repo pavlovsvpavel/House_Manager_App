@@ -90,7 +90,6 @@ INSTALLED_APPS = [
 
     "import_export",
     "axes",
-    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -104,9 +103,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     'axes.middleware.AxesMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.csp.ContentSecurityPolicyMiddleware',
 ]
+
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.insert(MIDDLEWARE.index('axes.middleware.AxesMiddleware') + 1,
+                      'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'house_manager.urls'
 
@@ -162,6 +165,15 @@ AUTH_PASSWORD_VALIDATORS = [
 if DEBUG:
     CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:81']
     AUTH_PASSWORD_VALIDATORS = ()
+
+if not DEBUG:
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = False  # nginx terminates TLS and redirects; set True if Django ever terminates TLS
+    SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
 LANGUAGE_CODE = 'en-us'
 LANGUAGES = [
@@ -246,8 +258,20 @@ AXES_LOCKOUT_TEMPLATE = 'common/429_template.html'
 
 # Django Debug Toolbar configs
 INTERNAL_IPS = ['127.0.0.1']
+
+
+def show_debug_toolbar(request):
+    # Must read settings.DEBUG lazily: the test runner flips DEBUG to
+    # False AFTER this module imports (but before the URLconf imports),
+    # so a closure over the module global would keep rendering the
+    # toolbar without its registered URLs.
+    from django.conf import settings
+
+    return settings.DEBUG
+
+
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,  # Only show if DEBUG=True
+    'SHOW_TOOLBAR_CALLBACK': show_debug_toolbar,
     'RENDER_PANELS': True,
     'PRETTIFY_SQL': True,
     'SQL_WARNING_THRESHOLD': 100,

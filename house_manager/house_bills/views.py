@@ -1,3 +1,4 @@
+import logging
 from decimal import Decimal
 from django.db import IntegrityError, transaction
 from django.http import Http404, HttpResponse
@@ -23,6 +24,8 @@ from house_manager.house_bills.helpers.subtract_amount_from_balance import subtr
 from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill, TypeOfBillChoices
 from house_manager.houses.mixins import GetHouseAndUserMixin, HouseOwnershipMixin
 from house_manager.houses.models import House, HouseCalculationsOptions
+
+logger = logging.getLogger(__name__)
 
 
 class HouseBaseBillCreateView(CheckForLoggedInUserMixin, HouseOwnershipMixin, GetHouseAndUserMixin, views.CreateView):
@@ -145,8 +148,9 @@ class HouseFixedMonthlyBillView(HouseBaseBillCreateView):
                 msg = _("Successfully created bills for %(count)d apartments.") % {'count': created_count}
                 return redirect(self.get_success_url())
 
-        except Exception as e:
-            form.add_error(None, _("An error occurred: ") + str(e))
+        except Exception:
+            logger.exception("Fixed monthly bill creation failed for house %s", house.id)
+            form.add_error(None, _("An error occurred while creating the bills. Please try again."))
             return self.form_invalid(form)
 
 
