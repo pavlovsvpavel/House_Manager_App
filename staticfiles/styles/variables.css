@@ -74,6 +74,14 @@
     --space-6: 2rem;
     --space-7: 3rem;
     --space-8: 4rem;
+
+    /* ---- Layout ---- */
+    /* Height of the sticky site header: logo + wordmark line
+       (0.5em x 1.55 line-height) + 0.5em vertical padding.
+       Sticky bars (bill filters) offset by it so they pin just below
+       the header. Keep in sync with the logo sizes overridden in
+       responsive.css (40px <=900px, 35px <=600px). */
+    --header-h: calc(50px + 1.775em);
 }
 
 [data-theme="dark"] {

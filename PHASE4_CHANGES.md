@@ -124,6 +124,39 @@ Verified in-browser (dark + light): unpaid, paid (signature + receipt),
 and house-bill (warning callout) variants; full pay → toast → undo
 cycle through the new UI.
 
+## Follow-up: sticky site header (filtered bills floated it away)
+
+The user reported the header "moving based on the page content" when
+filtering bills. Two stacked causes:
+
+1. **Stray `</div>` in all four bill-list partials** (Phase 2). The
+   extra close shifted every later close tag up a level, so the
+   browser's parser hoisted the back-to-top button, footer and cookies
+   banner OUT of `.site`. With the footer outside the flex column,
+   `.site-footer { margin-top: auto }` could no longer absorb the free
+   space, and `.site { justify-content: center }` then vertically
+   centered header+main - on short (filtered) pages the header floated
+   ~190px down. Removed the stray close in
+   `client_bills/partials/{monthly,other}_bill_list.html` and
+   `house_bills/partials/{monthly,other}_bill_list.html`, and dropped
+   `justify-content: center` from `.site` (the footer auto-margin
+   already handles the sticky-footer layout; centering is a footgun).
+2. **Header not sticky on desktop**: `.site-header` was sticky only in
+   the <=600px media query. It is now `position: sticky; top: 0` at all
+   widths (`z-index: 20` - above the filter bar (5)/skeletons (4),
+   below the undo toast (30); dialogs live in the top layer).
+
+Sticky elements that must pin below the header offset themselves by a
+new `--header-h` layout token (variables.css; logo + wordmark line +
+padding, with breakpoint overrides in responsive.css where the logo
+shrinks). The bills filter bar's sticky box is the filter FORM, not the
+inner div - a sticky element is constrained by its parent, and the
+parent form is exactly the bar's height, so a sticky div could never
+travel. Verified: header pinned at 0, bar pinned at the header's bottom
+edge in dark + light, HTMX filter round-trip keeps the header planted,
+footer back inside `.site` and pinned to the viewport bottom, zero
+console messages, all 44 tests pass.
+
 ## Not In Scope
 
 - **Phase 4e (skipped per review):** dashboard cockpit — balance sparklines, KPI trends, "This month" panel.

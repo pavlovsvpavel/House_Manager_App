@@ -3,6 +3,10 @@
         font-size: 16px;
     }
 
+    :root {
+        --header-h: calc(40px + 1.775em);
+    }
+
     .header-elements .site-title a {
         width: 40px;
         height: 40px;
@@ -70,6 +74,10 @@
         font-size: 14px;
     }
 
+    :root {
+        --header-h: calc(35px + 1.775em);
+    }
+
     .header-elements .site-title a {
         width: 35px;
         height: 35px;
@@ -79,12 +87,8 @@
         font-size: 0.4em;
     }
 
-    .site-header {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
-
+    /* Site header is sticky on all widths now (layout.css); the mobile
+       drawer keeps its own fixed positioning below. */
     .hero-section {
         height: 300px;
     }

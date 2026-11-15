@@ -424,10 +424,17 @@ dialog.bill-modal::backdrop {
     position: relative;
 }
 
-.filter-buttons {
+/* Sticky filter bar: the FORM is the sticky box — a sticky element is
+   constrained by its parent, so sticking the inner div (whose form is
+   exactly its own height) would never travel. Pinned just below the
+   sticky site header via --header-h. */
+#bills-region > form {
     position: sticky;
-    top: 0;
+    top: var(--header-h);
     z-index: 5;
+}
+
+.filter-buttons {
     background-color: var(--surface-0);
     padding-block: var(--space-2);
 }

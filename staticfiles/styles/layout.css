@@ -4,11 +4,19 @@
     background-color: var(--site-bgnd);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* No justify-content: the footer's margin-top:auto pins it to the
+       bottom and content stays top-aligned. Vertical centering here
+       would push the header down on short pages. */
     min-height: 100dvh;
 }
 
+/* The header stays pinned while content scrolls. Other sticky elements
+   (the bills filter bar) offset themselves by --header-h so they pin
+   just below it instead of sliding underneath. */
 .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20; /* above filter bar (5) + skeletons (4), below undo toast (30) */
     background-color: var(--menu-bgnd);
 }
 
