@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import F, Sum, Value
 from django.db.models.functions import Coalesce
@@ -16,8 +17,10 @@ from urllib.parse import quote
 from house_manager.client_bills.models import ClientMonthlyBill, ClientOtherBill
 from house_manager.clients.mixins import ClientOwnershipMixin
 from house_manager.clients.models import Client
+from house_manager.common.helpers.bills_summary import bills_summary, filtered_bills
 from house_manager.common.helpers.filtering_unpaid_client_bills import filtering_unpaid_client_bills
 from house_manager.common.mixins import HtmxFragmentMixin, MonthChoices
+from house_manager.common.validators import validate_signature_payload
 from house_manager.houses.models import House
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
 from house_manager.houses.mixins import HouseOwnershipMixin
@@ -44,11 +47,7 @@ class ClientBaseBillsDetailView(HtmxFragmentMixin, ClientOwnershipMixin, views.D
             client_bills = filter_bills_by_payment_status(client_bills, is_paid, month)
 
         # Summary line above the list (server-rendered, no JS).
-        unpaid = client_bills.filter(is_paid=False)
-        context["bills_count"] = client_bills.count()
-        context["unpaid_count"] = unpaid.count()
-        context["unpaid_total"] = unpaid.aggregate(
-            total=Coalesce(Sum("total_amount"), Value(Decimal("0.00"))))["total"]
+        context.update(bills_summary(client_bills))
 
         context["client"] = self.selected_client
         context["house"] = self.selected_client.house
@@ -149,8 +148,13 @@ class CurrentClientBaseBillEditView(HtmxFragmentMixin, ClientOwnershipMixin, vie
         else:
             signature_data = self.request.POST.get('signature')
             if signature_data:
-                signature_base64 = f"data:image/svg+xml;base64,{signature_data}"
-                form.instance.signature = signature_base64
+                try:
+                    validate_signature_payload(signature_data)
+                except ValidationError:
+                    form.add_error(None, _("Invalid signature payload."))
+                    return self.form_invalid(form)
+
+                form.instance.signature = f"data:image/svg+xml;base64,{signature_data}"
 
             # Multi-payment: the modal may check other unpaid bills of the
             # same client; they are paid in THIS transaction - one
@@ -217,6 +221,16 @@ class CurrentClientBaseBillEditView(HtmxFragmentMixin, ClientOwnershipMixin, vie
             fragments.append(render_to_string(
                 self.row_template_name, {"bill": bill, "oob": True},
                 request=self.request))
+        # Fresh summary line for the list, swapped out-of-band so the
+        # "Unpaid / Due" numbers track the payment immediately.
+        summary_bills = filtered_bills(
+            self.queryset.model.objects.filter(
+                client_id=self.selected_client.pk),
+            self.request)
+        fragments.append(render_to_string(
+            "partials/bills_summary.html",
+            dict(bills_summary(summary_bills), oob=True),
+            request=self.request))
         response = HttpResponse("\n".join(fragments))
         response["HX-Trigger"] = "billPaid"
         response["X-Paid-Together"] = ",".join(
@@ -332,6 +346,15 @@ class ClientBaseBillRevertView(ClientOwnershipMixin, HtmxFragmentMixin, views.Vi
                 fragments.append(render_to_string(
                     self.row_template_name,
                     {"bill": extra, "oob": True}, request=request))
+            # Fresh summary line for the list after the undo, same as the
+            # payment response does.
+            summary_bills = filtered_bills(
+                self.queryset.model.objects.filter(client_id=bill.client_id),
+                request)
+            fragments.append(render_to_string(
+                "partials/bills_summary.html",
+                dict(bills_summary(summary_bills), oob=True),
+                request=request))
             response = HttpResponse("\n".join(fragments))
             response["HX-Trigger"] = "billReverted"
             return response

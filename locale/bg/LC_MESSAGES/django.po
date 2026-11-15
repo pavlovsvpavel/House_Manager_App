@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 17:27+0200\n"
+"POT-Creation-Date: 2026-11-15 17:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -79,10 +79,16 @@ msgstr "Създаване на парола"
 msgid "Unpaid bills, EUR"
 msgstr "Неплатени сметки, ЕВРО"
 
-#: house_manager/client_bills/views.py:97
-#: house_manager/client_bills/views.py:279
+#: house_manager/client_bills/views.py:99
+#: house_manager/client_bills/views.py:286
 msgid "Bill not found for current client."
 msgstr "Не е намерена сметка на съответния клиент."
+
+#: house_manager/client_bills/views.py:157
+#: house_manager/common/validators.py:45 house_manager/common/validators.py:50
+#: house_manager/common/validators.py:53 house_manager/common/validators.py:56
+msgid "Invalid signature payload."
+msgstr "Невалидни данни за подпис."
 
 #: house_manager/clients/forms.py:18
 msgid "Mark this option, if the residents in this apartment are using lift"
@@ -302,9 +308,7 @@ msgstr "Общо сума"
 
 #: house_manager/common/mixins.py:220 house_manager/common/mixins.py:278
 #: templates/client_bills/partials/monthly_bill_details.html:7
-#: templates/client_bills/partials/monthly_bill_form.html:13
 #: templates/client_bills/partials/other_bill_details.html:6
-#: templates/client_bills/partials/other_bill_form.html:13
 #: templates/house_bills/partials/monthly_bill_details.html:6
 #: templates/house_bills/partials/monthly_bill_form.html:11
 #: templates/house_bills/partials/other_bill_details.html:6
@@ -329,19 +333,19 @@ msgstr "Табло"
 msgid "Breadcrumb"
 msgstr "Местоположение"
 
-#: house_manager/common/validators.py:9
+#: house_manager/common/validators.py:20
 msgid "Field should contain only letters, spaces, (), /, and -"
 msgstr "Полето трябва да съдържа само букви, (), /, -"
 
-#: house_manager/common/validators.py:13
+#: house_manager/common/validators.py:24
 msgid "Field must contain at least one letter"
 msgstr "Полето трябва да съдържа поне една буква"
 
-#: house_manager/common/validators.py:18
+#: house_manager/common/validators.py:29
 msgid "Phone number should contains only digits"
 msgstr "Телефонният номер трябва да съдържа само цифри"
 
-#: house_manager/common/validators.py:21
+#: house_manager/common/validators.py:32
 msgid "Phone number should be exactly 10 digits"
 msgstr "Телефонният номер трябва да бъде точно 10 цифри"
 
@@ -595,24 +599,24 @@ msgstr "Неплатени"
 msgid "Total, EUR"
 msgstr "Общо сума, ЕВРО"
 
-#: templates/client_bills/partials/monthly_bill_form.html:13
-#: templates/client_bills/partials/other_bill_form.html:13
+#: templates/client_bills/partials/monthly_bill_form.html:14
+#: templates/client_bills/partials/other_bill_form.html:14
 #: templates/house_bills/partials/monthly_bill_form.html:11
 #: templates/house_bills/partials/other_bill_form.html:11
 msgid "Mark as paid"
 msgstr "Отбележи като платено"
 
-#: templates/client_bills/partials/monthly_bill_form.html:18
-#: templates/client_bills/partials/other_bill_form.html:18
+#: templates/client_bills/partials/monthly_bill_form.html:20
+#: templates/client_bills/partials/other_bill_form.html:20
 msgid "Also pay other unpaid bills"
 msgstr "Платете и други неплатени сметки"
 
-#: templates/client_bills/partials/monthly_bill_form.html:28
-#: templates/client_bills/partials/other_bill_form.html:28
+#: templates/client_bills/partials/monthly_bill_form.html:30
+#: templates/client_bills/partials/other_bill_form.html:30
 msgid "Total to pay"
 msgstr "Общо за плащане"
 
-#: templates/client_bills/partials/monthly_bill_form.html:39
+#: templates/client_bills/partials/monthly_bill_form.html:49
 msgid "Download Receipt"
 msgstr "Изтегли разписка"
 

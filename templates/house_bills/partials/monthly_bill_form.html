@@ -1,7 +1,8 @@
 {% load i18n %}
+{% load common_tags %}
 <form class="bill-form" method="post"
-      action="{% url 'edit_house_bills' house_pk=object.house_id pk=object.pk %}"
-      hx-post="{% url 'edit_house_bills' house_pk=object.house_id pk=object.pk %}"
+      action="{% url 'edit_house_bills' house_pk=object.house_id pk=object.pk %}{{ request|query_string }}"
+      hx-post="{% url 'edit_house_bills' house_pk=object.house_id pk=object.pk %}{{ request|query_string }}"
       hx-target="#bill-row-{{ object.pk }}"
       hx-swap="outerHTML settle:400ms">
     {% csrf_token %}

@@ -1,10 +1,11 @@
 {% load i18n %}
+{% load common_tags %}
 <a id="bill-row-{{ bill.pk }}"
    class="{% if bill.is_paid %}client-card{% else %}client-card-not-paid{% endif %}"
    {% if oob %}hx-swap-oob="true"{% endif %}
-   href="{% url 'edit_client_bill' house_pk=bill.house_id client_pk=bill.client_id pk=bill.pk %}"
-   {% if bill.is_paid %}data-revert-url="{% url 'revert_client_bill' house_pk=bill.house_id client_pk=bill.client_id pk=bill.pk %}"{% endif %}
-   hx-get="{% url 'edit_client_bill' house_pk=bill.house_id client_pk=bill.client_id pk=bill.pk %}"
+   href="{% url 'edit_client_bill' house_pk=bill.house_id client_pk=bill.client_id pk=bill.pk %}{{ request|query_string }}"
+   {% if bill.is_paid %}data-revert-url="{% url 'revert_client_bill' house_pk=bill.house_id client_pk=bill.client_id pk=bill.pk %}{{ request|query_string }}"{% endif %}
+   hx-get="{% url 'edit_client_bill' house_pk=bill.house_id client_pk=bill.client_id pk=bill.pk %}{{ request|query_string }}"
    hx-target="#bill-modal-container"
    hx-swap="innerHTML">
     {% include "partials/details_client_bills.html" with object=bill %}

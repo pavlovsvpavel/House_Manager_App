@@ -310,6 +310,11 @@ class HouseBillsSecurityTests(TestCase):
         response = self.client.post(
             url, {"is_paid": "on"}, HTTP_HX_REQUEST="true")
 
+        # The row swaps in place and the summary line swaps out-of-band.
+        self.assertContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+        self.assertContains(response, 'id="bills-summary"')
+        self.assertContains(response, 'hx-swap-oob="true"')
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["HX-Trigger"], "billPaid")
         self.assertTemplateUsed(
@@ -356,6 +361,7 @@ class HouseBillsSecurityTests(TestCase):
         self.assertTemplateUsed(
             response, "house_bills/partials/monthly_bill_row.html")
         self.assertContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+        self.assertContains(response, 'id="bills-summary"')
         self.assertNotContains(response, "<html")
 
         self.monthly_bill.refresh_from_db()

@@ -1,13 +1,7 @@
 {% load i18n %}
 <div id="bills-region">
     {% include "partials/filter_buttons.html" with filter_target="#bills-region" %}
-    {% if bills_count %}
-        <p class="bills-summary" aria-live="polite">
-            {% trans "Bills" %}: <span class="money">{{ bills_count }}</span> ·
-            {% trans "Unpaid" %}: <span class="money">{{ unpaid_count }}</span> ·
-            {% trans "Due" %}: <span class="money">{{ unpaid_total }}</span> EUR
-        </p>
-    {% endif %}
+    {% include "partials/bills_summary.html" %}
     <div class="clients-cards" id="bills-container" aria-live="polite">
         {% if client_bills %}
             {% for bill in client_bills %}

@@ -1,4 +1,6 @@
 """Shared template tags."""
+from urllib.parse import urlencode
+
 from django import template
 from django.urls import reverse
 from django.utils.html import format_html
@@ -57,3 +59,15 @@ def breadcrumbs(house=None, client=None, parent_label=None, parent_url=None,
         '<nav class="breadcrumbs" aria-label="{}">{}</nav>',
         _("Breadcrumb"), rendered,
     )
+
+
+@register.filter
+def query_string(request):
+    """The request's query string as ``?a=b`` — empty string when there is
+    none. Bill rows and the payment form append it to their URLs so the
+    list's filter (?is_paid / ?month) travels through the pay/undo chain
+    and the out-of-band summary swap recomputes the same filtered view.
+    """
+    qs = request.GET.dict()
+    encoded = urlencode(qs)
+    return f"?{encoded}" if encoded else ""

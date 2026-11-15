@@ -1,13 +1,14 @@
 {% load static %}
 {% load i18n %}
 {% load l10n %}
+{% load common_tags %}
 <form class="bill-form" method="post" data-base-amount="{{ form.instance.total_amount|unlocalize }}"
-      action="{% url 'edit_client_bill' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}"
-      hx-post="{% url 'edit_client_bill' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}"
+      action="{% url 'edit_client_bill' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}{{ request|query_string }}"
+      hx-post="{% url 'edit_client_bill' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}{{ request|query_string }}"
       hx-target="#bill-row-{{ object.pk }}"
       hx-swap="outerHTML settle:400ms">
     {% csrf_token %}
-    {% if not form.instance.is_paid %}
+    {% if not form.initial.is_paid %}
         <label class="bill-form__switch" for="id_is_paid">
             {{ form.is_paid }}
             <span class="bill-form__track" aria-hidden="true"></span>
@@ -15,7 +16,7 @@
         </label>
     {% endif %}
 
-    {% if pay_bills and not form.instance.is_paid %}
+    {% if pay_bills and not form.initial.is_paid %}
         <fieldset class="bill-form__pay-bills">
             <legend>{% trans "Also pay other unpaid bills" %}</legend>
             {% for bill in pay_bills %}
@@ -33,7 +34,15 @@
         </fieldset>
     {% endif %}
 
-    {% if form.instance.is_paid %}
+    {% if form.non_field_errors %}
+        <div class="errorlist">
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if form.initial.is_paid %}
         {% include "partials/signature-show.html" %}
         <div class="bill-form__actions">
             <a href="{% url 'download_receipt' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}"

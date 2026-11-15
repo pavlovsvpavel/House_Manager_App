@@ -1,3 +1,4 @@
+import base64
 from decimal import Decimal
 
 from django.contrib.auth import get_user_model
@@ -507,6 +508,65 @@ class ClientBillMultiPaymentTests(TestCase):
         self.assertNotContains(response, f'value="{self.bill_paid.pk}"')
         self.assertNotContains(response, f'value="{self.foreign_bill.pk}"')
 
+    def test_summary_oob_swaps_after_multi_pay(self):
+        # The response carries an out-of-band summary line reflecting the
+        # fresh state: after paying Jan+Feb+Mar the client has no unpaid
+        # bills, and the summary swaps without a page reload.
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            self.pay_url(self.bill_jan),
+            {"is_paid": "on", "signature": "PHN2Zy8+",
+             "pay_bill": [str(self.bill_feb.pk), str(self.bill_mar.pk)]},
+            HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn('id="bills-summary"', content)
+        summary_fragment = content.split('id="bills-summary"')[1]
+        self.assertIn(">0<", summary_fragment)  # Unpaid count is now zero
+
+    def test_summary_oob_respects_the_page_filter(self):
+        # The payment form's action carries the list's query string, so
+        # the summary recomputes the FILTERED view: with ?is_paid=False
+        # the whole filtered set was just paid, and the summary reflects
+        # that (count 0), not the unfiltered totals.
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            self.pay_url(self.bill_jan) + "?is_paid=False",
+            {"is_paid": "on", "signature": "PHN2Zy8+",
+             "pay_bill": [str(self.bill_feb.pk), str(self.bill_mar.pk)]},
+            HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn('id="bills-summary"', content)
+        self.assertIn("Unpaid", content)
+
+    def test_undo_response_swaps_summary_oob(self):
+        self.client.force_login(self.owner)
+
+        # Pay everything first.
+        self.bill_jan.is_paid = True
+        self.bill_jan.signature = self.SIGNATURE_B64
+        self.bill_jan.save()
+        self.bill_feb.is_paid = True
+        self.bill_feb.signature = self.SIGNATURE_B64
+        self.bill_feb.save()
+
+        response = self.client.post(
+            reverse("revert_client_bill", kwargs={
+                "house_pk": self.house.pk,
+                "client_pk": self.client_obj.pk,
+                "pk": self.bill_jan.pk}),
+            {"paid_together": str(self.bill_feb.pk)},
+            HTTP_HX_REQUEST="true")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["HX-Trigger"], "billReverted")
+        self.assertContains(response, 'id="bills-summary"')
+
     def test_paid_bill_modal_is_read_only_receipt(self):
         # A paid bill's modal must not offer the group-pay checkboxes or the
         # paid switch: every POST on an already-paid bill is rejected by the
@@ -536,8 +596,10 @@ class ClientBillMultiPaymentTests(TestCase):
         self.assertEqual(response["HX-Trigger"], "billPaid")
         self.assertEqual(response["X-Paid-Together"],
                          f"{self.bill_feb.pk},{self.bill_mar.pk}")
-        # Main row + one OOB fragment per group bill.
-        self.assertEqual(response.content.decode().count("hx-swap-oob"), 2)
+        # Main row + one OOB fragment per group bill + one OOB summary line.
+        self.assertEqual(response.content.decode().count("hx-swap-oob"), 3)
+        self.assertContains(response, 'id="bills-summary"')
+        self.assertContains(response, 'hx-swap-oob="true"')
 
         for bill in (self.bill_jan, self.bill_feb, self.bill_mar):
             bill.refresh_from_db()
@@ -561,7 +623,8 @@ class ClientBillMultiPaymentTests(TestCase):
         # Only Feb joins the group — the already-paid and the other
         # client's bill are silently dropped.
         self.assertEqual(response["X-Paid-Together"], str(self.bill_feb.pk))
-        self.assertEqual(response.content.decode().count("hx-swap-oob"), 1)
+        # Feb's OOB row + the OOB summary line.
+        self.assertEqual(response.content.decode().count("hx-swap-oob"), 2)
 
         self.bill_paid.refresh_from_db()
         self.foreign_bill.refresh_from_db()
@@ -594,7 +657,8 @@ class ClientBillMultiPaymentTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["HX-Trigger"], "billReverted")
-        self.assertEqual(response.content.decode().count("hx-swap-oob"), 2)
+        # Two group rows back to unpaid + one OOB summary line.
+        self.assertEqual(response.content.decode().count("hx-swap-oob"), 3)
 
         for bill in (self.bill_jan, self.bill_feb, self.bill_mar):
             bill.refresh_from_db()
@@ -683,3 +747,139 @@ class ClientBillMultiPaymentTests(TestCase):
         self.assertTrue(self.bill_feb.is_paid)
         self.house.refresh_from_db()
         self.assertEqual(self.house.money_balance, Decimal("150.00"))
+
+
+class ClientBillSignatureValidationTests(TestCase):
+    """The signature posted by the pad is validated server-side (#15):
+    pure base64 that decodes to SVG markup, capped in size. Tampered
+    payloads must not reach the DB and must not move the balance."""
+
+    VALID_SVG_B64 = "PHN2Zy8+"  # <svg/>
+
+    def setUp(self):
+        self.owner = UserModel.objects.create_user(
+            email="owner@test.bg", password="StrongPass123!")
+        self.house = House.objects.create(
+            town="Sofia", address="Test str. 1", entrance="A",
+            money_balance=Decimal("0.00"), user=self.owner)
+        self.client_obj = Client.objects.create(
+            family_name="Ivanov", floor=1, apartment="1",
+            number_of_people=2, house=self.house, user=self.owner)
+        self.bill = ClientMonthlyBill.objects.create(
+            month="01", year="2026",
+            electricity_common=Decimal("100.00"),
+            electricity_lift=Decimal("0.00"),
+            internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"),
+            fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"),
+            fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"),
+            others=Decimal("0.00"),
+            amount_old_debts=Decimal("0.00"),
+            house=self.house, client=self.client_obj, user=self.owner)
+
+    def pay(self, signature):
+        self.client.force_login(self.owner)
+        return self.client.post(
+            reverse("edit_client_bill", kwargs={
+                "house_pk": self.house.pk,
+                "client_pk": self.client_obj.pk,
+                "pk": self.bill.pk}),
+            {"is_paid": "on", "signature": signature},
+            HTTP_HX_REQUEST="true")
+
+    def assert_bill_still_unpaid(self):
+        self.bill.refresh_from_db()
+        self.house.refresh_from_db()
+        self.assertFalse(self.bill.is_paid)
+        self.assertEqual(self.bill.signature, "")
+        self.assertEqual(self.house.money_balance, Decimal("0.00"))
+
+    def test_valid_svg_signature_is_stored_and_paid(self):
+        response = self.pay(self.VALID_SVG_B64)
+
+        self.assertEqual(response.status_code, 200)
+        self.bill.refresh_from_db()
+        self.assertTrue(self.bill.is_paid)
+        self.assertEqual(
+            self.bill.signature, "data:image/svg+xml;base64,PHN2Zy8+")
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("100.00"))
+
+    def test_invalid_base64_is_rejected(self):
+        response = self.pay("!!!not-base64!!!")
+
+        self.assert_bill_still_unpaid()
+        self.assertContains(response, "Invalid signature payload.")
+
+    def test_non_svg_payload_is_rejected(self):
+        response = self.pay(base64.b64encode(b"hello world").decode())
+
+        self.assert_bill_still_unpaid()
+
+    def test_svg_without_svg_tag_is_rejected(self):
+        response = self.pay(base64.b64encode(b"<rect/>").decode())
+
+        self.assert_bill_still_unpaid()
+
+    def test_oversized_payload_is_rejected(self):
+        big = base64.b64encode(b"<svg>" + b"x" * (200 * 1024)).decode()
+
+        self.pay(big)
+        self.assert_bill_still_unpaid()
+
+    def test_svg_with_xml_prolog_is_accepted(self):
+        payload = base64.b64encode(
+            b'<?xml version="1.0"?>'
+            b'<svg xmlns="http://www.w3.org/2000/svg"></svg>').decode()
+
+        response = self.pay(payload)
+
+        self.assertEqual(response.status_code, 200)
+        self.bill.refresh_from_db()
+        self.assertTrue(self.bill.is_paid)
+
+    def test_real_jsignature_payload_with_comment_is_accepted(self):
+        # jSignature emits an XML prolog AND a comment before <svg> —
+        # the exact payload the pad posts must pass (regression: the
+        # first validator draft rejected it and blocked all payments).
+        payload = base64.b64encode(
+            b'<?xml version="1.0" encoding="utf-8" standalone="no"?>'
+            b'<!--\nGenerated by jSignature 2.1\n-->'
+            b'<svg xmlns="http://www.w3.org/2000/svg" version="1.1">'
+            b'<path d="M10 10 L90 90" stroke="#000000" fill="none"/></svg>').decode()
+
+        response = self.pay(payload)
+
+        self.assertEqual(response.status_code, 200)
+        self.bill.refresh_from_db()
+        self.assertTrue(self.bill.is_paid)
+        self.house.refresh_from_db()
+        self.assertEqual(self.house.money_balance, Decimal("100.00"))
+
+    def test_real_jsignature_payload_with_doctype_is_accepted(self):
+        # The live pad emits a DOCTYPE after the prolog.
+        payload = base64.b64encode(
+            b'<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
+            b'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" '
+            b'"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">'
+            b'<svg xmlns="http://www.w3.org/2000/svg" version="1.1"></svg>').decode()
+
+        response = self.pay(payload)
+
+        self.assertEqual(response.status_code, 200)
+        self.bill.refresh_from_db()
+        self.assertTrue(self.bill.is_paid)
+
+    def test_doctype_with_internal_entity_subset_is_rejected(self):
+        # An internal subset defines entities — the XXE vector. An
+        # external-only DOCTYPE is allowed; this one is not.
+        payload = base64.b64encode(
+            b'<?xml version="1.0"?><!DOCTYPE svg ['
+            b'<!ENTITY xxe SYSTEM "file:///etc/passwd">]>'
+            b'<svg>&xxe;</svg>').decode()
+
+        response = self.pay(payload)
+
+        self.assert_bill_still_unpaid()

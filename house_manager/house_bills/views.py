@@ -17,6 +17,7 @@ from house_manager.client_bills.helpers.calculate_fees_other_bills import calcul
 from house_manager.client_bills.helpers.calculate_fixed_bills import calculate_fixed_client_bills
 from house_manager.client_bills.models import ClientMonthlyBill
 from house_manager.clients.models import Client
+from house_manager.common.helpers.bills_summary import bills_summary, filtered_bills
 from house_manager.common.mixins import HtmxFragmentMixin, MonthChoices, YearChoices
 from house_manager.house_bills.forms import HouseMonthlyBillForm, HouseOtherBillForm, HouseFixedBillForm
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
@@ -182,11 +183,7 @@ class CurrentHouseBaseBillDetailView(HtmxFragmentMixin, HouseOwnershipMixin, vie
             house_bills = filter_bills_by_payment_status(house_bills, is_paid, month)
 
         # Summary line above the list (server-rendered, no JS).
-        unpaid = house_bills.filter(is_paid=False)
-        context["bills_count"] = house_bills.count()
-        context["unpaid_count"] = unpaid.count()
-        context["unpaid_total"] = unpaid.aggregate(
-            total=Coalesce(Sum("total_amount"), Value(Decimal("0.00"))))["total"]
+        context.update(bills_summary(house_bills))
 
         context["house"] = current_house
         context["house_bills"] = house_bills
@@ -260,14 +257,24 @@ class HouseBaseBillEditView(HtmxFragmentMixin, HouseOwnershipMixin, views.Update
             return super().form_valid(form)
 
     def render_row_fragment(self):
-        """Return just the updated bill row for an in-place HTMX swap.
+        """Return the updated bill row plus a fresh summary line for an
+        in-place HTMX swap.
 
         ``HX-Trigger: billPaid`` lets the client close the payment dialog and
-        restore focus without a full page reload.
+        restore focus without a full page reload; the summary swaps
+        out-of-band so the "Unpaid / Due" numbers track the payment.
         """
         html = render_to_string(
             self.row_template_name, {"bill": self.object}, request=self.request)
-        response = HttpResponse(html)
+        summary_bills = filtered_bills(
+            self.queryset.model.objects.filter(
+                house_id=self.selected_house.pk),
+            self.request)
+        summary = render_to_string(
+            "partials/bills_summary.html",
+            dict(bills_summary(summary_bills), oob=True),
+            request=self.request)
+        response = HttpResponse("\n".join([html, summary]))
         response["HX-Trigger"] = "billPaid"
         return response
 
@@ -347,7 +354,16 @@ class HouseBaseBillRevertView(HouseOwnershipMixin, HtmxFragmentMixin, views.View
         if self.is_htmx_request():
             html = render_to_string(
                 self.row_template_name, {"bill": bill}, request=request)
-            response = HttpResponse(html)
+            # Fresh summary line after the undo, same as the payment
+            # response does.
+            summary_bills = filtered_bills(
+                self.queryset.model.objects.filter(house_id=bill.house_id),
+                request)
+            summary = render_to_string(
+                "partials/bills_summary.html",
+                dict(bills_summary(summary_bills), oob=True),
+                request=request)
+            response = HttpResponse("\n".join([html, summary]))
             response["HX-Trigger"] = "billReverted"
             return response
 
