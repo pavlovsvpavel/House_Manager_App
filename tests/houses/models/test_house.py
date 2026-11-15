@@ -47,4 +47,4 @@ class HouseTests(TestCase):
         exception = ve.exception
         town_exception = str(exception.error_dict["town"][0])
 
-        self.assertEqual("['Field should contains only letters']", str(town_exception))
+        self.assertEqual("['Field should contain only letters, spaces, (), /, and -']", str(town_exception))
