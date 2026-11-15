@@ -85,7 +85,8 @@
 .filter-buttons a,
 .details-house-elements .house-card .client-card-btns a,
 .wrapper .bills-button a,
-.details-client .client-card a {
+.details-client .client-card a,
+.dashboard-header .btn {
     text-decoration: none;
     color: var(--text-on-accent);
     padding: 0.5em;
@@ -110,7 +111,8 @@
 
 .filter-buttons a:hover,
 .details-house-elements .house-card .client-card-btns a:hover,
-.wrapper .bills-button a:hover {
+.wrapper .bills-button a:hover,
+.dashboard-header .btn:hover {
     background-color: var(--form-btn-color-hover);
     transition: 0.3s ease-in-out;
 }
