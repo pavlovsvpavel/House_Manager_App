@@ -1,14 +1,14 @@
 /* Theme toggle button in the header. */
 .theme-toggle {
     background: transparent;
-    border: 1px solid var(--border-color);
+    border: none;
     border-radius: var(--radius);
     color: inherit;
     cursor: pointer;
     font-size: 1.2em;
     line-height: 1;
     padding: 0.35em 0.55em;
-    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 
 /* ============================================================
