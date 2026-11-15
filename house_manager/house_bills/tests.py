@@ -219,6 +219,72 @@ class HouseBillsSecurityTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
 
+    def test_list_filters_by_month_only(self):
+        """Regression: the view filtered only when is_paid was in the URL, so
+        choosing a month and applying showed every month's bills."""
+        self.client.force_login(self.owner)
+
+        february = HouseMonthlyBill.objects.create(
+            month="02", year="2026",
+            electricity_common=Decimal("10.00"),
+            electricity_lift=Decimal("0.00"),
+            internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"),
+            fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"),
+            fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"),
+            others=Decimal("0.00"),
+            house=self.house,
+            user=self.owner,
+            is_paid=True,
+        )
+
+        url = reverse("list_house_bills", kwargs={"house_pk": self.house.pk})
+
+        response = self.client.get(f"{url}?month=01", HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+        self.assertNotContains(response, f'id="bill-row-{february.pk}"')
+
+        response = self.client.get(f"{url}?month=02", HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{february.pk}"')
+        self.assertNotContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+
+    def test_list_filters_by_payment_status_only(self):
+        """Regression: the helper nested the is_paid branches under the month
+        check, so debt filters with "All" months returned everything."""
+        self.client.force_login(self.owner)
+
+        paid_feb = HouseMonthlyBill.objects.create(
+            month="02", year="2026",
+            electricity_common=Decimal("10.00"),
+            electricity_lift=Decimal("0.00"),
+            internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"),
+            fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"),
+            fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"),
+            others=Decimal("0.00"),
+            house=self.house,
+            user=self.owner,
+            is_paid=True,
+        )
+
+        url = reverse("list_house_bills", kwargs={"house_pk": self.house.pk})
+
+        response = self.client.get(f"{url}?is_paid=True", HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{paid_feb.pk}"')
+        self.assertNotContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+
+        response = self.client.get(f"{url}?is_paid=False", HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
+        self.assertNotContains(response, f'id="bill-row-{paid_feb.pk}"')
+
     def test_edit_bill_htmx_get_returns_modal_fragment(self):
         self.client.force_login(self.owner)
         url = reverse(

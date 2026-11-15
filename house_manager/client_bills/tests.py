@@ -223,6 +223,57 @@ class ClientBillsSecurityTests(TestCase):
             response, "client_bills/partials/other_bill_list.html")
         self.assertNotContains(response, "<html")
 
+    def test_client_bills_list_filters_by_month_and_status(self):
+        """Regression: month-only queries never filtered (the view gated on
+        is_paid), and is_paid-only queries leaked all months (the helper
+        nested its branches under the month check)."""
+        self.client.force_login(self.owner)
+
+        paid_feb = ClientMonthlyBill.objects.create(
+            month="02", year="2026",
+            electricity_common=Decimal("10.00"),
+            electricity_lift=Decimal("0.00"),
+            internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"),
+            fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"),
+            fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"),
+            others=Decimal("0.00"),
+            amount_old_debts=Decimal("0.00"),
+            house=self.house,
+            client=self.client_obj,
+            user=self.owner,
+            is_paid=True,
+        )
+
+        url = reverse("list_client_bills",
+                      kwargs={"house_pk": self.house.pk, "client_pk": self.client_obj.pk})
+
+        # Month only: January shows its bill, not February's.
+        response = self.client.get(f"{url}?month=01", HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{self.bill.pk}"')
+        self.assertNotContains(response, f'id="bill-row-{paid_feb.pk}"')
+
+        # Payment status only ("All" months): debts vs paid.
+        response = self.client.get(f"{url}?is_paid=True", HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{paid_feb.pk}"')
+        self.assertNotContains(response, f'id="bill-row-{self.bill.pk}"')
+
+        response = self.client.get(f"{url}?is_paid=False", HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{self.bill.pk}"')
+        self.assertNotContains(response, f'id="bill-row-{paid_feb.pk}"')
+
+        # Both together.
+        response = self.client.get(
+            f"{url}?is_paid=False&month=01", HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, f'id="bill-row-{self.bill.pk}"')
+        self.assertNotContains(response, f'id="bill-row-{paid_feb.pk}"')
+
     def test_edit_client_bill_htmx_get_returns_modal_with_signature_pad(self):
         self.client.force_login(self.owner)
         url = reverse(

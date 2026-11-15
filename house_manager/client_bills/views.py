@@ -33,7 +33,9 @@ class ClientBaseBillsDetailView(HtmxFragmentMixin, ClientOwnershipMixin, views.D
         month = self.request.GET.get('month', None)
         client_bills = self.get_type_of_client_bills()
 
-        if is_paid is not None:
+        # Same fix as the house lists: filter when either parameter is
+        # present, not only when is_paid is in the URL.
+        if is_paid is not None or month is not None:
             client_bills = filter_bills_by_payment_status(client_bills, is_paid, month)
 
         context["client"] = self.selected_client

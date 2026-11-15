@@ -200,7 +200,11 @@ class CurrentHouseBaseBillDetailView(HtmxFragmentMixin, HouseOwnershipMixin, vie
 
         house_bills = self.get_type_of_house_bills()
 
-        if is_paid is not None:
+        # Filter when either parameter is present: the month select submits
+        # only "month", the debt links submit "is_paid" (with an empty month
+        # when "All" is selected). Previously filtering ran only when
+        # is_paid was present, so a month choice alone showed every month.
+        if is_paid is not None or month is not None:
             house_bills = filter_bills_by_payment_status(house_bills, is_paid, month)
 
         context["house"] = current_house
