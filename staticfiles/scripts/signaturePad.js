@@ -35,9 +35,18 @@
         const signatureWidth = $signatureElement.width() || 600;
         let signatureCanvas = null;
 
+        // White pen on the dark pad in dark mode; black on paper in light
+        // mode. The stored SVG is always normalized back to black ink (see
+        // normalizedSignature) so it stays visible on paper surfaces —
+        // chips, receipts, PDFs — regardless of the theme it was signed in.
+        const penColor = document.documentElement.matches('[data-theme="dark"]')
+            ? "#ffffff"
+            : "#000000";
+
         $signatureElement.jSignature({
             width: signatureWidth,
             height: 250,
+            color: penColor,
         }).bind('signatureChange', function () {
             signatureCanvas = $signatureElement.find('canvas')[0];
             attachTouchEventListeners();
@@ -76,13 +85,26 @@
             return $signatureElement.jSignature('getData', 'svgbase64')[1];
         }
 
+        // Store the signature with black ink even when the pad draws white
+        // (dark mode): the SVG is displayed on paper surfaces (chips,
+        // receipts, PDFs) where white ink would vanish. The POST contract
+        // is pure base64 — the view prepends the data: prefix.
+        function normalizedSignatureValue() {
+            const [mimeType, payload] = $signatureElement.jSignature('getData', 'svgbase64');
+            try {
+                return btoa(atob(payload).replace(/stroke="#fff(fff)?"/gi, 'stroke="#000000"'));
+            } catch (err) {
+                return payload;
+            }
+        }
+
         function isSignatureEmpty() {
             return signatureValue() === emptySignature;
         }
 
         function syncSignatureInput() {
             if (signatureInput) {
-                signatureInput.value = signatureValue();
+                signatureInput.value = normalizedSignatureValue();
             }
         }
 

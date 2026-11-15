@@ -94,6 +94,11 @@ a.house-card {
    switch-style pay control, clear action bar.
    ============================================================ */
 dialog.bill-modal {
+    /* reset.css zeroes margins — margin:auto is what centers a dialog
+       between the UA's inset:0 edges. */
+    position: fixed;
+    inset: 0;
+    margin: auto;
     max-width: none;
     max-height: none;
     padding: 0;

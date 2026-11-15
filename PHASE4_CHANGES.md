@@ -214,6 +214,25 @@ console messages, all 44 tests pass.
   `backgroundColor: getComputedStyle(.site).backgroundColor`, so the
   PDF matches the on-screen theme (white chips carry the signatures).
 
+## Follow-up: centered payment dialog + theme-aware signature pen
+
+- **Centered dialog**: reset.css zeroes every margin, including the
+  UA's `margin: auto` between the dialog's inset-0 edges - which is
+  exactly how `<dialog>` centers itself. Restored explicit
+  `position: fixed; inset: 0; margin: auto` on `dialog.bill-modal`
+  (left/right and top/bottom gaps now measure equal).
+- **Signature pen adapts to the theme**: the pad draws white ink on a
+  dark pad in dark mode (`color: '#ffffff'` passed to jSignature; the
+  pad surface flips between paper and `--surface-sunk`), so the strokes
+  are visible while signing. The stored SVG is normalized back to
+  black ink (`stroke="#000000"` replace on the decoded payload) because
+  signatures always render on paper surfaces - chips, receipts, PDFs -
+  where white ink would vanish. The POST contract stays pure base64
+  (the view prepends the data: prefix); a first-cut normalization that
+  returned `mime + ',' + payload` corrupted one stored row in the dev
+  DB and was caught in verification (payments are idempotent to
+  re-do: undo + pay again restored clean data).
+
 ## Not In Scope
 
 - **Phase 4e (skipped per review):** dashboard cockpit — balance sparklines, KPI trends, "This month" panel.
