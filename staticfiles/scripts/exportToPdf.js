@@ -7,6 +7,11 @@
  * cannot parse oklch()/color-mix() (every design-token color since the
  * Phase 4 migration), which made the export fail silently; html2canvas-pro
  * supports modern color functions.
+ *
+ * Pagination is row-safe: the fixed-height slicing cut rows in half at
+ * page boundaries, so pages now break only between the atomic blocks
+ * (details cards row, table header, body/footer rows) measured in the
+ * capture clone, and continuation pages repeat the table header.
  */
 (function () {
     'use strict';
@@ -34,6 +39,7 @@
         labelled.forEach(function (pair) { pair[0].removeAttribute('data-label'); });
 
         let canvas;
+        let metrics = null;
         try {
             canvas = await html2canvas(element, {
                 scale: 2,
@@ -72,6 +78,26 @@
                         '.report-table th::before, .report-table td::before { content: none !important; }',
                     ].join('\n');
                     doc.head.appendChild(override);
+
+                    // Row-safe pagination needs the atomic blocks' layout.
+                    // html2canvas-pro renders this exact clone next, so the
+                    // rects measured here (clone laid out at the forced
+                    // viewport and capture width) are the capture's layout.
+                    const base = results.getBoundingClientRect();
+                    const rel = function (el, kind) {
+                        const r = el.getBoundingClientRect();
+                        return { kind: kind, top: r.top - base.top, bottom: r.bottom - base.top };
+                    };
+                    const blocks = [];
+                    const details = results.querySelector('.details-wrapper');
+                    if (details) {
+                        blocks.push(rel(details, 'details'));
+                    }
+                    results.querySelectorAll('.report-table thead, .report-table tbody tr, .report-table tfoot tr')
+                        .forEach(function (el) {
+                            blocks.push(rel(el, el.tagName === 'THEAD' ? 'thead' : 'row'));
+                        });
+                    metrics = { blocks: blocks };
                 },
             });
         } finally {
@@ -79,22 +105,89 @@
         }
 
         const imgWidth = A4.width - MARGIN * 2;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const pxPerCm = canvas.width / imgWidth;
         const pageHeight = A4.height - MARGIN * 2;
-        const pages = Math.max(1, Math.ceil(imgHeight / pageHeight));
+        const pageContentPx = pageHeight * pxPerCm;
+
+        // --- Row-safe pagination ------------------------------------------
+        // Fixed-height slicing cut rows in half at page boundaries. Pages
+        // now break only at block boundaries (cards row, table header,
+        // body/footer rows), and continuation pages repeat the table
+        // header on top.
+        const scale = canvas.width / 794;
+        const blocks = (metrics ? metrics.blocks : []).map(function (b) {
+            return { kind: b.kind, top: b.top * scale, bottom: b.bottom * scale };
+        });
+        if (!blocks.length) {
+            blocks.push({ kind: 'page', top: 0, bottom: canvas.height });
+        }
+        const theadBlock = blocks.find(function (b) { return b.kind === 'thead'; });
+        const theadTop = theadBlock ? theadBlock.top : 0;
+        const theadH = theadBlock ? theadBlock.bottom - theadBlock.top : 0;
+
+        const pages = [];
+        let idx = 0;
+        while (idx < blocks.length) {
+            // A continuation page that starts with a table row repeats the
+            // header strip above it (and reserves its height).
+            const repeatedThead = pages.length > 0 && blocks[idx].kind === 'row' && theadH > 0;
+            const reserved = repeatedThead ? theadH : 0;
+            const startIdx = idx;
+            while (idx < blocks.length) {
+                // Fit check uses the block's actual extent from the page
+                // start, so inter-block margins/gaps count too and the
+                // page slice never exceeds the printable height.
+                if (blocks[idx].bottom - blocks[startIdx].top > pageContentPx - reserved) {
+                    break;
+                }
+                idx += 1;
+            }
+            // A single block taller than a page (not reachable for table
+            // rows) gets its own page and clips — never blocks the rest.
+            if (idx === startIdx) {
+                idx += 1;
+            }
+            pages.push({
+                start: blocks[startIdx].top,
+                end: idx < blocks.length ? blocks[idx].top : canvas.height,
+                repeatedThead: repeatedThead,
+            });
+        }
 
         const pdf = new jspdf.jsPDF({unit: 'cm', format: 'a4', orientation: 'portrait'});
-        for (let page = 0; page < pages; page++) {
+        for (let page = 0; page < pages.length; page++) {
+            const seg = pages[page];
+            const segH = seg.end - seg.start;
+            const repeatedH = seg.repeatedThead ? theadH : 0;
+            const outH = segH + repeatedH;
+
+            // Each page is drawn from the full-height capture: the header
+            // strip (continuations only) plus this page's block range.
+            const out = document.createElement('canvas');
+            out.width = canvas.width;
+            out.height = Math.max(1, Math.round(outH));
+            const ctx = out.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, out.width, out.height);
+            if (repeatedH) {
+                ctx.drawImage(canvas,
+                    0, Math.round(theadTop), canvas.width, Math.round(theadH),
+                    0, 0, canvas.width, Math.round(theadH));
+            }
+            ctx.drawImage(canvas,
+                0, Math.round(seg.start), canvas.width, Math.round(segH),
+                0, Math.round(repeatedH), canvas.width, Math.round(segH));
+
             if (page > 0) {
                 pdf.addPage();
             }
             pdf.addImage(
-                canvas.toDataURL('image/jpeg', 0.98),
+                out.toDataURL('image/jpeg', 0.98),
                 'JPEG',
                 MARGIN,
-                MARGIN - page * pageHeight,
+                MARGIN,
                 imgWidth,
-                imgHeight
+                outH / pxPerCm
             );
         }
 
