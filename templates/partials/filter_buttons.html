@@ -44,6 +44,17 @@
     </div>
 </form>
 
+{% if filter_target %}
+{% comment %}The month select applies instantly under HTMX; Apply is the
+no-JS fallback. Only htmx itself can fire htmx:load, so the class marks
+"HTMX is genuinely running" - the button stays visible otherwise.{% endcomment %}
+<script nonce="{{ csp_nonce }}">
+    document.addEventListener('htmx:load', function() {
+        document.documentElement.classList.add('htmx-running');
+    });
+</script>
+{% endif %}
+
 {% if not filter_target %}
 <script nonce="{{ csp_nonce }}">
     document.addEventListener('DOMContentLoaded', function() {

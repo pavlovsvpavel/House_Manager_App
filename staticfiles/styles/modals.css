@@ -13,7 +13,10 @@ a.house-card {
     color: inherit;
 }
 
-/* Keep the no-JS filter usable: an explicit Apply button next to the select. */
+/* Keep the no-JS filter usable: an explicit Apply button next to the select.
+   Under HTMX the select applies instantly, so the button hides itself while
+   HTMX is running (html.htmx-running is set by the htmx:load event) and stays
+   visible as the no-JS fallback. */
 .filter-apply {
     flex: 0 1 120px;
     padding: 0.5em 0;
@@ -23,6 +26,10 @@ a.house-card {
     color: var(--text-on-accent);
     cursor: pointer;
     transition: 0.3s ease-in-out;
+}
+
+html.htmx-running .filter-apply {
+    display: none;
 }
 
 .filter-apply:hover {
