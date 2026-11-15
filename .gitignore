@@ -178,3 +178,4 @@ postgres_db
 project_docs/
 /uv.lock
 /terraform/values.tfvars
+/postgresql_prod/
