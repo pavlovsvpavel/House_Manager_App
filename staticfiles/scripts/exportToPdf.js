@@ -21,7 +21,13 @@
             return;
         }
 
-        const canvas = await html2canvas(element, {scale: 2});
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            // The capture element itself has no background (the page's
+            // surface lives on .site); without this html2canvas paints
+            // white behind it, leaving light-on-white text in dark mode.
+            backgroundColor: getComputedStyle(document.querySelector('.site') || document.body).backgroundColor,
+        });
 
         const imgWidth = A4.width - MARGIN * 2;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;

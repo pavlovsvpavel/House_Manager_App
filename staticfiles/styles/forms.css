@@ -179,7 +179,9 @@
     display: flex;
     flex-direction: column;
     border-radius: 0.5em;
-    background-color: var(--surface-2);
+    /* The pad is paper: dark ink on white, in both themes. */
+    background-color: var(--surface-paper);
+    color: var(--on-paper);
     overflow: hidden;
     position: relative;
 }
@@ -191,7 +193,7 @@
 
 #signature .btn-reset-signature:hover {
     cursor: pointer;
-    color: var(--text-on-accent);
+    color: var(--state-danger);
 }
 
 #displaySignature {
@@ -199,8 +201,13 @@
     font-weight: bold;
 }
 
+/* Signatures are dark ink in transparent SVGs — give them a paper
+   surface so they stay visible on dark themes (and in the PDF). */
 #displaySignature img {
     width: 300px;
+    background-color: var(--surface-paper);
+    border-radius: var(--radius-s);
+    padding: 0.25em;
 }
 
 .is-paid-form .signature-label {

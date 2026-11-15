@@ -198,6 +198,22 @@ console messages, all 44 tests pass.
   on the console instead of failing silently. The 2MB html2pdf bundle
   is deleted.
 
+## Follow-up: signature visibility + dark-mode PDF export
+
+- **Signatures are dark ink baked into transparent SVGs** (jSignature
+  default pen), so every dark surface hid them in dark mode: the pad
+  you draw on (`--surface-2`), the paid-signature display and the
+  report table's Signature column. Fix: a theme-independent paper pair
+  (`--surface-paper` / `--on-paper`, variables.css) - the pad is white
+  paper in both themes (ink always visible while signing) and both
+  signature displays get a white chip.
+- **Dark-mode PDF had white background with light-gray rows**: the
+  capture element has no background of its own (the surface lives on
+  `.site`), and html2canvas defaults the canvas to white - the dark
+  theme's light text then sat on white. exportToPdf.js now passes
+  `backgroundColor: getComputedStyle(.site).backgroundColor`, so the
+  PDF matches the on-screen theme (white chips carry the signatures).
+
 ## Not In Scope
 
 - **Phase 4e (skipped per review):** dashboard cockpit — balance sparklines, KPI trends, "This month" panel.

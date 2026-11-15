@@ -369,6 +369,9 @@
 .report-results .signature-column img {
     max-height: 30px;
     width: auto;
+    background-color: var(--surface-paper);
+    border-radius: var(--radius-s);
+    padding: 1px 3px;
 }
 
 .report-results table th, td {

@@ -44,6 +44,11 @@
     --bill-unpaid:    oklch(80% 0.09 25);
     --bill-unpaid-hover: oklch(76% 0.1 25);
 
+    /* ---- Paper (theme-independent: signatures are dark ink baked into
+       transparent SVGs and must sit on white in both themes) ---- */
+    --surface-paper: oklch(100% 0 0);
+    --on-paper: oklch(15% 0.03 255);
+
     /* ---- Derived lines, focus, shadow, shape ---- */
     --line:  color-mix(in oklab, var(--text-1), transparent 86%);
     --line-strong: color-mix(in oklab, var(--text-1), transparent 68%);
