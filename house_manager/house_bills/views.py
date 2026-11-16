@@ -456,14 +456,21 @@ class ReportMonthlyBillView(HouseOwnershipMixin, views.DetailView):
         # month's bill for the client is paid).
         context["is_multi_month"] = len(selected_months) > 1
 
-        context["bill"] = (current_house.client_house_monthly_bills
-                           .filter(month__in=selected_months, year=selected_year).first())
+        # One query for the whole table: select_related joins the client that
+        # the row templates read on every row (family_name/apartment) and the
+        # multi-month grouping reads per bill. The first row doubles as
+        # context["bill"], whose year is all the details card displays
+        # (list() keeps the model ordering, so [0] is the old .first()).
+        month_bills = list(current_house.client_house_monthly_bills
+                           .filter(month__in=selected_months, year=selected_year)
+                           .select_related("client"))
 
-        clients_bills = (current_house.client_house_monthly_bills
-                         .filter(month__in=selected_months, year=selected_year))
+        context["bill"] = month_bills[0] if month_bills else None
 
         if context["is_multi_month"]:
-            clients_bills = summarize_bills_per_client(clients_bills)
+            clients_bills = summarize_bills_per_client(month_bills)
+        else:
+            clients_bills = month_bills
 
         context["clients_bills"] = clients_bills
 
@@ -522,8 +529,12 @@ class ReportOtherBillView(HouseOwnershipMixin, views.DetailView):
         context["is_multi_month"] = len(selected_months) > 1
 
         if selected_type_of_bill == "Bill for all clients":
+            # select_related joins the client the row templates read on every
+            # row (and the multi-month grouping reads per bill) — one query
+            # for the whole table instead of one per row.
             clients_bills = (current_house.client_house_other_bills
-                             .filter(month__in=selected_months, year=selected_year))
+                             .filter(month__in=selected_months, year=selected_year)
+                             .select_related("client"))
 
             if context["is_multi_month"]:
                 clients_bills = summarize_bills_per_client(clients_bills)
