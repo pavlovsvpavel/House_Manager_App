@@ -139,10 +139,6 @@
     border-radius: 0.5em;
 }
 
-.profile-picture .fa-solid {
-    font-size: 1.7em;
-}
-
 /*End Profile menu*/
 
 .navigation img,
@@ -166,10 +162,6 @@
     flex-direction: row;
     align-items: center;
     gap: 1em;
-}
-
-.navigation .home-link {
-    margin-right: auto;
 }
 
 .navigation svg {

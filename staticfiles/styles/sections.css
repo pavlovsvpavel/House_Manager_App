@@ -363,6 +363,105 @@
     outline-offset: 2px;
 }
 
+/* Bill filters: a compact dropdown row — one native <select> per facet
+   (Status, Year, Month) instead of three chip rows. The open option sheet is
+   drawn by the OS (which is the point: thumb-friendly picker on mobile);
+   only the closed control is themed here. Facets with an active filter get
+   an accent border so "something is filtered" stays visible at a glance. */
+.bill-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.75em 1em;
+    margin-bottom: 1em;
+}
+
+.filter-facet {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 9em;
+    gap: 0.25em;
+    min-width: 0;
+}
+
+.filter-facet__label {
+    padding-inline-start: 0.15em;
+    font-size: var(--step--1);
+    color: var(--text-2);
+}
+
+.filter-facet__select {
+    position: relative;
+    display: block;
+    min-width: 0;
+}
+
+.filter-facet select {
+    width: 100%;
+    min-width: 0;
+    padding: 0.55em 2.4em 0.55em 0.85em;
+    border: 1px solid var(--form-input-border);
+    border-radius: var(--radius-m);
+    background-color: var(--surface-1);
+    color: var(--text-1);
+    font: inherit;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Custom chevron: the native one cannot be themed, and with appearance: none
+   it would disappear entirely. Purely decorative — the whole control is the
+   hit target, so it must not swallow clicks. */
+.filter-facet__select::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0.95em;
+    width: 0.45em;
+    height: 0.45em;
+    border-right: 2px solid var(--text-2);
+    border-bottom: 2px solid var(--text-2);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+}
+
+/* The popup list inherits the select's text colour, so in the dark theme the
+   options need an explicit dark surface or they render light-on-white. */
+.filter-facet select option {
+    background-color: var(--surface-1);
+    color: var(--text-1);
+}
+
+.filter-facet select:hover {
+    border-color: var(--accent);
+}
+
+.filter-facet select:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: var(--focus-ring);
+}
+
+.filter-facet--active .filter-facet__label {
+    color: var(--accent);
+}
+
+.filter-facet--active select {
+    border-color: var(--accent);
+}
+
+/* The no-JS Apply button joins the row, bottom-aligned with the selects
+   (not with their labels). */
+.bill-filters .filter-apply {
+    flex: 0 0 auto;
+    align-self: flex-end;
+    padding: 0.55em 1.5em;
+}
+
 .reports-wrapper .search-btn,
 .reports-wrapper .save-btn {
     align-self: flex-start;

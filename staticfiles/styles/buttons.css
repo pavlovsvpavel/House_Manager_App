@@ -74,7 +74,6 @@
     align-self: flex-end;
 }
 
-.filter-buttons,
 .details-client .bills-client-card-btns {
     display: flex;
     padding-top: 0.5em;
@@ -82,7 +81,6 @@
     align-items: center;
 }
 
-.filter-buttons a,
 .details-house-elements .house-card .client-card-btns a,
 .wrapper .bills-button a,
 .details-client .client-card a,
@@ -100,16 +98,10 @@
     display: block;
 }
 
-.filter-buttons a {
-    flex: 0 1 180px;
-    padding: 0.5em 0;
-}
-
 .wrapper .bills-button a {
     min-width: 100px;
 }
 
-.filter-buttons a:hover,
 .details-house-elements .house-card .client-card-btns a:hover,
 .wrapper .bills-button a:hover,
 .dashboard-header .btn:hover {
@@ -164,15 +156,6 @@
     font-size: 2em;
 }
 
-.month-label {
-    display: inline-block;
-    background-color: var(--form-btn-color);
-    border-radius: 1.5em;
-    width: auto;
-}
-
-#month,
-#year,
 #type_of_bill {
     border-radius: 1.5em;
     background-color: var(--form-btn-color);
@@ -181,37 +164,6 @@
     display: inline-block;
     text-align: center;
     padding: 0.5em;
-}
-
-.filter-buttons .disabled {
-    background-color: color-mix(in oklab, var(--surface-2), var(--text-1) 30%);
-    pointer-events: none; /* Disable clicking on the link */
-    text-decoration: none; /* Remove underline */
-    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
-}
-
-.is-paid-form .btn {
-    padding: 0.5em;
-    border-radius: 1.5em;
-    border-color: transparent;
-    background-color: var(--form-btn-color);
-    color: var(--text-on-accent);
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-    align-self: center;
-    width: 100px;
-}
-
-.is-paid-form .btn:hover {
-    background-color: var(--form-btn-color-hover);
-    transition: 0.3s ease-in-out;
-}
-
-.is-paid-form .btn.disabled {
-    background-color: color-mix(in oklab, var(--surface-2), var(--text-1) 30%);
-    pointer-events: none;
-    text-decoration: none;
-    cursor: not-allowed;
 }
 
 /*Back to top button*/
@@ -272,6 +224,7 @@
 /* Password container styling */
 .password-container {
     position: relative;
+    display: inline-block;
     width: 100%;
 }
 
@@ -282,12 +235,6 @@
 
 .login-form .create-form {
     position: relative;
-}
-
-.password-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
 }
 
 .password-container label {
@@ -312,20 +259,4 @@
     pointer-events: none;
     text-decoration: none;
     cursor: not-allowed;
-}
-
-.download-receipt-btn {
-    color: var(--text-on-accent);
-    padding: 0.5em;
-    text-align: center;
-    border-radius: 1.5em;
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-    background-color: var(--state-danger);
-    border: none transparent;
-    text-decoration: none;
-}
-
-.download-receipt-btn:hover {
-    background-color: color-mix(in oklab, var(--state-danger), var(--surface-0) 18%);
 }

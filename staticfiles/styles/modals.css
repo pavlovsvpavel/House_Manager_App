@@ -1,6 +1,6 @@
 /* ============================================================
    Component layer: payment modal, undo toast, skeletons, breadcrumbs,
-   sticky filter bar, modern report tables.
+   filter bar, modern report tables.
    Colours come ONLY from the semantic tokens in variables.css.
    ============================================================ */
 
@@ -52,6 +52,8 @@ html.htmx-running .filter-apply {
     background-color: var(--card-bgnd);
     color: var(--text-color);
     box-shadow: var(--shadow);
+    overflow: hidden;
+    animation: toast-in 200ms ease-out;
 }
 
 .undo-toast[hidden] {
@@ -510,25 +512,10 @@ body:has(dialog.bill-modal[open]) {
 }
 
 /* ============================================================
-   Sticky filter bar + live summary
+   Filter bar + live summary
    ============================================================ */
 #bills-region {
     position: relative;
-}
-
-/* Sticky filter bar: the FORM is the sticky box — a sticky element is
-   constrained by its parent, so sticking the inner div (whose form is
-   exactly its own height) would never travel. Pinned just below the
-   sticky site header via --header-h. */
-#bills-region > form {
-    position: sticky;
-    top: var(--header-h);
-    z-index: 5;
-}
-
-.filter-buttons {
-    background-color: var(--surface-0);
-    padding-block: var(--space-2);
 }
 
 .bills-summary {
@@ -597,11 +584,6 @@ body:has(dialog.bill-modal[open]) {
    Undo toast — slide-up entrance, draining progress bar that IS
    the timeout (8 s, matching UNDO_TOAST_TIMEOUT in billsPayments.js)
    ============================================================ */
-.undo-toast {
-    overflow: hidden;
-    animation: toast-in 200ms ease-out;
-}
-
 @keyframes toast-in {
     from {
         opacity: 0;

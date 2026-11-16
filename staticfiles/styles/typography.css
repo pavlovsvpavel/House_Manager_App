@@ -51,11 +51,6 @@ img {
 	color: var(--state-danger);
 }
 
-.money--muted {
-	color: var(--text-2);
-	font-weight: 400;
-}
-
 /* ============================================================
    Keyboard focus — visible, consistent, theme-aware.
    ============================================================ */

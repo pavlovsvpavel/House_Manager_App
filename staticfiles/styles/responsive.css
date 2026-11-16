@@ -3,10 +3,6 @@
         font-size: 16px;
     }
 
-    :root {
-        --header-h: calc(40px + 1.775em);
-    }
-
     .header-elements .site-title a {
         width: 40px;
         height: 40px;
@@ -72,10 +68,6 @@
 @media (max-width: 600px) {
     html {
         font-size: 14px;
-    }
-
-    :root {
-        --header-h: calc(35px + 1.775em);
     }
 
     .header-elements .site-title a {
@@ -201,10 +193,6 @@
         text-align: left;
     }
 
-    .client-details .client-card {
-        flex: 0 1 100%;
-    }
-
     .details-client .bills-client-card-btns:nth-of-type(2) {
         flex-direction: row;
         align-items: stretch;
@@ -286,15 +274,10 @@
         align-items: stretch;
     }
 
-    .filter-buttons,
     .details-client .bills-client-card-btns {
         flex-direction: column;
         gap: 1em;
         align-items: stretch;
-    }
-
-    .filter-buttons a {
-        flex: 0 1 100%;
     }
 
     .dashboard .wrapper {

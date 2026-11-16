@@ -11,6 +11,15 @@
     font-size: 0.8em;
 }
 
+/* Django renders a field's help_text into a .helptext block. On the client
+   boolean fields that same text is already shown as a tooltip icon on the
+   label, so the generated block would only duplicate it (and, being a grid
+   child, push the checkbox out of its row) — keep it in the DOM for
+   aria-describedby but out of the layout. */
+.helptext {
+    display: none;
+}
+
 .create-form {
     display: flex;
     flex-direction: column;
@@ -24,8 +33,7 @@
 
 .create-form input,
 .create-form select,
-.create-form textarea,
-.is-paid-form input {
+.create-form textarea {
     padding: 0.5em;
     border-radius: 0.5em;
     border: 1px solid var(--form-input-border);
@@ -40,7 +48,7 @@
 }
 
 .create-form .btn {
-    padding: 0.5em;
+    padding: 0.5em 1em;
     border-radius: 1.5em;
     border-color: transparent;
     background-color: var(--form-btn-color);
@@ -48,25 +56,16 @@
     cursor: pointer;
     transition: 0.3s ease-in-out;
     align-self: center;
-    width: 100px;
+    /* Size to the label so longer translations (e.g. "Регистрация") are not
+       clipped; short labels keep the previous 100px footprint. */
+    width: auto;
+    min-width: 100px;
     margin-top: 1em;
 }
 
 .create-form .btn:hover {
     background-color: var(--form-btn-color-hover);
     transition: 0.3s ease-in-out;
-}
-
-.register-login-user .create-form .btn,
-.login-register-user .create-form .btn {
-    align-self: normal;
-    width: auto;
-}
-
-.is-paid-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
 }
 
 .edit-house .create-form div:has(label[for="id_fixed_monthly_taxes"]) {
@@ -105,46 +104,68 @@
     margin: 0;
 }
 
-.is-paid-form div:nth-of-type(1) {
+/* Boolean rows (client forms): label + tooltip icon on the left, a compact
+   checkbox on the right. Targeted with :has() rather than nth-of-type — the
+   number of fields differs between create and edit, and a shifted index used
+   to apply the grid to the wrong rows. */
+.create-client .create-form div:has(> input[type="checkbox"]),
+.edit-client .create-form div:has(> input[type="checkbox"]) {
+    position: relative; /* anchors the tooltip bubble to the whole row */
     display: flex;
-    background-color: var(--card-bgnd);
-    padding: 1em;
-    border-radius: 0.5em;
-}
-
-.create-client .create-form div:nth-of-type(5),
-.edit-client .create-form div:nth-of-type(5) {
-    margin-top: 1em;
-}
-
-.create-client .create-form div:nth-of-type(5),
-.create-client .create-form div:nth-of-type(6),
-.create-client .create-form div:nth-of-type(7),
-.edit-client .create-form div:nth-of-type(5),
-.edit-client .create-form div:nth-of-type(6),
-.edit-client .create-form div:nth-of-type(7) {
-    display: grid;
-    grid-template-columns: 1fr 100px;
     align-items: center;
+    justify-content: space-between;
     gap: 1em;
-    padding: 0.5em;
+    padding: 0.4em 0.75em;
     background: var(--surface-sunk);
-    border-radius: 0.5em;
     border: 1px solid var(--form-input-border);
-    position: relative;
+    border-radius: 0.5em;
 }
 
-.create-client .create-form input[type="checkbox"],
-.edit-client .create-form input[type="checkbox"] {
-    max-height: 1.5em;
-    aspect-ratio: 1/1;
+.create-client .create-form div:has(> input[type="checkbox"]) > label,
+.edit-client .create-form div:has(> input[type="checkbox"]) > label {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    width: auto;
+    margin: 0;
+}
+
+/* The icon now sits next to the label instead of the row's right edge, so
+   the bubble is anchored to the row (the icon is left unpositioned) and
+   spans its width. Otherwise a long help text would run off the left edge
+   of the viewport. */
+.create-client .create-form div:has(> input[type="checkbox"]) .tooltip-icon,
+.edit-client .create-form div:has(> input[type="checkbox"]) .tooltip-icon {
+    position: static;
+    flex: 0 0 auto;
+}
+
+.create-client .create-form div:has(> input[type="checkbox"]) .tooltip-icon:hover::after,
+.edit-client .create-form div:has(> input[type="checkbox"]) .tooltip-icon:hover::after {
+    right: 0;
+    left: 0;
+    bottom: calc(100% + 0.4em);
+    width: auto;
+    max-width: none;
+}
+
+.create-client .create-form div:has(> input[type="checkbox"]) > input[type="checkbox"],
+.edit-client .create-form div:has(> input[type="checkbox"]) > input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: 1.35em;
+    height: 1.35em;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    accent-color: var(--accent);
+    cursor: pointer;
 }
 
 .tooltip-icon {
     cursor: help;
     font-size: 1em;
-    position: absolute;
-    right: 0.5em;
+    position: relative;
     z-index: 1;
 }
 
@@ -156,7 +177,7 @@
     content: attr(data-tooltip);
     position: absolute;
     background: var(--surface-inverse);
-    color: var(--text-on-accent);
+    color: var(--text-on-inverse);
     padding: 0.3em;
     border-radius: 0.3em;
     font-size: 0.8em;
@@ -231,10 +252,6 @@
     background-color: var(--surface-paper);
     border-radius: var(--radius-s);
     padding: 0.25em;
-}
-
-.is-paid-form .signature-label {
-    padding-left: 1em;
 }
 
 /* Signature pad show/hide */

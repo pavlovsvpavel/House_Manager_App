@@ -10,13 +10,11 @@
     min-height: 100dvh;
 }
 
-/* The header stays pinned while content scrolls. Other sticky elements
-   (the bills filter bar) offset themselves by --header-h so they pin
-   just below it instead of sliding underneath. */
+/* The header stays pinned while content scrolls. */
 .site-header {
     position: sticky;
     top: 0;
-    z-index: 20; /* above filter bar (5) + skeletons (4), below undo toast (30) */
+    z-index: 20; /* above skeletons (4), below undo toast (30) */
     background-color: var(--menu-bgnd);
 }
 
