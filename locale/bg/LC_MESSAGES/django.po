@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 20:57+0000\n"
+"POT-Creation-Date: 2026-11-16 18:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -209,8 +209,7 @@ msgstr "Декември"
 #: templates/house_bills/partials/monthly_bill_row.html:15
 #: templates/house_bills/partials/other_bill_row.html:15
 #: templates/partials/details_client_bills.html:7
-#: templates/partials/filter_buttons.html:51
-#: templates/partials/filter_buttons_clients.html:7
+#: templates/partials/filter_buttons.html:43
 #: templates/partials/reports/filtered_other_bill_type_multi.html:5
 #: templates/partials/reports/filtered_other_bill_type_single.html:5
 msgid "Month"
@@ -221,7 +220,7 @@ msgstr "Месец"
 #: templates/house_bills/partials/monthly_bill_row.html:11
 #: templates/house_bills/partials/other_bill_row.html:11
 #: templates/partials/details_client_bills.html:3
-#: templates/partials/filter_buttons.html:35
+#: templates/partials/filter_buttons.html:30
 #: templates/partials/reports/filtered_other_bill_type_multi.html:9
 #: templates/partials/reports/filtered_other_bill_type_single.html:9
 #: templates/partials/reports/year_picker.html:3
@@ -590,7 +589,7 @@ msgstr "Сметка - детайли"
 #: templates/house_bills/partials/monthly_bill_details.html:6
 #: templates/house_bills/partials/other_bill_details.html:6
 #: templates/partials/bills_summary.html:6
-#: templates/partials/filter_buttons.html:25
+#: templates/partials/filter_buttons.html:22
 msgid "Unpaid"
 msgstr "Неплатени"
 
@@ -1000,7 +999,7 @@ msgid "Current Balance"
 msgstr "Настоящо салдо"
 
 #: templates/houses/house_clients_list.html:41
-#: templates/partials/filter_buttons.html:66
+#: templates/partials/filter_buttons.html:54
 msgid "Apply"
 msgstr "Приложи"
 
@@ -1043,29 +1042,20 @@ msgstr "Отмени"
 msgid "Due"
 msgstr "Дължими"
 
-#: templates/partials/filter_buttons.html:16
+#: templates/partials/filter_buttons.html:18
 msgid "Status"
 msgstr "Статус"
 
-#: templates/partials/filter_buttons.html:20
-#: templates/partials/filter_buttons.html:39
-#: templates/partials/filter_buttons.html:55
-#: templates/partials/filter_buttons_clients.html:8
+#: templates/partials/filter_buttons.html:21
+#: templates/partials/filter_buttons.html:33
+#: templates/partials/filter_buttons.html:46
 msgid "All"
 msgstr "Всички"
 
-#: templates/partials/filter_buttons.html:30
+#: templates/partials/filter_buttons.html:23
 msgctxt "filter chips: plural, next to Неплатени/Всички"
 msgid "Paid"
 msgstr "Платени"
-
-#: templates/partials/filter_buttons_clients.html:19
-msgid "Without debts"
-msgstr "Без задължения"
-
-#: templates/partials/filter_buttons_clients.html:24
-msgid "With debts"
-msgstr "Със задължения"
 
 #: templates/partials/google_button.html:11
 msgid "Continue with Google"
@@ -1158,3 +1148,9 @@ msgstr "Сметката е платена."
 #: templates/partials/undo_toast.html:4
 msgid "Undo"
 msgstr "Отмени"
+
+#~ msgid "Without debts"
+#~ msgstr "Без задължения"
+
+#~ msgid "With debts"
+#~ msgstr "Със задължения"
