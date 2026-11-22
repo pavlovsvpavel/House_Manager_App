@@ -7,23 +7,29 @@
       hx-post="{% url 'edit_client_bill' house_pk=object.house_id client_pk=object.client_id pk=object.pk %}{{ request|query_string }}"
       hx-target="#bill-row-{{ object.pk }}"
       hx-swap="outerHTML settle:400ms">
+    {% if pay_bills and not form.initial.is_paid %}
+        {# Sits directly under the breakdown's "Total, €" row: the bill's own total, growing live as extra bills are checked below. #}
+        <p class="bill-form__total">
+            {% trans "Total to pay" %}:
+            <span class="money" data-bill-total>{{ form.instance.total_amount|floatformat:2 }} €</span>
+        </p>
+    {% endif %}
     {% csrf_token %}
     {% if pay_bills and not form.initial.is_paid %}
-        <fieldset class="bill-form__pay-bills">
-            <legend>{% trans "Also pay other unpaid bills" %}</legend>
-            {% for bill in pay_bills %}
-                <label class="bill-form__pay-bill">
-                    <input type="checkbox" name="pay_bill" value="{{ bill.pk }}"
-                           data-amount="{{ bill.total_amount|unlocalize }}">
-                    <span class="bill-form__pay-bill-period">{{ bill.get_month_name }} {{ bill.year }}</span>
-                    <span class="bill-form__pay-bill-amount money">{{ bill.total_amount }} €</span>
-                </label>
-            {% endfor %}
-            <p class="bill-form__total">
-                {% trans "Total to pay" %}:
-                <span class="money" data-bill-total>{{ form.instance.total_amount|floatformat:2 }} €</span>
-            </p>
-        </fieldset>
+        {# Collapsed by default so the common "pay this bill only" case keeps the dialog short; a native disclosure expands without JavaScript. #}
+        <details class="bill-form__pay-details">
+            <summary>{% trans "Also pay other unpaid bills" %}</summary>
+            <div class="bill-form__pay-bills">
+                {% for bill in pay_bills %}
+                    <label class="bill-form__pay-bill">
+                        <input type="checkbox" name="pay_bill" value="{{ bill.pk }}"
+                               data-amount="{{ bill.total_amount|unlocalize }}">
+                        <span class="bill-form__pay-bill-period">{{ bill.get_month_name }} {{ bill.year }}</span>
+                        <span class="bill-form__pay-bill-amount money">{{ bill.total_amount }} €</span>
+                    </label>
+                {% endfor %}
+            </div>
+        </details>
     {% endif %}
 
     {% if form.non_field_errors %}

@@ -11,18 +11,18 @@
         <p class="bill-details__amount money">{{ object.total_amount }}<span class="bill-details__currency"> €</span></p>
     </header>
 
-    <dl class="bill-details__breakdown">
-        <div><dt>{% trans "Electricity common" %}</dt><dd class="money">{{ object.electricity_common }}</dd></div>
-        <div><dt>{% trans "Electricity lift" %}</dt><dd class="money">{{ object.electricity_lift }}</dd></div>
-        <div><dt>{% trans "Internet" %}</dt><dd class="money">{{ object.internet }}</dd></div>
-        <div><dt>{% trans "Lift maintenance" %}</dt><dd class="money">{{ object.maintenance_lift }}</dd></div>
-        <div><dt>{% trans "Cleaner fee" %}</dt><dd class="money">{{ object.fee_cleaner }}</dd></div>
-        <div><dt>{% trans "Manager fee" %}</dt><dd class="money">{{ object.fee_manager }}</dd></div>
-        <div><dt>{% trans "Cashier fee" %}</dt><dd class="money">{{ object.fee_cashier }}</dd></div>
-        <div><dt>{% trans "Repairs fund" %}</dt><dd class="money">{{ object.repairs }}</dd></div>
-        <div><dt>{% trans "Other expenses" %}</dt><dd class="money">{{ object.others }}</dd></div>
-        <div class="bill-details__total"><dt>{% trans "Total, €" %}</dt><dd class="money">{{ object.total_amount }}</dd></div>
-    </dl>
-
-    <p class="bill-callout bill-callout--warning">{% trans "The payment is without 'Repairs fund'" %}</p>
+    {% if not form.electricity_common %}
+        {# Amount-editing mode (fixed-taxes houses): the editable fields below replace the read-only breakdown. #}
+        <dl class="bill-details__breakdown">
+            <div><dt>{% trans "Electricity common" %}</dt><dd class="money">{{ object.electricity_common }}</dd></div>
+            <div><dt>{% trans "Electricity lift" %}</dt><dd class="money">{{ object.electricity_lift }}</dd></div>
+            <div><dt>{% trans "Internet" %}</dt><dd class="money">{{ object.internet }}</dd></div>
+            <div><dt>{% trans "Lift maintenance" %}</dt><dd class="money">{{ object.maintenance_lift }}</dd></div>
+            <div><dt>{% trans "Cleaner fee" %}</dt><dd class="money">{{ object.fee_cleaner }}</dd></div>
+            <div><dt>{% trans "Manager fee" %}</dt><dd class="money">{{ object.fee_manager }}</dd></div>
+            <div><dt>{% trans "Cashier fee" %}</dt><dd class="money">{{ object.fee_cashier }}</dd></div>
+            <div><dt>{% trans "Repairs fund" %}</dt><dd class="money">{{ object.repairs }}</dd></div>
+            <div><dt>{% trans "Other expenses" %}</dt><dd class="money">{{ object.others }}</dd></div>
+        </dl>
+    {% endif %}
 </div>

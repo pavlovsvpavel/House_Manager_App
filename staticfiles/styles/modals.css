@@ -324,6 +324,49 @@ body:has(dialog.bill-modal[open]) {
     gap: 1em;
 }
 
+/* Amount editing (fixed-taxes houses): the bill's expense fields are
+   correctable in the same dialog — one label/input row per expense,
+   mirroring the read-only breakdown the paid dialog shows. */
+.bill-form__fields {
+    display: flex;
+    flex-direction: column;
+}
+
+.bill-form__field {
+    display: flex;
+    flex-wrap: wrap; /* a validation error drops to its own line */
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5em 1em;
+    padding: 0.45em 0.25em;
+    border-bottom: 1px solid var(--line);
+}
+
+.bill-form__field:last-child {
+    border-bottom: none;
+}
+
+.bill-form__field-label {
+    width: auto; /* typography.css resets every label to block/100% — that would push the input to its own line */
+    color: var(--text-2);
+    font-size: var(--step--1);
+}
+
+.bill-form__fields input {
+    flex: 0 1 8em;
+    min-width: 6em;
+    padding: 0.4em 0.6em;
+    border-radius: 0.5em;
+    border: 1px solid var(--form-input-border);
+    text-align: right;
+    box-sizing: border-box;
+}
+
+.bill-form__field .errorlist {
+    flex-basis: 100%;
+    margin: 0.25em 0 0;
+}
+
 .bill-form__switch {
     display: flex;
     align-items: center;
@@ -426,22 +469,48 @@ body:has(dialog.bill-modal[open]) {
     background-color: var(--surface-1);
 }
 
-/* Multi-payment: checkboxes for the client's other unpaid bills. */
+/* Multi-payment: collapsed by default behind a native disclosure — the
+   common "pay this bill only" case keeps the dialog short, and expanding
+   works without JavaScript. The summary mimics the switch row's pill. */
+.bill-form__pay-details summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75em;
+    padding: 0.8em 1em;
+    border-radius: var(--radius-m);
+    background-color: var(--surface-1);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none; /* no default marker; the +/- sits at the right */
+}
+
+.bill-form__pay-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.bill-form__pay-details summary::after {
+    content: "+";
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+.bill-form__pay-details[open] summary::after {
+    content: "−";
+}
+
+.bill-form__pay-details summary:focus-visible {
+    box-shadow: var(--focus-ring);
+}
+
 .bill-form__pay-bills {
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
     display: flex;
     flex-direction: column;
     gap: 0.25em;
-    margin: 0;
+    margin: 0.5em 0 0;
     padding: 0.75em 1em;
-}
-
-.bill-form__pay-bills legend {
-    color: var(--text-2);
-    font-size: 0.9em;
-    font-weight: 600;
-    padding: 0 0.25em;
 }
 
 .bill-form__pay-bill {
@@ -469,10 +538,8 @@ body:has(dialog.bill-modal[open]) {
 }
 
 .bill-form__total {
-    border-top: 1px dashed var(--border-color);
     font-weight: 600;
-    margin: 0.35em 0 0;
-    padding-top: 0.5em;
+    margin: 0;
     text-align: right;
 }
 

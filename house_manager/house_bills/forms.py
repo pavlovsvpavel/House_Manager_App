@@ -32,6 +32,31 @@ class HouseMonthlyBillForm(HouseBaseBillForm):
                   "others")
 
 
+class HouseMonthlyBillEditForm(HouseBaseBillForm):
+    """Amount correction for fixed-taxes houses: the nine expense fields
+    stay editable while the bill is unpaid (``total_amount`` is a
+    DB-generated column, so it follows automatically). Non-fixed houses
+    never get this form — ``calculate_fees`` has already distributed
+    their amounts to the client bills at creation, and editing them here
+    would desync the two."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # The base form identifies fields with placeholders (create-form
+        # style). In the correction dialog every field is prefilled, so a
+        # placeholder would never be seen — the template renders a real
+        # label above each input instead, and a duplicate placeholder
+        # would only add noise.
+        for field in self.fields.values():
+            field.widget.attrs.pop("placeholder", None)
+
+    class Meta:
+        model = HouseMonthlyBill
+        fields = ("electricity_common", "electricity_lift", "internet",
+                  "maintenance_lift", "fee_cleaner", "fee_manager",
+                  "fee_cashier", "repairs", "others", "is_paid")
+
+
 class HouseOtherBillForm(HouseBaseBillForm):
     class Meta:
         model = HouseOtherBill

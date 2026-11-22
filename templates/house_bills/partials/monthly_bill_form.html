@@ -4,8 +4,61 @@
       action="{% url 'edit_house_bills' house_pk=object.house_id pk=object.pk %}{{ request|query_string }}"
       hx-post="{% url 'edit_house_bills' house_pk=object.house_id pk=object.pk %}{{ request|query_string }}"
       hx-target="#bill-row-{{ object.pk }}"
-      hx-swap="outerHTML settle:400ms">
+      hx-swap="outerHTML settle:400ms"
+      {% if form.electricity_common %}data-bill-edit{% endif %}>
     {% csrf_token %}
+    {% if form.electricity_common %}
+        {# Fixed-taxes houses: the expense fields are correctable while the bill is unpaid. #}
+        <div class="bill-form__fields">
+            <div class="bill-form__field">
+                <label class="bill-form__field-label" for="id_electricity_common">{% trans "Electricity common" %}</label>
+                {{ form.electricity_common }}
+                {{ form.electricity_common.errors }}
+            </div>
+            <div class="bill-form__field">
+                <label class="bill-form__field-label" for="id_electricity_lift">{% trans "Electricity lift" %}</label>
+                {{ form.electricity_lift }}
+                {{ form.electricity_lift.errors }}
+            </div>
+            <div class="bill-form__field">
+                <label class="bill-form__field-label" for="id_internet">{% trans "Internet" %}</label>
+                {{ form.internet }}
+                {{ form.internet.errors }}
+            </div>
+            <div class="bill-form__field">
+                <label class="bill-form__field-label" for="id_maintenance_lift">{% trans "Lift maintenance" %}</label>
+                {{ form.maintenance_lift }}
+                {{ form.maintenance_lift.errors }}
+            </div>
+            <div class="bill-form__field">
+                <label class="bill-form__field-label" for="id_fee_cleaner">{% trans "Cleaner fee" %}</label>
+                {{ form.fee_cleaner }}
+                {{ form.fee_cleaner.errors }}
+            </div>
+            <div class="bill-form__field">
+                <label class="bill-form__field-label" for="id_fee_manager">{% trans "Manager fee" %}</label>
+                {{ form.fee_manager }}
+                {{ form.fee_manager.errors }}
+            </div>
+            <div class="bill-form__field">
+                <label class="bill-form__field-label" for="id_fee_cashier">{% trans "Cashier fee" %}</label>
+                {{ form.fee_cashier }}
+                {{ form.fee_cashier.errors }}
+            </div>
+            <div class="bill-form__field">
+                <label class="bill-form__field-label" for="id_repairs">{% trans "Repairs fund" %}</label>
+                {{ form.repairs }}
+                {{ form.repairs.errors }}
+            </div>
+            <div class="bill-form__field">
+                <label class="bill-form__field-label" for="id_others">{% trans "Other expenses" %}</label>
+                {{ form.others }}
+                {{ form.others.errors }}
+            </div>
+        </div>
+    {% endif %}
+    {# Sits directly above the paid switch in both modes: a plain payment dialog (no fields) and the amount-editing dialog alike. #}
+    <p class="bill-callout bill-callout--warning">{% trans "The payment is without 'Repairs fund'" %}</p>
     <label class="bill-form__switch" for="id_is_paid">
         {{ form.is_paid }}
         <span class="bill-form__track" aria-hidden="true"></span>
@@ -13,7 +66,7 @@
     </label>
     {% if not form.instance.is_paid %}
         <div class="bill-form__actions">
-            {% include "partials/bill_form_buttons.html" %}
+            {% include "partials/bill_form_buttons.html" with save_enabled=form.electricity_common %}
         </div>
     {% endif %}
 </form>

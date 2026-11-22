@@ -13,6 +13,24 @@ from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill
 UserModel = get_user_model()
 
 
+def monthly_bill_payload(**overrides):
+    """The full field set the fixed-taxes edit modal submits: the nine
+    expense fields plus (optionally) the paid switch."""
+    payload = {
+        "electricity_common": "100.00",
+        "electricity_lift": "0",
+        "internet": "0",
+        "maintenance_lift": "0",
+        "fee_cleaner": "0",
+        "fee_manager": "0",
+        "fee_cashier": "0",
+        "repairs": "0",
+        "others": "0",
+    }
+    payload.update(overrides)
+    return payload
+
+
 class HouseBillsSecurityTests(TestCase):
     """
     Regression tests for the Phase 0 + Redesign Phase 1 security model:
@@ -350,7 +368,7 @@ class HouseBillsSecurityTests(TestCase):
             kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk})
 
         response = self.client.post(
-            url, {"is_paid": "on"}, HTTP_HX_REQUEST="true")
+            url, monthly_bill_payload(is_paid="on"), HTTP_HX_REQUEST="true")
 
         # The row swaps in place and the summary line swaps out-of-band.
         self.assertContains(response, f'id="bill-row-{self.monthly_bill.pk}"')
@@ -393,7 +411,7 @@ class HouseBillsSecurityTests(TestCase):
         self.client.post(
             reverse("edit_house_bills",
                     kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk}),
-            {"is_paid": "on"})
+            monthly_bill_payload(is_paid="on"))
         self.house.refresh_from_db()
         self.assertEqual(self.house.money_balance, Decimal("-100.00"))
 
@@ -451,7 +469,7 @@ class HouseBillsSecurityTests(TestCase):
         self.client.post(
             reverse("edit_house_bills",
                     kwargs={"house_pk": self.house.pk, "pk": self.monthly_bill.pk}),
-            {"is_paid": "on"})
+            monthly_bill_payload(is_paid="on"))
 
         self.client.force_login(self.attacker)
         response = self.client.post(
@@ -666,6 +684,11 @@ class ReportsMultiMonthTests(TestCase):
         self.assertEqual(len(response.context["single_bills"]), 2)
         self.assertEqual(response.context["calculated_total_amount"], Decimal("90.00"))
 
+        # Single bills carry no client: the table has no name column, the
+        # comment leads (left-aligned as the first column).
+        self.assertNotContains(response, "Full name")
+        self.assertContains(response, "<th>Comment</th>")
+
     def test_reports_blocked_for_other_user(self):
         attacker = UserModel.objects.create_user(
             email="attacker@test.bg", password="StrongPass123!")
@@ -676,3 +699,195 @@ class ReportsMultiMonthTests(TestCase):
             {"month": ["01", "02"], "year": "2026"})
 
         self.assertEqual(response.status_code, 404)
+
+
+class HouseMonthlyBillAmountEditTests(TestCase):
+    """
+    A house monthly bill's amounts are editable only while the bill is
+    unpaid AND the house has the "fixed monthly taxes" setting on: those
+    house bills stand alone, while non-fixed houses distribute the amounts
+    to the client bills at creation (calculate_fees) — editing them would
+    desync the house bill from what the clients were charged. A paid bill
+    is final: no edits, and payment replays stay no-ops.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = UserModel.objects.create_user(email="owner@test.bg", password="StrongPass123!")
+
+        cls.fixed_house = House.objects.create(
+            town="Sofia", address="Fixed str. 1", entrance="A",
+            money_balance=Decimal("0.00"), fixed_monthly_taxes=True,
+            user=cls.owner)
+        cls.free_house = House.objects.create(
+            town="Sofia", address="Free str. 1", entrance="A",
+            money_balance=Decimal("0.00"), fixed_monthly_taxes=False,
+            user=cls.owner)
+
+        def make_bill(house):
+            return HouseMonthlyBill.objects.create(
+                month="01", year="2026",
+                electricity_common=Decimal("100.00"),
+                electricity_lift=Decimal("0.00"),
+                internet=Decimal("0.00"),
+                maintenance_lift=Decimal("0.00"),
+                fee_cleaner=Decimal("0.00"),
+                fee_manager=Decimal("0.00"),
+                fee_cashier=Decimal("0.00"),
+                repairs=Decimal("0.00"),
+                others=Decimal("0.00"),
+                house=house, user=cls.owner)
+
+        cls.fixed_bill = make_bill(cls.fixed_house)
+        cls.free_bill = make_bill(cls.free_house)
+
+    def edit_url(self, bill):
+        return reverse(
+            "edit_house_bills", kwargs={"house_pk": bill.house_id, "pk": bill.pk})
+
+    # --- modal rendering -----------------------------------------------------
+
+    def test_fixed_house_modal_renders_amount_fields(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(self.edit_url(self.fixed_bill), HTTP_HX_REQUEST="true")
+
+        self.assertContains(response, 'name="electricity_common"')
+        self.assertContains(response, "data-bill-edit")
+
+        # Editing is not paying: the Save button must be usable without
+        # the paid switch (also for users without JavaScript).
+        save_button = re.search(
+            r'<button id="save-btn"[^>]*>', response.content.decode()).group(0)
+        self.assertNotIn("disabled", save_button)
+
+    def test_non_fixed_house_modal_keeps_payment_only_form(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.get(self.edit_url(self.free_bill), HTTP_HX_REQUEST="true")
+
+        self.assertNotContains(response, 'name="electricity_common"')
+        self.assertNotContains(response, "data-bill-edit")
+        self.assertContains(response, 'name="is_paid"')
+
+    # --- editing without paying ---------------------------------------------
+
+    def test_fixed_house_amount_edit_saves_without_paying(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            self.edit_url(self.fixed_bill),
+            monthly_bill_payload(electricity_common="140.50", repairs="10"),
+            HTTP_HX_REQUEST="true")
+
+        # The row swaps in place with the fresh total; the modal closes
+        # through the same billPaid trigger the payment flow uses (an
+        # unpaid row carries no revert URL, so no toast is offered).
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f'id="bill-row-{self.fixed_bill.pk}"')
+        self.assertContains(response, 'id="bills-summary"')
+        self.assertEqual(response["HX-Trigger"], "billPaid")
+
+        self.fixed_bill.refresh_from_db()
+        self.fixed_house.refresh_from_db()
+        self.assertEqual(self.fixed_bill.electricity_common, Decimal("140.50"))
+        self.assertEqual(self.fixed_bill.repairs, Decimal("10"))
+        # The DB-generated total followed the corrected fields.
+        self.assertEqual(self.fixed_bill.total_amount, Decimal("150.50"))
+        self.assertFalse(self.fixed_bill.is_paid)
+        # No payment, no balance movement.
+        self.assertEqual(self.fixed_house.money_balance, Decimal("0.00"))
+
+    def test_fixed_house_amount_edit_full_page_redirects(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            self.edit_url(self.fixed_bill), monthly_bill_payload(internet="5"))
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse(
+            "list_house_bills", kwargs={"house_pk": self.fixed_house.pk}))
+        self.fixed_bill.refresh_from_db()
+        self.assertEqual(self.fixed_bill.internet, Decimal("5"))
+        self.assertFalse(self.fixed_bill.is_paid)
+
+    # --- editing and paying in one submit ------------------------------------
+
+    def test_fixed_house_edit_and_pay_debits_new_total(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            self.edit_url(self.fixed_bill),
+            monthly_bill_payload(electricity_common="60", is_paid="on"))
+
+        self.assertEqual(response.status_code, 302)
+        self.fixed_bill.refresh_from_db()
+        self.fixed_house.refresh_from_db()
+        self.assertTrue(self.fixed_bill.is_paid)
+        self.assertEqual(self.fixed_bill.total_amount, Decimal("60.00"))
+        # The debit follows the corrected total, not the original one.
+        self.assertEqual(self.fixed_house.money_balance, Decimal("-60.00"))
+
+    # --- month/year stay fixed -------------------------------------------------
+
+    def test_month_and_year_are_not_editable(self):
+        self.client.force_login(self.owner)
+
+        self.client.post(
+            self.edit_url(self.fixed_bill),
+            monthly_bill_payload(month="03", year="2027", electricity_common="55"))
+
+        self.fixed_bill.refresh_from_db()
+        self.assertEqual(self.fixed_bill.month, "01")
+        self.assertEqual(self.fixed_bill.year, "2026")
+        self.assertEqual(self.fixed_bill.electricity_common, Decimal("55"))
+
+    # --- non-fixed houses: no editing ------------------------------------------
+
+    def test_non_fixed_house_amounts_are_not_editable(self):
+        self.client.force_login(self.owner)
+
+        # The is_paid-only form ignores the posted amount fields, and a
+        # submission without the paid switch stays an error.
+        response = self.client.post(
+            self.edit_url(self.free_bill),
+            monthly_bill_payload(electricity_common="999"))
+
+        self.assertEqual(response.status_code, 200)  # form re-rendered with errors
+        self.free_bill.refresh_from_db()
+        self.free_house.refresh_from_db()
+        self.assertEqual(self.free_bill.electricity_common, Decimal("100.00"))
+        self.assertFalse(self.free_bill.is_paid)
+        self.assertEqual(self.free_house.money_balance, Decimal("0.00"))
+
+    def test_non_fixed_house_payment_flow_unchanged(self):
+        self.client.force_login(self.owner)
+
+        response = self.client.post(self.edit_url(self.free_bill), {"is_paid": "on"})
+
+        self.assertEqual(response.status_code, 302)
+        self.free_bill.refresh_from_db()
+        self.free_house.refresh_from_db()
+        self.assertTrue(self.free_bill.is_paid)
+        self.assertEqual(self.free_house.money_balance, Decimal("-100.00"))
+
+    # --- paid bills are final --------------------------------------------------
+
+    def test_paid_fixed_bill_cannot_be_edited_or_repaid(self):
+        self.client.force_login(self.owner)
+        self.client.post(
+            self.edit_url(self.fixed_bill), monthly_bill_payload(is_paid="on"))
+        self.fixed_house.refresh_from_db()
+        self.assertEqual(self.fixed_house.money_balance, Decimal("-100.00"))
+
+        # Replay with corrected amounts: the idempotency guard keeps the
+        # amounts and the balance untouched.
+        response = self.client.post(
+            self.edit_url(self.fixed_bill),
+            monthly_bill_payload(electricity_common="777"))
+
+        self.assertEqual(response.status_code, 200)
+        self.fixed_bill.refresh_from_db()
+        self.fixed_house.refresh_from_db()
+        self.assertEqual(self.fixed_bill.electricity_common, Decimal("100.00"))
+        self.assertEqual(self.fixed_house.money_balance, Decimal("-100.00"))

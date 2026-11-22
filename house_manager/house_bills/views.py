@@ -21,7 +21,10 @@ from house_manager.client_bills.models import ClientMonthlyBill
 from house_manager.clients.models import Client
 from house_manager.common.helpers.bills_summary import bills_summary, filtered_bills
 from house_manager.common.mixins import HtmxFragmentMixin, MonthChoices, YearChoices
-from house_manager.house_bills.forms import HouseMonthlyBillForm, HouseOtherBillForm, HouseFixedBillForm
+from house_manager.house_bills.forms import (
+    HouseMonthlyBillForm, HouseMonthlyBillEditForm,
+    HouseOtherBillForm, HouseFixedBillForm
+)
 from house_manager.house_bills.helpers.filter_bills_by_payment_status import filter_bills_by_payment_status
 from house_manager.house_bills.models import HouseMonthlyBill, HouseOtherBill, TypeOfBillChoices
 from house_manager.houses.mixins import GetHouseAndUserMixin, HouseOwnershipMixin
@@ -228,6 +231,13 @@ class HouseBaseBillEditView(HtmxFragmentMixin, HouseOwnershipMixin, views.Update
     success_url_name = None
     fields = ("is_paid",)
 
+    def amount_edit_allowed(self):
+        """Whether an unpaid bill may be saved without paying it (an
+        amount correction). Default: never — a house-bill POST is a
+        payment, and submitting it without the paid switch is an error.
+        """
+        return False
+
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
 
@@ -252,6 +262,16 @@ class HouseBaseBillEditView(HtmxFragmentMixin, HouseOwnershipMixin, views.Update
             return self.form_invalid(form)
 
         if not form.cleaned_data['is_paid']:
+            # Amount correction without paying (fixed-taxes houses only,
+            # see amount_edit_allowed): save the new expense fields and
+            # re-render the row — the balance is untouched, and the total
+            # follows through the DB-generated column.
+            if self.amount_edit_allowed():
+                self.object = form.save()
+                if self.is_htmx_request():
+                    return self.render_row_fragment()
+                return redirect(self.get_success_url())
+
             return self.form_invalid(form)
         else:
             with transaction.atomic():
@@ -269,13 +289,20 @@ class HouseBaseBillEditView(HtmxFragmentMixin, HouseOwnershipMixin, views.Update
                 if not still_unpaid:
                     return self.form_invalid(form)
 
-                delta = house_bill_balance_delta(form.instance)
+                # total_amount is a DB-generated column: save() recomputes
+                # it from the submitted fields, so re-read the instance
+                # before the row is rendered and the balance debited — the
+                # in-memory total is stale whenever the amounts were edited
+                # in the same submit (fixed-taxes houses).
+                self.object = form.save()
+                self.object.refresh_from_db()
+
+                delta = house_bill_balance_delta(self.object)
 
                 if self.is_htmx_request():
-                    self.object = form.save()
                     response = self.render_row_fragment()
                 else:
-                    response = super().form_valid(form)
+                    response = redirect(self.get_success_url())
 
                 House.objects.filter(pk=form.instance.house_id).update(
                     money_balance=F("money_balance") - delta)
@@ -332,6 +359,19 @@ class HouseMonthlyBillEditView(HouseBaseBillEditView):
     partial_template_name = "house_bills/partials/monthly_bill_modal.html"
     row_template_name = "house_bills/partials/monthly_bill_row.html"
     success_url_name = "list_house_bills"
+
+    def get_form_class(self):
+        # Full amount editing is only offered while the bill is unpaid and
+        # the house calculates fixed monthly taxes: in the non-fixed mode
+        # calculate_fees() has already distributed the amounts to the
+        # client bills at creation, so changing them here would desync
+        # the house bill from what the clients were charged.
+        if self.object.house.fixed_monthly_taxes and not self.object.is_paid:
+            return HouseMonthlyBillEditForm
+        return super().get_form_class()
+
+    def amount_edit_allowed(self):
+        return self.object.house.fixed_monthly_taxes
 
 
 class HouseOtherBillEditView(HouseBaseBillEditView):

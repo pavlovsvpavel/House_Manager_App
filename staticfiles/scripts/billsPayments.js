@@ -80,6 +80,9 @@
         if (!form) return;
         // Signature-enabled forms are managed by signaturePad.js.
         if (form.querySelector('#signature')) return;
+        // Amount-edit forms (fixed-taxes houses) save corrections without
+        // paying — the button stays enabled regardless of the paid switch.
+        if (form.hasAttribute('data-bill-edit')) return;
 
         const checkbox = form.querySelector('input[name="is_paid"]');
         const saveButton = form.querySelector('#save-btn');
@@ -116,7 +119,8 @@
     //
     // The displayed amounts are Django-localized (a Bulgarian page shows
     // "45,50"), so parse anything and render back in the SAME format the
-    // server used: the separator is detected from the initial total text.
+    // server used: the separator and the currency suffix ("€") are both
+    // detected from the initial total text.
     function parseAmount(text) {
         const cleaned = String(text).replace(/[^\d.,-]/g, '');
         const normalized = cleaned.includes(',') && cleaned.includes('.')
@@ -133,8 +137,11 @@
         const totalEl = form.querySelector('[data-bill-total]');
         if (!boxes.length || !totalEl) return;
 
-        // "220.00 EUR" (en) or "220,00 EUR" (bg) — keep the page's format.
-        const decimalSeparator = totalEl.textContent.indexOf(',') !== -1 ? ',' : '.';
+        // "220.00 €" (en) or "220,00 €" (bg) — keep the page's format and
+        // currency: everything after the last digit is the suffix.
+        const initialText = totalEl.textContent.trim();
+        const decimalSeparator = initialText.indexOf(',') !== -1 ? ',' : '.';
+        const suffix = initialText.replace(/^.*\d/, '') || ' €';
         const base = parseAmount(form.dataset.baseAmount || '0');
 
         const recalc = function () {
@@ -142,7 +149,7 @@
             boxes.forEach(function (box) {
                 if (box.checked) total += parseAmount(box.dataset.amount || '0');
             });
-            totalEl.textContent = total.toFixed(2).replace('.', decimalSeparator) + ' EUR';
+            totalEl.textContent = total.toFixed(2).replace('.', decimalSeparator) + suffix;
         };
 
         boxes.forEach(function (box) {
