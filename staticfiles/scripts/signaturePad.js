@@ -121,8 +121,18 @@
             if (checkbox.checked) {
                 $signatureElement.removeClass('hidden');
 
-                // Inside a modal the dialog scrolls, not the page.
-                if (!signatureElement.closest('dialog') && $signatureElement.offset()) {
+                const panel = signatureElement.closest('.bill-modal__panel');
+                if (panel) {
+                    // Inside a modal the panel is the scroll container:
+                    // bring the freshly revealed pad into view (jQuery's
+                    // offset() is document-relative and would scroll the
+                    // wrong container).
+                    const padTop = signatureElement.getBoundingClientRect().top
+                        - panel.getBoundingClientRect().top;
+                    $(panel).animate({
+                        scrollTop: panel.scrollTop + padTop - 12,
+                    }, 600);
+                } else if ($signatureElement.offset()) {
                     $('html, body').animate({
                         scrollTop: $signatureElement.offset().top - 50,
                     }, 600);
