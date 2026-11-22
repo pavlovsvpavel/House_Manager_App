@@ -34,7 +34,7 @@
     flex: 0 1 70%;
     background-color: var(--form-bgnd);
     border-radius: 1em;
-    padding: 1em 2em;
+    padding: 1em;
     gap: 1em;
 }
 
