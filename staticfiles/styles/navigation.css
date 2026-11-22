@@ -139,6 +139,26 @@
     border-radius: 0.5em;
 }
 
+/* Logout is a POST form now (security #10 — GET links can be CSRF-able);
+   the button reads exactly like the sibling menu links, which the theme
+   already styles (.navigation ul button). */
+.navigation .menu-links form {
+    width: 100%;
+}
+
+.navigation .menu-links .logout-button {
+    width: 100%;
+    font: inherit;
+    text-align: inherit;
+    background: none;
+    border: none;
+}
+
+.navigation .menu-links .logout-button:hover {
+    background-color: color-mix(in oklab, var(--surface-inverse), white 12%);
+    border-radius: 0.5em;
+}
+
 /*End Profile menu*/
 
 .navigation img,

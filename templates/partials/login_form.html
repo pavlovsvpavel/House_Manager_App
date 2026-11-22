@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static %}
 
 {% if login_form.non_field_errors %}
@@ -17,6 +18,9 @@
     {{ login_form.password.label_tag }}
     {{ login_form.password }}
     {{ login_form.password.errors }}
+    <div class="forgot-password">
+        <a href="{% url 'account_reset_password' %}">{% trans "Forgot password?" %}</a>
+    </div>
 </div>
 
 <input type="hidden" name="g-recaptcha-response-login" id="recaptchaTokenLogin">

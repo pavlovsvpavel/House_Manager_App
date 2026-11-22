@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load socialaccount %}
+
+{# allauth's own login flow (reached e.g. after confirming an email address) — styled to match the app. #}
+{% block main_content %}
+<section class="site-section login-register-user">
+    <div class="container">
+        <div class="form-container">
+            <div class="forms">
+                <div class="form-content">
+                    <div class="verification-form">
+                        <div class="create-form-heading">{% trans "Log in" %}</div>
+                        <form method="post" action="{% url 'account_login' %}" class="create-form">
+                            {% csrf_token %}
+                            {% if form.non_field_errors %}
+                                <div class="errorlist">
+                                    {% for error in form.non_field_errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-group">
+                                {{ form.login.label_tag }}
+                                {{ form.login }}
+                                {{ form.login.errors }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.password.label_tag }}
+                                {{ form.password }}
+                                {{ form.password.errors }}
+                            </div>
+                            <div class="form-group remember-group">
+                                {{ form.remember }}
+                                {{ form.remember.label_tag }}
+                            </div>
+                            <button type="submit" class="btn">{% trans "Log in" %}</button>
+                        </form>
+                        <p class="verification-note">
+                            {% blocktranslate %}No account yet? {% endblocktranslate %}
+                            <a href="{% url 'register_user' %}">{% trans "Register" %}</a>
+                        </p>
+                        <div class="google-login">
+                            {% include "partials/google_button.html" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

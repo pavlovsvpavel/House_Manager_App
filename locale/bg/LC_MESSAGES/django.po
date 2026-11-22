@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 13:21+0000\n"
+"POT-Creation-Date: 2026-11-22 15:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pavel Pavlov\n"
 "Language-Team: Pavel Pavlov\n"
@@ -11,6 +11,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: house_manager/accounts/adapters.py:30
+msgid ""
+"An account with this email already exists. Please log in with your email and "
+"password."
+msgstr "Съществува акаунт с този имейл. Влезте с имейла и паролата си."
 
 #: house_manager/accounts/models.py:15
 msgid "email"
@@ -60,15 +66,15 @@ msgstr ""
 "Неподдържан файлов формат. Моля, качете файл с разширение (.jpg, .jpeg, ."
 "png, .gif)."
 
-#: house_manager/accounts/views.py:91
+#: house_manager/accounts/views.py:129
 msgid "Edit Profile"
 msgstr "Промяна на профил"
 
-#: house_manager/accounts/views.py:107
+#: house_manager/accounts/views.py:145
 msgid "Password change"
 msgstr "Промяна на парола"
 
-#: house_manager/accounts/views.py:147
+#: house_manager/accounts/views.py:185
 msgid "Set Password"
 msgstr "Създаване на парола"
 
@@ -306,8 +312,8 @@ msgstr "Общо сума"
 #: house_manager/common/mixins.py:220 house_manager/common/mixins.py:278
 #: templates/client_bills/partials/monthly_bill_details.html:7
 #: templates/client_bills/partials/other_bill_details.html:6
-#: templates/common/reports_other_bills.html:55
-#: templates/common/reports_other_bills.html:68
+#: templates/common/reports_other_bills.html:53
+#: templates/common/reports_other_bills.html:66
 #: templates/house_bills/partials/monthly_bill_details.html:6
 #: templates/house_bills/partials/monthly_bill_form.html:65
 #: templates/house_bills/partials/other_bill_details.html:6
@@ -321,8 +327,8 @@ msgstr "Платена"
 
 #: house_manager/common/mixins.py:262
 #: templates/client_bills/partials/other_bill_details.html:15
-#: templates/common/reports_other_bills.html:50
-#: templates/common/reports_other_bills.html:63
+#: templates/common/reports_other_bills.html:48
+#: templates/common/reports_other_bills.html:61
 #: templates/house_bills/partials/other_bill_details.html:15
 #: templates/partials/reports/filtered_other_bill_type_multi.html:13
 msgid "Comment"
@@ -499,13 +505,192 @@ msgstr "Създай обект"
 msgid "Edit House"
 msgstr "Промяна на обект"
 
+#: templates/account/email/email_confirmation_message.txt:2
+#, python-format
+msgid ""
+"Someone (hopefully you, %(user_display)s) started registering an account on "
+"%(site_name)s with this email address. Confirm it to activate the account:"
+msgstr ""
+"Някой (надяваме се, че сте вие, %(user_display)s) започна регистрация на "
+"акаунт в %(site_name)s с този имейл адрес. Потвърдете адреса, за да "
+"активирате акаунта:"
+
+#: templates/account/email/email_confirmation_message.txt:6
+msgid ""
+"If this wasn't you, ignore this email — the account stays inactive and "
+"nothing else happens."
+msgstr ""
+"Ако това не сте били вие, игнорирайте имейла — акаунтът остава неактивен и "
+"нищо не се променя."
+
+#: templates/account/email/password_reset_key_message.txt:2
+#, python-format
+msgid ""
+"Someone (hopefully you) requested a password reset for this email address on "
+"%(site_name)s. Open the link below to set a new password:"
+msgstr ""
+"Някой (надяваме се, че сте вие) поиска възстановяване на паролата за този "
+"имейл адрес в %(site_name)s. Отворете връзката по-долу, за да зададете нова "
+"парола:"
+
+#: templates/account/email/password_reset_key_message.txt:6
+msgid "If this wasn't you, ignore this email — your password stays unchanged."
+msgstr ""
+"Ако това не сте били вие, игнорирайте имейла — паролата ви остава "
+"непроменена."
+
+#: templates/account/email_confirm.html:15
+#: templates/account/verification_sent.html:11
+msgid "Confirm your email address"
+msgstr "Потвърдете имейл адреса си"
+
+#: templates/account/email_confirm.html:17
+#, python-format
+msgid ""
+"Please confirm that <strong>%(email)s</strong> is the email address of user "
+"%(user_display)s."
+msgstr ""
+"Моля, потвърдете, че <strong>%(email)s</strong> е имейл адресът на "
+"потребител %(user_display)s."
+
+#: templates/account/email_confirm.html:23
+msgid "Confirm"
+msgstr "Потвърдете"
+
+#: templates/account/email_confirm.html:26
+msgid "Already confirmed"
+msgstr "Вече е потвърдено"
+
+#: templates/account/email_confirm.html:28
+#, python-format
+msgid ""
+"Unable to confirm %(email)s — it is already confirmed by a different account."
+msgstr ""
+"Не може да се потвърди %(email)s — адресът вече е потвърден от друг акаунт."
+
+#: templates/account/email_confirm.html:32
+#: templates/account/password_reset_from_key.html:12
+msgid "Link expired"
+msgstr "Изтекла връзка"
+
+#: templates/account/email_confirm.html:34
+msgid ""
+"This confirmation link expired or is invalid. Open the newest email, or log "
+"in again — a fresh link goes out automatically."
+msgstr ""
+"Тази връзка за потвърждение е изтекла или е невалидна. Отворете най-новия "
+"имейл или влезте отново — нова връзка се изпраща автоматично."
+
+#: templates/account/email_confirm.html:36
+#: templates/account/password_reset.html:26
+#: templates/account/password_reset_done.html:18
+#: templates/account/password_reset_from_key_done.html:15
+#: templates/account/verification_sent.html:18
+msgid "Back to login"
+msgstr "Обратно към входа"
+
+#: templates/account/login.html:13 templates/account/login.html:37
+msgid "Log in"
+msgstr "Вход"
+
+#: templates/account/login.html:40
+msgid "No account yet? "
+msgstr "Нямате акаунт? "
+
+#: templates/account/login.html:41 templates/accounts/login.html:46
+#: templates/accounts/login.html:51 templates/accounts/register.html:45
+#: templates/accounts/register.html:50 templates/common/index.html:12
+#: templates/common/index.html:47
+msgid "Register"
+msgstr "Регистрация"
+
+#: templates/account/password_reset.html:11
+#: templates/account/password_reset_from_key.html:16
+msgid "Reset your password"
+msgstr "Възстановете паролата си"
+
+#: templates/account/password_reset.html:13
+msgid ""
+"Enter your email address and we will send you a link to set a new password. "
+"Only accounts with a personal password can be reset — Google sign-ins do not "
+"use one."
+msgstr ""
+"Въведете имейл адреса си и ще ви изпратим връзка за задаване на нова парола. "
+"Възстановяването е налично само за акаунти с лична парола — влизанията през "
+"Google не ползват такава."
+
+#: templates/account/password_reset.html:22
+msgid "Send reset link"
+msgstr "Изпрати връзка за възстановяване"
+
+#: templates/account/password_reset.html:25
+msgid "Remembered it? "
+msgstr "Помните си я? "
+
+#: templates/account/password_reset_done.html:11
+msgid "Check your email"
+msgstr "Проверете имейла си"
+
+#: templates/account/password_reset_done.html:13
+msgid ""
+"If an account with that email and a personal password exists, a reset link "
+"is on its way. The link expires in a few days."
+msgstr ""
+"Ако съществува акаунт с този имейл и лична парола, връзка за възстановяване "
+"е на път. Връзката изтича след няколко дни."
+
+#: templates/account/password_reset_done.html:16
+msgid "No email? Check the spam folder, then try again."
+msgstr "Няма имейл? Проверете Спам папката си и опитайте отново."
+
+#: templates/account/password_reset_from_key.html:14
+msgid ""
+"This password reset link is invalid or has already been used. Request a new "
+"one from the login page."
+msgstr ""
+"Тази връзка за възстановяване е невалидна или вече е използвана. Поискайте "
+"нова от страницата за вход."
+
+#: templates/account/password_reset_from_key.html:18
+msgid "Set a new password"
+msgstr "Задайте нова парола"
+
+#: templates/account/password_reset_from_key.html:31
+msgid "Set new password"
+msgstr "Задайте нова парола"
+
+#: templates/account/password_reset_from_key_done.html:11
+msgid "Password changed"
+msgstr "Паролата е променена"
+
+#: templates/account/password_reset_from_key_done.html:13
+msgid "Your new password is set. Log in with it as usual."
+msgstr "Новата ви парола е зададена. Влезте с нея, както обикновено."
+
+#: templates/account/verification_sent.html:13
+msgid ""
+"We sent a confirmation link to your email address. Open it in this browser "
+"to activate your account."
+msgstr ""
+"Изпратихме връзка за потвърждение на вашия имейл адрес. Отворете я в този "
+"браузър, за да активирате акаунта си."
+
+#: templates/account/verification_sent.html:16
+msgid ""
+"No email? Check the spam folder, then go back to the login page and try "
+"again — a fresh link goes out automatically (at most once every few minutes)."
+msgstr ""
+"Няма имейл? Проверете Спам папката си, върнете се на страницата за вход и "
+"опитайте отново — нова връзка се изпраща автоматично (най-много веднъж на "
+"няколко минути)."
+
 #: templates/accounts/delete_profile.html:9
 msgid "Are you sure you want to delete your profile?"
 msgstr "Сигурни ли сте, че искате да изтриете този профил?"
 
 #: templates/accounts/delete_profile.html:12
 #: templates/clients/delete_client.html:12
-#: templates/common/reports_other_bills.html:68
+#: templates/common/reports_other_bills.html:66
 #: templates/houses/delete_house.html:12
 #: templates/partials/reports/reports_clients_data.html:20
 #: templates/partials/reports/reports_clients_data_other_bills.html:17
@@ -514,7 +699,7 @@ msgstr "Да"
 
 #: templates/accounts/delete_profile.html:13
 #: templates/clients/delete_client.html:13
-#: templates/common/reports_other_bills.html:68
+#: templates/common/reports_other_bills.html:66
 #: templates/houses/delete_house.html:13
 #: templates/partials/reports/reports_clients_data.html:20
 #: templates/partials/reports/reports_clients_data_other_bills.html:17
@@ -561,17 +746,11 @@ msgstr "Все още нямате профил?"
 msgid "Register now"
 msgstr "Регистрация"
 
-#: templates/accounts/login.html:45 templates/accounts/login.html:50
-#: templates/accounts/register.html:44 templates/accounts/register.html:49
-#: templates/common/index.html:12 templates/common/index.html:47
-msgid "Register"
-msgstr "Регистрация"
-
-#: templates/accounts/login.html:51 templates/accounts/register.html:50
+#: templates/accounts/login.html:52 templates/accounts/register.html:51
 msgid "Already have an account?"
 msgstr "Вече имате профил?"
 
-#: templates/accounts/login.html:52 templates/accounts/register.html:51
+#: templates/accounts/login.html:53 templates/accounts/register.html:52
 msgid "Login now"
 msgstr "Вход"
 
@@ -613,8 +792,8 @@ msgstr "Неплатени сметки, €"
 
 #: templates/client_bills/partials/monthly_bill_details.html:28
 #: templates/client_bills/partials/other_bill_details.html:16
-#: templates/common/reports_other_bills.html:51
-#: templates/common/reports_other_bills.html:64
+#: templates/common/reports_other_bills.html:49
+#: templates/common/reports_other_bills.html:62
 #: templates/house_bills/partials/monthly_bill_row.html:19
 #: templates/house_bills/partials/other_bill_row.html:23
 #: templates/partials/details_client_bills.html:11
@@ -919,9 +1098,9 @@ msgstr "Месечни сметки - справки"
 msgid "Amount for collection"
 msgstr "Сума за събиране"
 
-#: templates/common/reports_bills.html:62
-#: templates/common/reports_other_bills.html:79
-#: templates/common/reports_other_bills.html:87
+#: templates/common/reports_bills.html:64
+#: templates/common/reports_other_bills.html:77
+#: templates/common/reports_other_bills.html:85
 #: templates/partials/reports/filtered_other_bill_type_multi.html:21
 #: templates/partials/reports/filtered_other_bill_type_single.html:17
 msgid "Total"
@@ -932,8 +1111,8 @@ msgstr "Общо сума"
 msgid "Other bills - reports"
 msgstr "Други сметки - справки"
 
-#: templates/common/reports_other_bills.html:53
-#: templates/common/reports_other_bills.html:66
+#: templates/common/reports_other_bills.html:51
+#: templates/common/reports_other_bills.html:64
 #: templates/partials/reports/reports_clients_data.html:10
 #: templates/partials/reports/reports_clients_data_other_bills.html:7
 #: templates/partials/reports/table_headers.html:10
@@ -1075,9 +1254,13 @@ msgctxt "filter chips: plural, next to Неплатени/Всички"
 msgid "Paid"
 msgstr "Платени"
 
-#: templates/partials/google_button.html:11
+#: templates/partials/google_button.html:13
 msgid "Continue with Google"
 msgstr "Използвай Google"
+
+#: templates/partials/login_form.html:22
+msgid "Forgot password?"
+msgstr "Забравена парола?"
 
 #: templates/partials/messages_toast.html:8
 #: templates/partials/undo_toast.html:6
@@ -1100,7 +1283,7 @@ msgstr "Администрация"
 msgid "Settings"
 msgstr "Настройки"
 
-#: templates/partials/profile_menu.html:30
+#: templates/partials/profile_menu.html:33
 msgid "Logout"
 msgstr "Изход"
 
@@ -1166,4 +1349,3 @@ msgstr "Сметката е платена."
 #: templates/partials/undo_toast.html:4
 msgid "Undo"
 msgstr "Отмени"
-

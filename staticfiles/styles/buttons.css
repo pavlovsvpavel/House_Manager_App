@@ -199,6 +199,22 @@
     text-decoration: none;
 }
 
+/* The button is a real <button> in a POST form now (security #10) — strip
+   the browser chrome so it reads like the old link. */
+.google-button-form {
+    display: flex;
+    justify-content: center;
+}
+
+.google-button {
+    background: none;
+    border: none;
+    padding: 0;
+    width: 80%;
+    font: inherit;
+    cursor: pointer;
+}
+
 .google-button-icon img {
     height: auto;
     width: 25px;
@@ -246,7 +262,7 @@
 .toggle-btn {
     position: absolute;
     right: 10px;
-    top: 71%;
+    top: 53%;
     transform: translateY(-50%);
     background: none;
     border: none;

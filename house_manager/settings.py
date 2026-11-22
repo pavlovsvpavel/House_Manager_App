@@ -21,7 +21,23 @@ SITE_ID = config('SITE_ID', cast=int)
 ACCOUNT_LOGIN_METHODS = ['email', ]
 ACCOUNT_SIGNUP_FIELDS = ['email*', ]
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-SOCIALACCOUNT_LOGIN_ON_GET = True
+# Security #11: accounts are unusable until the emailed confirmation link
+# is followed. Social accounts are exempt (the provider verified the email).
+# HMAC confirmation keys: nothing secret is stored in the DB (a leaked dump
+# grants nothing), keys expire cryptographically, and replaying a used link
+# is a no-op (the login gate still requires the password). The login gate's
+# resend cooldown uses the cache instead of confirmation rows.
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_CONFIRMATION_HMAC = True
+# Security #11 follow-up: the reset flow only serves accounts with a
+# personal password (the form drops Google-only accounts, whose emails
+# then get the generic "if the account exists" response).
+ACCOUNT_FORMS = {
+    'reset_password': 'house_manager.accounts.forms.HouseManagerResetPasswordForm',
+}
+# Security #10: GET-initiated social login is login-CSRF-able; the Google
+# button renders a POST form instead of a plain link.
+SOCIALACCOUNT_LOGIN_ON_GET = False
 SOCIALACCOUNT_ADAPTER = 'house_manager.accounts.adapters.CustomSocialAccountAdapter'
 SECURE_PROXY_SSL_HEADER_STR = config('SECURE_PROXY_SSL_HEADER')
 SECURE_PROXY_SSL_HEADER = tuple(SECURE_PROXY_SSL_HEADER_STR.split(','))
@@ -44,7 +60,10 @@ SECURE_CSP = {
         "https://fonts.googleapis.com",
         "https://cdnjs.cloudflare.com",
     ],
-    "form-action": [CSP.SELF],
+    # form-action must allow the OAuth redirect target: Chrome checks
+    # form-action on redirect hops of form-initiated navigations, so a
+    # 'self'-only policy would block the 302 to Google after the POST.
+    "form-action": [CSP.SELF, "https://accounts.google.com"],
     "base-uri": [CSP.SELF],
     "font-src": [
         CSP.SELF,

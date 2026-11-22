@@ -5,7 +5,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from house_manager.accounts.helpers.send_email_on_successful_registration import send_email_on_successful_registration
+from allauth.account.models import EmailAddress
+from allauth.account.signals import password_reset
+
 from house_manager.accounts.models import Profile
 
 UserModel = get_user_model()
@@ -17,8 +19,19 @@ def user_created(sender, instance, created, **kwargs):
         return
 
     Profile.objects.create(user=instance)
+    # No welcome email: registration sends the allauth confirmation email
+    # (security #11) — a second mail would only dilute it.
 
-    send_email_on_successful_registration(instance)
+
+@receiver(password_reset)
+def mark_email_verified_on_password_reset(sender, request, user, **kwargs):
+    # A completed reset proves mailbox ownership — the link was emailed to
+    # the address and followed. Marking it verified here keeps the login
+    # gate (which demands a verified email) from demanding a SECOND email
+    # confirmation right after the reset.
+    EmailAddress.objects.filter(user=user, email__iexact=user.email).update(
+        verified=True
+    )
 
 
 @receiver(post_save, sender=UserModel)

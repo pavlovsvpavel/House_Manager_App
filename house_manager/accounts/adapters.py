@@ -3,6 +3,8 @@ from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.utils.translation import gettext as _
+
 UserModel = get_user_model()
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
@@ -11,14 +13,20 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         if request.user.is_authenticated:
             return
 
-        # Get the email from the social login
-        email = sociallogin.account.extra_data.get('email')
-
-        # Check if a user with this email already exists and has set personal password
-        if email:
-            user = UserModel.objects.filter(email=email).first()
-            if user and user.has_set_password:
-                messages.error(request,
-                               "An account with this email already exists. "
-                               "Please log in with your email and password.")
-                raise ImmediateHttpResponse(redirect('login_user'))
+        # Security #11: decide on PROVIDER-VERIFIED emails only — extra_data
+        # is provider-shaped and untrustworthy. A matching local account
+        # with a password keeps its email+password workflow: the social
+        # login is refused instead of silently linking the two accounts.
+        verified_emails = [
+            email_address.email
+            for email_address in sociallogin.email_addresses
+            if email_address.verified
+        ]
+        if verified_emails and UserModel.objects.filter(
+            email__in=verified_emails,
+            has_set_password=True,
+        ).exists():
+            messages.error(request,
+                           _("An account with this email already exists. "
+                             "Please log in with your email and password."))
+            raise ImmediateHttpResponse(redirect('login_user'))

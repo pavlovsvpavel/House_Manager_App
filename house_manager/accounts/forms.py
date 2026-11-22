@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import forms as auth_forms, get_user_model
 from django.contrib.auth.forms import SetPasswordForm, AuthenticationForm
 from django.core.exceptions import ValidationError
+from allauth.account.forms import ResetPasswordForm
 import requests
 from house_manager import settings
 
@@ -96,3 +97,16 @@ class HouseManagerUserSetPasswordForm(SetPasswordForm):
         widget=forms.PasswordInput,
         strip=False,
     )
+
+
+class HouseManagerResetPasswordForm(ResetPasswordForm):
+    """Security #11 follow-up: the password-reset flow exists only for
+    accounts with a personal password. Google-only accounts authenticate
+    with Google (and can add a password later from the profile settings) —
+    a reset request for such an email is treated as an unknown account:
+    the generic "if the account exists" response, no reset link mailed."""
+
+    def clean_email(self):
+        email = super().clean_email()
+        self.users = [user for user in self.users if user.has_usable_password()]
+        return email

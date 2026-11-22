@@ -35,10 +35,11 @@
                                 <div class="text sign-up-text">{% trans "Don't have an account?" %}
                                     <label for="flip" id="register_now">{% trans "Register now" %}</label>
                                 </div>
-                                <div class="google-login">
-                                    {% include "partials/google_button.html" %}
-                                </div>
                             </form>
+                            {# The Google POST form cannot nest inside the login form (the parser would drop the nested <form>); it sits next to it. #}
+                            <div class="google-login">
+                                {% include "partials/google_button.html" %}
+                            </div>
                         </div>
                         <div class="register-form">
                             <div class="create-form-heading">{% trans "Register" %}</div>
@@ -50,10 +51,10 @@
                                 <div class="text sign-up-text">{% trans "Already have an account?" %}
                                     <label for="flip" id="login_now">{% trans "Login now" %}</label>
                                 </div>
-                                <div class="google-login">
-                                    {% include "partials/google_button.html" %}
-                                </div>
                             </form>
+                            <div class="google-login">
+                                {% include "partials/google_button.html" %}
+                            </div>
                         </div>
                     </div>
                 </div>

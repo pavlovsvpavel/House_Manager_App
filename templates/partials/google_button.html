@@ -2,12 +2,15 @@
 {% load static %}
 {% load socialaccount %}
 
-<a href="{% provider_login_url 'google' %}?next={{ next }}"
-   class="google-button">
-    <div class="google-button-content-wrapper">
-        <div class="google-button-icon">
-            <img class="google-logo" src="{% static "images/google-logo.avif" %}" alt="google-icon">
+{# Security #10: SOCIALACCOUNT_LOGIN_ON_GET is off, so the provider URL must be POSTed — a plain link would be login-CSRF-able. #}
+<form method="post" action="{% provider_login_url 'google' %}?next={{ next }}" class="google-button-form">
+    {% csrf_token %}
+    <button type="submit" class="google-button">
+        <div class="google-button-content-wrapper">
+            <div class="google-button-icon">
+                <img class="google-logo" src="{% static "images/google-logo.avif" %}" alt="google-icon">
+            </div>
+            <p class="google-button-contents">{% trans 'Continue with Google' %}</p>
         </div>
-        <p class="google-button-contents">{% trans 'Continue with Google' %}</p>
-    </div>
-</a>
+    </button>
+</form>

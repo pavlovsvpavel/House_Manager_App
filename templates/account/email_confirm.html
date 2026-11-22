@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account %}
+
+{% block main_content %}
+<section class="site-section login-register-user">
+    <div class="container">
+        <div class="form-container">
+            <div class="forms">
+                <div class="form-content">
+                    <div class="verification-form">
+                        {% if confirmation %}
+                            {% user_display confirmation.email_address.user as user_display %}
+                            {% if can_confirm %}
+                                <div class="create-form-heading">{% trans "Confirm your email address" %}</div>
+                                <p class="verification-note">
+                                    {% blocktranslate with email=confirmation.email_address.email %}Please confirm that <strong>{{ email }}</strong> is the email address of user {{ user_display }}.{% endblocktranslate %}
+                                </p>
+                                <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                                    {% csrf_token %}
+                                    {# After confirming, send the user to the login page (allauth deliberately does not auto-login on a link that sits in a mailbox/log). #}
+                                    <input type="hidden" name="next" value="{% url 'login_user' %}">
+                                    <button type="submit" class="btn">{% trans "Confirm" %}</button>
+                                </form>
+                            {% else %}
+                                <div class="create-form-heading">{% trans "Already confirmed" %}</div>
+                                <p class="verification-note">
+                                    {% blocktranslate with email=confirmation.email_address.email %}Unable to confirm {{ email }} — it is already confirmed by a different account.{% endblocktranslate %}
+                                </p>
+                            {% endif %}
+                        {% else %}
+                            <div class="create-form-heading">{% trans "Link expired" %}</div>
+                            <p class="verification-note">
+                                {% blocktranslate %}This confirmation link expired or is invalid. Open the newest email, or log in again — a fresh link goes out automatically.{% endblocktranslate %}
+                            </p>
+                            <a class="btn" href="{% url 'login_user' %}">{% trans "Back to login" %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

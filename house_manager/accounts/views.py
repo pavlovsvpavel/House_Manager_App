@@ -1,10 +1,15 @@
+from datetime import timedelta
+
 from django.contrib import messages
-from django.contrib.auth import views as auth_views, logout, login, get_user_model, update_session_auth_hash, \
-    get_backends
+from django.contrib.auth import views as auth_views, logout, get_user_model, update_session_auth_hash
+from django.core.cache import cache
+from django.http import HttpResponseNotAllowed
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
+
+from allauth.account.models import EmailAddress
 
 from house_manager.accounts.forms import HouseManagerUserCreationForm, HouseManagerUserSetPasswordForm, \
     HouseManagerUserLoginForm
@@ -19,6 +24,10 @@ class LogInUserView(auth_views.LoginView):
     form_class = HouseManagerUserLoginForm
     redirect_authenticated_user = True
 
+    # Security #11: the login form must not be usable to flood someone's
+    # inbox — a fresh confirmation mail goes out at most once per interval.
+    VERIFICATION_RESEND_COOLDOWN = timedelta(minutes=5)
+
     def get_redirect_url(self):
         return reverse_lazy("index")
 
@@ -28,6 +37,24 @@ class LogInUserView(auth_views.LoginView):
         context['login_form'] = context.pop('form')
 
         return context
+
+    def form_valid(self, form):
+        user = form.get_user()
+        email_address = EmailAddress.objects.filter(user=user).first()
+        if email_address and not email_address.verified:
+            # The confirmation key is an HMAC token (no DB rows), so the
+            # resend cooldown lives in the cache: the login form cannot be
+            # used to flood someone's inbox.
+            cooldown_key = f"verification-sent:{user.pk}"
+            if not cache.get(cooldown_key):
+                email_address.send_confirmation(self.request)
+                cache.set(
+                    cooldown_key,
+                    True,
+                    self.VERIFICATION_RESEND_COOLDOWN.total_seconds(),
+                )
+            return redirect("account_email_verification_sent")
+        return super().form_valid(form)
 
 
 class RegisterUserView(views.CreateView):
@@ -49,15 +76,26 @@ class RegisterUserView(views.CreateView):
         user.has_set_password = True
         user.save()
 
-        backend = get_backends()[0]
-        user.backend = f"{backend.__module__}.{backend.__class__.__name__}"
+        # Security #11: the account starts unverified. allauth emails the
+        # confirmation link; the login happens through that link (and the
+        # login view refuses unverified accounts) — no immediate login.
+        email_address = EmailAddress.objects.create(
+            user=user,
+            email=user.email,
+            primary=True,
+            verified=False,
+        )
+        email_address.send_confirmation(self.request)
 
-        login(self.request, user)
-
-        return result
+        return redirect("account_email_verification_sent")
 
 
 def logout_user(request):
+    # Security #10: a GET link can log the user out from any third-party
+    # page; logout is POST-only now. Stale profile-menu links that somehow
+    # GET the URL just land back on the index, logged in.
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
     logout(request)
     storage = messages.get_messages(request)
     for message in storage:

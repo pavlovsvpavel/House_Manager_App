@@ -1,0 +1,6 @@
+{% extends "account/email/base_message.txt" %}{% load i18n %}{% load account %}
+{% block content %}{% autoescape off %}{% user_display user as user_display %}{% blocktranslate with site_name=current_site.name %}Someone (hopefully you, {{ user_display }}) started registering an account on {{ site_name }} with this email address. Confirm it to activate the account:{% endblocktranslate %}
+
+{{ activate_url }}
+
+{% blocktranslate %}If this wasn't you, ignore this email — the account stays inactive and nothing else happens.{% endblocktranslate %}{% endautoescape %}{% endblock content %}
