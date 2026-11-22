@@ -4,7 +4,7 @@ from django.views import generic as views
 from django.utils.translation import gettext_lazy as _
 
 from house_manager.accounts.mixins import CheckForLoggedInUserMixin
-from house_manager.common.mixins import HtmxFragmentMixin
+from house_manager.common.mixins import HtmxFragmentMixin, YearChoices
 from house_manager.houses.forms import HouseCreateForm, HouseCalculationsOptionsEditForm
 from house_manager.houses.helpers.house_clients_filter_by_payment_status import house_clients_filter_by_payment_status
 from house_manager.houses.mixins import HouseOwnershipMixin
@@ -76,7 +76,17 @@ class HouseClientsDetailView(HouseOwnershipMixin, HtmxFragmentMixin, views.Detai
 
         context["selected_floor"] = selected_floor
 
-        context["clients"] = house_clients_filter_by_payment_status(clients, is_paid, month)
+        # Year filter, same rule as the floor one: only a four-digit value
+        # is a real filter; anything else means "no year filter".
+        selected_year = None
+        year_raw = (self.request.GET.get('year') or "").strip()
+        if len(year_raw) == 4 and year_raw.isdigit():
+            selected_year = year_raw
+        context["selected_year"] = selected_year
+        context["YearChoices"] = YearChoices.previous_and_next_years()
+
+        context["clients"] = house_clients_filter_by_payment_status(
+            clients, is_paid, month, selected_year)
         if is_paid == 'False':
             context["bills_filter_status"] = 'unpaid'
         elif is_paid == 'True':

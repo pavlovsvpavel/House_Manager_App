@@ -263,26 +263,8 @@
     gap: 0.5em;
 }
 
-/* Clients floor filter: type-in box + Apply (no-JS). Under HTMX it
-   live-filters as you type — the Apply button hides itself via the global
-   html.htmx-running rule — and swaps only #clients-results. */
-.clients-floor-filter {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5em;
-    margin-bottom: 0.75em;
-}
-
-.clients-floor-filter input[type="number"] {
-    width: auto;
-    padding: 0.5em 1.25em;
-    border: 1px solid var(--form-input-border);
-    border-radius: 1.5em;
-    background-color: var(--surface-0);
-    color: var(--text-1);
-}
-
+/* Clients page: under HTMX the facet row live-filters and swaps only
+   #clients-results; the Apply fallback hides via html.htmx-running. */
 #clients-results.htmx-request {
     opacity: 0.55;
     transition: opacity 0.2s ease-in-out;
@@ -446,11 +428,37 @@
     box-shadow: var(--focus-ring);
 }
 
+/* The clients page floor facet is a typed value rather than a select:
+   same frame, height and states so the row lines up, no chevron. */
+.filter-facet__input {
+    width: 100%;
+    min-width: 0;
+    padding: 0.55em 0.85em;
+    border: 1px solid var(--form-input-border);
+    border-radius: var(--radius-m);
+    background-color: var(--surface-1);
+    color: var(--text-1);
+    font: inherit;
+    line-height: 1.3;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.filter-facet__input:hover {
+    border-color: var(--accent);
+}
+
+.filter-facet__input:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: var(--focus-ring);
+}
+
 .filter-facet--active .filter-facet__label {
     color: var(--accent);
 }
 
-.filter-facet--active select {
+.filter-facet--active select,
+.filter-facet--active .filter-facet__input {
     border-color: var(--accent);
 }
 
@@ -552,7 +560,9 @@
 /* Status line under the page title, e.g. the dashboard-driven
    "clients with unpaid / paid bills" scope on the clients page. */
 .bills-filter-status {
+    display: flex;
+    align-items: center;
     color: var(--text-2);
-    font-size: 0.9em;
+    font-size: 1em;
     margin: -0.5em 0 1em;
 }

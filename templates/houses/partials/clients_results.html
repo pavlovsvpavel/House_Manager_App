@@ -12,11 +12,20 @@
     {% if selected_floor %}
         <p class="bills-filter-status">
             {% blocktrans with floor=selected_floor %}Clients on floor {{ floor }}{% endblocktrans %}
+            {% comment %}Plain link, not an HTMX swap: the form controls sit
+            outside #clients-results, so a fragment swap would leave the floor
+            box / year select showing the cleared value.{% endcomment %}
             <a class="floor-filter-clear"
-               href="{% url 'house_clients_list' house_pk=object.pk %}{% if request.GET.is_paid %}?is_paid={{ request.GET.is_paid }}{% endif %}"
-               hx-get="{% url 'house_clients_list' house_pk=object.pk %}{% if request.GET.is_paid %}?is_paid={{ request.GET.is_paid }}{% endif %}"
-               hx-target="#clients-results" hx-swap="outerHTML" hx-push-url="true"
+               href="{% url 'house_clients_list' house_pk=object.pk %}{% querystring floor=None %}"
                aria-label="{% trans "Clear floor filter" %}">&times;</a>
+        </p>
+    {% endif %}
+    {% if selected_year %}
+        <p class="bills-filter-status">
+            {% blocktrans with year=selected_year %}Clients with bills in {{ year }}{% endblocktrans %}
+            <a class="floor-filter-clear"
+               href="{% url 'house_clients_list' house_pk=object.pk %}{% querystring year=None %}"
+               aria-label="{% trans "Clear year filter" %}">&times;</a>
         </p>
     {% endif %}
     <div class="clients-cards">

@@ -226,3 +226,111 @@ class ClientsFloorFilterTests(TestCase):
             "house_clients_list", kwargs={"house_pk": self.house.pk}), {"floor": "2"})
 
         self.assertEqual(response.status_code, 404)
+
+
+class ClientsYearFilterTests(TestCase):
+    """
+    The clients page year filter (?year=YYYY) shows only clients with a
+    bill in that year. It composes with the floor, month and payment-status
+    filters, and all bill facets must match the same bill.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = UserModel.objects.create_user(
+            email="owner@test.bg", password="StrongPass123!")
+        cls.house = House.objects.create(
+            town="Sofia", address="Test str. 1", entrance="A",
+            money_balance=Decimal("0.00"), user=cls.owner)
+
+        cls.client_2026 = Client.objects.create(
+            family_name="Ivanov", floor=1, apartment="1",
+            number_of_people=2, house=cls.house, user=cls.owner)
+        cls.client_2025 = Client.objects.create(
+            family_name="Petrov", floor=2, apartment="5",
+            number_of_people=3, house=cls.house, user=cls.owner)
+        cls.client_without_bills = Client.objects.create(
+            family_name="Georgiev", floor=2, apartment="6",
+            number_of_people=2, house=cls.house, user=cls.owner)
+
+        cls._create_monthly_bill(cls.client_2026, "01", "2026", is_paid=False)
+        cls._create_monthly_bill(cls.client_2025, "01", "2025", is_paid=True)
+
+    @classmethod
+    def _create_monthly_bill(cls, client, month, year, is_paid):
+        return ClientMonthlyBill.objects.create(
+            month=month, year=year,
+            electricity_common=Decimal("100.00"),
+            electricity_lift=Decimal("0.00"), internet=Decimal("0.00"),
+            maintenance_lift=Decimal("0.00"), fee_cleaner=Decimal("0.00"),
+            fee_manager=Decimal("0.00"), fee_cashier=Decimal("0.00"),
+            repairs=Decimal("0.00"), others=Decimal("0.00"),
+            amount_old_debts=Decimal("0.00"), is_paid=is_paid,
+            house=cls.house, client=client, user=cls.owner)
+
+    def _get_clients(self, **params):
+        return self.client.get(
+            reverse("house_clients_list", kwargs={"house_pk": self.house.pk}),
+            params)
+
+    def test_year_filters_clients_with_bills_in_that_year(self):
+        self.client.force_login(self.owner)
+
+        response = self._get_clients(year="2026")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [c.family_name for c in response.context["clients"]], ["Ivanov"])
+        self.assertEqual(response.context["selected_year"], "2026")
+        self.assertContains(response, "Clients with bills in 2026")
+
+    def test_malformed_year_is_ignored(self):
+        self.client.force_login(self.owner)
+
+        for raw in ["26", "abcd", "2026-01", ""]:
+            response = self._get_clients(year=raw)
+
+            self.assertEqual(response.status_code, 200, raw)
+            self.assertEqual(len(response.context["clients"]), 3, raw)
+            self.assertIsNone(response.context["selected_year"], raw)
+
+    def test_year_composes_with_payment_status(self):
+        self.client.force_login(self.owner)
+
+        response = self._get_clients(year="2026", is_paid="False")
+
+        self.assertEqual(
+            [c.family_name for c in response.context["clients"]], ["Ivanov"])
+        self.assertContains(response, "Clients with unpaid bills")
+
+        response = self._get_clients(year="2025", is_paid="False")
+
+        self.assertEqual(response.context["clients"].count(), 0)
+
+    def test_month_and_year_must_match_the_same_bill(self):
+        # Both clients have a January bill, but in different years: the
+        # month filter must not borrow a bill from the other year.
+        self.client.force_login(self.owner)
+
+        response = self._get_clients(month="01", year="2026")
+
+        self.assertEqual(
+            [c.family_name for c in response.context["clients"]], ["Ivanov"])
+
+    def test_year_composes_with_floor_filter(self):
+        self.client.force_login(self.owner)
+
+        response = self._get_clients(year="2026", floor="2")
+
+        self.assertEqual(response.context["clients"].count(), 0)
+        self.assertContains(response, "Clients on floor 2")
+        self.assertContains(response, "Clients with bills in 2026")
+
+    def test_year_filter_blocked_for_other_user(self):
+        attacker = UserModel.objects.create_user(
+            email="attacker@test.bg", password="StrongPass123!")
+        self.client.force_login(attacker)
+
+        response = self._get_clients(year="2026")
+
+        self.assertEqual(response.status_code, 404)

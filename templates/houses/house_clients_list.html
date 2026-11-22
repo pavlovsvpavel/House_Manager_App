@@ -16,22 +16,39 @@
                 <div class="page-title-row">
                     <h3>{% trans 'Clients' %}</h3>
                 </div>
-                <!-- Floor filter: plain GET form (Apply works without JS);
-                     under HTMX it live-filters as you type and swaps only
-                     the results region below. The hidden inputs keep the
-                     payment-status filter composed with the floor one. -->
-                <form class="clients-floor-filter" method="get" action=""
+                <!-- Floor + year filters, same facet row as the client
+                     bills pages (label above each control). Plain GET form:
+                     Apply works without JS; under HTMX it live-filters and
+                     swaps only the results region below. The hidden inputs
+                     keep the status filter composed with the visible ones. -->
+                <form class="bill-filters" method="get" action=""
                       hx-get="{{ request.path }}"
                       hx-target="#clients-results"
                       hx-swap="outerHTML"
                       hx-push-url="true"
                       hx-trigger="submit, input changed delay:300ms"
                       hx-indicator="#clients-results">
-                    <input type="number" inputmode="numeric" min="0"
-                           name="floor" id="floor-filter"
-                           placeholder="{% trans "Floor" %}"
-                           value="{{ selected_floor|default_if_none:'' }}"
-                           aria-label="{% trans "Floor" %}">
+                    <label class="filter-facet{% if selected_floor %} filter-facet--active{% endif %}"
+                           for="floor-filter">
+                        <span class="filter-facet__label">{% trans "Floor" %}</span>
+                        <input type="number" inputmode="numeric" min="0"
+                               class="filter-facet__input"
+                               name="floor" id="floor-filter"
+                               value="{{ selected_floor|default_if_none:'' }}">
+                    </label>
+                    <label class="filter-facet{% if selected_year %} filter-facet--active{% endif %}"
+                           for="year-filter">
+                        <span class="filter-facet__label">{% trans "Year" %}</span>
+                        <span class="filter-facet__select">
+                            <select id="year-filter" name="year">
+                                <option value="">{% trans "All" %}</option>
+                                {% for choice in YearChoices %}
+                                    <option value="{{ choice.0 }}"
+                                            {% if selected_year == choice.0 %}selected{% endif %}>{{ choice.0 }}</option>
+                                {% endfor %}
+                            </select>
+                        </span>
+                    </label>
                     {% if request.GET.is_paid %}
                         <input type="hidden" name="is_paid" value="{{ request.GET.is_paid }}">
                     {% endif %}
