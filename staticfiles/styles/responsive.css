@@ -94,9 +94,18 @@
     }
 
     .navigation ul a,
+    .navigation ul .logout-button,
+    .navigation .theme-toggle,
     .navigation .language-form-btn {
         padding: 1em 0.5em;
         font-size: 1.5em;
+    }
+
+    /* The emoji paints smaller than the flag image next to it; bump the
+       toggle to the same absolute icon size as on desktop (20px) so its
+       drawer row matches the language row's height. */
+    .navigation .theme-toggle {
+        font-size: 1.8em;
     }
 
     .profile-menu a .profile-text {

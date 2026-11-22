@@ -140,18 +140,25 @@
 }
 
 /* Logout is a POST form now (security #10 — GET links can be CSRF-able);
-   the button reads exactly like the sibling menu links, which the theme
-   already styles (.navigation ul button). */
+   the button reads exactly like the sibling menu links. The global
+   button font rule (typography.css) already inherits the family, so
+   .navigation ul button supplies the bold; no font shorthand here or it
+   would reset the weight. The underline bars the top-level nav gives
+   buttons are disabled, same as the dropdown links above. */
 .navigation .menu-links form {
     width: 100%;
 }
 
 .navigation .menu-links .logout-button {
     width: 100%;
-    font: inherit;
     text-align: inherit;
     background: none;
     border: none;
+}
+
+.navigation .menu-links .logout-button:before,
+.navigation .menu-links .logout-button:after {
+    content: none;
 }
 
 .navigation .menu-links .logout-button:hover {

@@ -8,6 +8,11 @@
     font-size: 1.2em;
     line-height: 1;
     padding: 0.35em 0.55em;
+    /* Chrome sizes display:block buttons to content (unlike real blocks) —
+       the sibling nav buttons set this explicitly for the same reason. */
+    width: 100%;
+    /* UA buttons center their text; the drawer rows are left-aligned. */
+    text-align: inherit;
     transition: background-color 0.2s ease-in-out;
 }
 

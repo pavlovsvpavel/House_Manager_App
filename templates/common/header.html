@@ -31,9 +31,6 @@
 
                         <li><a href="{% url "about" %}">{% trans "About" %}</a></li>
                         <li>
-                            <button id="theme-toggle" class="theme-toggle" type="button"></button>
-                        </li>
-                        <li>
                             <form class="language-form" action="{% url 'set_language' %}" method="post">
                                 {% csrf_token %}
                                 <input name="next" type="hidden" value="{{ redirect_to }}"/>
@@ -49,6 +46,9 @@
                                     </button>
                                 {% endif %}
                             </form>
+                        </li>
+                        <li>
+                            <button id="theme-toggle" class="theme-toggle" type="button"></button>
                         </li>
                     </ul>
                 </div>
