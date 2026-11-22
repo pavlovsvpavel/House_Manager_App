@@ -34,17 +34,19 @@
                         </div>
                     </div>
                     <div class="report-table-wrap">
-                        <table class="report-table">
+                        <table class="report-table report-table--monthly">
                             <!-- Fixed column plan: the Family column is the
                                  wide one; the money columns stay narrow
-                                 (their headers now carry €). -->
+                                 (their headers now carry €). The widths
+                                 live in modals.css (no inline styles —
+                                 CSP drops style-src 'unsafe-inline'). -->
                             <colgroup>
-                                <col style="width: 27%">
-                                <col style="width: 13%">
-                                <col style="width: 17%">
-                                <col style="width: 17%">
-                                <col style="width: 13%">
-                                <col style="width: 13%">
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
                             </colgroup>
                             {% if clients_bills %}
                                 <thead>

@@ -23,21 +23,19 @@
                         </div>
                     </div>
                     <div class="report-table-wrap">
-                        <table class="report-table">
+                        <table class="report-table {% if single_bills %}report-table--single{% else %}report-table--clients{% endif %}">
                             <!-- Fixed column plan: the per-client table
                                  leads with the name column (the wide one).
                                  The single-bill table has no name column -
-                                 its comment is the wide one. -->
+                                 its comment is the wide one. Widths live
+                                 in modals.css (no inline styles — CSP
+                                 drops style-src 'unsafe-inline'). -->
                             <colgroup>
-                                {% if single_bills %}
-                                    <col style="width: 60%">
-                                    <col style="width: 20%">
-                                    <col style="width: 20%">
-                                {% else %}
-                                    <col style="width: 32%">
-                                    <col style="width: 30%">
-                                    <col style="width: 18%">
-                                    <col style="width: 20%">
+                                <col>
+                                <col>
+                                <col>
+                                {% if not single_bills %}
+                                    <col>
                                 {% endif %}
                             </colgroup>
                             {% if clients_bills %}

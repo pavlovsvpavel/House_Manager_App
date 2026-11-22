@@ -11,6 +11,13 @@
     font-size: 0.8em;
 }
 
+/* Non-field form errors (registration) render inside an .alert.alert-danger
+   block. The danger token replaces the old inline style="color: red" —
+   style attributes are blocked now that the CSP drops 'unsafe-inline'. */
+.alert-danger p {
+    color: var(--state-danger);
+}
+
 /* Django renders a field's help_text into a .helptext block. On the client
    boolean fields that same text is already shown as a tooltip icon on the
    label, so the generated block would only duplicate it (and, being a grid
@@ -234,6 +241,30 @@
     align-self: flex-end;
     padding-right: 0.5em;
     color: var(--text-1);
+}
+
+/* jSignature's zero-height control bars above/below the pad canvas. The
+   plugin generates them with inline style attributes, which the CSP blocks
+   (style-src without 'unsafe-inline'; style attributes cannot carry a
+   nonce) — so the same declarations ship as classes the plugin now uses. */
+.jsignature-controls {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 0 !important;
+    -ms-touch-action: none;
+    touch-action: none;
+}
+
+.jsignature-controls--upper {
+    margin-top: -1em !important;
+    margin-bottom: 1em !important;
+}
+
+.jsignature-controls--lower {
+    margin-top: -1.5em !important;
+    margin-bottom: 1.5em !important;
+    position: relative;
 }
 
 #signature .btn-reset-signature:hover {

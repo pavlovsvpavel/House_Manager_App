@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token }}">
     <meta name="view-transition" content="same-origin">
+    {# htmx injects its indicator styles as an inline <style> at boot — CSP-illegal now (style-src has no 'unsafe-inline', and a nonce is ignored on fragment-parsed elements). We ship the same rules in modals.css. #}
+    <meta name="htmx-config" content='{"includeIndicatorStyles": false}'>
     <meta property="og:image" content="{% static "images/site_logo.avif" %}"/>
     <meta name="description"
           content="Your ultimate solution for efficient expenses management tailored specifically for building cashiers.">

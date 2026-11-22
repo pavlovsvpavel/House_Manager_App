@@ -34,16 +34,18 @@ SECURE_CSP = {
     ],
     "img-src": [
         CSP.SELF,
-        "https:",
         "data:",
-        "https://www.gstatic.com"
+        "https://www.gstatic.com",
+        "https://www.googletagmanager.com",
+        "https://res.cloudinary.com",
     ],
     "style-src": [
         CSP.SELF,
-        CSP.UNSAFE_INLINE,
         "https://fonts.googleapis.com",
         "https://cdnjs.cloudflare.com",
     ],
+    "form-action": [CSP.SELF],
+    "base-uri": [CSP.SELF],
     "font-src": [
         CSP.SELF,
         "https://fonts.gstatic.com",
