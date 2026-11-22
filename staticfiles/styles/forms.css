@@ -233,6 +233,7 @@
 #signature .btn-reset-signature {
     align-self: flex-end;
     padding-right: 0.5em;
+    color: var(--text-1);
 }
 
 #signature .btn-reset-signature:hover {
